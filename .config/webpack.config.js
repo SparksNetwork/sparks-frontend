@@ -23,7 +23,7 @@ const basePlugins = [
   new ExtractTextPlugin({filename: 'styles.css', allChunks: true })
 ]
 
-const prodPlugns = [
+const prodPlugins = [
   new webpack.optimize.UglifyJsPlugin({ minimize: true })
 ]
 
