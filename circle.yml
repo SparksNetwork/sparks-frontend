@@ -1,0 +1,23 @@
+machine:
+  node:
+    version: 6.4.0
+
+notify:
+  webhooks:
+    - url: https://hooks.slack.com/services/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
+
+test:
+  pre:
+    - BUILD_ENV=production npm run build
+    - npm run serve-static:
+        background: true
+  override:
+    - MOCHA_FILE=./${CIRCLE_ARTIFACTS}/test-results.xml npm run test-ci
+
+general:
+  artifacts:
+    - ./${CIRCLE_ARTIFACTS}
+    - ./coverage
+    - ./tests_output
+    - ./test-results.xml
+    - ./report

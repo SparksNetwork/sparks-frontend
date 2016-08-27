@@ -1,0 +1,11 @@
+*.log
+*log*
+.local/
+*.local.*
+node_modules/
+report/
+screens/
+dist/bundle.js
+dist/bundle.js.map
+dist/styles.css
+dist/styles.css.map
