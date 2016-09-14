@@ -36,5 +36,5 @@ export function main(sources: MainSources) {
   return {
     DOM: page.DOM,
     router: page.route$
-  } as MainSinks;
+  };
 }
