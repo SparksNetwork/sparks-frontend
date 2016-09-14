@@ -2,6 +2,7 @@
   "name": "sparks.network",
   "dependencies": {
     "node-polyglot": "file:custom-typings/node-polyglot.d.ts", 
-    "ramda": "registry:dt/ramda#0.0.0+20160824142652"
+    "ramda": "registry:dt/ramda#0.0.0+20160824142652",
+    "switch-path": "file:custom-typings/switch-path.d.ts"
   }
 }
