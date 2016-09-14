@@ -9,14 +9,16 @@ export const REDIRECT = 'redirect';
 export const LOGOUT = 'logout';
 
 export type Action = 'popup' | 'redirect' | 'logout';
+export type Provider = 'google' | 'facebook';
 export type AuthInput = {
   type: Action;
-  provider: string;
+  provider: Provider;
 }
 
 export type FirebaseSource = (...args) => Stream<{ key: string, value: any }>
 export type QueueSink = Stream<any>;
-export type AuthSource = Stream<firebase.User>;
+export type QueueSource = Stream<any>;
+export type AuthSource = Stream<firebase.auth.UserCredential | null>;
 export type AuthSink = Stream<AuthInput>;
 
 function FirebaseStream (reference: any, eventName: string) {
@@ -113,7 +115,6 @@ export function makeAuthDriver(firebase: any) {
   * @return {void}
   */
   function authAction (input) {
-    console.log(input);
     const provider = providerObject(input.provider);
     const scopes = input.scopes || [];
 
@@ -128,11 +129,11 @@ export function makeAuthDriver(firebase: any) {
   return function authDriver(input$: Stream<AuthInput>) {
     input$.observe(authAction);
 
-    let stream = auth$.skipRepeatsWith(eqProps('user')).thru(hold);
+    let stream = auth$.skipRepeats().thru(hold);
 
     stream.drain();
 
-    return stream;
+    return stream.multicast();
   };
 
 }
@@ -154,7 +155,7 @@ export const makeFirebaseDriver = (ref: firebase.database.Reference) => {
   const build = (args) => {
     const stream = ValueStream(args.reduce(chain, ref)).thru(hold);
     stream.drain();
-    return stream;
+    return stream.multicast();
   };
 
   // SIDE EFFECT: build and add to cache if not in cache
@@ -187,7 +188,7 @@ export function makeQueueDriver(ref: firebase.database.Reference, src: string = 
       return ChildAddedStream(srcRef.child(listenerKey))
         .tap(({ key }) => {
           deleteResponse(srcRef, listenerKey, key);
-        });
+        }).multicast();
     };
   };
 }

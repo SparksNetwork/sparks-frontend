@@ -3,18 +3,20 @@
 import { Stream } from 'most';
 import hold from '@most/hold';
 import isolate from '@cycle/isolate';
-import { div, VNode } from '@motorcycle/dom';
+import { div, VNode, DOMSource } from '@motorcycle/dom';
 import { RouteDefinitions } from 'switch-path';
+import { RouterSource } from 'cyclic-router/lib/RouterSource';
 import { Pathname } from '@cycle/history/lib/interfaces';
 import { eqProps, prop, merge } from 'ramda';
+import { propOrNever } from '../../util';
 
 const equalPaths = eqProps('path');
 
 const loading = div('.loading', {}, 'Loading....');
 
 export type  ComponentRouterSources = {
-  DOM: any;
-  router: any;
+  DOM: DOMSource;
+  router: RouterSource;
   routes$: Stream<RouteDefinitions>;
 }
 
@@ -47,7 +49,7 @@ function ComponentRouter(sources: ComponentRouterSources): ComponentRouterSinks 
   return {
     DOM: component$.map(prop('DOM')).switch().multicast(),
     route$: component$.map(prop('route$')).switch().multicast(),
-    pluck: (key: string) => component$.map(prop(key)).switch().multicast()
+    pluck: (key: string) => component$.map(propOrNever(key)).switch().multicast()
   };
 }
 
