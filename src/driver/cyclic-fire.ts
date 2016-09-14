@@ -17,6 +17,7 @@ export type AuthInput = {
 
 export type FirebaseSource = (...args) => Stream<{ key: string, value: any }>
 export type QueueSink = Stream<any>;
+export type QueueSource = Stream<any>;
 export type AuthSource = Stream<firebase.auth.UserCredential | null>;
 export type AuthSink = Stream<AuthInput>;
 
@@ -114,7 +115,6 @@ export function makeAuthDriver(firebase: any) {
   * @return {void}
   */
   function authAction (input) {
-    console.log(input);
     const provider = providerObject(input.provider);
     const scopes = input.scopes || [];
 
@@ -129,7 +129,7 @@ export function makeAuthDriver(firebase: any) {
   return function authDriver(input$: Stream<AuthInput>) {
     input$.observe(authAction);
 
-    let stream = auth$.skipRepeatsWith(eqProps('user')).thru(hold);
+    let stream = auth$.skipRepeats().thru(hold);
 
     stream.drain();
 

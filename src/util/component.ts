@@ -1,13 +1,13 @@
 /// <reference path="../../typings/index.d.ts" />
-import { VNode, div } from '@motorcycle/dom';
-import { Component, DOMComponent, DOMSources } from '../component/types';
+import { VNode, DOMSource, div } from '@motorcycle/dom';
+import { Component, Sources, Sinks, DOMComponent } from '../component/types';
 
 import { merge } from 'ramda';
 
-export type ComponentUtility = (component: Component) => Component;
+export type ComponentUtility = (component: Component<Sources, Sinks>) => Component<Sources, Sinks>;
 
-export function clickable(component: DOMComponent)  {
-  return function clickableComponent(sources: DOMSources) {
+export function clickable(component: DOMComponent): DOMComponent  {
+  return function clickableComponent(sources: Sources & { DOM: DOMSource }) {
     const click$ = sources.DOM.select('.clickable').events('click');
     const sinks = component(sources);
 

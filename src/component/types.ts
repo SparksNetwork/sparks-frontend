@@ -1,26 +1,25 @@
 import { Stream } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 
+export type Source<T> =
+  Stream<T>
+  | ((...args: any[]) => Stream<T>)
+  | { [name: string]: Stream<T> | ((...args: any[]) => Stream<T>) | Source<T> }
+  | any;
+
 export interface Sources {
-  [name: string]: any;
+  [name: string]: Source<any>;
 }
 
-export type Sink = Stream<any> | ((...args: any[]) => Stream<any>);
+export type Sink<T> = Stream<T> | ((...args: any[]) => Stream<T>);
+
 export interface Sinks {
-  [name: string]: Sink;
+  [name: string]: Sink<any>;
 }
 
-export interface Component {
+export interface Component<Sources, Sinks> {
   (sources: Sources): Sinks;
 }
 
-export interface DOMSources extends Sources {
-  DOM: DOMSource;
-}
-export interface DOMSinks extends Sinks {
-  DOM: Stream<VNode>;
-}
-
-export interface DOMComponent extends Component {
-  (sources: DOMSources): DOMSinks;
-}
+export type DOMComponent =
+    Component<Sources & { DOM: DOMSource }, Sinks & { DOM: Stream<VNode> }>;
