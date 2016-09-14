@@ -4,7 +4,7 @@ import { Stream } from 'most';
 import hold from '@most/hold';
 import isolate from '@cycle/isolate';
 import { div, VNode } from '@motorcycle/dom';
-import { RouteDefinitions } from 'cyclic-router/lib/interfaces';
+import { RouteDefinitions } from 'switch-path';
 import { Pathname } from '@cycle/history/lib/interfaces';
 import { eqProps, prop, merge } from 'ramda';
 
