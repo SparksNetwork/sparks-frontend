@@ -20,18 +20,8 @@ const modules = [
   AttrsModule
 ];
 
-const fbConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_URL,
-  storageBucket: process.env.STORAGE_BUCKET,
-};
-
-try {
-  firebase.app('Sparks');
-} catch (err) {
-  firebase.initializeApp(fbConfig);
-}
+declare const Sparks;
+firebase.initializeApp(Sparks.firebase);
 
 const firebaseRef = firebase.database().ref();
 
