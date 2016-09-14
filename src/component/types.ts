@@ -24,4 +24,3 @@ export interface DOMSinks extends Sinks {
 export interface DOMComponent extends Component {
   (sources: DOMSources): DOMSinks;
 }
-
