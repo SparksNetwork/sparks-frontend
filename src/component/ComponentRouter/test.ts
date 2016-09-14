@@ -1,18 +1,23 @@
 import * as assert from 'assert';
 import ComponentRouter from './index';
 import * as most from 'most';
-import { mockDOMSource, h1, VNode, } from '@motorcycle/dom';
+import { RouterSource } from 'cyclic-router/lib/RouterSource';
+import { mockDOMSource, h1, VNode, DOMSource } from '@motorcycle/dom';
 
-const DOMSource = mockDOMSource({});
+const mockedDOMSource = mockDOMSource({}) as any as DOMSource;
+
 const component = {
   DOM: most.of(h1({}, 'Hello World')),
   route$: most.of('/path')
 };
+
 const match = { path: '/', value: () => component };
-const router = {
+
+const router: RouterSource = {
   path: () => most.empty(),
   define: () => most.of(match)
-};
+} as any as RouterSource;
+
 const routes$ = most.of({
   '/': component
 });
@@ -20,7 +25,7 @@ const routes$ = most.of({
 describe('ComponentRouter', function () {
   it('should return the latest components sinks', function () {
     const { DOM } = ComponentRouter({
-      DOM: DOMSource,
+      DOM: mockedDOMSource,
       router,
       routes$
     });
