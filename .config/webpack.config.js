@@ -12,14 +12,29 @@ if (!process.env.BUILD_ENV) {
   process.env.BUILD_ENV = DEV
 }
 
+const toString = x => JSON.stringify(x);
+
+const Sparks = {
+  buildEnv: toString(process.env.BUILD_ENV),
+  firebase: {
+    databaseURL: toString(process.env.FIREBASE_DATABASE_URL),
+    apiKey: toString(process.env.FIREBASE_API_KEY),
+    authDomain: toString(process.env.FIREBASE_AUTH_DOMAIN),
+    storageBucket: toString(process.env.FIREBASE_STORAGE_BUCKET),
+    messagingSenderId: toString(process.env.FIREBASE_MESSAGING_SENDER_ID),
+  }
+}
+
 const basePlugins = [
   new webpack.EnvironmentPlugin([
     'BUILD_ENV',
-    'FIREBASE_URL',
+    'FIREBASE_DATABASE_URL',
     'FIREBASE_API_KEY',
     'FIREBASE_AUTH_DOMAIN',
-    'FIREBASE_STORAGE_BUCKET'
+    'FIREBASE_STORAGE_BUCKET',
+    'FIREBASE_MESSAGING_SENDER_ID'
   ]),
+  new webpack.DefinePlugin({ Sparks }),
   new ExtractTextPlugin({filename: 'styles.css', allChunks: true })
 ]
 
