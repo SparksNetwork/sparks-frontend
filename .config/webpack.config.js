@@ -87,14 +87,12 @@ const ImageLoader = {
 const environmentOptions = process.env.BUILD_ENV === 'production'
   ? { }
   : {
-    debug: true,
-    devtool: 'source-map',
+   devtool: 'source-map',
   }
 
 module.exports = {
   plugins,
 
-  debug: process.env.BUILD_ENV === DEV,
   devtool: process.env.BUILD_ENV === DEV ? 'source-map': '',
 
   entry: [
@@ -131,8 +129,6 @@ module.exports = {
       ImageLoader,
     ],
   },
-
-  mainFields: ['jsnext:main', 'main'],
 
   resolve: {
     extensions: ['.ts', '.js'],
