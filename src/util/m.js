@@ -1,10 +1,9 @@
 import {
   mapObjIndexed, flatten, keys, always, reject, isNil, complement, uniq,
-  merge, reduce, all, either, clone, map, values, addIndex, is, mergeWith
+  merge, reduce, all, either, clone, map, values, addIndex, map, is, mergeWith
 } from 'ramda'
 import * as $ from 'most'
-import { h, div, span } from '@motorcycle/dom'
-
+import {h, div, span} from '@motorcycle/dom'
 
 const mapIndexed = addIndex(map)
 const deepMerge = function deepMerge(a, b) {
@@ -20,76 +19,76 @@ const routeSourceName = 'route$'
 
 // Type checking typings
 /**
-* @typedef {String} ErrorMessage
-*/
+ * @typedef {String} ErrorMessage
+ */
 /**
-* @typedef {Array<ErrorMessage>} SignatureCheck
-*/
+ * @typedef {Array<ErrorMessage>} SignatureCheck
+ */
 
 // Component typings
 /**
-* @typedef {Object.<string, Observable>} Sources
-*/
+ * @typedef {Object.<string, Observable>} Sources
+ */
 /**
-* @typedef {Object.<string, Observable>} Sinks
-* NOTE : this type def is not perfect as we allow sometimes null values
-*/
+ * @typedef {Object.<string, Observable>} Sinks
+ * NOTE : this type def is not perfect as we allow sometimes null values
+ */
 /**
-* @typedef {?Object.<string, ?Object>} Settings
-*/
+ * @typedef {?Object.<string, ?Object>} Settings
+ */
 /**
-* @typedef {Object} DetailedComponentDef
-* @property {?function(Sources, Settings)} makeLocalSources
-* @property {?function(Settings)} makeLocalSettings
-* @property {?function(Sources, Settings)} makeOwnSinks
-* @property {function(Sinks, Array<Sinks>, Settings)} mergeSinks
-* @property {function(Sinks):Boolean} sinksContract
-* @property {function(Sources):Boolean} sourcesContract
-*/
+ * @typedef {Object} DetailedComponentDef
+ * @property {?function(Sources, Settings)} makeLocalSources
+ * @property {?function(Settings)} makeLocalSettings
+ * @property {?function(Sources, Settings)} makeOwnSinks
+ * @property {function(Sinks, Array<Sinks>, Settings)} mergeSinks
+ * @property {function(Sinks):Boolean} sinksContract
+ * @property {function(Sources):Boolean} sourcesContract
+ */
 /**
-* @typedef {Object} ShortComponentDef
-* @property {?function(Sources, Settings)} makeLocalSources
-* @property {?function(Settings)} makeLocalSettings
-* @property {function(Sources, Settings, Array<Component>)} makeAllSinks
-* @property {function(Sinks):Boolean} sinksContract
-* @property {function(Sources):Boolean} sourcesContract
-*/
+ * @typedef {Object} ShortComponentDef
+ * @property {?function(Sources, Settings)} makeLocalSources
+ * @property {?function(Settings)} makeLocalSettings
+ * @property {function(Sources, Settings, Array<Component>)} makeAllSinks
+ * @property {function(Sinks):Boolean} sinksContract
+ * @property {function(Sources):Boolean} sourcesContract
+ */
 /**
-* @typedef {function(Sources, Settings):Sinks} Component
-*/
+ * @typedef {function(Sources, Settings):Sinks} Component
+ */
 
 /**
-* Returns a component specified by :
-* - a component definition object (nullable)
-* - settings (nullable)
-* - children components
-* Component definition default properties :
-* - mergeAllSinks :
-*   - DOM : mergeDOMSinksDefault
-*   - non-DOM : mergeNonDOMSinksDefault
-* - sinksContract : check all sinks are observables or `null`
-* - makeLocalSources : -> null
-* - makeLocalSettings : -> null
-* - makeOwnSinks : -> null
-* That component computes its sinks from its sources by:
-* - merging current sources with extra sources if any
-* - creating some sinks by itself
-* - computing children sinks by executing the children components on the
-* merged sources
-* - merging its own computed sinks with the children computed sinks
-* There are two version of definition, according to the level of
-* granularity desired : the short spec and the detailed spec :
-* - short spec :
-*   one function `makeAllSinks` which outputs the sinks from the sources,
-*   settings and children components
-* - detailed spec :
-*   several properties as detailed above
-* @param {?(DetailedComponentDef|ShortComponentDef)} componentDef
-* @param {?Object} _settings
-* @param {Array<Component>} children
-* @returns {Component}
-* @throws when type- and user-specified contracts are not satisfied
-*/
+ * Returns a component specified by :
+ * - a component definition object (nullable)
+ * - settings (nullable)
+ * - children components
+ * Component definition default properties :
+ * - mergeAllSinks :
+ *   - DOM : mergeDOMSinksDefault
+ *   - non-DOM : mergeNonDOMSinksDefault
+ * - sinksContract : check all sinks are observables or `null`
+ * - makeLocalSources : -> null
+ * - makeLocalSettings : -> null
+ * - makeOwnSinks : -> null
+ * That component computes its sinks from its sources by:
+ * - merging current sources with extra sources if any
+ * - creating some sinks by itself
+ * - computing children sinks by executing the children components on the
+ * merged sources
+ * - merging its own computed sinks with the children computed sinks
+ * There are two version of definition, according to the level of
+ * granularity desired : the short spec and the detailed spec :
+ * - short spec :
+ *   one function `makeAllSinks` which outputs the sinks from the sources,
+ *   settings and children components
+ * - detailed spec :
+ *   several properties as detailed above
+ * @param {?(DetailedComponentDef|ShortComponentDef)} componentDef
+ * @param {?Object} _settings
+ * @param {Array<Component>} children
+ * @returns {Component}
+ * @throws when type- and user-specified contracts are not satisfied
+ */
 // m :: Opt Component_Def -> Opt Settings -> [Component] -> Component
 function m(componentDef, _settings, children) {
   _settings = _settings || {}
@@ -126,11 +125,11 @@ function m(componentDef, _settings, children) {
       const mergedSettings = deepMerge(innerSettings, _settings)
 
       const extendedSources = shareAllSources(
-          merge(sources, makeLocalSources(sources, mergedSettings))
+        merge(sources, makeLocalSources(sources, mergedSettings))
       )
 
       let sinks = componentDef.makeAllSinks(
-          extendedSources, mergedSettings, children
+        extendedSources, mergedSettings, children
       )
       assertSinksContracts(sinks, sinksContract)
 
@@ -158,13 +157,13 @@ function m(componentDef, _settings, children) {
       // Extra sources are derived from the `sources`
       // received as input, which remain untouched
       const extendedSources = shareAllSources(
-          merge(sources, makeLocalSources(sources, mergedSettings))
+        merge(sources, makeLocalSources(sources, mergedSettings))
       )
       // Note that per `merge` ramda spec. the second object's values
       // replace those from the first in case of key conflict
       const localSettings = deepMerge(
-          makeLocalSettings(mergedSettings),
-          mergedSettings
+        makeLocalSettings(mergedSettings),
+        mergedSettings
       )
 
       console.groupCollapsed('m\'ed component > makeOwnSinks')
@@ -175,14 +174,14 @@ function m(componentDef, _settings, children) {
 
       console.group('m\'ed component > computing children sinks')
       const childrenSinks = map(
-          childComponent => childComponent(extendedSources, localSettings),
-          children
+        childComponent => childComponent(extendedSources, localSettings),
+        children
       )
       console.groupEnd('m\'ed component > computing children sinks')
 
       assertContract(isOptSinks, [ownSinks], 'ownSinks must be a hash of observable sink')
       assertContract(isArrayOptSinks, [childrenSinks], 'childrenSinks must' +
-          ' be an array of sinks')
+        ' be an array of sinks')
 
       // merge the sinks from children and one-s own...
       console.groupCollapsed('m\'ed component > mergeSinks')
@@ -244,11 +243,11 @@ function assertSignature(fnName, _arguments, vRules) {
 
   if (hasFailed) {
     const validationMessages = mapIndexed((value, index) => {
-          return value ?
-              '' :
-              [fnName, ':', 'argument', argNames[index],
-                'fails rule', vRules[index].name].join(' ')
-        }, validatedArgs
+        return value ?
+          '' :
+          [fnName, ':', 'argument', argNames[index],
+            'fails rule', vRules[index].name].join(' ')
+      }, validatedArgs
     ).join('\n')
     const errorMessage = ['assertSignature:', validationMessages].join(' ')
     throw errorMessage
@@ -384,12 +383,12 @@ function isNullableComponentDef(obj) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
   return obj == null || (
-          (!obj.makeLocalSources || isFunction(obj.makeLocalSources)) &&
-          (!obj.makeLocalSettings || isFunction(obj.makeLocalSettings)) &&
-          (!obj.makeOwnSinks || isFunction(obj.makeOwnSinks)) &&
-          (!obj.mergeSinks || isFunction(obj.mergeSinks)) &&
-          (!obj.sinksContract || isFunction(obj.sinksContract))
-      )
+      (!obj.makeLocalSources || isFunction(obj.makeLocalSources)) &&
+      (!obj.makeLocalSettings || isFunction(obj.makeLocalSettings)) &&
+      (!obj.makeOwnSinks || isFunction(obj.makeOwnSinks)) &&
+      (!obj.mergeSinks || isFunction(obj.mergeSinks)) &&
+      (!obj.sinksContract || isFunction(obj.sinksContract))
+    )
 }
 
 function isUndefined(obj) {
@@ -439,7 +438,7 @@ function isArrayOf(predicateFn) {
 
 function isVNode(obj) {
   return ["children", "data", "elm", "key", "sel", "text"]
-      .every(prop => prop in obj)
+    .every(prop => prop in obj)
 }
 
 /**
@@ -484,18 +483,18 @@ function isArrayOptSinks(arrSinks) {
 function assertSourcesContracts(sources, sourcesContract) {
   // Check sources contracts
   assertContract(isSources, [sources],
-      'm : `sources` parameter is invalid')
+    'm : `sources` parameter is invalid')
   // TODO : documentation - contract for sources could :
   // - check that specific sources are included, and/or observable
   assertContract(sourcesContract, [sources], 'm: `sources`' +
-      ' parameter fails contract ' + sourcesContract.name)
+    ' parameter fails contract ' + sourcesContract.name)
 }
 
 function assertSinksContracts(sinks, sinksContract) {
   assertContract(isOptSinks, [sinks],
-      'mergeSinks must return a hash of observable sink')
+    'mergeSinks must return a hash of observable sink')
   assertContract(sinksContract, [sinks],
-      'fails custom contract ' + sinksContract.name)
+    'fails custom contract ' + sinksContract.name)
 }
 
 /**
@@ -532,7 +531,7 @@ function mergeChildrenIntoParentDOM(parentDOMSink) {
     // We can have a null vNode emitted by a sink if that sink is empty
     let _arrayVNode = removeNullsFromArray(arrayVNode)
     assertContract(isArrayOf(isVNode), [_arrayVNode], 'DOM sources must' +
-        ' stream VNode objects! Got ' + _arrayVNode)
+      ' stream VNode objects! Got ' + _arrayVNode)
 
     if (parentDOMSink) {
       // Case : the parent sinks have a DOM sink
@@ -630,16 +629,16 @@ function getValidKeys(obj) {
  */
 function emitNullIfEmpty(sink) {
   return isNil(sink) ?
-      null :
-      $.merge(
-          sink,
-          // TODO TYS : recreate Rx.Obs.isEmpty in most
-          // https://github.com/Reactive-Extensions/RxJS/blob/master/src/core/linq/observable/isempty.js
-          // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
-          // see also tests
-          // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-          sink.isEmpty().filter(x=>x).map(x => null)
-      )
+    null :
+    $.merge(
+      sink,
+      // TODO TYS : recreate Rx.Obs.isEmpty in most
+      // https://github.com/Reactive-Extensions/RxJS/blob/master/src/core/linq/observable/isempty.js
+      // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
+      // see also tests
+      // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
+      sink.isEmpty().filter(x=>x).map(x => null)
+    )
 }
 
 /**
@@ -674,8 +673,8 @@ function mergeDOMSinksDefault(parentSinks, childrenSinks) {
   }
 
   return $.combineArray(allDOMSinks)
-      .tap(console.log.bind(console, 'mergeDOMSinksDefault: allDOMSinks'))
-      .map(mergeChildrenIntoParentDOM(parentDOMSink))
+    .tap(console.log.bind(console, 'mergeDOMSinksDefault: allDOMSinks'))
+    .map(mergeChildrenIntoParentDOM(parentDOMSink))
 }
 
 function mergeNonDomSinksDefault(parentSinks, childrenSinks, sinkName) {
@@ -718,8 +717,8 @@ function mergeSinksDefault(parentSinks, childrenSinks, settings) {
   const sinkNames = getSinkNamesFromSinksArray(allSinks)
 
   return reduce(
-      // Note : default merge does not make use of the settings!
-      makeDefaultMergedSinks(parentSinks, childrenSinks), {}, sinkNames
+    // Note : default merge does not make use of the settings!
+    makeDefaultMergedSinks(parentSinks, childrenSinks), {}, sinkNames
   )
 }
 
@@ -735,27 +734,27 @@ function makeDivVNode(x) {
 }
 
 export {
-  m: m,
-  makeDivVNode: makeDivVNode,
-  assertSignature: assertSignature,
-  assertContract: assertContract,
-  hasPassedSignatureCheck: hasPassedSignatureCheck,
-  checkSignature: checkSignature,
-  unfoldObjOverload: unfoldObjOverload,
-  projectSinksOn: projectSinksOn,
-  getSinkNamesFromSinksArray: getSinkNamesFromSinksArray,
-  removeNullsFromArray: removeNullsFromArray,
-  defaultsTo: defaultsTo,
-  isNullableObject: isNullableObject,
-  isUndefined: isUndefined,
-  isFunction: isFunction,
-  isVNode: isVNode,
-  isObject: isObject,
-  isBoolean: isBoolean,
-  isString: isString,
-  isArray: isArray,
-  isArrayOf: isArrayOf,
-  isObservable: isObservable,
-  isSource: isSource,
-  isOptSinks: isOptSinks,
+  m,
+  makeDivVNode,
+  assertSignature,
+  assertContract,
+  hasPassedSignatureCheck,
+  checkSignature,
+  unfoldObjOverload,
+  projectSinksOn,
+  getSinkNamesFromSinksArray,
+  removeNullsFromArray,
+  defaultsTo,
+  isNullableObject,
+  isUndefined,
+  isFunction,
+  isVNode,
+  isObject,
+  isBoolean,
+  isString,
+  isArray,
+  isArrayOf,
+  isObservable,
+  isSource,
+  isOptSinks
 }
