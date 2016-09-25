@@ -1,13 +1,36 @@
 import {
   mapObjIndexed, flatten, keys, always, reject, isNil, complement, uniq,
-  merge, reduce, all, either, clone, map, values, addIndex, map, is, mergeWith
+  merge, reduce, all, either, clone, values, addIndex, map, is, mergeWith
 } from 'ramda'
 import * as $ from 'most'
 import {h, div, span} from '@motorcycle/dom'
 
 const mapIndexed = addIndex(map)
-const deepMerge = function deepMerge(a, b) {
+export const deepMerge = function deepMerge(a, b) {
   return (is(Object, a) && is(Object, b)) ? mergeWith(deepMerge, a, b) : b;
+}
+
+/**
+ * Returns true iff the passed parameter is null or undefined OR a POJO
+ * @param {Object} obj
+ * @returns {boolean}
+ */
+function isNullableObject(obj) {
+  // Note that `==` is used instead of `===`
+  // This allows to test for `undefined` and `null` at the same time
+  return obj == null || typeof obj === 'object'
+}
+
+function isNullableComponentDef(obj) {
+  // Note that `==` is used instead of `===`
+  // This allows to test for `undefined` and `null` at the same time
+  return obj == null || (
+      (!obj.makeLocalSources || isFunction(obj.makeLocalSources)) &&
+      (!obj.makeLocalSettings || isFunction(obj.makeLocalSettings)) &&
+      (!obj.makeOwnSinks || isFunction(obj.makeOwnSinks)) &&
+      (!obj.mergeSinks || isFunction(obj.mergeSinks)) &&
+      (!obj.sinksContract || isFunction(obj.sinksContract))
+    )
 }
 
 // Configuration
@@ -94,6 +117,7 @@ function m(componentDef, _settings, children) {
   _settings = _settings || {}
   console.groupCollapsed('Utils > m')
   console.log('componentDef, _settings, children', componentDef, _settings, children)
+
   // check signature
   const mSignature = [
     {componentDef: isNullableComponentDef},
@@ -366,29 +390,6 @@ function unfoldObjOverload(obj, overloads) {
 
 function defaultsTo(obj, defaultsTo) {
   return !obj ? defaultsTo : obj
-}
-
-/**
- * Returns true iff the passed parameter is null or undefined OR a POJO
- * @param {Object} obj
- * @returns {boolean}
- */
-function isNullableObject(obj) {
-  // Note that `==` is used instead of `===`
-  // This allows to test for `undefined` and `null` at the same time
-  return obj == null || typeof obj === 'object'
-}
-
-function isNullableComponentDef(obj) {
-  // Note that `==` is used instead of `===`
-  // This allows to test for `undefined` and `null` at the same time
-  return obj == null || (
-      (!obj.makeLocalSources || isFunction(obj.makeLocalSources)) &&
-      (!obj.makeLocalSettings || isFunction(obj.makeLocalSettings)) &&
-      (!obj.makeOwnSinks || isFunction(obj.makeOwnSinks)) &&
-      (!obj.mergeSinks || isFunction(obj.mergeSinks)) &&
-      (!obj.sinksContract || isFunction(obj.sinksContract))
-    )
 }
 
 function isUndefined(obj) {
@@ -745,6 +746,7 @@ export {
   getSinkNamesFromSinksArray,
   removeNullsFromArray,
   defaultsTo,
+  isComponent,
   isNullableObject,
   isUndefined,
   isFunction,

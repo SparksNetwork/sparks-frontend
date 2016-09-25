@@ -45,6 +45,6 @@ describe('ComponentRouter', function () {
 
       assert.strictEqual(vNode.sel as string, (sel as string));
       assert.strictEqual(vNode.text as string, (text as string));
-    })
+    });
   });
 });

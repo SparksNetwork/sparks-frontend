@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "declaration": false,
     "lib": [
       "es2015",
@@ -8,7 +9,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitHelpers": false,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noImplicitReturns": true,

@@ -1,13 +1,16 @@
 import {
-  identity, mapObjIndexed, mapIndexed, valuesR, all as allR,
-  reduce as reduceR, keys as keysR, drop, isNil, always
+  identity, mapObjIndexed, values, all as allR, addIndex,
+  reduce as reduceR, keys as keysR, drop, isNil, always, map
 } from 'ramda'
 
 import * as U from '../m'
 import * as $ from 'most'
 import {last} from 'most-last'
-import {subject} from 'most-subject'
+import { subject } from 'most-subject'
 
+const mapIndexed = addIndex(map)
+
+console.groupEnd = console.log
 
 /**
  * @typedef {function(*):boolean} Predicate
@@ -47,7 +50,7 @@ const tickDurationDefault = 5
 // Contract and signature checking helpers
 function isSourceInput(obj) {
   return obj && keysR(obj).length === 1
-    && U.isString(valuesR(obj)[0].diagram)
+    && U.isString(values(obj)[0].diagram)
 }
 
 function isExpectedStruct(record) {
@@ -58,7 +61,7 @@ function isExpectedStruct(record) {
 }
 
 function isExpectedRecord(obj) {
-  return allR(isExpectedStruct, valuesR(obj))
+  return allR(isExpectedStruct, values(obj))
 }
 
 function hasTestCaseForEachSink(testCase, sinkNames) {
@@ -146,8 +149,8 @@ function getTestResults(testInputs$, expected, settings) {
  * position tickNum
  */
 function projectAtIndex(tickNum, inputs) {
-  return mapR(function mapInputs(sourceInput) {
-    return mapR(function projectDiagramAtIndex(input) {
+  return map(function mapInputs(sourceInput) {
+    return map(function projectDiagramAtIndex(input) {
       return {
         diagram: input.diagram[tickNum],
         values: input.values
@@ -208,7 +211,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
   // b : '-x-x-'
   // -> maxLen = 7
   const maxLen = Math.max.apply(null,
-    mapR(sourceInput => valuesR(sourceInput)[0].diagram.length, inputs)
+    map(sourceInput => values(sourceInput)[0].diagram.length, inputs)
   )
 
   /** @type {Array<Number>} */
@@ -304,7 +307,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
 
   // This takes care of actually starting the producers
   // which generate the execution of the test assertions
-  $.merge(removeNullsFromArray(valuesR(resultAnalysis)))
+  $.mergeArray(removeNullsFromArray(values(resultAnalysis)))
     .subscribe({
       next: rxlog('Test completed for sink:'),
       error: rxlog('An error occurred while executing test!'),

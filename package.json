@@ -53,7 +53,8 @@
     "sauce:safari9": "npm run sauce -- --env safari9",
     "test-ci": "npm run test:lint && npm run test:unit && npm run sauce -- --env chrome49,ie10,android51,iphone5,safari8",
     "serve": "webpack-dev-server --config .config/webpack.config.js",
-    "build": "webpack --config .config/webpack.config.js"
+    "build": "webpack --config .config/webpack.config.js",
+    "test-build": "webpack --config .config/webpack-test.config.js"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^2.2.1",
@@ -68,6 +69,7 @@
     "image-webpack-loader": "^2.0.0",
     "mkdirp": "^0.5.1",
     "mocha-circleci-reporter": "0.0.2",
+    "mocha-loader": "^1.0.0",
     "nightwatch": "^0.9.8",
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.11.0",
@@ -98,6 +100,7 @@
     "firebase": "^3.3.0",
     "history": "^3.0.0",
     "most": "^1.0.1",
+    "most-last": "^1.0.0",
     "node-polyglot": "^2.0.0",
     "ramda": "^0.22.1",
     "switch-path": "^1.1.8"
