@@ -1,11 +1,12 @@
 import * as assert from 'assert'
-import { map as mapR, reduce as reduceR, always } from 'ramda'
-import { h, div, span } from '@motorcycle/dom'
+import { always } from 'ramda'
+import { h, div } from '@motorcycle/dom'
 import * as $ from 'most'
 import { runTestScenario } from '../test/runTestScenario'
 import { m } from '../combinator/m'
 import { projectSinksOn, makeDivVNode } from '../checks'
 
+// TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
 console.groupCollapsed = console.log
 
 // Fixtures
@@ -22,7 +23,6 @@ function plan (n) {
   }
 }
 
-
 describe('Testing m(component_def, settings, children)', () => {
   it('edge cases - no arguments', () => {
     // NOTE
@@ -36,7 +36,7 @@ describe('Testing m(component_def, settings, children)', () => {
         'it throws an exception if it is called with an invalid ' +
         'combination of arguments')
   })
-  
+
   it('main cases - only children components', (done) => {
     // NOTE
     // skipping also a number of main cases corresponding to combination of inputs
@@ -166,7 +166,7 @@ describe('Testing m(component_def, settings, children)', () => {
       timeUnit: 50,
       waitForFinishDelay: 100
     })
-    
+
     it('main cases - only children components', (done) => {
       // NOTE
       // skipping also a number of main cases corresponding to combination of inputs
@@ -182,7 +182,7 @@ describe('Testing m(component_def, settings, children)', () => {
       // and we test several conditions in the same test case
       // which brings down the number of tests to 4
       const assertAsync = plan(4)
-      
+
       // Test case 2
         // 2 children: [component (sink DOM, a, c), component(sink DOM, a, d)], settings : {...}, no component_def, no local sources
         //   + sources : DOM, a, b, c, d, e
@@ -294,13 +294,13 @@ describe('Testing m(component_def, settings, children)', () => {
           timeUnit: 50,
           waitForFinishDelay: 100
         })
-      
+
     })
   })
-  
+
   it("main cases - no children", (done) => {
     const assertAsync = plan(5)
-    
+
     // Test input 4
     // No children, settings : ?, full component def(sink DOM, auth,
     //   queue, extra source user$) using the extra sources created
@@ -432,10 +432,10 @@ describe('Testing m(component_def, settings, children)', () => {
       waitForFinishDelay: 30
     })
   })
-  
+
   it('main cases - children components and parent component - default merge', (done) => {
     const assertAsync = plan(5)
-    
+
     // Test case 4
     // 4 children: [component, component], settings : {...}, full component def (DOM, queue, auth, action)
     const testSettings = null
@@ -564,10 +564,10 @@ describe('Testing m(component_def, settings, children)', () => {
     })
 
   })
-  
+
   it('main cases - children components and parent component - customized merge', (done) => {
     const assertAsync = plan(5)
-    
+
     const testSettings = null
 
         const childComponent1 = function childComponent1(sources, settings) {
@@ -714,10 +714,10 @@ describe('Testing m(component_def, settings, children)', () => {
           waitForFinishDelay: 100
         })
   })
-  
+
   it('main cases - great children components - default merge - settings', (done) => {
     const assertAsync = plan(4)
-    
+
     const child = {
       makeOwnSinks: function childMakeOwnSinks(sources, settings) {
         return {

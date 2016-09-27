@@ -1,4 +1,5 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "allowJs": false,
     "declaration": false,
@@ -19,6 +20,8 @@
     "pretty": true,
     "removeComments": false,
     "sourceMap": true,
+    // Added by BRC on 27.9 for integration with webstorm
+    "inlineSources": true,
     "strictNullChecks": true,
     "target": "ES5",
     "outDir": "dist/"

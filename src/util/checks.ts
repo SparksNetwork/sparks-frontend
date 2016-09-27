@@ -1,21 +1,13 @@
 /// <reference path="../../typings/index.d.ts" />
 
 import {
-  mapObjIndexed, flatten, keys, always, reject, isNil, uniq,
-  reduce, all, either, clone, map, values, addIndex
-} from 'ramda';
-import * as $ from 'most';
-import { div } from '@motorcycle/dom';
+  mapObjIndexed, flatten, keys, always, reject, isNil, uniq, addIndex,
+  merge, reduce, all, either, clone, map, values, equals, concat
+} from 'ramda'
+import * as $ from 'most'
+import { div } from '@motorcycle/dom'
 
-const mapIndexed = addIndex(map);
-
-
-// Configuration
-// TODO : put all constant like this is a prop file with a json object
-// TODO : make it an optional setting to be passed to the router
-// TODO : put the m helper in a separate file (combinator? like the router)
-// organized by category, here the category is sources
-const routeSourceName = 'route$';
+const mapIndexed = addIndex(map)
 
 // Type checking typings
 /**
@@ -32,14 +24,15 @@ const routeSourceName = 'route$';
  * optional arguments
  * @param {String} fnName
  * @param {Array<*>} _arguments
- * @param {[Array<Object.<string, Predicate>>]} vRules Validation rules.
+ * @param {[Array<Object.<string, Predicate|PredicateWithError>>]} vRules
+ * Validation rules.
  *
  * Given f(x, y) =  x + y, with x both int, in the body of `f`, include
  * function f(x, y) {
- *   assertSignature ('f', arguments, [{x:isInteger},{y:isInteger}],
- *                  'one of the parameters is not an integer!')
- *   ...
- * }
+   *   assertSignature ('f', arguments, [{x:isInteger},{y:isInteger}],
+   *                  'one of the parameters is not an integer!')
+   *   ...
+   * }
  */
 function assertSignature(fnName, _arguments, vRules) {
   const argNames = flatten(map(keys, vRules))
@@ -52,22 +45,25 @@ function assertSignature(fnName, _arguments, vRules) {
   }, vRules)
 
   const validatedArgs = mapIndexed((value, index) => {
-    const ruleFn: any = ruleFns[index]
+    const ruleFn = ruleFns[index]
     return ruleFn(value)
   }, args)
 
   const hasFailed = reduce((acc, value) => {
-    return !value || acc
+    return isFalse(value) || acc
   }, false, validatedArgs)
 
   if (hasFailed) {
-    const validationMessages = mapIndexed((value, index) => {
-        return value ?
+    const validationMessages = mapIndexed((errorMessageOrBool, index) => {
+        return isTrue(errorMessageOrBool) ?
           '' :
-          [fnName, ':', 'argument', argNames[index],
-            'fails rule', vRules[index].name].join(' ')
+          [
+            `${fnName}: argument ${argNames[index]} fails rule ${vRules[index].name}`,
+            isBoolean(errorMessageOrBool) ? '' : errorMessageOrBool
+          ].join(': ')
       }, validatedArgs
     ).join('\n')
+
     const errorMessage = ['assertSignature:', validationMessages].join(' ')
     throw errorMessage
   }
@@ -97,43 +93,38 @@ function assertContract(contractFn, contractArgs, errorMessage) {
 }
 
 /**
- * Returns true iff the signature check did not produce any error messages
- * @param {SignatureCheck} signatureCheck
- * @returns {boolean}
- */
-function hasPassedSignatureCheck(signatureCheck) {
-  return signatureCheck.join("").length === 0
-}
-
-/**
  * Returns:
- * - an empty array if the object passed as parameter passes all the
- * predicates on its properties
+ * - `true` if the object passed as parameter passes all the predicates on
+ * its properties
  * - an array with the concatenated error messages otherwise
  * @param obj
  * @param {Object.<string, Predicate>} signature
  * @param {Object.<string, string>} signatureErrorMessages
- * @param {Boolean} strict
- * @returns {SignatureCheck}
+ * @param {Boolean=false} isStrict When `true` signals that the object
+ * should not have properties other than the ones checked for
+ * @returns {Boolean | Array<String>}
  */
 function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
   let arrMessages = []
   let strict = defaultsTo(isStrict, false)
 
-  mapObjIndexed((value, property) => {
-    if (!(property in signature)) {
-      // Case : the object has a property for which no contract is set up
-      if (strict) {
-        // Case : if strict is true, that means that the object should not
-        // have that property
-        arrMessages.push(`Object cannot contain a property called ${property}`)
-      }
-    } else if (!signature[property](value)) {
+  // Check that object properties in the signature match it
+  mapObjIndexed((predicate, property) => {
+    if (!predicate(obj[property])) {
       arrMessages.push(signatureErrorMessages[property])
     }
-  }, obj)
+  }, signature)
 
-  return arrMessages
+  // Check that object properties are all in the signature if strict is set
+  if (strict) {
+    mapObjIndexed((value, property) => {
+      if (!(property in signature)) {
+        arrMessages.push(`Object cannot contain a property called ${property}`)
+      }
+    }, obj)
+  }
+
+  return arrMessages.join("").length === 0 ? true : arrMessages
 }
 
 /**
@@ -142,6 +133,9 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
  * fulfilled. Predicates are tested in order of indexing of the array.
  * - `_index` the index in the array where a predicate was fulfilled if
  * any, undefined otherwise
+ * Ex : unfoldObjOverload('DOM', {sourceName: isString, predicate:
+    * isPredicate})
+ * Result : {sourceName : 'DOM'}
  * @param obj
  * @param {Array<Object.<string, Predicate>>} overloads
  * @returns {{}}
@@ -153,39 +147,46 @@ function unfoldObjOverload(obj, overloads) {
   overloads.some(overload => {
     // can only be one property
     const property = keys(overload)[0]
-    const predicate: any = values(overload)[0]
+    const predicate = values(overload)[0]
     const predicateEval = predicate(obj)
 
     if (predicateEval) {
       result[property] = obj
-      (result as any)._index = index
+      result._index = index
     }
     index++
 
     return predicateEval
   })
   return result
-
-  // TODO : mapObjIndex must be processed after to return true or false...
-  /*
-  any(overload => {
-    mapObjIndexed((predicate, property) => {
-      const predicateEval = predicate(obj)
-      if (predicateEval) {
-        result[property] = obj
-        result._index = index
-      }
-      index++
-
-      return predicateEval
-    }, overload)
-  }, overloads)
-
-  return result*/
 }
 
 function defaultsTo(obj, defaultsTo) {
   return !obj ? defaultsTo : obj
+}
+
+/**
+ * Returns true iff the parameter is a boolean whose value is false.
+ * This hence does both type checking and value checking
+ * @param obj
+ * @returns {boolean}
+ */
+function isFalse(obj) {
+  return isBoolean(obj) ? !obj : false
+}
+
+/**
+ * Returns true iff the parameter is a boolean whose value is false.
+ * This hence does both type checking and value checking
+ * @param obj
+ * @returns {boolean}
+ */
+function isTrue(obj) {
+  return isBoolean(obj) ? obj : false
+}
+
+function isMergeSinkFn(obj) {
+  return isFunction(obj)
 }
 
 /**
@@ -199,16 +200,39 @@ function isNullableObject(obj) {
   return obj == null || typeof obj === 'object'
 }
 
+/**
+ *
+ * @param obj
+ * @returns {SignatureCheck}
+ */
 function isNullableComponentDef(obj) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
-  return obj == null || (
-      (!obj.makeLocalSources || isFunction(obj.makeLocalSources)) &&
-      (!obj.makeLocalSettings || isFunction(obj.makeLocalSettings)) &&
-      (!obj.makeOwnSinks || isFunction(obj.makeOwnSinks)) &&
-      (!obj.mergeSinks || isFunction(obj.mergeSinks)) &&
-      (!obj.sinksContract || isFunction(obj.sinksContract))
-    )
+
+  return isNil(obj) || checkSignature(obj, {
+      makeLocalSources: either(isNil, isFunction),
+      makeLocalSettings: either(isNil, isFunction),
+      makeOwnSinks: either(isNil, isFunction),
+      mergeSinks: mergeSinks => {
+        if (obj.computeSinks) {
+          return !mergeSinks
+        }
+        else {
+          return either(isNil, either(isObject, isFunction))(mergeSinks)
+        }
+      },
+      computeSinks: either(isNil, isFunction),
+      sinksContract: either(isNil, isFunction)
+    }, {
+      makeLocalSources: 'makeLocalSources must be undefined or a function',
+      makeLocalSettings: 'makeLocalSettings must be undefined or a' +
+      ' function',
+      makeOwnSinks: 'makeOwnSinks must be undefined or a function',
+      mergeSinks: 'mergeSinks can only be defined when `computeSinks` is' +
+      ' not, and when so, it must be undefined, an object or a function',
+      computeSinks: 'computeSinks must be undefined or a function',
+      sinksContract: 'sinksContract must be undefined or a function'
+    }, true)
 }
 
 function isUndefined(obj) {
@@ -304,8 +328,6 @@ function assertSourcesContracts(sources, sourcesContract) {
   // Check sources contracts
   assertContract(isSources, [sources],
     'm : `sources` parameter is invalid')
-  // TODO : documentation - contract for sources could :
-  // - check that specific sources are included, and/or observable
   assertContract(sourcesContract, [sources], 'm: `sources`' +
     ' parameter fails contract ' + sourcesContract.name)
 }
@@ -317,16 +339,10 @@ function assertSinksContracts(sinks, sinksContract) {
     'fails custom contract ' + sinksContract.name)
 }
 
-/**
- * Takes a hash of sources, and returns a hash with the same keys.
- * Sources are mapped by keys to their shared version
- * Example :
- * {DOM: a, route: b} -> {DOM: a.share(), route:b.share()}
- * @param {Sources} sources
- */
-function shareAllSources(sources) {
-  // TODO BRC
-  return sources
+function assertSettingsContracts(mergedSettings, settingsContract) {
+  // Check settings contracts
+  assertContract(settingsContract, [mergedSettings], 'm: `settings`' +
+    ' parameter fails contract ' + settingsContract.name)
 }
 
 /**
@@ -345,59 +361,21 @@ function removeNullsFromArray(arr) {
   return reject(isNil, arr)
 }
 
-function mergeChildrenIntoParentDOM(parentDOMSink) {
-  return function mergeChildrenIntoParentDOM(arrayVNode) {
-    // We remove null elements from the array of vNode
-    // We can have a null vNode emitted by a sink if that sink is empty
-    let _arrayVNode = removeNullsFromArray(arrayVNode)
-    assertContract(isArrayOf(isVNode), [_arrayVNode], 'DOM sources must' +
-      ' stream VNode objects! Got ' + _arrayVNode)
+function removeEmptyVNodes(arrVNode) {
+  return reduce((accNonEmptyVNodes, vNode) => {
+    return (isNullVNode(vNode)) ?
+      accNonEmptyVNodes :
+      (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes)
+  }, [], arrVNode)
+}
 
-    if (parentDOMSink) {
-      // Case : the parent sinks have a DOM sink
-      // We want to put the children's DOM **inside** the parent's DOM
-      // Two cases here :
-      // - The parent's vNode has a `text` property :
-      //   we move that text to a text vNode at first position in the children
-      //   then we add the children's DOM in last position of the
-      // existing parent's children
-      // - The parent's vNode does not have a `text` property :
-      //   we just add the children's DOM in last position of the exisitng
-      //   parent's children
-      // Note that this is specific to the snabbdom vNode data structure
-      // Note that we defensively clone vNodes so the original vNode remains
-      // immuted
-      let parentVNode = clone(_arrayVNode.shift())
-      let childrenVNode = _arrayVNode
-      parentVNode.children = clone(parentVNode.children) || []
-
-      // childrenVNode could be null if all children sinks are empty
-      // observables, in which case we just return the parentVNode
-      if (childrenVNode) {
-        if (parentVNode.text) {
-          parentVNode.children.splice(0, 0, {
-            children: [],
-            "data": {},
-            "elm": undefined,
-            "key": undefined,
-            "sel": undefined,
-            "text": parentVNode.text
-          })
-          parentVNode.text = undefined
-        }
-        Array.prototype.push.apply(parentVNode.children, childrenVNode)
-      }
-
-      return parentVNode
-    }
-    else {
-      // Case : the parent sinks does not have a DOM sink
-      // To avoid putting an extra `div` when there is only one vNode
-      // we put the extra `div` only when there are several vNodes
-      return arrayVNode.length === 1 ? arrayVNode[0] : div(arrayVNode)
-      //        return div(arrayVNode)
-    }
-  }
+function isNullVNode(vNode) {
+  return equals(vNode.children, []) &&
+    equals(vNode.data, {}) &&
+    isUndefined(vNode.elm) &&
+    isUndefined(vNode.key) &&
+    isUndefined(vNode.sel) &&
+    isUndefined(vNode.text)
 }
 
 /**
@@ -461,87 +439,6 @@ function emitNullIfEmpty(sink) {
     )
 }
 
-/**
- * Merges the DOM nodes produced by a parent component with the DOM nodes
- * produced by children components, such that the parent DOM nodes
- * wrap around the children DOM nodes
- * For instance:
- * - parent -> div(..., [h2(...)])
- * - children -> [div(...), button(...)]
- * - result : div(..., [h2(...), div(...), button(...)])
- * @param {Sinks} parentSinks
- * @param {Array<Sinks>} childrenSinks
- * @returns {Observable<VNode>|Null}
- */
-function mergeDOMSinksDefault(parentSinks, childrenSinks) {
-  // We want `combineLatest` to still emit the parent DOM sink, even when
-  // one of its children sinks is empty, so we modify the children sinks
-  // to emits ONE `Null` value if it is empty
-  const childrenDOMSinksOrNull = map(emitNullIfEmpty, projectSinksOn('DOM', childrenSinks))
-  const parentDOMSinksOrNull = projectSinksOn('DOM', [parentSinks])
-
-  const allSinks = flatten([parentDOMSinksOrNull, childrenDOMSinksOrNull])
-  const allDOMSinks = removeNullsFromArray(allSinks)
-  var parentDOMSink = parentSinks ? parentSinks.DOM : null
-
-  // Edge case : none of the sinks have a DOM sink
-  // That should not be possible as we come here only
-  // when we detect a DOM sink
-  if (allDOMSinks.length === 0) {
-    throw 'mergeDOMSinksDefault: internal' +
-    ' error!'
-  }
-
-  return $.combineArray(Array, (allDOMSinks as any))
-    .tap(console.log.bind(console, 'mergeDOMSinksDefault: allDOMSinks'))
-    .map(mergeChildrenIntoParentDOM(parentDOMSink))
-}
-
-function mergeNonDomSinksDefault(parentSinks, childrenSinks, sinkName) {
-  const allSinks = flatten([parentSinks, childrenSinks])
-
-  // The edge case when none of the sinks have a non-DOM sink
-  // should never happen as we come here only when we have a sink name
-  // which is not a DOM sink
-  return $.mergeArray(removeNullsFromArray(projectSinksOn(sinkName, allSinks)))
-}
-
-function makeDefaultMergedSinks(parentSinks, childrenSinks) {
-  return function setDefaultSinks(accSinks, sinkName) {
-    let value
-
-    if (sinkName === 'DOM') {
-      value = mergeDOMSinksDefault(parentSinks, childrenSinks)
-    } else {
-      value = mergeNonDomSinksDefault(parentSinks, childrenSinks, sinkName)
-    }
-
-    accSinks[sinkName] = value
-    return accSinks
-  }
-}
-
-/**
- * Is the merge function that will be used to merge parent sinks to children
- * sinks when none other is specified :
- * - DOM sinks are merged so that parent DOM sink comes first,
- *   and then children sinks in array order
- * - other sinks are merged through a simple `$.merge`
- * @param {Sinks|Null} parentSinks
- * @param {Array<Sinks>} childrenSinks
- * @param {Settings} settings
- * @returns {Sinks}
- */
-function mergeSinksDefault(parentSinks, childrenSinks, settings) {
-  const allSinks = flatten(removeNullsFromArray([parentSinks, childrenSinks]))
-  const sinkNames = getSinkNamesFromSinksArray(allSinks)
-
-  return reduce(
-    // Note : default merge does not make use of the settings!
-    makeDefaultMergedSinks(parentSinks, childrenSinks), {}, sinkNames
-  )
-}
-
 function makeDivVNode(x) {
   return {
     "children": undefined,
@@ -559,18 +456,20 @@ export {
   assertContract,
   assertSourcesContracts,
   assertSinksContracts,
-  hasPassedSignatureCheck,
+  assertSettingsContracts,
   checkSignature,
   unfoldObjOverload,
   projectSinksOn,
   getSinkNamesFromSinksArray,
   removeNullsFromArray,
+  removeEmptyVNodes,
   defaultsTo,
   isArrayOptSinks,
   isNullableObject,
   isNullableComponentDef,
   isUndefined,
   isFunction,
+  isComponent,
   isVNode,
   isObject,
   isBoolean,
@@ -580,8 +479,7 @@ export {
   isObservable,
   isSource,
   isOptSinks,
-  mergeSinksDefault,
-  routeSourceName,
-  shareAllSources,
-  trace
+  isMergeSinkFn,
+  trace,
+  emitNullIfEmpty,
 }

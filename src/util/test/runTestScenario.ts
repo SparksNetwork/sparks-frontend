@@ -1,9 +1,9 @@
 import {
   identity, mapObjIndexed, values, all as allR, addIndex,
-  reduce as reduceR, keys as keysR, drop, isNil, always, map
+  reduce as reduceR, keys as keysR, drop, isNil, map
 } from 'ramda'
 
-import * as U from '../m'
+import * as U from '../checks'
 import * as $ from 'most'
 import {last} from 'most-last'
 import { subject } from 'most-subject'

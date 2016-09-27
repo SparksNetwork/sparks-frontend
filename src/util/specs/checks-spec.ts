@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 
-import * as assert from 'assert'
-import { assertSignature } from '../checks'
+import * as assert from 'assert';
+import { assertSignature } from '../checks';
 
 describe('Testing utils functions', () => {
   it('assertSignature(fnName, _arguments, vRules', () => {
@@ -18,10 +18,10 @@ describe('Testing utils functions', () => {
       'of validation rules. When those validation rules are observed, ' +
       'it should return true.')
 
-    assert.throws(function () {assertSignature(fnName, _argInvalid, vRules)},
+    assert.throws(function () {assertSignature(fnName, _argInvalid, vRules); },
       /fails/,
       'Each failing validation rule generates an error message; error messages' +
       'are gathered and thrown in an exception.'
-    )
-  })
-})
+    );
+  });
+});
