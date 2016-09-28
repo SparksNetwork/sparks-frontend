@@ -138,7 +138,7 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
  * Result : {sourceName : 'DOM'}
  * @param obj
  * @param {Array<Object.<string, Predicate>>} overloads
- * @returns {{}}
+ * @returns {*}
  */
 function unfoldObjOverload(obj, overloads) {
   let result = {}

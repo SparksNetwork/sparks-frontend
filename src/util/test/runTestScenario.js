@@ -5,7 +5,11 @@ var $ = require('most');
 var most_last_1 = require('most-last');
 var most_subject_1 = require('most-subject');
 var mapIndexed = ramda_1.addIndex(ramda_1.map);
-console.groupEnd = console.log;
+// TODO : find a solution to use it in the browser
+//console.log = function(){}
+//console.warn=function(){} // used by mocha, cannot stub
+console.groupEnd = function () { }; // console.log
+console.groupCollapsed = function () { }; // console.log
 /**
  * @typedef {function(*):boolean} Predicate
  */

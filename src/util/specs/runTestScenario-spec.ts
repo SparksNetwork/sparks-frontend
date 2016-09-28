@@ -13,7 +13,7 @@ function plan (n) {
 describe("Testings runTestScenario helper", () => {
   it('runTestScenario(testSources, testCase, testFn, settings) :', (done) => {
     const assertAsync = plan(3)
-    
+
     function analyzeTestResults(actual, expected, message) {
       assert.deepEqual(actual, expected, message)
       assertAsync(done)
@@ -57,7 +57,7 @@ describe("Testings runTestScenario helper", () => {
       waitForFinishDelay: 30
     })
   })
-  
+
   it('runTestScenario(inputs, testCase, testFn, settings) : Main case', (done) => {
     const assertAsync = plan(3)
     function analyzeTestResults(actual, expected, message) {

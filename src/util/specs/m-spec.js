@@ -1,3 +1,4 @@
+/// <reference path="../../../typings/index.d.ts" />
 "use strict";
 var assert = require('assert');
 var ramda_1 = require('ramda');

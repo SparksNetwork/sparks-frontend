@@ -10,7 +10,11 @@ import { subject } from 'most-subject'
 
 const mapIndexed = addIndex(map)
 
-console.groupEnd = console.log
+// TODO : find a solution to use it in the browser
+//console.log = function(){}
+//console.warn=function(){} // used by mocha, cannot stub
+console.groupEnd = function(){}// console.log
+console.groupCollapsed = function(){}// console.log
 
 /**
  * @typedef {function(*):boolean} Predicate

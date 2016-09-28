@@ -120,7 +120,7 @@ exports.checkSignature = checkSignature;
  * Result : {sourceName : 'DOM'}
  * @param obj
  * @param {Array<Object.<string, Predicate>>} overloads
- * @returns {{}}
+ * @returns {*}
  */
 function unfoldObjOverload(obj, overloads) {
     var result = {};
