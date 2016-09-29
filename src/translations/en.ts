@@ -6,6 +6,9 @@ const enUS = {
   'emailAddress': 'Email Address',
   'phoneNumber': 'Phone Number',
   'loginGoogle': 'Login with Google',
+  'login': {
+    'title': 'Login'
+  }
 };
 
 export default enUS;

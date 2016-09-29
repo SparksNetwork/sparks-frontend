@@ -1,8 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const eyeglass = require('eyeglass')
 
 const srcPath = path.resolve('./src')
+const assetsPath = path.resolve('./assets')
 const imagePath = path.resolve('./dist/images')
 const vendorPath = path.resolve('./vendor')
 
@@ -133,6 +135,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
+      assets: assetsPath
       // You can not get in-editor typings with aliases
       // component: srcPath + '/component', 
       // page: srcPath + '/page',

@@ -1,11 +1,11 @@
-import * as styleguide from '../../node_modules/sparks-styleguide/src/sass/styleguide.scss'
 import {assoc} from 'ramda'
+const styleguide = require('../styleguide.scss')
 
 class ClassesImpl {
   private styles
 
-  constructor(styles?:any) {
-    this.styles = styles || styleguide
+  constructor(styles:any) {
+    this.styles = Object.assign({}, styleguide, styles)
   }
 
   /**
@@ -41,6 +41,6 @@ class ClassesImpl {
   }
 }
 
-export function Classes(styles?:any) {
+export function Classes(styles:any) {
   return new ClassesImpl(styles)
 }
