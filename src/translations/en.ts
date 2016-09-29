@@ -7,7 +7,15 @@ const enUS = {
   'phoneNumber': 'Phone Number',
   'loginGoogle': 'Login with Google',
   'login': {
-    'title': 'Login'
+    'title': 'Login',
+    'email': 'Email',
+    'password': 'Password',
+    'forgotPassword': 'Forgot your password?',
+    'cancel': 'Cancel',
+    'submit': 'Submit',
+    'footer': 'Login to the Sparks.Network',
+    'google': 'Login with Google',
+    'facebook': 'Login with Facebook'
   }
 };
 

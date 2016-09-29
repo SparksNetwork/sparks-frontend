@@ -2,10 +2,10 @@ import {assoc} from 'ramda'
 const styleguide = require('../styleguide.scss')
 
 class ClassesImpl {
-  private styles
+  private styles;
 
-  constructor(styles:any) {
-    this.styles = Object.assign({}, styleguide, styles)
+  constructor(styles: any) {
+    this.styles = Object.assign({}, styleguide, styles);
   }
 
   /**
@@ -14,7 +14,7 @@ class ClassesImpl {
    * @returns {string[]}
    */
   list(...classes: string[]) {
-    return classes.map(style => this.styles[style] || style)
+    return classes.map(style => this.styles[style] || style);
   }
 
   /**
@@ -25,7 +25,7 @@ class ClassesImpl {
   sel(...classes: string[]) {
     return this.list.apply(this, classes)
       .map(className => '.' + className)
-      .join('')
+      .join('');
   }
 
   /**
@@ -36,8 +36,8 @@ class ClassesImpl {
   map(...classes: string[]) {
     return this.list.apply(this, classes)
       .reduce((acc, className) =>
-          assoc(className, true, acc),
-        {})
+        assoc(className, true, acc),
+      {});
   }
 }
 
@@ -52,6 +52,6 @@ class ClassesImpl {
  * @param styles
  * @returns {ClassesImpl}
  */
-export function Classes(styles:any) {
-  return new ClassesImpl(styles)
+export function Classes(styles: any) {
+  return new ClassesImpl(styles);
 }

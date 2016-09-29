@@ -1,4 +1,5 @@
 import { Stream } from 'most';
+import { subject } from 'most-subject';
 import create = require('@most/create');
 import firebase = require('firebase');
 import { eqProps } from 'ramda';
@@ -7,8 +8,9 @@ import hold from '@most/hold';
 export const POPUP = 'popup';
 export const REDIRECT = 'redirect';
 export const LOGOUT = 'logout';
+export const PASSWORD = 'password';
 
-export type Action = 'popup' | 'redirect' | 'logout';
+export type Action = 'popup' | 'redirect' | 'logout' | 'password' ;
 export type Provider = 'google' | 'facebook';
 export type AuthInput = {
   type: Action;
@@ -18,7 +20,7 @@ export type AuthInput = {
 export type FirebaseSource = (...args) => Stream<{ key: string, value: any }>
 export type QueueSink = Stream<any>;
 export type QueueSource = Stream<any>;
-export type AuthSource = Stream<firebase.auth.UserCredential | null>;
+export type AuthSource = Stream<firebase.auth.UserCredential | { failure: string } | null>;
 export type AuthSink = Stream<AuthInput>;
 
 function FirebaseStream (reference: any, eventName: string) {
@@ -51,15 +53,18 @@ export function makeAuthDriver(firebase: any) {
   const actionMap = {
     [POPUP]: prov => firebase.auth().signInWithPopup(prov),
     [REDIRECT]: prov => firebase.auth().signInWithRedirect(prov),
+    [PASSWORD]: ([email, password]) => firebase.auth().signInWithEmailAndPassword(email, password),
+    'CREATE': ([email, password]) => firebase.auth().createUserWithEmailAndPassword(email, password),
     [LOGOUT]: () => firebase.auth().signOut(),
   };
 
-  const auth$ = create<firebase.auth.UserCredential>((add) => {
-    let hasRedirectResult = false;
+  let hasRedirectResult = false;
+  const auth$ = subject<firebase.auth.UserCredential | { failure: string }>();
 
-    // This function calls the observer only when hasRedirectResult is true
+
+  // This function calls the observer only when hasRedirectResult is true
     const nextUser = user => {
-      if (hasRedirectResult) { add(user); }
+      if (hasRedirectResult) { auth$.next(user); }
     };
 
     // Add onAuthStateChanged listener
@@ -83,9 +88,6 @@ export function makeAuthDriver(firebase: any) {
       .catch(() => {
         hasRedirectResult = true;
       });
-
-    return unsubscribe;
-  });
 
   /**
    * When given a name this will return an object created from the firebase
@@ -115,7 +117,11 @@ export function makeAuthDriver(firebase: any) {
   * @return {void}
   */
   function authAction (input) {
-    const provider = providerObject(input.provider);
+    console.log(input);
+    const provider = input.provider === 'password'
+      ? input.userInfo
+      : providerObject(input.provider);
+
     const scopes = input.scopes || [];
 
     for (let scope of scopes) {
@@ -123,13 +129,19 @@ export function makeAuthDriver(firebase: any) {
     }
 
     const action = actionMap[input.type];
-    return action(provider);
+    return action(provider).catch(err => {
+      if (err.message.indexOf('The password is invalid or the user does not have a password') > -1) {
+        auth$.next({ failure: 'NoUser' });
+      }
+    });
   }
 
   return function authDriver(input$: Stream<AuthInput>) {
     input$.observe(authAction);
 
     let stream = auth$.skipRepeats().thru(hold);
+
+    (stream as any).dispose = unsubscribe;
 
     stream.drain();
 

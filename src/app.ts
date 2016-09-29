@@ -6,6 +6,7 @@ import { makeRouterDriver } from 'cyclic-router';
 import { createHistory } from 'history';
 import firebase = require('firebase');
 import { makeAuthDriver, makeFirebaseDriver, makeQueueDriver } from './driver/cyclic-fire';
+import { preventDefault } from './driver/prevent-default';
 import switchPath from 'switch-path';
 
 import { makePolyglotModule } from './module/polyglot';
@@ -30,7 +31,8 @@ const drivers = {
   router: makeRouterDriver(createHistory() as any, switchPath),
   auth$: makeAuthDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
-  queue$: makeQueueDriver(firebaseRef.child('!queue'))
+  queue$: makeQueueDriver(firebaseRef.child('!queue')),
+  preventDefault
 };
 
 Cycle.run(main, drivers);

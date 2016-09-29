@@ -1,4 +1,4 @@
-import { AuthSource, AuthSink, FirebaseSource, QueueSink, QueueSource, AuthInput } from '../driver/cyclic-fire';
+import { AuthSource, AuthSink, FirebaseSource, QueueSink, QueueSource } from '../driver/cyclic-fire';
 import { Stream, just } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
@@ -35,16 +35,17 @@ export function main(sources: MainSources): MainSinks {
     return !!user;
   });
 
+  isAuthenticated$.observe(x => console.log(x));
+
   const page = ComponentRouter(merge(sources, {
     routes$: just(routes)
   }));
 
-  const auth = { type: 'popup', provider: 'google' } as AuthInput;
-
   return {
     DOM: page.DOM,
     router: page.route$,
-    auth$: isAuthenticated$.filter(x => !x).constant(auth),
-    queue$: page.pluck('queue$')
+    auth$: page.pluck('auth$'),
+    queue$: page.pluck('queue$'),
+    preventDefault: page.pluck('preventDefault')
   };
 }

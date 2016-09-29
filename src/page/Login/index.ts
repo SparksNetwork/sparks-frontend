@@ -1,65 +1,77 @@
-import { Stream, just, never } from 'most';
+import { Stream, never, merge, combineArray } from 'most';
 import isolate from '@cycle/isolate';
-import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNode } from '@motorcycle/dom';
-import {Classes} from "../../util/classes";
-const classes = Classes({})
-const backgroundImage = require('assets/images/login-background.jpg')
+import {  VNode, DOMSource } from '@motorcycle/dom';
+import { RouterSource } from 'cyclic-router/lib/RouterSource';
+import { REDIRECT, PASSWORD, AuthSource } from '../../driver/cyclic-fire';
+
+import {Classes} from '../../util/classes';
+const classes = Classes({});
+
+import { view } from './view';
 
 export type LoginSinks = {
   DOM: Stream<VNode>;
   route$: Stream<string>;
+  auth$: Stream<{ type: string, provider: string, userInfo?: [string, string] }>;
 }
 
-function Login() {
+export type LoginSources = {
+  DOM: DOMSource;
+  router: RouterSource;
+  auth$: AuthSource;
+}
+
+const matches = (selector: string) => (ev: Event): boolean =>
+  (ev.target as HTMLElement).matches(selector);
+
+function createAuth$(sources: LoginSources, userDoesNotExist$: Stream<boolean | null>) {
+  const google$ = sources.DOM.select(classes.sel('google')).events('click')
+    .constant({ type: REDIRECT, provider: 'google' });
+  const facebook$ = sources.DOM.select(classes.sel('facebook')).events('click')
+    .constant({ type: REDIRECT, provider: 'facebook' });
+
+  const input$ = sources.DOM.select('*').events('input');
+
+  const email$ = input$.filter(matches('.login.email'))
+    .map(ev => (ev.target as HTMLInputElement).value)
+    .multicast();
+
+  const password$ = input$.filter(matches('.login.password'))
+    .map(ev => (ev.target as HTMLInputElement).value)
+    .multicast();
+
+  // isolation with 'form' seems broken
+  const submit$ = sources.DOM.select('*').events('submit')
+    .tap(ev => ev.preventDefault())
+    .multicast();
+
+  const formValue$ = combineArray((...args) => args, [email$, password$])
+    .sampleWith(submit$)
+    .map(userInfo => ({ type: PASSWORD, provider: 'password', userInfo }))
+    .multicast();
+
+  const createUser$ = combineArray((...args) => args, [email$, password$])
+    .sampleWith(userDoesNotExist$)
+    .map(userInfo => ({ type: 'CREATE', provider: 'password', userInfo }))
+    .multicast();
+
+   return merge(google$, facebook$, formValue$, createUser$).multicast();
+}
+
+function Login(sources: LoginSources): LoginSinks {
+  const userDoesNotExist$: Stream<boolean | null> = sources.auth$
+    .map((x) => x && (x as any).failure && (x as any).failure !== 'NoUser')
+    .multicast();
+
+  const auth$ = createAuth$(sources, userDoesNotExist$)
+
+  const view$ = userDoesNotExist$.startWith(null).map(view);
+
   return {
-    DOM: just(
-      section(classes.sel('photo-background'), {
-        attrs: {style: `background-image: url('${backgroundImage}');`}
-      }, [
-        h1('sparks.network'),
-        div([
-          div(classes.sel('login', 'box'), [
-            h1({polyglot: {phrase: 'login.title'}} as any),
-            div(classes.sel('login', 'form'), [
-              div(classes.sel('federated-buttons'), [
-                button(classes.sel('google'), {polyglot: {phrase: 'login.google'}} as any),
-                button(classes.sel('facebook'), {polyglot: {phrase: 'login.facebook'}} as any)
-              ]),
-              div(classes.sel('divider'), [span('Or')]),
-              form([
-                fieldset([
-                  label({attrs: {for: 'email'}, polyglot: {phrase: 'login.email'}} as any, 'hi'),
-                  input({attrs: {type: 'email', name: 'email'}} as any),
-                ]),
-                fieldset([
-                  label({attrs: {for: 'password'}}, [
-                    span({polyglot: {phrase: 'login.password'}} as any),
-                    span(classes.sel('help'), [
-                      a(classes.sel('forgot-password'), {attrs: {href: '#'}, polyglot: {phrase: 'login.forgotPassword'}} as any)
-                    ])
-                  ]),
-                  input({
-                    attrs: {
-                      type: 'password',
-                      name: 'password'
-                    }
-                  })
-                ]),
-                fieldset(classes.sel('actions'), [
-                  button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}} as any),
-                  button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}} as any)
-                ])
-              ])
-            ]),
-            div(classes.sel('footer'), [
-              p({polyglot: {phrase: 'login.footer'}} as any)
-            ])
-          ])
-        ])
-      ])
-    ),
-    route$: never()
-  };
+    DOM: view$,
+    route$: never(),
+    auth$
+ };
 }
 
 export default sources => isolate(Login)(sources);
