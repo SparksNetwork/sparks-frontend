@@ -20,33 +20,35 @@ function Login() {
         div([
           div(classes.sel('login', 'box'), [
             h1({polyglot: {phrase: 'login.title'}} as any),
-            div(classes.sel('federated-buttons'), [
-              button(classes.sel('google'), {polyglot: {phrase: 'login.google'}} as any),
-              button(classes.sel('facebook'), {polyglot: {phrase: 'login.facebook'}} as any)
-            ]),
-            div(classes.sel('divider'), [span('Or')]),
-            form([
-              fieldset([
-                label({attrs: {for: 'email'}, polyglot: {phrase: 'login.email'}} as any, 'hi'),
-                input({attrs: {type: 'email', name: 'email'}} as any),
+            div(classes.sel('login', 'form'), [
+              div(classes.sel('federated-buttons'), [
+                button(classes.sel('google'), {polyglot: {phrase: 'login.google'}} as any),
+                button(classes.sel('facebook'), {polyglot: {phrase: 'login.facebook'}} as any)
               ]),
-              fieldset([
-                label({attrs: {for: 'password'}}, [
-                  span({polyglot: {phrase: 'login.password'}} as any),
-                  span(classes.sel('help'), [
-                    a(classes.sel('forgot-password'), {attrs: {href: '#'}, polyglot: {phrase: 'login.forgotPassword'}} as any)
-                  ])
+              div(classes.sel('divider'), [span('Or')]),
+              form([
+                fieldset([
+                  label({attrs: {for: 'email'}, polyglot: {phrase: 'login.email'}} as any, 'hi'),
+                  input({attrs: {type: 'email', name: 'email'}} as any),
                 ]),
-                input({
-                  attrs: {
-                    type: 'password',
-                    name: 'password'
-                  }
-                })
-              ]),
-              fieldset(classes.sel('actions'), [
-                button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}} as any),
-                button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}} as any)
+                fieldset([
+                  label({attrs: {for: 'password'}}, [
+                    span({polyglot: {phrase: 'login.password'}} as any),
+                    span(classes.sel('help'), [
+                      a(classes.sel('forgot-password'), {attrs: {href: '#'}, polyglot: {phrase: 'login.forgotPassword'}} as any)
+                    ])
+                  ]),
+                  input({
+                    attrs: {
+                      type: 'password',
+                      name: 'password'
+                    }
+                  })
+                ]),
+                fieldset(classes.sel('actions'), [
+                  button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}} as any),
+                  button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}} as any)
+                ])
               ])
             ]),
             div(classes.sel('footer'), [
