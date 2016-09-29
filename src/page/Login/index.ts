@@ -47,7 +47,9 @@ function Login() {
                 ]),
                 fieldset(classes.sel('actions'), [
                   button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}} as any),
-                  button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}} as any)
+                  button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}, on: {
+                    click:
+                  }} as any)
                 ])
               ])
             ]),
