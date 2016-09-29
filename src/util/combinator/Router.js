@@ -17,6 +17,8 @@ var $ = require('most');
 var m_1 = require('./m');
 // TODO : pass routeMatcher to typescript module format
 var routeMatcher_1 = require('../routeMatcher');
+var hold_1 = require('@most/hold');
+var sample_1 = require('@most/sample');
 // Configuration
 var routeSourceName = 'route$';
 var nullVNode = {
@@ -106,17 +108,18 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     var trace = 'router:' + (settings.trace || "");
     var route$ = sources[routeSourceName]
         .tap(console.error.bind(console, 'route$'));
-    var matchedRoute$ = route$.map(match(settings.route))
-        .tap(console.warn.bind(console, trace + '|matchedRoute$'))
-        .shareReplay(1);
+    var matchedRoute$ = hold_1.default(route$.map(match(settings.route))
+        .tap(console.warn.bind(console, trace + '|matchedRoute$'))); //.shareReplay(1)
     var changedRouteEvents$ = matchedRoute$
-        .pluck('match')
-        .distinctUntilChanged(function (x) {
+        .map(ramda_1.pluck('match'))
+        .skipRepeatsWith(function eq(x, y) {
         console.log('distinctUntilChanged on : ', x ? ramda_1.omit(['routeRemainder'], x) : null);
-        return x ? ramda_1.omit(['routeRemainder'], x) : null;
-    })
+        var _x = x ? ramda_1.omit(['routeRemainder'], y) : null;
+        var _y = y ? ramda_1.omit(['routeRemainder'], y) : null;
+        return _x === _y;
+    }) // check eq. to distinctUntilChanged with selector
         .tap(console.warn.bind(console, 'changedRouteEvents$'))
-        .share();
+        .multicast(); // TODO BRC : check the level of equivalency to share
     // Note : must be shared, used twice here
     var cachedSinks$ = changedRouteEvents$
         .map(function (params) {
@@ -127,14 +130,14 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                 makeLocalSources: function makeLocalSources(sources, __settings) {
                     console.group('makeLocalSources');
                     console.log('sources, __settings', sources, __settings);
-                    console.groupEnd('makeLocalSources');
+                    console.groupEnd();
                     return {
                         route$: matchedRoute$
                             .map(ramda_1.path(['match', 'routeRemainder']))
                             .tap(console.warn.bind(console, settings.trace + ' :' +
                             ' changedRouteEvents$' +
                             ' : routeRemainder: '))
-                            .share(),
+                            .multicast(),
                     };
                 },
             }, {
@@ -148,7 +151,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
         }
         return cachedSinks;
     })
-        .share();
+        .multicast();
     function makeRoutedSinkFromCache(sinkName) {
         return function makeRoutedSinkFromCache(params, cachedSinks) {
             var cached$, preCached$, prefix$;
@@ -178,11 +181,13 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                         // is no conflict here, so we just return nothing
                         $.empty();
                     preCached$ = cachedSinks[sinkName]
-                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'))
-                        .finally(function (_) {
-                        console.log(trace + ' : sink ' + sinkName + ': terminating due to' +
-                            ' route change');
-                    });
+                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'));
+                    // TODO TYS/BRC : pass to most
+                    //            .finally(_ => {
+                    //              console.log(trace + ' : sink ' + sinkName + ': terminating' +
+                    //              ' due to' +
+                    //                ' route change')
+                    //            }) // inexistant in most
                     cached$ = $.concat(prefix$, preCached$);
                 }
                 else {
@@ -202,7 +207,8 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     }
     function makeRoutedSink(sinkName) {
         return (_a = {},
-            _a[sinkName] = changedRouteEvents$.withLatestFrom(cachedSinks$, makeRoutedSinkFromCache(sinkName)).switch(),
+            _a[sinkName] = sample_1.sample(makeRoutedSinkFromCache(sinkName), changedRouteEvents$, cachedSinks$)
+                .switch(),
             _a
         );
         var _a;

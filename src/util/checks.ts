@@ -6,6 +6,7 @@ import {
 } from 'ramda'
 import * as $ from 'most'
 import { div } from '@motorcycle/dom'
+import {isEmpty} from './most/isEmpty'
 
 const mapIndexed = addIndex(map)
 
@@ -33,11 +34,22 @@ const mapIndexed = addIndex(map)
    *                  'one of the parameters is not an integer!')
    *   ...
    * }
+ * @returns {Boolean} can only returns true, otherwise throws
+ * @throws
  */
-function assertSignature(fnName, _arguments, vRules) {
+
+interface PredicateWithOptError {
+  <T>(arg: T): boolean|string;
+}
+
+interface VRule {
+  [vRule: string]: PredicateWithOptError;
+}
+
+function assertSignature(fnName, _arguments, vRules : VRule[]) {
   const argNames = flatten(map(keys, vRules))
   const ruleFns = flatten(map(function (vRule) {
-    return values(vRule)[0]
+    return values(vRule)[0] as PredicateWithOptError
   }, vRules))
 
   const args = mapIndexed(function (vRule, index) {
@@ -58,7 +70,9 @@ function assertSignature(fnName, _arguments, vRules) {
         return isTrue(errorMessageOrBool) ?
           '' :
           [
-            `${fnName}: argument ${argNames[index]} fails rule ${vRules[index].name}`,
+            // `${fnName}: argument ${argNames[index]} fails rule
+            // ${vRules[index].name}`, // cant find a way to do it typescript
+            `${fnName}: argument ${argNames[index]} fails validation rule}`,
             isBoolean(errorMessageOrBool) ? '' : errorMessageOrBool
           ].join(': ')
       }, validatedArgs
@@ -104,13 +118,17 @@ function assertContract(contractFn, contractArgs, errorMessage) {
  * should not have properties other than the ones checked for
  * @returns {Boolean | Array<String>}
  */
-function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
+interface Signature {
+  [predicate: string]: PredicateWithOptError;
+}
+
+function checkSignature(obj, signature : Signature, signatureErrorMessages, isStrict) {
   let arrMessages = []
   let strict = defaultsTo(isStrict, false)
 
   // Check that object properties in the signature match it
   mapObjIndexed((predicate, property) => {
-    if (!predicate(obj[property])) {
+    if (!((predicate as PredicateWithOptError)(obj[property]))) {
       arrMessages.push(signatureErrorMessages[property])
     }
   }, signature)
@@ -140,14 +158,18 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
  * @param {Array<Object.<string, Predicate>>} overloads
  * @returns {*}
  */
+interface ObjOverloadResult {
+_index : number
+}
+
 function unfoldObjOverload(obj, overloads) {
-  let result = {}
+  let result : ObjOverloadResult = { _index : 0}
   let index = 0
 
   overloads.some(overload => {
     // can only be one property
     const property = keys(overload)[0]
-    const predicate = values(overload)[0]
+    const predicate = values(overload)[0] as PredicateWithOptError
     const predicateEval = predicate(obj)
 
     if (predicateEval) {
@@ -435,7 +457,8 @@ function emitNullIfEmpty(sink) {
       // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
       // see also tests
       // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-      sink.isEmpty().filter(x=>x).map(x => null)
+isEmpty(sink).filter(x=>x).map(x => null)
+//      sink.isEmpty().filter(x=>x).map(x => null)
     )
 }
 

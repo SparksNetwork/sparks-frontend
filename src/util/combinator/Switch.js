@@ -19,16 +19,16 @@ var checks_1 = require('../checks');
 var m_1 = require('./m');
 var ramda_1 = require('ramda');
 var $ = require('most');
+var sample_1 = require('@most/sample');
 // CONFIG
 var DEFAULT_SWITCH_COMPONENT_SOURCE_NAME = 'switch$'; // NOT USED
-var defaultEqFn = function swichCptdefaultEqFn(a, b) {
+var defaultEqFn = function swichCptDefaultEqFn(a, b) {
     return a === b;
 };
 var cfg = {
     defaultSwitchComponentSourceName: DEFAULT_SWITCH_COMPONENT_SOURCE_NAME,
     defaultEqFn: defaultEqFn
 };
-//Rx, $
 //////
 // Helper functions
 function isSwitchSettings(settings) {
@@ -69,7 +69,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
         { 'guard$': checks_1.isFunction },
         { 'sourceName': checks_1.isString }
     ]);
-    var guard$ = overload.guard$, sourceName = overload.sourceName, _index = overload._index;
+    var _a = overload, guard$ = _a.guard$, sourceName = _a.sourceName, _index = _a._index;
     var switchSource;
     if (overload._index === 1) {
         // Case : overload `settings.on :: SourceName`
@@ -91,7 +91,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
         var mergedChildrenComponentsSinks = m_1.m({}, { matched: caseWhen }, childrenComponents);
         return mergedChildrenComponentsSinks(sources, settings);
     })
-        .share(); // multicasted to all sinks
+        .multicast(); // multicasted to all sinks
     function makeSwitchedSinkFromCache(sinkName) {
         return function makeSwitchedSinkFromCache(isMatchingCase, cachedSinks) {
             var cached$, preCached$, prefix$;
@@ -125,10 +125,11 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                         // is no conflict here, so we just return nothing
                         $.empty();
                     preCached$ = cachedSinks[sinkName]
-                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'))
-                        .finally(function (_) {
-                        console.log("sink " + sinkName + " terminating due to route change");
-                    });
+                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'));
+                    // TODO BRC : add the finally operator
+                    //            .finally(_ => {
+                    //              console.log(`sink ${sinkName} terminating due to route change`)
+                    //            })
                     cached$ = $.concat(prefix$, preCached$);
                 }
                 else {
@@ -148,9 +149,9 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
         };
     }
     function makeSwitchedSink(sinkName) {
-        // TODO : change to most
         return (_a = {},
-            _a[sinkName] = shouldSwitch$.withLatestFrom(cachedSinks$, makeSwitchedSinkFromCache(sinkName)).switch(),
+            _a[sinkName] = sample_1.sample(makeSwitchedSinkFromCache(sinkName), shouldSwitch$, cachedSinks$)
+                .switch(),
             _a
         );
         var _a;
@@ -162,9 +163,9 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
  * Usage : m(SwitchCase, ::SwitchCaseSettings, ::Array<CaseComponent>)
  * Example : cf. specs
  *   > const mComponent = m(SwitchCase, {
- *   >    on: (sources,settings) => sources.sweatch$,
- *   >    sinkNames: ['DOM', 'a', 'b']
- *   >  }, [
+   *   >    on: (sources,settings) => sources.sweatch$,
+   *   >    sinkNames: ['DOM', 'a', 'b']
+   *   >  }, [
  *   > m(Case, {caseWhen: true}, [childComponent1, childComponent2]),
  *   > m(Case, {caseWhen: false}, [childComponent3])
  *   > ])

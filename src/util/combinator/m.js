@@ -73,7 +73,7 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
     if (allDOMSinks.length === 0) {
         throw "mergeDOMSinkDefault: internal error!";
     }
-    return $.combineArray(allDOMSinks)
+    return $.combineArray(function (x) { return x; }, allDOMSinks)
         .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
         .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull));
 }
@@ -254,7 +254,7 @@ function m(componentDef, _settings, children) {
             console.groupEnd();
             console.group('m\'ed component > computing children sinks');
             var childrenSinks = ramda_1.map(function (childComponent) { return childComponent(extendedSources, localSettings); }, children);
-            console.groupEnd('m\'ed component > computing children sinks');
+            console.groupEnd();
             checks_1.assertContract(checks_1.isOptSinks, [ownSinks], 'ownSinks must be a hash of observable sink');
             checks_1.assertContract(checks_1.isArrayOptSinks, [childrenSinks], 'childrenSinks must' +
                 ' be an array of sinks');

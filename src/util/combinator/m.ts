@@ -92,7 +92,7 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
   // Note : in default function, settings parameter is not used
   const childrenDOMSinkOrNull = map(emitNullIfEmpty, childrenSink)
 
-  const allSinks = flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull])
+  const allSinks= flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull])
   const allDOMSinks = removeNullsFromArray(allSinks)
 
   // Edge case : none of the sinks have a DOM sink
@@ -102,7 +102,7 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
     throw `mergeDOMSinkDefault: internal error!`
   }
 
-  return $.combineArray(allDOMSinks)
+  return $.combineArray(x=>x, (allDOMSinks as any))
     .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
     .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull))
 }
@@ -258,7 +258,7 @@ function m(componentDef, _settings, children) {
     {settings: isNullableObject},
     {children: isArrayOf(isComponent)},
   ]
-  assertSignature('m', arguments, mSignature)
+  assertSignature('m', arguments, (mSignature as any))
 
   let {
     makeLocalSources, makeLocalSettings, makeOwnSinks, mergeSinks,
@@ -320,10 +320,10 @@ function m(componentDef, _settings, children) {
 
       console.group('m\'ed component > computing children sinks')
       const childrenSinks = map(
-        childComponent => childComponent(extendedSources, localSettings),
+        childComponent => (childComponent as any)(extendedSources, localSettings),
         children
       )
-      console.groupEnd('m\'ed component > computing children sinks')
+      console.groupEnd()
 
       assertContract(isOptSinks, [ownSinks], 'ownSinks must be a hash of observable sink')
       assertContract(isArrayOptSinks, [childrenSinks], 'childrenSinks must' +

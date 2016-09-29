@@ -1,13 +1,11 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 import * as assert from 'assert'
-import { always } from 'ramda'
 import { h, div } from '@motorcycle/dom'
 import * as $ from 'most'
 import { runTestScenario } from '../test/runTestScenario'
 import { m } from '../combinator/m'
 import {Router} from '../combinator/Router'
-import { projectSinksOn, makeDivVNode } from '../checks'
 
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
 console.groupCollapsed = console.log

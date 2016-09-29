@@ -23,12 +23,15 @@ import {
   mergeAll as mergeAllR,
   isNil,
   omit,
-  path as pathR
+  path as pathR,
+  pluck,
 } from 'ramda'
 import * as $ from 'most'
 import {m} from './m'
 // TODO : pass routeMatcher to typescript module format
 import {routeMatcher} from '../routeMatcher'
+import hold from '@most/hold'
+import {sample} from '@most/sample'
 
 // Configuration
 const routeSourceName = 'route$'
@@ -114,7 +117,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
   const signature = [{settings: isRouteSettings},]
 
-  assertSignature('Router > computeSinks', [settings], signature)
+  assertSignature('Router > computeSinks', [settings], signature as any)
 
   // The sink names are necessary as we cannot know otherwise in
   // advance what are the sinks output by the children components without
@@ -130,25 +133,28 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
   let route$ = sources[routeSourceName]
     .tap(console.error.bind(console, 'route$'))
 
-  let matchedRoute$ = route$.map(match(settings.route))
-    .tap(console.warn.bind(console, trace + '|matchedRoute$'))
+  let matchedRoute$ = hold(
+    route$.map(match(settings.route))
+      .tap(console.warn.bind(console, trace + '|matchedRoute$'))
     // NOTE : replaying here is mandatory
     // That's because the children are passed `matchedRoute` and
     // connect to it AFTER the `route$` has emitted its value...
     // In short, while time is abstracted out in the case of a static
     // graph, dynamic stream graphs come with synchronization pains
-    // TODO TYS/BRC: pass to most (most-hold? most-subject? what about edge cases? hold does not replay a completed source)
-    .shareReplay(1)
+    // TODO BRC: use hold for now, but check that edge cases not covered
+    // by hold do not play too badly (hold does not replay a completed source)
+  )//.shareReplay(1)
 
   let changedRouteEvents$ = matchedRoute$
-    .pluck('match')
-    .distinctUntilChanged(x=> {
+    .map(pluck('match'))
+    .skipRepeatsWith(function eq(x, y) {
       console.log('distinctUntilChanged on : ', x ? omit(['routeRemainder'], x) : null)
-      return x ? omit(['routeRemainder'], x) : null
-    })
+      const _x = x ? omit(['routeRemainder'], y) : null
+      const _y = y ? omit(['routeRemainder'], y) : null
+      return _x === _y
+    }) // check eq. to distinctUntilChanged with selector
     .tap(console.warn.bind(console, 'changedRouteEvents$'))
-    // TODO TYS/BRC : pass to most
-    .share()
+    .multicast() // TODO BRC : check the level of equivalency to share
   // Note : must be shared, used twice here
 
   const cachedSinks$ = changedRouteEvents$
@@ -161,7 +167,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
             makeLocalSources: function makeLocalSources(sources, __settings) {
               console.group('makeLocalSources')
               console.log('sources, __settings', sources, __settings);
-              console.groupEnd('makeLocalSources')
+              console.groupEnd()
 
               return {
                 route$: matchedRoute$
@@ -169,8 +175,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                   .tap(console.warn.bind(console, settings.trace + ' :' +
                     ' changedRouteEvents$' +
                     ' : routeRemainder: '))
-                  // TODO TYS/BRC : pass to most
-                  .share(),
+                  .multicast(),
               }
             },
           }, {
@@ -186,8 +191,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
       return cachedSinks
     })
-    // TODO TYS/BRC : pass to most
-    .share()
+    .multicast()
 
   function makeRoutedSinkFromCache(sinkName) {
     return function makeRoutedSinkFromCache(params, cachedSinks) {
@@ -222,11 +226,12 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
           preCached$ = cachedSinks[sinkName]
             .tap(console.log.bind(console, 'sink ' + sinkName + ':'))
-            // TODO TYS/BRC : pass to most
-            .finally(_ => {
-              console.log(trace + ' : sink ' + sinkName + ': terminating due to' +
-                ' route change')
-            })
+          // TODO TYS/BRC : pass to most
+//            .finally(_ => {
+//              console.log(trace + ' : sink ' + sinkName + ': terminating' +
+//              ' due to' +
+//                ' route change')
+//            }) // inexistant in most
 
           cached$ = $.concat(prefix$, preCached$)
         }
@@ -249,10 +254,17 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
   function makeRoutedSink(sinkName) {
     return {
-      [sinkName]: changedRouteEvents$.withLatestFrom(
-        cachedSinks$,
-        makeRoutedSinkFromCache(sinkName)
-      ).switch()
+      [sinkName]: sample(
+        makeRoutedSinkFromCache(sinkName),
+        changedRouteEvents$,
+        cachedSinks$
+      )
+        .switch()
+
+      //     [sinkName]: changedRouteEvents$.withLatestFrom(
+      //       cachedSinks$,
+      //       makeRoutedSinkFromCache(sinkName)
+      //     ).switch()
     }
   }
 

@@ -2,31 +2,8 @@
 "use strict";
 var ramda_1 = require('ramda');
 var $ = require('most');
+var isEmpty_1 = require('./most/isEmpty');
 var mapIndexed = ramda_1.addIndex(ramda_1.map);
-// Type checking typings
-/**
- * @typedef {String} ErrorMessage
- */
-/**
- * @typedef {Array<ErrorMessage>} SignatureCheck
- */
-/**
- * Throws an exception if the arguments parameter fails at least one
- * validation rule
- * Note that all arguments are mandatory, i.e. the function does not deal with
- * optional arguments
- * @param {String} fnName
- * @param {Array<*>} _arguments
- * @param {[Array<Object.<string, Predicate|PredicateWithError>>]} vRules
- * Validation rules.
- *
- * Given f(x, y) =  x + y, with x both int, in the body of `f`, include
- * function f(x, y) {
-   *   assertSignature ('f', arguments, [{x:isInteger},{y:isInteger}],
-   *                  'one of the parameters is not an integer!')
-   *   ...
-   * }
- */
 function assertSignature(fnName, _arguments, vRules) {
     var argNames = ramda_1.flatten(ramda_1.map(ramda_1.keys, vRules));
     var ruleFns = ramda_1.flatten(ramda_1.map(function (vRule) {
@@ -47,7 +24,9 @@ function assertSignature(fnName, _arguments, vRules) {
             return isTrue(errorMessageOrBool) ?
                 '' :
                 [
-                    (fnName + ": argument " + argNames[index] + " fails rule " + vRules[index].name),
+                    // `${fnName}: argument ${argNames[index]} fails rule
+                    // ${vRules[index].name}`, // cant find a way to do it typescript
+                    (fnName + ": argument " + argNames[index] + " fails validation rule}"),
                     isBoolean(errorMessageOrBool) ? '' : errorMessageOrBool
                 ].join(': ');
         }, validatedArgs).join('\n');
@@ -77,24 +56,12 @@ function assertContract(contractFn, contractArgs, errorMessage) {
     return true;
 }
 exports.assertContract = assertContract;
-/**
- * Returns:
- * - `true` if the object passed as parameter passes all the predicates on
- * its properties
- * - an array with the concatenated error messages otherwise
- * @param obj
- * @param {Object.<string, Predicate>} signature
- * @param {Object.<string, string>} signatureErrorMessages
- * @param {Boolean=false} isStrict When `true` signals that the object
- * should not have properties other than the ones checked for
- * @returns {Boolean | Array<String>}
- */
 function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
     var arrMessages = [];
     var strict = defaultsTo(isStrict, false);
     // Check that object properties in the signature match it
     ramda_1.mapObjIndexed(function (predicate, property) {
-        if (!predicate(obj[property])) {
+        if (!(predicate(obj[property]))) {
             arrMessages.push(signatureErrorMessages[property]);
         }
     }, signature);
@@ -109,21 +76,8 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
     return arrMessages.join("").length === 0 ? true : arrMessages;
 }
 exports.checkSignature = checkSignature;
-/**
- * Returns an object whose keys :
- * - the first key found in `obj` for which the matching predicate was
- * fulfilled. Predicates are tested in order of indexing of the array.
- * - `_index` the index in the array where a predicate was fulfilled if
- * any, undefined otherwise
- * Ex : unfoldObjOverload('DOM', {sourceName: isString, predicate:
-    * isPredicate})
- * Result : {sourceName : 'DOM'}
- * @param obj
- * @param {Array<Object.<string, Predicate>>} overloads
- * @returns {*}
- */
 function unfoldObjOverload(obj, overloads) {
-    var result = {};
+    var result = { _index: 0 };
     var index = 0;
     overloads.some(function (overload) {
         // can only be one property
@@ -401,7 +355,7 @@ function emitNullIfEmpty(sink) {
         // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
         // see also tests
         // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-        sink.isEmpty().filter(function (x) { return x; }).map(function (x) { return null; }));
+        isEmpty_1.isEmpty(sink).filter(function (x) { return x; }).map(function (x) { return null; }));
 }
 exports.emitNullIfEmpty = emitNullIfEmpty;
 function makeDivVNode(x) {
