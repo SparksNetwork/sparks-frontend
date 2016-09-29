@@ -41,6 +41,17 @@ class ClassesImpl {
   }
 }
 
+/**
+ * Utility functions for class names. Pass in a classes object as returned by
+ * require('styles.css') and then use the functions on the returned object for
+ * modulized class names in various formats:
+ *
+ *   const classes = Classes(require('styles.scss'))
+ *   div(classes.sel('one', 'two')) => <div class="one two"></div>
+ *
+ * @param styles
+ * @returns {ClassesImpl}
+ */
 export function Classes(styles:any) {
   return new ClassesImpl(styles)
 }
