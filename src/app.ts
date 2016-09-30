@@ -1,7 +1,10 @@
 import 'es6-shim';
 
 import Cycle from '@cycle/most-run';
-import { makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule } from '@motorcycle/dom';
+import {
+  makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule,
+  EventsModule
+} from '@motorcycle/dom';
 import { makeRouterDriver } from 'cyclic-router';
 import { createHistory } from 'history';
 import firebase = require('firebase');
@@ -14,6 +17,7 @@ import { main } from './page/main';
 
 const modules = [
   makePolyglotModule(translations),
+  EventsModule,
   PropsModule,
   StyleModule,
   ClassModule,

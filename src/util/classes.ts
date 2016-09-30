@@ -1,11 +1,11 @@
-import {assoc} from 'ramda'
-const styleguide = require('../styleguide.scss')
+import {assoc} from 'ramda';
+const styleguide = require('../styleguide.scss');
 
 class ClassesImpl {
   private styles
 
   constructor(styles:any) {
-    this.styles = Object.assign({}, styleguide, styles)
+    this.styles = Object.assign({}, styleguide, styles);
   }
 
   /**

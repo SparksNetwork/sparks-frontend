@@ -2,6 +2,7 @@ import { Stream, just, never } from 'most';
 import isolate from '@cycle/isolate';
 import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNode } from '@motorcycle/dom';
 import {Classes} from "../../util/classes";
+import {EventWrapper} from "../../component/EventWrapper";
 const classes = Classes({})
 const backgroundImage = require('assets/images/login-background.jpg')
 
@@ -11,8 +12,7 @@ export type LoginSinks = {
 }
 
 function Login() {
-  return {
-    DOM: just(
+  const loginForm = EventWrapper(just(
       section(classes.sel('photo-background'), {
         attrs: {style: `background-image: url('${backgroundImage}');`}
       }, [
@@ -26,7 +26,7 @@ function Login() {
                 button(classes.sel('facebook'), {polyglot: {phrase: 'login.facebook'}} as any)
               ]),
               div(classes.sel('divider'), [span('Or')]),
-              form([
+              form({on: {submit: 'formSubmit'}}, [
                 fieldset([
                   label({attrs: {for: 'email'}, polyglot: {phrase: 'login.email'}} as any, 'hi'),
                   input({attrs: {type: 'email', name: 'email'}} as any),
@@ -46,9 +46,11 @@ function Login() {
                   })
                 ]),
                 fieldset(classes.sel('actions'), [
-                  button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}} as any),
+                  button(classes.sel('cancel'), {polyglot: {phrase: 'login.cancel'}, on: {
+                    click: 'cancel'
+                  }} as any),
                   button(classes.sel('submit'), {polyglot: {phrase: 'login.submit'}, on: {
-                    click:
+                    click: 'submit'
                   }} as any)
                 ])
               ])
@@ -59,7 +61,16 @@ function Login() {
           ])
         ])
       ])
-    ),
+    )
+  );
+
+  loginForm.events.forEach(evt => {
+    evt.preventDefault();
+    console.log(evt);
+  });
+
+  return {
+    DOM: loginForm.DOM,
     route$: never()
   };
 }
