@@ -1,4 +1,4 @@
-import {not, keys, assoc, lensPath, set, view} from 'ramda';
+import {not, keys, assoc, lensPath, set, view, curry} from 'ramda';
 import {Stream} from "most";
 import {VNode} from "@motorcycle/dom";
 import {subject, Subject} from "most-subject";
@@ -16,7 +16,7 @@ function handler(subject:Subject<NamedEvent>, name:string) {
   }
 }
 
-function attachEvents(node:VNode, subject) {
+function attachEvents(subject:Subject<NamedEvent>, node:VNode) {
   const on = view(onLens, node);
   if (not(on)) { return node }
   const events = keys(on);
@@ -33,15 +33,15 @@ function attachEvents(node:VNode, subject) {
   return set(onLens, newOn, node);
 }
 
-function walkTree(subject, root:VNode):VNode {
+const walkTree = curry<Subject<NamedEvent>, VNode, VNode>(function(subject, root:VNode):VNode {
   const children = (root.children || [])
       .filter(child => typeof child === 'object')
-      .map(child => walkTree(subject, child as VNode));
+      .map(walkTree(subject));
 
   return assoc('children',
     children,
-    attachEvents(root, subject));
-}
+    attachEvents(subject, root))
+});
 
 interface WrappedEvents {
   DOM:Stream<VNode>
@@ -51,9 +51,8 @@ interface WrappedEvents {
 export function EventWrapper(vnodeStream:Stream<any>):WrappedEvents {
   const eventSubject = subject<NamedEvent>();
 
-  const DOM = vnodeStream.map(vnode => {
-    return walkTree(eventSubject, vnode);
-  });
+  const DOM = vnodeStream
+    .map<VNode>(walkTree(eventSubject));
 
   return {
     DOM,
