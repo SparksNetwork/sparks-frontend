@@ -42,6 +42,10 @@ function Login() {
                     attrs: {
                       type: 'password',
                       name: 'password'
+                    },
+                    on: {
+                      focus: 'passwordFocus',
+                      blur: 'passwordBlur'
                     }
                   })
                 ]),

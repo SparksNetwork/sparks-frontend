@@ -1,5 +1,5 @@
-import {not, keys, prop, assoc, lensPath, set, view} from 'ramda';
-import {Stream, switchLatest} from "most";
+import {not, keys, assoc, lensPath, set, view} from 'ramda';
+import {Stream} from "most";
 import {VNode} from "@motorcycle/dom";
 import {subject, Subject} from "most-subject";
 
@@ -11,7 +11,6 @@ const onLens = lensPath(['data', 'on']);
 
 function handler(subject:Subject<NamedEvent>, name:string) {
   return function(evt:NamedEvent) {
-    evt.preventDefault();
     evt.name = name;
     subject.next(evt)
   }
@@ -50,26 +49,14 @@ interface WrappedEvents {
 }
 
 export function EventWrapper(vnodeStream:Stream<any>):WrappedEvents {
-  const eventStreams = vnodeStream.map(vnode => {
-    const events = subject<NamedEvent>();
-    const DOM = walkTree(events, vnode);
+  const eventSubject = subject<NamedEvent>();
 
-    events.observe(evt => {
-      console.log('evt before switch', evt);
-    });
-
-    return {DOM, events}
-  });
-
-  const DOM = eventStreams.map<VNode>(prop('DOM'))
-  const events = switchLatest(eventStreams.map<Stream<NamedEvent>>(prop('events')));
-
-  events.observe(evt => {
-    console.log('evt after switch', evt);
+  const DOM = vnodeStream.map(vnode => {
+    return walkTree(eventSubject, vnode);
   });
 
   return {
     DOM,
-    events
+    events: eventSubject
   }
 }
