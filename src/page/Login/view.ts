@@ -1,7 +1,7 @@
 import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNode } from '@motorcycle/dom';
 
-import {Classes} from '../../util/classes';
-const classes = Classes({});
+import {cssClasses} from '../../util/classes';
+const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
 
 export function view(userExists: boolean | null): VNode {

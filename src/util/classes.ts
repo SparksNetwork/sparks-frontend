@@ -1,7 +1,7 @@
-import {assoc} from 'ramda'
-const styleguide = require('../styleguide.scss')
+import { assoc } from 'ramda';
+const styleguide = require('../styleguide.scss');
 
-class ClassesImpl {
+class CSSClasses {
   private styles;
 
   constructor(styles: any) {
@@ -46,12 +46,12 @@ class ClassesImpl {
  * require('styles.css') and then use the functions on the returned object for
  * modulized class names in various formats:
  *
- *   const classes = Classes(require('styles.scss'))
+ *   const classes = cssClasses(require('styles.scss'))
  *   div(classes.sel('one', 'two')) => <div class="one two"></div>
  *
  * @param styles
- * @returns {ClassesImpl}
+ * @returns {CSSClasses}
  */
-export function Classes(styles: any) {
-  return new ClassesImpl(styles);
+export function cssClasses(styles: any) {
+  return new CSSClasses(styles);
 }

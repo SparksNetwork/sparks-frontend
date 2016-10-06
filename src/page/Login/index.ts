@@ -4,8 +4,8 @@ import {  VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
 import { REDIRECT, PASSWORD, AuthSource } from '../../driver/cyclic-fire';
 
-import {Classes} from '../../util/classes';
-const classes = Classes({});
+import {cssClasses} from '../../util/classes';
+const classes = cssClasses({});
 
 import { view } from './view';
 
