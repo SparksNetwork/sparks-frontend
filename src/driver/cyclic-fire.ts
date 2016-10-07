@@ -11,7 +11,7 @@ export const LOGOUT = 'logout';
 export const PASSWORD = 'password';
 
 export type Action = 'popup' | 'redirect' | 'logout' | 'password' ;
-export type Provider = 'google' | 'facebook';
+export type Provider = 'google' | 'facebook' | 'password';
 export type AuthInput = {
   type: Action;
   provider: Provider;
