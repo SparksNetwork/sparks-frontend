@@ -28,7 +28,7 @@
     "commit": "git-cz",
     "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
     "test:lint": "tslint src/*.ts src/**/*.ts",
-    "test:unit": "mocha -r ts-node/register src/**/test.ts",
+    "test:unit": "mocha -r ts-node/register src/**/*.test.ts",
     "test:e2e": "cross-env LOCAL=true nightwatch --config .config/nightwatch.js",
     "test:coverage": "",
     "test": "npm run test:lint && npm run test:unit && npm run test:e2e",
