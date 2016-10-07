@@ -6,7 +6,9 @@ const backgroundImage = require('assets/images/login-background.jpg');
 
 export function view(userExists: boolean | null): VNode {
   return section(classes.sel('photo-background'), {
-    props: { style: `background-image: url('${backgroundImage}');` }
+    style: {
+      backgroundImage: `url(${backgroundImage})`
+    }
   }, [
     h1('sparks.network'),
     div([
