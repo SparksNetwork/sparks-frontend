@@ -29,7 +29,7 @@ const firebaseRef = firebase.database().ref();
 const drivers = {
   DOM: makeDOMDriver('#app', { transposition: false, modules }),
   router: makeRouterDriver(createHistory() as any, switchPath),
-  auth$: makeAuthDriver(firebase),
+  authentication$: makeAuthDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
   queue$: makeQueueDriver(firebaseRef.child('!queue')),
   preventDefault
