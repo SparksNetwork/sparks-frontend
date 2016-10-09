@@ -1,27 +1,27 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { just } from 'most';
-import { AuthInput } from '../../driver/cyclic-fire';
-import { authentication, AuthenticationMethod } from './index';
+import { AuthenticationInput } from '../../driver/cyclic-fire';
+import { authenticate, AuthenticationMethod } from './index';
 
 const dummyComponent = function () {
   return {
     authenticationMethod$: just<AuthenticationMethod>('google')
   };
-}
+};
 
-describe('authentication', () => {
+describe('authenticate', () => {
   it('should be a function', () => {
-    assert(typeof authentication === 'function');
+    assert(typeof authenticate === 'function');
   });
 
   it('should return a function', () => {
-    const Component = authentication(dummyComponent);
+    const Component = authenticate(dummyComponent);
     assert(typeof Component === 'function');
   });
 
   describe('AuthenticationComponent', () => {
-    const Component = authentication(dummyComponent);
+    const Component = authenticate(dummyComponent);
 
     it('should return an object', () => {
       assert(typeof Component({}) === 'object');
@@ -41,7 +41,7 @@ describe('authentication', () => {
         it('should contain value of type AuthInput', () => {
           const { authentication$ } = Component({});
 
-          return authentication$.observe((authInput: AuthInput) => {
+          return authentication$.observe((authInput: AuthenticationInput) => {
             assert(typeof authInput === 'object');
           });
         });
@@ -49,7 +49,7 @@ describe('authentication', () => {
 
       describe('given a component', () => {
         it('should have component\'s sinks', () => {
-          let Component = authentication(
+          let Component = authenticate(
             () => ({
               authenticationMethod$: just<AuthenticationMethod>('google'),
               sink: just(1),
@@ -58,7 +58,7 @@ describe('authentication', () => {
 
           assert(sinks.hasOwnProperty('sink'));
 
-          Component = authentication(() => ({
+          Component = authenticate(() => ({
             authenticationMethod$: just<AuthenticationMethod>('google'),
             other: just(1)
           }));

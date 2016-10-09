@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { AuthInput } from '../../driver/cyclic-fire';
+import { AuthenticationInput } from '../../driver/cyclic-fire';
 import { model } from './model';
 
 describe('Login', () => {
@@ -10,47 +10,47 @@ describe('Login', () => {
     });
 
     it('should output a state object', () => {
-      const authInput: AuthInput = model();
-      assert(typeof authInput === 'object');
+      const authenticationInput: AuthenticationInput = model('google');
+      assert(typeof authenticationInput === 'object');
     });
 
     describe('state object', () => {
       it('should contain a property `type`', () => {
-        assert(model().hasOwnProperty('type'));
+        assert(model('google').hasOwnProperty('type'));
       });
 
-      it('should contain property `provider`', () => {
-        assert(model().hasOwnProperty('provider'));
+      it('should contain property method`', () => {
+        assert(model('google').hasOwnProperty('method'));
       });
     });
 
-    describe('Google Login Action', () => {
+    describe('Google Authentication Method', () => {
       it('should return object with property `type` of value `redirect`', () => {
         assert(model('google').type === 'redirect');
       });
 
-      it('should return object with property `provider` of value `google`', () => {
-        assert(model('google').provider === 'google');
+      it('should return object with property `method` of value `google`', () => {
+        assert(model('google').method === 'google');
       });
     });
 
-    describe('Facebook Login Action', () => {
+    describe('Facebook Authentication Method', () => {
       it('should return object with property `type` of value `redirect`', () => {
         assert(model('facebook').type === 'redirect');
       });
 
-      it('should return object with property `provider` of value `facebook`', () => {
-        assert(model('facebook').provider === 'facebook');
+      it('should return object with property `method` of value `facebook`', () => {
+        assert(model('facebook').method === 'facebook');
       });
     });
 
-    describe('Email and Password Login Action', () => {
+    describe('Email and Password Authentication Method', () => {
       it('should return object with property `type` of value `password`', () => {
         assert(model('password').type === 'password');
       });
 
-      it('should return object with property `provider` of value `password`', () => {
-        assert(model('password').provider === 'password');
+      it('should return object with property `method` of value `password`', () => {
+        assert(model('password').method === 'password');
       });
     });
   });

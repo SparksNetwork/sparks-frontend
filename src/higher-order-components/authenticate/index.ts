@@ -9,12 +9,12 @@ export type AuthenticationSinks = {
   authenticationMethod$: Stream<AuthenticationMethod>
 };
 
-export function authentication(
+export function authenticate(
     Component: IComponent<Sources, Sinks & AuthenticationSinks>) {
   return function AuthenticationComponent(sources: Sources) {
     const sinks = Component(sources);
-    const authentication$ = sinks.authenticationMethod$.map(model)
-    
+    const authentication$ = sinks.authenticationMethod$.map(model);
+
     return merge(sinks, { authentication$ });
   };
 }
