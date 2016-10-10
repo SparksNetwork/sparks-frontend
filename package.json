@@ -100,7 +100,7 @@
     "es6-shim": "^0.35.1",
     "firebase": "^3.3.0",
     "history": "^3.0.0",
-    "most": "^1.0.1",
+    "most": "^1.0.4",
     "most-proxy": "^3.1.1",
     "node-polyglot": "^2.0.0",
     "ramda": "^0.22.1",
