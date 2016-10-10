@@ -1,46 +1,50 @@
 import firebase = require('firebase');
-import { convertUserToUserCredential } from './makeFirebaseAuthenticationDriver';
+import { convertUserToUserCredential } from './convertUserToUserCredential';
 
 export class MockFirebase {
-  constructor(private email: string) { }
+  constructor(private email: string, private error: string = '') {}
 
   auth() {
-    return new MockAuth(this.email);
+    return new MockAuth(this.email, this.error);
   }
 }
 
 class MockAuth {
-  constructor(private email: string) {}
+  constructor(private email: string, private error: string) {}
 
   signInAnonymously(): firebase.Promise<firebase.User> {
-    return makeUser('', true);
+    return this.checkForError(makeUser('', true));
   }
 
   signInWithEmailAndPassword(email: string): firebase.Promise<firebase.User> {
-    return makeUser(email, false);
+    return this.checkForError(makeUser(email, false));
   }
 
   signInWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<firebase.auth.UserCredential> {
-    return emailAndPasswordSignIn(this.email, provider);
+    return this.checkForError(emailAndPasswordSignIn(this.email, provider));
   }
 
   signInWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<firebase.auth.UserCredential> {
-    return emailAndPasswordSignIn(this.email, provider);
+    return this.checkForError(emailAndPasswordSignIn(this.email, provider));
   }
 
   signOut(): firebase.Promise<void> {
-    return firebase.Promise.resolve(void 0);
+    return this.checkForError(firebase.Promise.resolve(void 0));
   }
 
   createUserWithEmailAndPassword(email: string): firebase.Promise<firebase.User> {
-    if (email === 'existinguser@sparks.network') {
-      return firebase.Promise.reject(makeAuthenticationError(
-        'auth/email-already-in-use',
-        'This email is already in use'
-      ));
+    return this.checkForError(makeUser(email, false));
+  }
+
+  checkForError(returnValue) {
+    if (this.error) {
+      return makeAuthenticationError(
+        this.error,
+        this.error
+      );
     }
 
-    return makeUser(email, false);
+    return returnValue;
   }
 }
 
@@ -59,5 +63,5 @@ class AuthenticationError extends Error {
 }
 
 function makeAuthenticationError(code: string, message: string) {
-  return new AuthenticationError(code, message);
+  return firebase.Promise.reject(new AuthenticationError(code, message));
 }
