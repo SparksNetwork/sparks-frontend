@@ -1,7 +1,8 @@
 "use strict";
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.log;
-console.groupCollapsed = console.log;
+console.group = console.group || console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
+console.debug = console.debug || console.log;
 // Type checking typings
 /**
  * @typedef {function(Sources,Settings):Source} SwitchOnCondition
@@ -32,7 +33,6 @@ var cfg = {
 //////
 // Helper functions
 function isSwitchSettings(settings) {
-    var eqFn = settings.eqFn, caseWhen = settings.caseWhen, sinkNames = settings.sinkNames, on = settings.on;
     var signature = {
         eqFn: ramda_1.either(ramda_1.isNil, checks_1.isFunction),
         caseWhen: ramda_1.complement(ramda_1.isNil),
@@ -71,12 +71,12 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     ]);
     var _a = overload, guard$ = _a.guard$, sourceName = _a.sourceName, _index = _a._index;
     var switchSource;
-    if (overload._index === 1) {
+    if (_index === 1) {
         // Case : overload `settings.on :: SourceName`
         switchSource = sources[sourceName];
         checks_1.assertContract(checks_1.isSource, [switchSource], "An observable with name " + sourceName + " could not be found in sources");
     }
-    if (overload._index === 0) {
+    if (_index === 0) {
         // Case : overload `settings.on :: SourceName`
         switchSource = guard$(sources, settings);
         checks_1.assertContract(checks_1.isSource, [switchSource], "The function used for conditional switching did not return an observable!");
@@ -151,6 +151,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     function makeSwitchedSink(sinkName) {
         return (_a = {},
             _a[sinkName] = sample_1.sample(makeSwitchedSinkFromCache(sinkName), shouldSwitch$, cachedSinks$)
+                .tap(function () { console.warn("switching: " + sinkName); })
                 .switch(),
             _a
         );
@@ -227,7 +228,7 @@ var SwitchCase = {
         DOM: function mergeDomSwitchedSinks(ownSink, childrenDOMSink, settings) {
             var allSinks = ramda_1.flatten([ownSink, childrenDOMSink]);
             var allDOMSinks = checks_1.removeNullsFromArray(allSinks);
-            // NOTE : zip rxjs does not accept only one argument...
+            // debugger
             return $.mergeArray(allDOMSinks)
                 .tap(console.warn.bind(console, 'Switch.specs' +
                 ' > mergeDomSwitchedSinks > merge'))

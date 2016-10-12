@@ -7,7 +7,7 @@ var runTestScenario_1 = require('../test/runTestScenario');
 var m_1 = require('../combinator/m');
 var Router_1 = require('../combinator/Router');
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.groupCollapsed = console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
 function plan(n) {
     return function _done(done) {
         if (--n === 0) {

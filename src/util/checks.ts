@@ -2,11 +2,43 @@
 
 import {
   mapObjIndexed, flatten, keys, always, reject, isNil, uniq, addIndex,
-  merge, reduce, all, either, clone, map, values, equals, concat
+  reduce, all, either, map, values, equals
 } from 'ramda'
 import * as $ from 'most'
-import { div } from '@motorcycle/dom'
-import {isEmpty} from './most/isEmpty'
+// import {isEmpty} from './most/isEmpty'
+
+let IsEmptySink = function IsEmptySink(sink) {
+  this.sink = sink
+  this.isEmpty = true
+}
+
+IsEmptySink.prototype.event = function event(t, x) {
+  this.isEmpty = false
+  this.sink.event(t, false)
+  this.sink.end(t, x)
+}
+
+IsEmptySink.prototype.error = function error(t, e) {
+  this.sink.error(t, e)
+}
+
+IsEmptySink.prototype.end = function end(t, x) {
+  if (this.isEmpty) {
+    this.sink.event(t, true)
+    this.sink.end(t, x)
+  }
+}
+
+let IsEmpty = function IsEmpty(source) {
+  this.source = source
+}
+
+IsEmpty.prototype.run = function run(sink, scheduler) {
+  return (this as any).source.run(new IsEmptySink(sink), scheduler)
+}
+
+const isEmpty = stream =>
+  new stream.constructor(new IsEmpty(stream.source))
 
 const mapIndexed = addIndex(map)
 
@@ -46,7 +78,7 @@ interface VRule {
   [vRule: string]: PredicateWithOptError;
 }
 
-function assertSignature(fnName, _arguments, vRules : VRule[]) {
+function assertSignature(fnName, _arguments, vRules: VRule[]) {
   const argNames = flatten(map(keys, vRules))
   const ruleFns = flatten(map(function (vRule) {
     return values(vRule)[0] as PredicateWithOptError
@@ -122,8 +154,8 @@ interface Signature {
   [predicate: string]: PredicateWithOptError;
 }
 
-function checkSignature(obj, signature : Signature, signatureErrorMessages, isStrict) {
-  let arrMessages = []
+function checkSignature(obj, signature: Signature, signatureErrorMessages, isStrict) {
+  let arrMessages : any= []
   let strict = defaultsTo(isStrict, false)
 
   // Check that object properties in the signature match it
@@ -159,11 +191,11 @@ function checkSignature(obj, signature : Signature, signatureErrorMessages, isSt
  * @returns {*}
  */
 interface ObjOverloadResult {
-_index : number
+  _index: number
 }
 
 function unfoldObjOverload(obj, overloads) {
-  let result : ObjOverloadResult = { _index : 0}
+  let result: ObjOverloadResult = {_index: 0}
   let index = 0
 
   overloads.some(overload => {
@@ -388,7 +420,7 @@ function removeEmptyVNodes(arrVNode) {
     return (isNullVNode(vNode)) ?
       accNonEmptyVNodes :
       (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes)
-  }, [], arrVNode)
+  }, [] as any, arrVNode)
 }
 
 function isNullVNode(vNode) {
@@ -428,7 +460,7 @@ function getSinkNamesFromSinksArray(aSinks) {
 }
 
 function getValidKeys(obj) {
-  let validKeys = []
+  let validKeys :any = []
   mapObjIndexed((value, key) => {
     if (value != null) {
       validKeys.push(key)
@@ -457,7 +489,7 @@ function emitNullIfEmpty(sink) {
       // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
       // see also tests
       // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-isEmpty(sink).filter(x=>x).map(x => null)
+      isEmpty(sink).filter(x=>x).map(x => null)
 //      sink.isEmpty().filter(x=>x).map(x => null)
     )
 }

@@ -13,12 +13,12 @@ describe('Testing utils functions', () => {
       {arg2: function isBoolean(x) {return typeof x === 'boolean'}},
     ]
 
-    assert.equal(assertSignature(fnName, _arguments, vRules), true,
+    assert.equal(assertSignature(fnName, _arguments, vRules as any), true,
       'assertSignature validates the arguments of a function according to a list' +
       'of validation rules. When those validation rules are observed, ' +
       'it should return true.')
 
-    assert.throws(function () {assertSignature(fnName, _argInvalid, vRules); },
+    assert.throws(function () {assertSignature(fnName, _argInvalid, vRules as any); },
       /fails/,
       'Each failing validation rule generates an error message; error messages' +
       'are gathered and thrown in an exception.'

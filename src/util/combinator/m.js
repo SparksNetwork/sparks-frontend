@@ -1,6 +1,8 @@
 "use strict";
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.log;
+console.group = console.group || console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
+console.groupEnd = console.groupEnd || console.log;
 // Component typings
 /**
  * @typedef {Object.<string, Observable>} Sources
@@ -73,7 +75,9 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
     if (allDOMSinks.length === 0) {
         throw "mergeDOMSinkDefault: internal error!";
     }
-    return $.combineArray(function (x) { return x; }, allDOMSinks)
+    return $.combineArray(function () {
+        return arguments;
+    }, allDOMSinks)
         .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
         .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull));
 }

@@ -53,8 +53,8 @@
     "sauce:safari9": "npm run sauce -- --env safari9",
     "test-ci": "npm run test:lint && npm run test:unit && npm run sauce -- --env chrome49,ie10,android51,iphone5,safari8",
     "serve": "webpack-dev-server --config .config/webpack.config.js",
-    "build": "webpack --config .config/webpack.config.js",
-    "test-build": "webpack --config .config/webpack-test.config.js"
+    "build": "webpack --config .config/webpack.config.js --display-error-details --progress --colors --watch",
+    "test-build": "webpack --config .config/webpack-test.config.js --display-error-details --progress --colors --watch"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^2.2.1",

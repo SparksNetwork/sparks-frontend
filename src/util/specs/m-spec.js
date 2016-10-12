@@ -8,7 +8,7 @@ var runTestScenario_1 = require('../test/runTestScenario');
 var m_1 = require('../combinator/m');
 var checks_1 = require('../checks');
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.groupCollapsed = console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
 // Fixtures
 var PROVIDERS = {
     google: 'google',
@@ -513,8 +513,8 @@ describe('Testing m(component_def, settings, children)', function () {
         };
         var testFn = mComponent;
         runTestScenario_1.runTestScenario(inputs, TestResults, testFn, {
-            timeUnit: 50,
-            waitForFinishDelay: 100
+            timeUnit: 5,
+            waitForFinishDelay: 20
         });
     });
     it('main cases - children components and parent component - customized merge', function (done) {

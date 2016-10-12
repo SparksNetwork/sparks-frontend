@@ -1,7 +1,7 @@
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.log
-console.groupCollapsed = console.log
-console.groupEnd = console.log
+console.group = console.group || console.log
+console.groupCollapsed = console.groupCollapsed || console.log
+console.groupEnd = console.groupEnd || console.log
 
 // TODO : include history driver of cycle but modified so that only the
 // Observable<Location> is passed. Optimally use rackt history driver

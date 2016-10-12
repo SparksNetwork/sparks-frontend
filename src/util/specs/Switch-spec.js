@@ -188,7 +188,7 @@ describe('Testing Switch component', function () {
             waitForFinishDelay: 30
         });
     });
-    it('main cases - 2 children - switch on condition', function (done) {
+    it.only('main cases - 2 children - switch on condition', function (done) {
         var assertAsync = plan(3);
         var childComponent1 = function childComponent1(sources, settings) {
             return {
@@ -303,6 +303,7 @@ describe('Testing Switch component', function () {
             },
         };
         function analyzeTestResults(actual, expected, message) {
+            debugger;
             assert.deepEqual(actual, expected, message);
             assertAsync(done);
         }

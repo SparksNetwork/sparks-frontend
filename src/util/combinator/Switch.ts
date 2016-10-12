@@ -1,6 +1,7 @@
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.log
-console.groupCollapsed = console.log
+console.group = console.group || console.log
+console.groupCollapsed = console.groupCollapsed || console.log
+console.debug = console.debug || console.log
 
 // Type checking typings
 /**
@@ -23,7 +24,7 @@ import {
 } from '../checks'
 import {m} from './m'
 import {
-  map, merge, mergeAll, flatten, either, isNil, complement, or
+  map, mergeAll, flatten, either, isNil, complement,
 }  from 'ramda'
 import * as $ from 'most'
 import {sample} from '@most/sample'
@@ -41,7 +42,6 @@ const cfg = {
 //////
 // Helper functions
 function isSwitchSettings(settings) {
-  const {eqFn, caseWhen, sinkNames, on} = settings
   const signature = {
     eqFn: either(isNil, isFunction),
     caseWhen: complement(isNil),
@@ -86,15 +86,15 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     {'sourceName': isString}
   ])
   let {guard$, sourceName, _index} = overload as any
-  let switchSource
+  let switchSource: any
 
-  if (overload._index === 1) {
+  if (_index === 1) {
     // Case : overload `settings.on :: SourceName`
     switchSource = sources[sourceName]
     assertContract(isSource, [switchSource],
       `An observable with name ${sourceName} could not be found in sources`)
   }
-  if (overload._index === 0) {
+  if (_index === 0) {
     // Case : overload `settings.on :: SourceName`
     switchSource = guard$(sources, settings)
     assertContract(isSource, [switchSource],
@@ -187,6 +187,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
         shouldSwitch$,
         cachedSinks$
       )
+        .tap(function(){console.warn(`switching: ${sinkName}`)})
         .switch()
     }
   }
@@ -264,7 +265,7 @@ const SwitchCase = {
       const allSinks = flatten([ownSink, childrenDOMSink])
       const allDOMSinks = removeNullsFromArray(allSinks)
 
-      // NOTE : zip rxjs does not accept only one argument...
+      // debugger
       return $.mergeArray(allDOMSinks)
       // TODO : the array could be empty, check behaviour of most in that case
         .tap(console.warn.bind(console, 'Switch.specs' +

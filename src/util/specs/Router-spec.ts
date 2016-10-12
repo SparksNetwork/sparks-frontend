@@ -8,7 +8,7 @@ import { m } from '../combinator/m'
 import {Router} from '../combinator/Router'
 
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.groupCollapsed = console.log
+console.groupCollapsed = console.groupCollapsed || console.log
 
 function plan (n) {
   return function _done (done) {

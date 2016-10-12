@@ -8,8 +8,8 @@ var mapIndexed = ramda_1.addIndex(ramda_1.map);
 // TODO : find a solution to use it in the browser
 //console.log = function(){}
 //console.warn=function(){} // used by mocha, cannot stub
-console.groupEnd = function () { }; // console.log
-console.groupCollapsed = function () { }; // console.log
+console.groupEnd = console.groupEnd || console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
 /**
  * @typedef {function(*):boolean} Predicate
  */
@@ -235,7 +235,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
     // with the source subjects
     console.groupCollapsed('runTestScenario: executing test function');
     var testSinks = testFn(sourcesSubjects);
-    console.groupEnd('runTestScenario: executing test function');
+    console.groupEnd();
     if (!isOptSinks(testSinks)) {
         throw 'encountered a sink which is not an observable!';
     }

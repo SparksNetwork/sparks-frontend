@@ -9,7 +9,7 @@ import { m } from '../combinator/m'
 import { projectSinksOn, makeDivVNode } from '../checks'
 
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.groupCollapsed = console.log
+console.groupCollapsed = console.groupCollapsed || console.log
 
 // Fixtures
 const PROVIDERS = {
@@ -561,8 +561,8 @@ describe('Testing m(component_def, settings, children)', () => {
     const testFn = mComponent
 
     runTestScenario(inputs, TestResults, (testFn as any), {
-      timeUnit: 50,
-      waitForFinishDelay: 100
+      timeUnit: 5,
+      waitForFinishDelay: 20
     })
 
   })

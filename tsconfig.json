@@ -13,8 +13,9 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "noImplicitThis": false,
+    "noImplicitUseStrict" : true,
     "noImplicitReturns": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noUnusedLocals": true,
     "preserveConstEnums": true,
     "pretty": true,
@@ -25,6 +26,9 @@
     "strictNullChecks": true,
     "target": "ES5",
     "outDir": "dist/"
+  },
+  "awesomeTypescriptLoaderOptions": {
+    /* ... */
   },
   "formatCodeOptions": {
     "indentSize": 2,

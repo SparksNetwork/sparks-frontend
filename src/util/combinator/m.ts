@@ -1,5 +1,7 @@
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.log
+console.group = console.group || console.log
+console.groupCollapsed = console.groupCollapsed || console.log
+console.groupEnd = console.groupEnd || console.log
 
 // Component typings
 /**
@@ -56,7 +58,17 @@ import {
   isMergeSinkFn,
   assertSettingsContracts,
 } from '../checks'
-import {flatten, always, merge, reduce, clone, map, is, mergeWith, concat} from 'ramda'
+import {
+  flatten,
+  always,
+  merge,
+  reduce,
+  clone,
+  map,
+  is,
+  mergeWith,
+  concat
+} from 'ramda'
 import * as $ from 'most'
 import {div} from '@motorcycle/dom'
 
@@ -92,7 +104,7 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
   // Note : in default function, settings parameter is not used
   const childrenDOMSinkOrNull = map(emitNullIfEmpty, childrenSink)
 
-  const allSinks= flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull])
+  const allSinks = flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull])
   const allDOMSinks = removeNullsFromArray(allSinks)
 
   // Edge case : none of the sinks have a DOM sink
@@ -102,7 +114,9 @@ function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
     throw `mergeDOMSinkDefault: internal error!`
   }
 
-  return $.combineArray(x=>x, (allDOMSinks as any))
+  return $.combineArray(function () {
+    return arguments
+  }, (allDOMSinks as any))
     .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
     .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull))
 }

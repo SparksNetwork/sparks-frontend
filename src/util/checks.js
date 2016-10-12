@@ -2,7 +2,34 @@
 "use strict";
 var ramda_1 = require('ramda');
 var $ = require('most');
-var isEmpty_1 = require('./most/isEmpty');
+// import {isEmpty} from './most/isEmpty'
+var IsEmptySink = function IsEmptySink(sink) {
+    this.sink = sink;
+    this.isEmpty = true;
+};
+IsEmptySink.prototype.event = function event(t, x) {
+    this.isEmpty = false;
+    this.sink.event(t, false);
+    this.sink.end(t, x);
+};
+IsEmptySink.prototype.error = function error(t, e) {
+    this.sink.error(t, e);
+};
+IsEmptySink.prototype.end = function end(t, x) {
+    if (this.isEmpty) {
+        this.sink.event(t, true);
+        this.sink.end(t, x);
+    }
+};
+var IsEmpty = function IsEmpty(source) {
+    this.source = source;
+};
+IsEmpty.prototype.run = function run(sink, scheduler) {
+    return this.source.run(new IsEmptySink(sink), scheduler);
+};
+var isEmpty = function (stream) {
+    return new stream.constructor(new IsEmpty(stream.source));
+};
 var mapIndexed = ramda_1.addIndex(ramda_1.map);
 function assertSignature(fnName, _arguments, vRules) {
     var argNames = ramda_1.flatten(ramda_1.map(ramda_1.keys, vRules));
@@ -355,7 +382,7 @@ function emitNullIfEmpty(sink) {
         // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
         // see also tests
         // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-        isEmpty_1.isEmpty(sink).filter(function (x) { return x; }).map(function (x) { return null; }));
+        isEmpty(sink).filter(function (x) { return x; }).map(function (x) { return null; }));
 }
 exports.emitNullIfEmpty = emitNullIfEmpty;
 function makeDivVNode(x) {

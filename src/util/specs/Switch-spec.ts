@@ -207,7 +207,7 @@ describe('Testing Switch component', () => {
     })
   })
 
-  it('main cases - 2 children - switch on condition', (done) => {
+  it.only('main cases - 2 children - switch on condition', (done) => {
     const assertAsync = plan(3)
 
     const childComponent1 = function childComponent1(sources, settings) {
@@ -329,6 +329,7 @@ describe('Testing Switch component', () => {
     }
 
     function analyzeTestResults(actual, expected, message) {
+      debugger
       assert.deepEqual(actual, expected, message)
       assertAsync(done)
     }

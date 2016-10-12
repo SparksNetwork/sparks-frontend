@@ -13,8 +13,8 @@ const mapIndexed = addIndex(map)
 // TODO : find a solution to use it in the browser
 //console.log = function(){}
 //console.warn=function(){} // used by mocha, cannot stub
-console.groupEnd = function(){}// console.log
-console.groupCollapsed = function(){}// console.log
+console.groupEnd = console.groupEnd || console.log
+console.groupCollapsed = console.groupCollapsed || console.log
 
 /**
  * @typedef {function(*):boolean} Predicate
@@ -52,9 +52,9 @@ const tickDurationDefault = 5
 
 //////
 // Contract and signature checking helpers
-function isSourceInput(obj) {
+function isSourceInput(obj:any) {
   return obj && keysR(obj).length === 1
-    && U.isString(values(obj)[0].diagram)
+    && U.isString((values(obj)[0] as any).diagram)
 }
 
 function isExpectedStruct(record) {
@@ -70,7 +70,7 @@ function isExpectedRecord(obj) {
 
 function hasTestCaseForEachSink(testCase, sinkNames) {
   const _sinkNames = drop(1, sinkNames)
-  return allR(sinkName => testCase[sinkName], _sinkNames)
+  return allR(sinkName => testCase[sinkName as any], _sinkNames)
 }
 
 //////
@@ -154,12 +154,12 @@ function getTestResults(testInputs$, expected, settings) {
  */
 function projectAtIndex(tickNum, inputs) {
   return map(function mapInputs(sourceInput) {
-    return map(function projectDiagramAtIndex(input) {
+    return map(function projectDiagramAtIndex(input:any) {
       return {
         diagram: input.diagram[tickNum],
         values: input.values
       }
-    }, sourceInput)
+    }, sourceInput as any)
   }, inputs)
 }
 
@@ -215,7 +215,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
   // b : '-x-x-'
   // -> maxLen = 7
   const maxLen = Math.max.apply(null,
-    map(sourceInput => values(sourceInput)[0].diagram.length, inputs)
+    map(sourceInput => (values(sourceInput)[0] as any).diagram.length, inputs)
   )
 
   /** @type {Array<Number>} */
@@ -284,7 +284,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
   // with the source subjects
   console.groupCollapsed('runTestScenario: executing test function')
   let testSinks = testFn(sourcesSubjects)
-  console.groupEnd('runTestScenario: executing test function')
+  console.groupEnd()
 
   if (!isOptSinks(testSinks)) {
     throw 'encountered a sink which is not an observable!'
