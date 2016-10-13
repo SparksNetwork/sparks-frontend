@@ -1,5 +1,4 @@
 import { Stream } from 'most';
-import { subject } from 'most-subject';
 import create = require('@most/create');
 import firebase = require('firebase');
 import { eqProps } from 'ramda';
@@ -20,8 +19,6 @@ export type AuthInput = {
 export type FirebaseSource = (...args) => Stream<{ key: string, value: any }>
 export type QueueSink = Stream<any>;
 export type QueueSource = Stream<any>;
-export type AuthSource = Stream<firebase.auth.UserCredential | { failure: string } | null>;
-export type AuthSink = Stream<AuthInput>;
 
 function FirebaseStream (reference: any, eventName: string) {
   return create<any>((add: Function) => {
@@ -39,116 +36,6 @@ const ValueStream = ref => FirebaseStream(ref, 'value')
 
 const ChildAddedStream = ref => FirebaseStream(ref, 'child_added')
   .multicast();
-
-export function makeAuthDriver(firebase: any) {
-  if (firebase.authMigrator) {
-    firebase.authMigrator().migrate().then(user => {
-      if (!user) {
-        return;
-      }
-    }).catch(error => {
-      console.log('auth migration error:', error);
-    });
-  }
-  const actionMap = {
-    [POPUP]: prov => firebase.auth().signInWithPopup(prov),
-    [REDIRECT]: prov => firebase.auth().signInWithRedirect(prov),
-    [PASSWORD]: ([email, password]) => firebase.auth().signInWithEmailAndPassword(email, password),
-    'CREATE': ([email, password]) => firebase.auth().createUserWithEmailAndPassword(email, password),
-    [LOGOUT]: () => firebase.auth().signOut(),
-  };
-
-  let hasRedirectResult = false;
-  const auth$ = subject<firebase.auth.UserCredential | { failure: string }>();
-
-
-  // This function calls the observer only when hasRedirectResult is true
-    const nextUser = user => {
-      if (hasRedirectResult) { auth$.next(user); }
-    };
-
-    // Add onAuthStateChanged listener
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-      if (user && firebase.authMigrator) {
-        firebase.authMigrator().clearLegacyAuth();
-      }
-
-      nextUser(user);
-    });
-
-    // getRedirectResult listener
-    firebase.auth().getRedirectResult().then(result => {
-      hasRedirectResult = true;
-
-      if (result.user) {
-        nextUser(result.user);
-      }
-    })
-      // Always set the flag
-      .catch(() => {
-        hasRedirectResult = true;
-      });
-
-  /**
-   * When given a name this will return an object created from the firebase
-   * auth classes. Example, giving 'google' will return an instance of
-   * firebase.auth.GoogleAuthProvider.
-   *
-   * @param {string} name
-   * @returns {Object}
-   */
-  function providerObject (name: string) {
-    if (typeof name === 'string') {
-      const className = name[0].toUpperCase() + name.slice(1) + 'AuthProvider';
-      return new firebase.auth[className]();
-    }
-    return name;
-  }
-
-   /**
-  * Perform an authentication action. The input should have provider and type,
-  * plus the optional scopes array.
-  *
-  * @param {Object} input
-  * @param {Object|string} input.provider
-  * @param {string} input.type 'popup', 'redirect' or 'logout'
-  * @param {Array<string>} input.scopes a list of OAuth scopes to add to the
-  *   provider
-  * @return {void}
-  */
-  function authAction (input) {
-    console.log(input);
-    const provider = input.provider === 'password'
-      ? input.userInfo
-      : providerObject(input.provider);
-
-    const scopes = input.scopes || [];
-
-    for (let scope of scopes) {
-      provider.addScope(scope);
-    }
-
-    const action = actionMap[input.type];
-    return action(provider).catch(err => {
-      if (err.message.indexOf('The password is invalid or the user does not have a password') > -1) {
-        auth$.next({ failure: 'NoUser' });
-      }
-    });
-  }
-
-  return function authDriver(input$: Stream<AuthInput>) {
-    input$.observe(authAction);
-
-    let stream = auth$.skipRepeats().thru(hold);
-
-    (stream as any).dispose = unsubscribe;
-
-    stream.drain();
-
-    return stream.multicast();
-  };
-
-}
 
 export const makeFirebaseDriver = (ref: firebase.database.Reference) => {
   const cache = {};
