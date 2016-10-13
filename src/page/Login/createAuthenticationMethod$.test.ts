@@ -82,8 +82,8 @@ describe('createAuthenticatMethod$', () => {
         '.login.password': {
           'input': just({ target: { value: PASSWORD_VALUE } })
         },
-        '.submit': {
-          'click': just({ preventDefault: noop }).delay(100)
+        'form': {
+          'submit': just({ preventDefault: noop }).delay(100)
         }
       });
 

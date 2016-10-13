@@ -8,18 +8,21 @@ import {
 import { Stream, merge, combine } from 'most';
 import { DOMSource } from '@motorcycle/dom';
 
+import {cssClasses} from '../../util/classes';
+const classes = cssClasses({});
+
 export function createAuthenticationMethod$(domSource: DOMSource):
     Stream<AuthenticationMethod> {
-  const google$ = domSource.select('.google').events('click')
+  const google$ = domSource.select(classes.sel('google')).events('click')
     .constant<AuthenticationMethod>({ method: GOOGLE });
 
-  const facebook$ = domSource.select('.facebook').events('click')
+  const facebook$ = domSource.select(classes.sel('facebook')).events('click')
     .constant<AuthenticationMethod>({ method: FACEBOOK });
 
-  const email$ = domSource.select('.email').events('input')
+  const email$ = domSource.select(classes.sel('login.email')).events('input')
     .map(ev => (ev.target as HTMLInputElement).value);
 
-  const password$ = domSource.select('.password').events('input')
+  const password$ = domSource.select(classes.sel('login.password')).events('input')
     .map(ev => (ev.target as HTMLInputElement).value);
 
   const emailAndPassword$ =
@@ -28,7 +31,8 @@ export function createAuthenticationMethod$(domSource: DOMSource):
       email$, password$
     );
 
-  const submit$ = domSource.select('.submit').events('click');
+  const submit$ = domSource.select('form').events('submit')
+    .tap(ev => ev.preventDefault());
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
     .sampleWith<EmailAndPasswordAuthentincationMethod>(submit$);
