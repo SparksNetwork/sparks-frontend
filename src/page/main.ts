@@ -1,4 +1,5 @@
-import { AuthSource, AuthSink, FirebaseSource, QueueSink, QueueSource } from '../driver/cyclic-fire';
+import { FirebaseSource, QueueSink, QueueSource } from '../driver/cyclic-fire';
+import { AuthenticationInput, AuthenticationOutput } from '../driver/firebase-authentication';
 import { Stream, just } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
@@ -18,21 +19,21 @@ const routes = {
 export interface MainSinks extends Sinks {
   DOM: Stream<VNode>;
   router: Stream<string>;
-  auth$: AuthSink;
+  authentication$: Stream<AuthenticationInput>;
   queue$: QueueSink;
 }
 
 export interface MainSources extends Sources {
   DOM: DOMSource;
   router: RouterSource;
-  auth$: AuthSource;
+  authentication$: Stream<AuthenticationOutput>;
   firebase: FirebaseSource;
   queue$: QueueSource;
 }
 
 export function main(sources: MainSources): MainSinks {
-  const isAuthenticated$ = sources.auth$.map(user => {
-    return !!user;
+  const isAuthenticated$ = sources.authentication$.map((auth) => {
+    return !!auth.userCredential.user;
   });
 
   isAuthenticated$.observe(x => console.log(x));
@@ -44,7 +45,7 @@ export function main(sources: MainSources): MainSinks {
   return {
     DOM: page.DOM,
     router: page.route$,
-    auth$: page.pluck('auth$'),
+    authentication$: page.pluck('auth$'),
     queue$: page.pluck('queue$'),
     preventDefault: page.pluck('preventDefault')
   };
