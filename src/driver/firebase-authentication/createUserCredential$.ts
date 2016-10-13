@@ -9,7 +9,6 @@ import {
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 import { defaultUserCredential } from './defaultUserCredential';
 
-
 export function createUserCredential$(method: string, authenticationInput: AuthenticationInput, firebaseInstance: any):
     Stream<firebase.auth.UserCredential> {
   // Ordered most common on top for optimisation.
@@ -77,7 +76,7 @@ function fromFirebasePromise<T>(firebasePromise: firebase.Promise<T>): Stream<T>
       add(value);
       end(value);
     }).catch((err) => {
-      error(err as any as firebase.auth.Error);
+      error(err);
     });
   });
 }
