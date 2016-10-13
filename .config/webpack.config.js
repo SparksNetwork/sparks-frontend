@@ -44,14 +44,11 @@ const prodPlugins = [
   new webpack.optimize.UglifyJsPlugin({ minimize: true })
 ]
 
-const devPlugins = [
-]
-
+const devPlugins = []
 
 const plugins = process.env.BUILD_ENV === DEV 
   ? basePlugins.concat(devPlugins)
   : basePlugins.concat(prodPlugins)
-
 
 const TSLoader = {
   test: /\.ts$/,
