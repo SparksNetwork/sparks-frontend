@@ -38,7 +38,7 @@ describe('authenticate', () => {
           assert(typeof Component({}).authentication$.observe === 'function');
         });
 
-        it('should contain value of type AuthInput', () => {
+        it('should contain value of type AuthenticationInput', () => {
           const { authentication$ } = Component({});
 
           return authentication$.observe((authInput: AuthenticationInput) => {

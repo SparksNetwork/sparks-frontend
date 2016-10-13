@@ -7,7 +7,7 @@ import {
   RedirectAuthenticationInput,
   REDIRECT,
 } from '../../driver/firebase-authentication';
-import { GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './index';
+import { GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './types';
 import { model } from './model';
 
 describe('Login', () => {

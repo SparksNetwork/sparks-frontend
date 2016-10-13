@@ -1,5 +1,5 @@
 import firebase = require('firebase');
-import { AuthenticationMethod, GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './index';
+import { AuthenticationMethod, GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './types';
 import {
   AuthenticationInput,
   RedirectAuthenticationInput,
