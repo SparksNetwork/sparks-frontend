@@ -1,12 +1,12 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { just } from 'most';
-import { AuthenticationInput } from '../../driver/cyclic-fire';
-import { authenticate, AuthenticationMethod } from './index';
+import { AuthenticationInput } from '../../driver/firebase-authentication';
+import { authenticate, AuthenticationMethod, GOOGLE } from './index';
 
 const dummyComponent = function () {
   return {
-    authenticationMethod$: just<AuthenticationMethod>('google')
+    authenticationMethod$: just<AuthenticationMethod>({ method: GOOGLE })
   };
 };
 
@@ -51,7 +51,7 @@ describe('authenticate', () => {
         it('should have component\'s sinks', () => {
           let Component = authenticate(
             () => ({
-              authenticationMethod$: just<AuthenticationMethod>('google'),
+              authenticationMethod$: just<AuthenticationMethod>({ method: GOOGLE }),
               sink: just(1),
             }));
           let sinks = Component({});
@@ -59,7 +59,7 @@ describe('authenticate', () => {
           assert(sinks.hasOwnProperty('sink'));
 
           Component = authenticate(() => ({
-            authenticationMethod$: just<AuthenticationMethod>('google'),
+            authenticationMethod$: just<AuthenticationMethod>({ method: GOOGLE }),
             other: just(1)
           }));
 
