@@ -45,7 +45,7 @@ export function main(sources: MainSources): MainSinks {
   return {
     DOM: page.DOM,
     router: page.route$,
-    authentication$: page.pluck('auth$'),
+    authentication$: page.pluck('authentication$'),
     queue$: page.pluck('queue$'),
     preventDefault: page.pluck('preventDefault')
   };
