@@ -10,3 +10,4 @@ dist/styles.css
 dist/styles.css.map
 dist/
 .env
+builtTests/
