@@ -10,7 +10,7 @@ import {
 import { GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './types';
 import { model } from './model';
 
-describe('Login', () => {
+describe('authenticate', () => {
   describe('model', () => {
     it('should be a function', () => {
       assert(typeof model === 'function');
