@@ -5,7 +5,8 @@ import { makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule } fro
 import { makeRouterDriver } from 'cyclic-router';
 import { createHistory } from 'history';
 import firebase = require('firebase');
-import { makeAuthDriver, makeFirebaseDriver, makeQueueDriver } from './driver/cyclic-fire';
+import { makeFirebaseDriver, makeQueueDriver } from './driver/cyclic-fire';
+import { makeFirebaseAuthenticationDriver } from './driver/firebase-authentication';
 import { preventDefault } from './driver/prevent-default';
 import switchPath from 'switch-path';
 
@@ -29,7 +30,7 @@ const firebaseRef = firebase.database().ref();
 const drivers = {
   DOM: makeDOMDriver('#app', { transposition: false, modules }),
   router: makeRouterDriver(createHistory() as any, switchPath),
-  authentication$: makeAuthDriver(firebase),
+  authentication$: makeFirebaseAuthenticationDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
   queue$: makeQueueDriver(firebaseRef.child('!queue')),
   preventDefault
