@@ -40,11 +40,11 @@ describe('ComponentRouter', function () {
     return DOM.observe(function (vNode: VNode) {
       const { sel, text } = expected.shift() || { sel: '', text: '' };
       if (!vNode) {
-        assert.fail();
+        throw new Error('VNode is undefined');
       }
 
       assert.strictEqual(vNode.sel as string, (sel as string));
       assert.strictEqual(vNode.text as string, (text as string));
-    })
+    });
   });
 });
