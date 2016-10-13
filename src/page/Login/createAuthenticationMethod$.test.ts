@@ -14,6 +14,8 @@ function mockAsDomSource(mockConfig): DOMSource {
   return mockDOMSource(mockConfig) as any as DOMSource;
 }
 
+const noop = Function.prototype;
+
 describe('createAuthenticatMethod$', () => {
   it('should be a function', () => {
     assert(typeof createAuthenticationMethod$ === 'function');
@@ -74,14 +76,14 @@ describe('createAuthenticatMethod$', () => {
       const PASSWORD_VALUE = 'password';
 
       const domSource = mockAsDomSource({
-        '.email': {
+        '.login.email': {
           'input': just({ target: { value: EMAIL_VALUE } })
         },
-        '.password': {
+        '.login.password': {
           'input': just({ target: { value: PASSWORD_VALUE } })
         },
         '.submit': {
-          'click': just(void 0).delay(100)
+          'click': just({ preventDefault: noop }).delay(100)
         }
       });
 
