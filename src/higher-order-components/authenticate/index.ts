@@ -1,4 +1,4 @@
-import { Component as IComponent, Sources, Sinks } from '../../component/types';
+import { Component as IComponent, Sources, Sinks } from '../../components/types';
 import { Stream } from 'most';
 import { merge } from 'ramda';
 import { model } from './model';

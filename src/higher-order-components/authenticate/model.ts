@@ -7,7 +7,7 @@ import {
   SignOutAuthenticationInput,
   REDIRECT,
   SIGN_OUT
-} from '../../driver/firebase-authentication';
+} from '../../drivers/firebase-authentication';
 
 export function model(authenticationMethod: AuthenticationMethod): AuthenticationInput {
   if (authenticationMethod.method === GOOGLE) {

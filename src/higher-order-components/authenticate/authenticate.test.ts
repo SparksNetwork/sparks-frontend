@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { just } from 'most';
-import { AuthenticationInput } from '../../driver/firebase-authentication';
+import { AuthenticationInput } from '../../drivers/firebase-authentication';
 import { authenticate, AuthenticationMethod, GOOGLE } from './index';
 
 const dummyComponent = function () {

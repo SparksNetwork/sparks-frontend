@@ -1,6 +1,6 @@
 export const GOOGLE: 'GOOGLE' = 'GOOGLE';
 export const FACEBOOK: 'FACEBOOK' = 'FACEBOOK';
-export { EMAIL_AND_PASSWORD } from '../../driver/firebase-authentication';
+export { EMAIL_AND_PASSWORD } from '../../drivers/firebase-authentication';
 
 export type GoogleAuthenticationMethod = {
   method: 'GOOGLE';
