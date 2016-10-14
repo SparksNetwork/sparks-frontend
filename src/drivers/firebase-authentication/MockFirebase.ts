@@ -1,15 +1,21 @@
 import firebase = require('firebase');
+import { defaultUserCredential } from './defaultUserCredential';
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 
 export class MockFirebase {
-  constructor(private email: string, private error: string = '') {}
+  private _mockAuth: MockAuth;
+
+  constructor(private email: string, private error: string = '') {
+    this._mockAuth = new MockAuth(this.email, this.error);
+  }
 
   auth() {
-    return new MockAuth(this.email, this.error);
+    return this._mockAuth;
   }
 }
 
 class MockAuth {
+  public authenticationOccured: boolean = false;
   constructor(private email: string, private error: string) {}
 
   signInAnonymously(): firebase.Promise<firebase.User> {
@@ -29,7 +35,11 @@ class MockAuth {
   }
 
   getRedirectResult(): firebase.Promise<firebase.auth.UserCredential> {
-    return emailAndPasswordSignIn(this.email, new firebase.auth.EmailAuthProvider());
+    const returnValue = this.authenticationOccured
+      ? emailAndPasswordSignIn(this.email, new firebase.auth.EmailAuthProvider())
+      : firebase.Promise.resolve(defaultUserCredential);
+
+    return this.checkForError(returnValue);
   }
 
   signOut(): firebase.Promise<void> {
@@ -47,6 +57,8 @@ class MockAuth {
         this.error
       );
     }
+
+    this.authenticationOccured = true;
 
     return returnValue;
   }

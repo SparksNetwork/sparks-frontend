@@ -6,6 +6,7 @@ export const POPUP: 'POPUP' = 'POPUP';
 export const REDIRECT: 'REDIRECT' = 'REDIRECT';
 export const SIGN_OUT: 'SIGN_OUT' = 'SIGN_OUT';
 export const CREATE_USER: 'CREATE_USER' = 'CREATE_USER';
+export const GET_REDIRECT_RESULT: 'GET_REDIRECT_RESULT' = 'GET_REDIRECT_RESULT';
 
 export interface AnonymousAuthenticationInput {
   method: 'ANONYMOUSLY';
@@ -37,13 +38,18 @@ export interface CreateUserAuthenticationInput {
   password: string;
 }
 
+export interface GetRedirectResultAuthenticationInput {
+  method: 'GET_REDIRECT_RESULT';
+}
+
 export type AuthenticationInput =
   AnonymousAuthenticationInput |
   EmailAndPasswordAuthenticationInput |
   PopupAuthenticationInput |
   RedirectAuthenticationInput |
   SignOutAuthenticationInput |
-  CreateUserAuthenticationInput;
+  CreateUserAuthenticationInput |
+  GetRedirectResultAuthenticationInput;
 
 export type AuthenticationOutput = {
   error: firebase.auth.Error | null;

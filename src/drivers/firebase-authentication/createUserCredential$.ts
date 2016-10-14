@@ -4,7 +4,8 @@ import firebase = require('firebase');
 import {
   AuthenticationInput, CreateUserAuthenticationInput,
   EmailAndPasswordAuthenticationInput, PopupAuthenticationInput,
-  REDIRECT, EMAIL_AND_PASSWORD, CREATE_USER, POPUP, ANONYMOUSLY, SIGN_OUT
+  REDIRECT, EMAIL_AND_PASSWORD, CREATE_USER, POPUP, ANONYMOUSLY, SIGN_OUT,
+  GET_REDIRECT_RESULT
 } from './types';
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 import { defaultUserCredential } from './defaultUserCredential';
@@ -14,8 +15,14 @@ export function createUserCredential$(method: string, authenticationInput: Authe
   // Ordered most common on top for optimisation.
   // We use if-statements instead of switch, because few conditionals
   // optimise better with if-statements.
+
+  if (method === GET_REDIRECT_RESULT) {
+    return getRedirectResult(firebaseInstance);
+  }
+
   if (method === REDIRECT) {
     return redirectSignIn(authenticationInput, firebaseInstance)
+      .constant(defaultUserCredential);
   }
 
   if (method === EMAIL_AND_PASSWORD) {
@@ -67,8 +74,12 @@ function redirectSignIn(authenticationInput: AuthenticationInput, firebaseInstan
   const { provider } = authenticationInput as PopupAuthenticationInput;
 
   return fromFirebasePromise<firebase.auth.UserCredential>(
-    firebaseInstance.auth().signInWithRedirect(provider)
-      .then(() => firebaseInstance.auth().getRedirectResult())
+    firebaseInstance.auth().signInWithRedirect(provider));
+}
+
+function getRedirectResult(firebaseInstance: any) {
+  return fromFirebasePromise<firebase.auth.UserCredential>(
+    firebaseInstance.auth().getRedirectResult()
   );
 }
 
