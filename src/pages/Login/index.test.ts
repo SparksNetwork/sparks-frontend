@@ -4,6 +4,8 @@ import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { AuthenticationMethod } from '../../higher-order-components/authenticate';
 import { Login, LoginSinks } from './index';
 
+// This function exists because @motorcycle/dom v3.0.0 does not yet
+// have a common interface for mockDOMSource to implement
 function mockAsDomSource(mockConfig): DOMSource {
   return mockDOMSource(mockConfig) as any as DOMSource;
 }
@@ -30,7 +32,7 @@ describe('Login', () => {
         assert(Login(defaultSources).hasOwnProperty('DOM'));
       });
 
-      it('should contain propert authenicationMethod$', () => {
+      it('should contain property authenticationMethod$', () => {
         assert(Login(defaultSources).hasOwnProperty('authenticationMethod$'));
       });
     });
