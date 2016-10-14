@@ -5,14 +5,14 @@ import { makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule } fro
 import { makeRouterDriver } from 'cyclic-router';
 import { createHistory } from 'history';
 import firebase = require('firebase');
-import { makeFirebaseDriver, makeQueueDriver } from './driver/cyclic-fire';
-import { makeFirebaseAuthenticationDriver } from './driver/firebase-authentication';
-import { preventDefault } from './driver/prevent-default';
+import { makeFirebaseDriver, makeQueueDriver } from './drivers/cyclic-fire';
+import { makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication';
+import { preventDefault } from './drivers/prevent-default';
 import switchPath from 'switch-path';
 
-import { makePolyglotModule } from './module/polyglot';
+import { makePolyglotModule } from './modules/polyglot';
 import { translations }from './translations';
-import { main } from './page/main';
+import { main } from './pages/main';
 
 const modules = [
   makePolyglotModule(translations),
