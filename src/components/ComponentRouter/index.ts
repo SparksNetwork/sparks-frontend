@@ -8,7 +8,7 @@ import { RouteDefinitions } from 'switch-path';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
 import { Pathname } from '@cycle/history/lib/interfaces';
 import { eqProps, prop, merge } from 'ramda';
-import { propOrNever } from '../../util';
+import { propOrNever } from '../../utils';
 
 const equalPaths = eqProps('path');
 
