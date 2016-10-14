@@ -23,7 +23,8 @@ describe('Login - displayError', () => {
 
     describe('given false', () => {
       it('should return a vNode', () => {
-        assert(typeof displayError(true) === 'object');
+        const error = displayError(false);
+        assert(error !== null && typeof error === 'object');
       });
     });
   });
