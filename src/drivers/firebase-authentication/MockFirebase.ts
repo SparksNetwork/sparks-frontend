@@ -24,8 +24,8 @@ class MockAuth {
     return this.checkForError(emailAndPasswordSignIn(this.email, provider));
   }
 
-  signInWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<firebase.auth.UserCredential> {
-    return this.checkForError(emailAndPasswordSignIn(this.email, provider));
+  signInWithRedirect(): firebase.Promise<void> {
+    return this.checkForError(firebase.Promise.resolve(void 0));
   }
 
   signOut(): firebase.Promise<void> {

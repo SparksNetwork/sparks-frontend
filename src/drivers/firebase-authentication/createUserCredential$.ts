@@ -15,7 +15,8 @@ export function createUserCredential$(method: string, authenticationInput: Authe
   // We use if-statements instead of switch, because few conditionals
   // optimise better with if-statements.
   if (method === REDIRECT) {
-    return redirectSignIn(authenticationInput, firebaseInstance);
+    return redirectSignIn(authenticationInput, firebaseInstance)
+      .constant(defaultUserCredential);
   }
 
   if (method === EMAIL_AND_PASSWORD) {
