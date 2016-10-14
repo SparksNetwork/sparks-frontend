@@ -1,6 +1,6 @@
 import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNode } from '@motorcycle/dom';
 
-import {cssClasses} from '../../util/classes';
+import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
 

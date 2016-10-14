@@ -8,7 +8,7 @@ import {
 import { Stream, merge, combine } from 'most';
 import { DOMSource } from '@motorcycle/dom';
 
-import {cssClasses} from '../../util/classes';
+import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 
 export function createAuthenticationMethod$(domSource: DOMSource):
