@@ -28,6 +28,10 @@ class MockAuth {
     return this.checkForError(firebase.Promise.resolve(void 0));
   }
 
+  getRedirectResult(): firebase.Promise<firebase.auth.UserCredential> {
+    return emailAndPasswordSignIn(this.email, new firebase.auth.EmailAuthProvider());
+  }
+
   signOut(): firebase.Promise<void> {
     return this.checkForError(firebase.Promise.resolve(void 0));
   }

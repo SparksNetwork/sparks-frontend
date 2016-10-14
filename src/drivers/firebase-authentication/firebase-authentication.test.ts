@@ -133,7 +133,7 @@ describe('firebase authentication', () => {
               const user: firebase.User | null = authenticationOutput.userCredential.user;
 
               if (user === null) {
-                return done('User can not be null');
+                return done(new Error('User can not be null'));
               }
 
               assert(user.email === emailAndPasswordAuthenticationInput.email);
@@ -152,7 +152,7 @@ describe('firebase authentication', () => {
               const user: firebase.User | null = authenticationOutput.userCredential.user;
 
               if (user === null) {
-                return done('User can not be null');
+                return done(new Error('User can not be null'));
               }
 
               assert(user.email === emailAndPasswordAuthenticationInput.email);
@@ -165,18 +165,23 @@ describe('firebase authentication', () => {
       });
 
       describe('Redirect', () => {
-        it('should return null firebase UserCredential', (done) => {
+        it('should return non-null firebase UserCredential', (done) => {
           firebaseAuthenticationDriver(just(redirectAuthenticationInput)).skip(1)
             .observe(authenticationOutput => {
               const user: firebase.User | null = authenticationOutput.userCredential.user;
 
-              assert(user === null);
+              if (user === null) {
+                return done(new Error('User can not be null'));
+              }
+
+              assert(user.email === emailAndPasswordAuthenticationInput.email);
               done();
             });
         });
 
         it('should throw Authentication Errors',
           assertFirebaseAuthenticationError(redirectAuthenticationInput));
+        });
       });
 
       describe('Anonymously', () => {
@@ -186,7 +191,7 @@ describe('firebase authentication', () => {
               const user: firebase.User | null = authenticationOutput.userCredential.user;
 
               if (user === null) {
-                return done('User can not be null');
+                return done(new Error('User can not be null'));
               }
 
               assert(user.isAnonymous);
@@ -239,7 +244,6 @@ describe('firebase authentication', () => {
       it('should throw Authentication Errors',
         assertFirebaseAuthenticationError(createUserAuthenticationInput));
     });
-  });
 });
 
 function assertFirebaseAuthenticationError(authenticationInput) {

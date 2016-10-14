@@ -16,7 +16,6 @@ export function createUserCredential$(method: string, authenticationInput: Authe
   // optimise better with if-statements.
   if (method === REDIRECT) {
     return redirectSignIn(authenticationInput, firebaseInstance)
-      .constant(defaultUserCredential);
   }
 
   if (method === EMAIL_AND_PASSWORD) {
@@ -68,7 +67,9 @@ function redirectSignIn(authenticationInput: AuthenticationInput, firebaseInstan
   const { provider } = authenticationInput as PopupAuthenticationInput;
 
   return fromFirebasePromise<firebase.auth.UserCredential>(
-    firebaseInstance.auth().signInWithRedirect(provider));
+    firebaseInstance.auth().signInWithRedirect(provider)
+      .then(() => firebaseInstance.auth().getRedirectResult())
+  );
 }
 
 function fromFirebasePromise<T>(firebasePromise: firebase.Promise<T>): Stream<T> {
