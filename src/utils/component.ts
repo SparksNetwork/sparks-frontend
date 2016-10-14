@@ -2,7 +2,7 @@
 import { Stream } from 'most';
 import { VNode, DOMSource, div } from '@motorcycle/dom';
 import { proxy } from 'most-proxy';
-import { Component, Sources, Sinks, DOMComponent } from '../component/types';
+import { Component, Sources, Sinks, DOMComponent } from '../components/types';
 
 import { merge } from 'ramda';
 

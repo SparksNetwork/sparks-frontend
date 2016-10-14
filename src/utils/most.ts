@@ -1,4 +1,4 @@
-import { Sinks } from '../component/types';
+import { Sinks } from '../components/types';
 import { Stream, never, just } from 'most';
 import { curryN, prop } from 'ramda';
 
