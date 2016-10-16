@@ -13,7 +13,8 @@ describe('Landing page', function () {
   it('should show login form', (browser) => {
     browser
       .url(URL)
-      .assert.visible('form')
+      .waitForElementVisible('body')
+      .waitForElementVisible('form')
   })
 
   describe('federated login buttons', () => {
