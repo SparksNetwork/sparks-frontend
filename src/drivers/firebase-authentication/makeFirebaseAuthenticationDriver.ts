@@ -4,6 +4,7 @@ import firebase = require('firebase');
 import { AuthenticationInput, AuthenticationOutput } from './types';
 import { createUserCredential$ } from './createUserCredential$';
 import { defaultUserCredential } from './defaultUserCredential';
+import { AuthenticationError } from './AuthenticationError';
 
 export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
   return function firebaseAuthenticationDriver(sink$: Stream<AuthenticationInput>):
@@ -28,10 +29,9 @@ function convertUserCredentialToAuthenticationOutput(
   };
 }
 
-
-function createDefaultAuthenticationOutput$ (authenticationInput) {
+function createDefaultAuthenticationOutput$(error: firebase.auth.Error) {
   return just<AuthenticationOutput>({
-    error: authenticationInput,
+    error: new AuthenticationError(error.code, error.message),
     userCredential: defaultUserCredential
   });
 }

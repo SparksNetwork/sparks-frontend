@@ -1,4 +1,5 @@
 import firebase = require('firebase');
+import { AuthenticationError } from './AuthenticationError';
 
 export const ANONYMOUSLY: 'ANONYMOUSLY' = 'ANONYMOUSLY';
 export const EMAIL_AND_PASSWORD: 'EMAIL_AND_PASSWORD' = 'EMAIL_AND_PASSWORD';
@@ -52,6 +53,6 @@ export type AuthenticationInput =
   GetRedirectResultAuthenticationInput;
 
 export type AuthenticationOutput = {
-  error: firebase.auth.Error | null;
+  error: AuthenticationError | null;
   userCredential: firebase.auth.UserCredential;
 };

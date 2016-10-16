@@ -72,12 +72,12 @@ function makeUser(email, isAnonymous) {
   return firebase.Promise.resolve({ email, isAnonymous } as any as firebase.User);
 }
 
-class AuthenticationError extends Error {
-  constructor(public code: string, message: string) {
-    super(message);
-  }
+function makeAuthenticationError(code: string, message: string) {
+  return firebase.Promise.reject(new MockAuthenticationError( code, message));
 }
 
-function makeAuthenticationError(code: string, message: string) {
-  return firebase.Promise.reject(new AuthenticationError(code, message));
+class MockAuthenticationError extends Error {
+  constructor(public code: string, message) {
+    super(message);
+  }
 }

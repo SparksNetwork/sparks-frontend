@@ -6,6 +6,7 @@ import { CREATE_USER,
 import {
   makeFirebaseAuthenticationDriver
 } from './makeFirebaseAuthenticationDriver';
+import { AuthenticationError } from './AuthenticationError';
 import firebase = require('firebase');
 import { just, periodic } from 'most';
 
@@ -301,6 +302,7 @@ function assertFirebaseAuthenticationError(authenticationInput) {
   return function (done) {
     driver(just(authenticationInput)).skip(1)
       .observe(({ error }) => {
+        assert(error instanceof AuthenticationError);
         assert(error !== null && error.code === code);
         done();
       }).catch(done);
