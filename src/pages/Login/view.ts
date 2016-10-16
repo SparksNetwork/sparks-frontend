@@ -4,9 +4,7 @@ import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
 
-import { displayError } from './displayError';
-
-export function view(userExists: boolean | null): VNode {
+export function view(): VNode {
   return section(classes.sel('photo-background'), {
     style: {
       backgroundImage: `url(${backgroundImage})`
@@ -22,7 +20,6 @@ export function view(userExists: boolean | null): VNode {
             button(classes.sel('facebook'), { polyglot: { phrase: 'login.facebook' } } as any)
           ]),
           div(classes.sel('divider'), [span('Or')]),
-          displayError(userExists),
           form([
             fieldset([
               label({ props: { for: 'email' }, polyglot: { phrase: 'login.email' } } as any),

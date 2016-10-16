@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
+import { just } from 'most';
 import { AuthenticationMethod } from '../../higher-order-components/authenticate';
 import { Login, LoginSinks } from './index';
 
@@ -13,7 +14,8 @@ function mockAsDomSource(mockConfig): DOMSource {
 const domSource = mockAsDomSource({});
 
 const defaultSources = {
-  DOM: domSource
+  DOM: domSource,
+  isAuthenticated$: just(false)
 };
 
 describe('Login', () => {
@@ -35,30 +37,30 @@ describe('Login', () => {
       it('should contain property authenticationMethod$', () => {
         assert(Login(defaultSources).hasOwnProperty('authenticationMethod$'));
       });
-    });
 
-    describe('DOM', () => {
-      it('should be a stream', () => {
-        assert(typeof Login(defaultSources).DOM.observe === 'function');
-      });
+      describe('DOM', () => {
+        it('should be a stream', () => {
+          assert(typeof Login(defaultSources).DOM.observe === 'function');
+        });
 
-      it('should contain a vNode', () => {
-        return Login(defaultSources).DOM.observe((vNode: VNode) => {
-          assert(typeof vNode === 'object');
+        it('should contain a vNode', () => {
+          return Login(defaultSources).DOM.observe((vNode: VNode) => {
+            assert(typeof vNode === 'object');
+          });
         });
       });
-    });
 
-    describe('authenicationMethod$', () => {
-      it('should be a stream', () => {
-        assert(typeof Login(defaultSources).authenticationMethod$.observe === 'function');
-      });
+      describe('authenicationMethod$', () => {
+        it('should be a stream', () => {
+          assert(typeof Login(defaultSources).authenticationMethod$.observe === 'function');
+        });
 
-      it('should contain an AuthenticationMethod', () => {
-        return Login(defaultSources).authenticationMethod$
-          .observe((authenticationMethod: AuthenticationMethod) => {
-            assert(typeof authenticationMethod === 'object');
-          });
+        it('should contain an AuthenticationMethod', () => {
+          return Login(defaultSources).authenticationMethod$
+            .observe((authenticationMethod: AuthenticationMethod) => {
+              assert(typeof authenticationMethod === 'object');
+            });
+        });
       });
     });
   });

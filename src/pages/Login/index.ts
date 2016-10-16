@@ -9,11 +9,18 @@ import { view } from './view';
 
 export type LoginSinks = { DOM: Stream<VNode> } & AuthenticationSinks
 
-export function Login(sources: Sources & { DOM: DOMSource }): LoginSinks {
+export type LoginSources = Sources & {
+  DOM: DOMSource;
+  isAuthenticated$: Stream<boolean>;
+}
+
+export function Login(sources: LoginSources): LoginSinks {
   const authenticationMethod$ = createAuthenticationMethod$(sources.DOM);
 
+  sources.isAuthenticated$.observe(x => console.log(x));
+
   return {
-    DOM: just(view(null)),
+    DOM: just(view()),
     authenticationMethod$
   };
 }
