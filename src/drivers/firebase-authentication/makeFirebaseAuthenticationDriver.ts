@@ -1,4 +1,5 @@
 import { Stream, just } from 'most';
+import hold from '@most/hold';
 import firebase = require('firebase');
 
 import { AuthenticationInput, AuthenticationOutput } from './types';
@@ -17,7 +18,8 @@ export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
         .recoverWith<firebase.auth.Error>(createDefaultAuthenticationOutput$);
     })
       .switch()
-      .startWith(convertUserCredentialToAuthenticationOutput(defaultUserCredential));
+      .startWith(convertUserCredentialToAuthenticationOutput(defaultUserCredential))
+      .thru(hold);
   };
 }
 

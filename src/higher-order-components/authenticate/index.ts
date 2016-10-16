@@ -13,6 +13,7 @@ import { merge } from 'ramda';
 import { model } from './model';
 import { AuthenticationMethod } from './types';
 import { User } from './User';
+import hold from '@most/hold';
 
 export * from './types';
 
@@ -24,19 +25,22 @@ export function authenticate(
     Component: IComponent<any, AuthenticationSinks>) {
   return function AuthenticationComponent(
       sources: Sources & { authentication$: Stream<AuthenticationOutput> }) {
-    const isAuthenticated$ = sources.authentication$.map((authenticationOutput) => {
-      return !!authenticationOutput.userCredential.user;
-    });
+    const isAuthenticated$ = sources.authentication$
+      .map((authenticationOutput) => !!authenticationOutput.userCredential.user)
+      .skipRepeats()
+      .thru(hold);
 
     const authenticationError$ = sources.authentication$
       .filter(authenticationOutput => !!authenticationOutput.error)
-      .map(authenticationOutput => authenticationOutput.error as AuthenticationError);
+      .map(authenticationOutput => authenticationOutput.error as AuthenticationError)
+      .thru(hold);
 
     const user$ = sources.authentication$
       .map(authenticationOutput => authenticationOutput.userCredential.user as firebase.User)
       .filter(Boolean)
       .map(firebaseUser => new User(firebaseUser.uid,
-        firebaseUser.displayName || '', firebaseUser.photoURL || '', firebaseUser.email || ''));
+        firebaseUser.displayName || '', firebaseUser.photoURL || '', firebaseUser.email || ''))
+      .thru(hold);
 
     const authenticationSources = merge(sources, {
       isAuthenticated$,
