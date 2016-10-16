@@ -32,12 +32,6 @@ export interface MainSources extends Sources {
 }
 
 export function main(sources: MainSources): MainSinks {
-  const isAuthenticated$ = sources.authentication$.map((auth) => {
-    return !!auth.userCredential.user;
-  });
-
-  isAuthenticated$.observe(x => console.log(x));
-
   const page = ComponentRouter(merge(sources, {
     routes$: just(routes)
   }));
