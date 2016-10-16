@@ -17,8 +17,6 @@ export type LoginSources = Sources & {
 export function Login(sources: LoginSources): LoginSinks {
   const authenticationMethod$ = createAuthenticationMethod$(sources.DOM);
 
-  sources.isAuthenticated$.observe(x => console.log(x));
-
   return {
     DOM: just(view()),
     authenticationMethod$
