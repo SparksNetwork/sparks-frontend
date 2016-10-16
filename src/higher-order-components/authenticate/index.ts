@@ -27,7 +27,6 @@ export function authenticate(
       sources: Sources & { authentication$: Stream<AuthenticationOutput> }) {
     const isAuthenticated$ = sources.authentication$
       .map((authenticationOutput) => !!authenticationOutput.userCredential.user)
-      .skipRepeats()
       .thru(hold);
 
     const authenticationError$ = sources.authentication$
