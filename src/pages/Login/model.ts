@@ -1,13 +1,13 @@
 export interface GoogleAuthenticationRequest {
-  method: 'google';
+  method: 'GOOGLE';
 };
 
 export interface FacebookAuthenticationRequest {
-  method: 'facebook';
+  method: 'FACEBOOK';
 }
 
 export interface EmailAndPasswordAuthenticationRequest {
-  method: 'emailAndPassword';
+  method: 'EMAIL_AND_PASSWORD';
   email: string;
   password: string;
 }

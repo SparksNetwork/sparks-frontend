@@ -4,7 +4,7 @@ import { model } from './model';
 import { EmailAndPasswordAuthenticationRequest} from './model';
 
 const defaultAuthenticationRequest = {
-  method: 'google' as 'google'
+  method: 'GOOGLE' as 'GOOGLE'
 };
 
 describe('Login', () => {
@@ -33,26 +33,26 @@ describe('Login', () => {
         describe('given a request of google', () => {
           it('should be a GoogleAuthenticationMethod', () => {
             const { authenticationMethod } = model(defaultAuthenticationRequest);
-            assert(authenticationMethod.method === 'google');
+            assert(authenticationMethod.method === 'GOOGLE');
           });
         });
 
         describe('given a request of facebook', () => {
           it('should be a FacebookAuthenticationMethod', () => {
-            const { authenticationMethod } = model({ method: 'facebook' });
-            assert(authenticationMethod.method === 'facebook');
+            const { authenticationMethod } = model({ method: 'FACEBOOK' });
+            assert(authenticationMethod.method === 'FACEBOOK');
           });
         });
 
         describe('given a request of email and password', () => {
           it('should be a EmailAndPasswordAuthenticationMethod', () => {
             const authenticationMethod = model({
-              method: 'emailAndPassword',
+              method: 'EMAIL_AND_PASSWORD',
               email: 'user@sparks.network',
               password: 'testpassword'
             }).authenticationMethod as EmailAndPasswordAuthenticationRequest;
 
-            assert(authenticationMethod.method === 'emailAndPassword');
+            assert(authenticationMethod.method === 'EMAIL_AND_PASSWORD');
             assert(typeof authenticationMethod.email === 'string');
             assert(typeof authenticationMethod.password === 'string');
             assert(authenticationMethod.email === 'user@sparks.network');

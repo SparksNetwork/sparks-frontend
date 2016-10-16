@@ -1,23 +1,17 @@
-import {
-  AuthenticationMethod,
-  EmailAndPasswordAuthentincationMethod,
-  GOOGLE,
-  FACEBOOK,
-  EMAIL_AND_PASSWORD
-} from '../../higher-order-components/authenticate';
 import { Stream, merge, combine } from 'most';
 import { DOMSource } from '@motorcycle/dom';
+import { AuthenticationRequest, EmailAndPasswordAuthenticationRequest, model } from './model';
 
 import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 
 export function createAuthenticationMethod$(domSource: DOMSource):
-    Stream<AuthenticationMethod> {
+    Stream<AuthenticationRequest> {
   const google$ = domSource.select(classes.sel('google')).events('click')
-    .constant<AuthenticationMethod>({ method: GOOGLE });
+    .constant<AuthenticationRequest>({ method: 'GOOGLE' });
 
   const facebook$ = domSource.select(classes.sel('facebook')).events('click')
-    .constant<AuthenticationMethod>({ method: FACEBOOK });
+    .constant<AuthenticationRequest>({ method: 'FACEBOOK' });
 
   const email$ = domSource.select(classes.sel('login.email')).events('input')
     .map(ev => (ev.target as HTMLInputElement).value);
@@ -26,8 +20,8 @@ export function createAuthenticationMethod$(domSource: DOMSource):
     .map(ev => (ev.target as HTMLInputElement).value);
 
   const emailAndPassword$ =
-    combine<string, string, EmailAndPasswordAuthentincationMethod>(
-      (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
+    combine<string, string, EmailAndPasswordAuthenticationRequest>(
+      (email, password) => ({ method: 'EMAIL_AND_PASSWORD', email, password }),
       email$, password$
     );
 
@@ -35,9 +29,11 @@ export function createAuthenticationMethod$(domSource: DOMSource):
     .tap(ev => ev.preventDefault());
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<EmailAndPasswordAuthentincationMethod>(submit$);
+    .sampleWith<EmailAndPasswordAuthenticationRequest>(submit$);
 
-  return merge<AuthenticationMethod>(google$, facebook$)
+  return merge<AuthenticationRequest>(google$, facebook$)
     .merge(emailAndPasswordAuthenticationMethod$)
+    .map(model)
+    .map(state => state.authenticationMethod)
     .multicast();
 }

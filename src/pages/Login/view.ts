@@ -18,7 +18,7 @@ export function view(userExists: boolean | null): VNode {
         h1({ polyglot: { phrase: 'login.title' } } as any),
         div(classes.sel('login', 'form'), [
           div(classes.sel('federated-buttons'), [
-            button(classes.sel('google'), { polyglot: { phrase: 'login.google' } } as any),
+            button(classes.sel('google'), { attrs: { 'raisin': void 0 }, polyglot: { phrase: 'login.google' } } as any),
             button(classes.sel('facebook'), { polyglot: { phrase: 'login.facebook' } } as any)
           ]),
           div(classes.sel('divider'), [span('Or')]),
