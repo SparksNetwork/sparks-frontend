@@ -8,7 +8,7 @@ export type Source<T> =
   | any;
 
 export interface Sources {
-  [name: string]: Source<any>;
+  [key: string]: Source<any>;
 }
 
 export type Sink<T> = Stream<T> | ((...args: any[]) => Stream<T>);
