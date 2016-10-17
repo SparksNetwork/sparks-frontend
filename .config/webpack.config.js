@@ -46,7 +46,7 @@ const prodPlugins = [
 
 const devPlugins = []
 
-const plugins = process.env.BUILD_ENV === DEV 
+const plugins = process.env.BUILD_ENV === DEV
   ? basePlugins.concat(devPlugins)
   : basePlugins.concat(prodPlugins)
 
@@ -62,7 +62,7 @@ const SASSLoader = {
     fallbackLoader: 'style-loader',
     loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' +
     '!postcss-loader' +
-    '!sass-loader?outputStyle=expanded' 
+    '!sass-loader?outputStyle=expanded'
   })
 }
 
@@ -99,7 +99,7 @@ module.exports = {
   ],
 
   output: {
-    path: './dist', 
+    path: './dist',
     filename: 'bundle.js',
     publicPath: 'http://localhost:8080/',
   },
@@ -116,6 +116,7 @@ module.exports = {
   },
 
   devServer: {
+    host: '0.0.0.0',
     contentBase: path.resolve('./dist'),
     historyApiFallback: true,
   },
