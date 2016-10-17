@@ -32,7 +32,7 @@
     "test:e2e": "cross-env LOCAL=true nightwatch --config .config/nightwatch.js",
     "test:coverage": "",
     "test": "npm run test:lint && npm run test:unit && npm run test:e2e",
-    "sauce": "nightwatch -- --config .config/nightwatch.js ",
+    "sauce": "nightwatch --config .config/nightwatch.js ",
     "sauce:chrome49": "npm run sauce -- --env chrome49",
     "sauce:chrome50": "npm run sauce -- --env chrome50",
     "sauce:chrome51": "npm run sauce -- --env chrome51",
