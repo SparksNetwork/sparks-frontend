@@ -26,7 +26,7 @@
 
   "test_settings": {
     "default": {
-      "launch_url" : "http://localhost",
+      "launch_url" : "http://localhost:8080",
       "selenium_port"  : 80,
       "selenium_host"  : "ondemand.saucelabs.com",
       "silent": true,
@@ -35,7 +35,7 @@
         "path" : ""
       },
       "username" : "${SAUCE_USERNAME}",
-      "access_key" : "${SAUCE_ACCESS_KEY}", 
+      "access_key" : "${SAUCE_ACCESS_KEY}",
 
       "desiredCapabilities": {
         "name": "Cycle Diversity Tests",
