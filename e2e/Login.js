@@ -1,3 +1,4 @@
+// @TODO replace strings with node-polyglot translations
 const URL = 'http://localhost:8080/login'
 
 function containsText(element, text) {
