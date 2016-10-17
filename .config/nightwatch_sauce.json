@@ -41,7 +41,6 @@
         "name": "Cycle Diversity Tests",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-        "tunnel-identifier": "Diversity",
         "initialBrowserUrl": "http://localhost:8080"
       },
 
