@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - 6
 
+addons:
+  sauce_connect: true
+
 before_script:
   - npm run serve &
   - sleep 5
