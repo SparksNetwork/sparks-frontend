@@ -28,5 +28,6 @@ describe('Logging in with Facebook', () => {
       .waitForElementVisible('#pass')
       .setValue('#pass', FACEBOOK_TEST_EMAIL_PASSWORD)
       .click('#loginbutton')
+      .end()
   })
 })

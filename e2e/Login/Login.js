@@ -48,6 +48,7 @@ describe('Landing page', function () {
     it('should show submit button', (browser) => {
       browser.useXpath()
         .assert.visible(containsText('*', 'Submit'))
+        .end()
     })
   })
 })

@@ -29,5 +29,6 @@ describe('Logging in with Google', () => {
       .waitForElementVisible('#Passwd')
       .setValue('#Passwd', GOOGLE_TEST_EMAIL_PASSWORD)
       .click('#signIn')
+      .end()
   })
 })

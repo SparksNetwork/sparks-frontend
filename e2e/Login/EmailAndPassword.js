@@ -23,5 +23,6 @@ describe('Logging in with Email and Password', () => {
       .setValue('input[type="password"]', EMAIL_AND_PASSWORD_EMAIL_TEST_PASSWORD)
       .useXpath()
       .click(containsText('*', 'Submit'))
+      .end()
   })
 })
