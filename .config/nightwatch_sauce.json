@@ -41,6 +41,7 @@
         "name": "Cycle Diversity Tests",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
+        "tunnel-identifier": "${TRAVIS_JOB_NUMBER}",
         "initialBrowserUrl": "http://localhost:8080"
       },
 
