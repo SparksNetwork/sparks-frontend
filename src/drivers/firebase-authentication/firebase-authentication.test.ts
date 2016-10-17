@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { CREATE_USER,
+import { CREATE_USER, AuthenticationInput,
   ANONYMOUSLY, EMAIL_AND_PASSWORD, POPUP, REDIRECT, SIGN_OUT, GET_REDIRECT_RESULT
 } from './types';
 import {
@@ -11,6 +11,7 @@ import firebase = require('firebase');
 import { just, periodic } from 'most';
 
 import { MockFirebase } from './MockFirebase';
+import { mockStream } from './MockStream';
 
 const firebaseConfig = {
   databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -81,6 +82,17 @@ describe('firebase authentication', () => {
       const source = firebaseAuthenticationDriver(just(anonymouslyAuthenticationInput));
 
       assert(typeof source.observe === 'function');
+    });
+
+    it('should already have a listener', (done) => {
+      const { stream, callCount } = mockStream<AuthenticationInput>();
+
+      firebaseAuthenticationDriver(stream);
+
+      setTimeout(() => {
+        assert(callCount() > 0);
+        done();
+      }, 100);
     });
 
     describe('source', () => {

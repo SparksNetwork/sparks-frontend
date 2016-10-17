@@ -10,7 +10,7 @@ import { AuthenticationError } from './AuthenticationError';
 export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
   return function firebaseAuthenticationDriver(sink$: Stream<AuthenticationInput>):
       Stream<AuthenticationOutput> {
-    return sink$.map((authenticationInput) => {
+    const authentication$ = sink$.map((authenticationInput) => {
       const method = authenticationInput.method;
 
       return createUserCredential$(method, authenticationInput, firebaseInstance)
@@ -20,6 +20,10 @@ export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
       .switch()
       .startWith(convertUserCredentialToAuthenticationOutput(defaultUserCredential))
       .thru(hold);
+
+    authentication$.drain();
+
+    return authentication$;
   };
 }
 
