@@ -1,19 +1,15 @@
 // @TODO replace strings with node-polyglot translations
 const URL = 'http://localhost:8080/login'
 
-function containsText(element, text) {
+function containsText (element, text) {
   return '//' + element + '[text()="' + text + '"]'
 }
 
 describe('Landing page', function () {
-  after((browser, done) => {
-    browser.end() // close browser
-    done() // end tests
-  })
-
   it('should show login form', (browser) => {
     browser
       .url(URL)
+      .deleteCookies()
       .waitForElementVisible('body')
       .waitForElementVisible('form')
   })
@@ -43,7 +39,7 @@ describe('Landing page', function () {
         .assert.visible(containsText('label/*', 'Password'))
     })
 
-    it('should show 2 inputs', function (browser, done) {
+    it('should show 2 inputs', function (browser) {
       browser.elements('tag name', 'input', function (result) {
         this.assert.equal(result.value.length, 2)
       })
