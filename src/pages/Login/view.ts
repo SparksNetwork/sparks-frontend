@@ -3,25 +3,18 @@ import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNo
 import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 
-const backgroundImages = {
-  1: require('assets/images/login-background.jpg'),
-  2: require('assets/images/login-background-2.jpg')
-};
+const backgroundImages = [
+  require('assets/images/login-background.jpg'),
+  require('assets/images/login-background-2.jpg')
+];
 
-const min = 1;
-const max = Object.keys(backgroundImages).length;
+export function view(randomNumber): VNode {
+  const backgroundImage =
+    backgroundImages[Math.floor(randomNumber * backgroundImages.length)];
 
-// @TODO this is a side-effectful function. Move me.
-function randomInt(min, max) {
-  const minInt = Math.ceil(min);
-  const maxInt = Math.floor(max);
-  return Math.floor(Math.random() * (maxInt - minInt + 1)) + minInt;
-}
-
-export function view(): VNode {
   return section(classes.sel('photo-background'), {
     style: {
-      backgroundImage: `url(${backgroundImages[randomInt(min, max)]})`
+      backgroundImage: `url(${backgroundImage})`
     }
   }, [
     h1('sparks.network'),

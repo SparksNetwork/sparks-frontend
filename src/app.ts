@@ -9,6 +9,7 @@ import { makeFirebaseDriver, makeQueueDriver } from './drivers/cyclic-fire';
 import { makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication';
 import { preventDefault } from './drivers/prevent-default';
 import switchPath from 'switch-path';
+import { just } from 'most';
 
 import { makePolyglotModule } from './modules/polyglot';
 import { translations }from './translations';
@@ -33,7 +34,8 @@ const drivers = {
   authentication$: makeFirebaseAuthenticationDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
   queue$: makeQueueDriver(firebaseRef.child('!queue')),
-  preventDefault
+  preventDefault,
+  random: () => just(Math.random())
 };
 
 Cycle.run(main, drivers);

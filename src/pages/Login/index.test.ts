@@ -15,7 +15,8 @@ const domSource = mockAsDomSource({});
 
 const defaultSources = {
   DOM: domSource,
-  isAuthenticated$: just(false)
+  isAuthenticated$: just(false),
+  random: just( Math.random() )
 };
 
 describe('Login', () => {

@@ -1,4 +1,4 @@
-import { just, Stream } from 'most';
+import { Stream } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { Sources } from '../../components/types';
 
@@ -12,14 +12,15 @@ export type LoginSinks = { DOM: Stream<VNode> } & AuthenticationSinks
 export type LoginSources = Sources & {
   DOM: DOMSource;
   isAuthenticated$: Stream<boolean>;
+  random: Stream<number>;
 }
 
 export function Login(sources: LoginSources): LoginSinks {
   const authenticationMethod$ = createAuthenticationMethod$(sources.DOM);
 
   return {
-    DOM: just(view()),
-    authenticationMethod$
+    DOM: sources.random.map(view),
+    authenticationMethod$,
   };
 }
 
