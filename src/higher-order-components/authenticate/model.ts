@@ -4,26 +4,19 @@ import {
   AuthenticationInput,
   RedirectAuthenticationInput,
   EmailAndPasswordAuthenticationInput,
-  SignOutAuthenticationInput,
   REDIRECT,
   SIGN_OUT
 } from '../../drivers/firebase-authentication';
 
 export function model(authenticationMethod: AuthenticationMethod): AuthenticationInput {
-  if (authenticationMethod.method === GOOGLE) {
-    return createGoogleAuthenticationInput();
-  }
+  const authenticationMethods = {};
+  authenticationMethods[GOOGLE] = createGoogleAuthenticationInput;
+  authenticationMethods[FACEBOOK] = createFacebookAuthenticationInput;
+  authenticationMethods[EMAIL_AND_PASSWORD] = createEmailAndPasswordAuthenticationInput;
 
-  if (authenticationMethod.method === FACEBOOK) {
-    return createFacebookAuthenticationInput();
-  }
+  const { method, email, password } = authenticationMethod as any;
 
-  if (authenticationMethod.method === EMAIL_AND_PASSWORD) {
-    return createEmailAndPasswordAuthenticationInput(
-      authenticationMethod.email, authenticationMethod.password);
-  }
-
-  return { method: SIGN_OUT } as SignOutAuthenticationInput;
+  return authenticationMethods[method](email, password) || { method: SIGN_OUT };
 }
 
 function createGoogleAuthenticationInput(): RedirectAuthenticationInput {
