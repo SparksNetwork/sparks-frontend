@@ -10,7 +10,7 @@ import {
   AuthenticationError
 } from '../../drivers/firebase-authentication';
 import { authenticate, AuthenticationMethod, GOOGLE } from './index';
-import { User } from './User';
+import { User } from '../../domain/models/User';
 
 const dummyComponent = function () {
   return {

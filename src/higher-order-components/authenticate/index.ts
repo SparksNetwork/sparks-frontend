@@ -12,7 +12,7 @@ import { Stream } from 'most';
 import { merge } from 'ramda';
 import { model } from './model';
 import { AuthenticationMethod } from './types';
-import { User } from './User';
+import { User } from '../../domain/models/User';
 import hold from '@most/hold';
 
 export * from './types';
