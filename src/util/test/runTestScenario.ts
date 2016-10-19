@@ -309,11 +309,15 @@ function runTestScenario(inputs, expected, testFn, settings) {
     sinksResults
   )
 
+  const allResults = removeNullsFromArray(values(resultAnalysis))
   // This takes care of actually starting the producers
   // which generate the execution of the test assertions
-  $.mergeArray(removeNullsFromArray(values(resultAnalysis)))
+  $.mergeArray(allResults)
     .subscribe({
-      next: rxlog('Test completed for sink:'),
+//      next: rxlog('Test completed for sink:'),
+      next : function (x) {
+        console.warn('Test completed for sink:', x)
+      },
       error: rxlog('An error occurred while executing test!'),
       complete: rxlog('Tests completed!')
     })

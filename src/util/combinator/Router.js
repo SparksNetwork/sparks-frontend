@@ -16,24 +16,127 @@ var ramda_1 = require('ramda');
 var $ = require('most');
 var m_1 = require('./m');
 // TODO : pass routeMatcher to typescript module format
-var routeMatcher_1 = require('../routeMatcher');
+// import {routeMatcher} from '../routeMatcher'
 var hold_1 = require('@most/hold');
 var sample_1 = require('@most/sample');
 // Configuration
 var routeSourceName = 'route$';
-var nullVNode = {
-    "children": undefined,
-    "data": undefined,
-    "elm": undefined,
-    "key": undefined,
-    "sel": undefined,
-    "text": undefined
-};
+// const nullVNode = {
+//   "children": undefined,
+//   "data": undefined,
+//   "elm": undefined,
+//   "key": undefined,
+//   "sel": undefined,
+//   "text": undefined
+// }
+///////////
+// Route matcher
+// TODO BRC: pass to typescript
+/* JavaScript Route Matcher - v0.1.0 - 10/19/2011
+ * http://github.com/cowboy/javascript-route-matcher
+ * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
+var routeMatcher = (function () {
+    var exports = {};
+    // Characters to be escaped with \. RegExp borrowed from the Backbone router
+    // but escaped (note: unnecessarily) to keep JSHint from complaining.
+    var reEscape = /[\-\[\]{}()+?.,\\\^$|#\s]/g;
+    // Match named :param or *splat placeholders.
+    var reParam = /([:*])(\w+)/g;
+    // Test to see if a value matches the corresponding rule.
+    function validateRule(rule, value) {
+        // For a given rule, get the first letter of the string name of its
+        // constructor function. "R" -> RegExp, "F" -> Function (these shouldn't
+        // conflict with any other types one might specify). Note: instead of
+        // getting .toString from a new object {} or Object.prototype, I'm assuming
+        // that exports will always be an object, and using its .toString method.
+        // Bad idea? Let me know by filing an issue
+        var type = exports.toString.call(rule).charAt(8);
+        // If regexp, match. If function, invoke. Otherwise, compare. Note that ==
+        // is used because type coercion is needed, as `value` will always be a
+        // string, but `rule` might not.
+        return type === "R" ? rule.test(value) : type === "F" ? rule(value) : rule == value;
+    }
+    // Pass in a route string (or RegExp) plus an optional map of rules, and get
+    // back an object with .parse and .stringify methods.
+    exports.routeMatcher = function (route, rules) {
+        // Object to be returned. The public API.
+        var self = {};
+        // Matched param or splat names, in order
+        var names = [];
+        // Route matching RegExp.
+        var re = route;
+        // Build route RegExp from passed string.
+        if (typeof route === "string") {
+            // Escape special chars.
+            re = re.replace(reEscape, "\\$&");
+            // Replace any :param or *splat with the appropriate capture group.
+            re = re.replace(reParam, function (_, mode, name) {
+                names.push(name);
+                // :param should capture until the next / or EOL, while *splat should
+                // capture until the next :param, *splat, or EOL.
+                return mode === ":" ? "([^/]*)" : "(.*)";
+            });
+            // Add ^/$ anchors and create the actual RegExp.
+            re = new RegExp("^" + re + "$");
+            // Match the passed url against the route, returning an object of params
+            // and values.
+            self.parse = function (url) {
+                var i = 0;
+                var param, value;
+                var params = {};
+                var matches = url.match(re);
+                // If no matches, return null.
+                if (!matches) {
+                    return null;
+                }
+                // Add all matched :param / *splat values into the params object.
+                while (i < names.length) {
+                    param = names[i++];
+                    value = matches[i];
+                    // If a rule exists for thie param and it doesn't validate, return null.
+                    if (rules && param in rules && !validateRule(rules[param], value)) {
+                        return null;
+                    }
+                    params[param] = value;
+                }
+                return params;
+            };
+            // Build path by inserting the given params into the route.
+            self.stringify = function (params) {
+                var param, re;
+                var result = route;
+                // Insert each passed param into the route string. Note that this loop
+                // doesn't check .hasOwnProperty because this script doesn't support
+                // modifications to Object.prototype.
+                for (param in params) {
+                    re = new RegExp("[:*]" + param + "\\b");
+                    result = result.replace(re, params[param]);
+                }
+                // Missing params should be replaced with empty string.
+                return result.replace(reParam, "");
+            };
+        }
+        else {
+            // RegExp route was passed. This is super-simple.
+            self.parse = function (url) {
+                var matches = url.match(re);
+                return matches && { captures: matches.slice(1) };
+            };
+            // There's no meaningful way to stringify based on a RegExp route, so
+            // return empty string.
+            self.stringify = function () {
+                return "";
+            };
+        }
+        return self;
+    };
+    return exports.routeMatcher;
+})();
 ///////////
 // Helpers
 function match(routeToMatch) {
-    var rm1 = routeMatcher_1.routeMatcher(routeToMatch);
-    var rm2 = routeMatcher_1.routeMatcher(routeToMatch + '/*routeRemainder');
+    var rm1 = routeMatcher(routeToMatch);
+    var rm2 = routeMatcher(routeToMatch + '/*routeRemainder');
     return function match(incomingRoute) {
         if (ramda_1.isNil(incomingRoute)) {
             return {
@@ -111,19 +214,20 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     var matchedRoute$ = hold_1.default(route$.map(match(settings.route))
         .tap(console.warn.bind(console, trace + '|matchedRoute$'))); //.shareReplay(1)
     var changedRouteEvents$ = matchedRoute$
-        .map(ramda_1.pluck('match'))
+        .map(ramda_1.prop('match'))
+        .tap(console.warn.bind(console, 'matchedRoute$'))
         .skipRepeatsWith(function eq(x, y) {
-        console.log('distinctUntilChanged on : ', x ? ramda_1.omit(['routeRemainder'], x) : null);
-        var _x = x ? ramda_1.omit(['routeRemainder'], y) : null;
+        var _x = x ? ramda_1.omit(['routeRemainder'], x) : null;
         var _y = y ? ramda_1.omit(['routeRemainder'], y) : null;
-        return _x === _y;
-    }) // check eq. to distinctUntilChanged with selector
+        return ramda_1.equals(_x, _y);
+    })
         .tap(console.warn.bind(console, 'changedRouteEvents$'))
         .multicast(); // TODO BRC : check the level of equivalency to share
     // Note : must be shared, used twice here
-    var cachedSinks$ = changedRouteEvents$
+    var cachedSinks$ = hold_1.default(changedRouteEvents$
         .map(function (params) {
         var cachedSinks;
+        console.error('changedRouteEvents$ > params', params);
         if (params != null) {
             console.info('computing children components sinks', params);
             var componentFromChildren = m_1.m({
@@ -132,12 +236,12 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                     console.log('sources, __settings', sources, __settings);
                     console.groupEnd();
                     return {
-                        route$: matchedRoute$
+                        route$: hold_1.default(matchedRoute$
                             .map(ramda_1.path(['match', 'routeRemainder']))
-                            .tap(console.warn.bind(console, settings.trace + ' :' +
-                            ' changedRouteEvents$' +
-                            ' : routeRemainder: '))
-                            .multicast(),
+                            .tap(function (x) {
+                            console.warn(settings.trace + ' :' +
+                                ' changedRouteEvents$ : routeRemainder: ', x);
+                        })),
                     };
                 },
             }, {
@@ -150,8 +254,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
             cachedSinks = null;
         }
         return cachedSinks;
-    })
-        .multicast();
+    })); //.multicast()
     function makeRoutedSinkFromCache(sinkName) {
         return function makeRoutedSinkFromCache(params, cachedSinks) {
             var cached$, preCached$, prefix$;
@@ -207,6 +310,9 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     }
     function makeRoutedSink(sinkName) {
         return (_a = {},
+            // !!!!!!!!!!!!! changed the sample implementation to start the source
+            // first, then then sampler, this allow cachedSinks$ values to be read
+            // before the sampler is subscribed to
             _a[sinkName] = sample_1.sample(makeRoutedSinkFromCache(sinkName), changedRouteEvents$, cachedSinks$)
                 .switch(),
             _a

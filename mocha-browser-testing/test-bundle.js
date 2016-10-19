@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "http://localhost:8080/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 160);
+/******/ 	return __webpack_require__(__webpack_require__.s = 157);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -84,9 +84,9 @@ function Stream (source) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Disposable__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SettableDisposable__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Promise__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Disposable__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SettableDisposable__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Promise__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
 /* harmony export (immutable) */ exports["f"] = tryDispose;
@@ -508,41 +508,41 @@ Object.defineProperty(exports, '__esModule', { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__most_prelude__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__source_from__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__source_periodic__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_symbol_observable__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__source_from__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__source_periodic__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_symbol_observable__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_symbol_observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__observable_subscribe__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__combinator_thru__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__source_fromEvent__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__combinator_observe__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__combinator_loop__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__combinator_accumulate__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__source_unfold__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__source_iterate__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__source_generate__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__combinator_build__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__combinator_transform__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__combinator_applicative__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__combinator_transduce__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__combinator_flatMap__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__combinator_continueWith__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__combinator_concatMap__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__combinator_mergeConcurrently__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__combinator_merge__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__combinator_combine__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__combinator_sample__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__combinator_zip__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__combinator_switch__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__combinator_filter__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__combinator_slice__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__combinator_timeslice__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__combinator_delay__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__combinator_timestamp__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__combinator_limit__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__combinator_promises__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__combinator_errors__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__most_multicast__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__observable_subscribe__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__combinator_thru__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__source_fromEvent__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__combinator_observe__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__combinator_loop__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__combinator_accumulate__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__source_unfold__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__source_iterate__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__source_generate__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__combinator_build__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__combinator_transform__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__combinator_applicative__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__combinator_transduce__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__combinator_flatMap__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__combinator_continueWith__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__combinator_concatMap__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__combinator_mergeConcurrently__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__combinator_merge__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__combinator_combine__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__combinator_sample__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__combinator_zip__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__combinator_switch__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__combinator_filter__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__combinator_slice__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__combinator_timeslice__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__combinator_delay__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__combinator_timestamp__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__combinator_limit__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__combinator_promises__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__combinator_errors__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__most_multicast__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__most_multicast___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_32__most_multicast__);
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "fromEvent", function() { return __WEBPACK_IMPORTED_MODULE_33__source_fromEvent__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "unfold", function() { return __WEBPACK_IMPORTED_MODULE_34__source_unfold__["a"]; });
@@ -1273,7 +1273,7 @@ __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */].prototype.multicast = f
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fatalError__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fatalError__ = __webpack_require__(18);
 /* harmony export (immutable) */ exports["a"] = PropagateTask;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -1591,409 +1591,107 @@ exports.MotorcycleVNode = MotorcycleVNode;
 
 /***/ },
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-/// <reference path="../../typings/index.d.ts" />
-var ramda_1 = __webpack_require__(10);
-var $ = __webpack_require__(4);
-// import {isEmpty} from './most/isEmpty'
-var IsEmptySink = function IsEmptySink(sink) {
-    this.sink = sink;
-    this.isEmpty = true;
-};
-IsEmptySink.prototype.event = function event(t, x) {
-    this.isEmpty = false;
-    this.sink.event(t, false);
-    this.sink.end(t, x);
-};
-IsEmptySink.prototype.error = function error(t, e) {
-    this.sink.error(t, e);
-};
-IsEmptySink.prototype.end = function end(t, x) {
-    if (this.isEmpty) {
-        this.sink.event(t, true);
-        this.sink.end(t, x);
-    }
-};
-var IsEmpty = function IsEmpty(source) {
-    this.source = source;
-};
-IsEmpty.prototype.run = function run(sink, scheduler) {
-    return this.source.run(new IsEmptySink(sink), scheduler);
-};
-var isEmpty = function (stream) {
-    return new stream.constructor(new IsEmpty(stream.source));
-};
-var mapIndexed = ramda_1.addIndex(ramda_1.map);
-function assertSignature(fnName, _arguments, vRules) {
-    var argNames = ramda_1.flatten(ramda_1.map(ramda_1.keys, vRules));
-    var ruleFns = ramda_1.flatten(ramda_1.map(function (vRule) {
-        return ramda_1.values(vRule)[0];
-    }, vRules));
-    var args = mapIndexed(function (vRule, index) {
-        return _arguments[index];
-    }, vRules);
-    var validatedArgs = mapIndexed(function (value, index) {
-        var ruleFn = ruleFns[index];
-        return ruleFn(value);
-    }, args);
-    var hasFailed = ramda_1.reduce(function (acc, value) {
-        return isFalse(value) || acc;
-    }, false, validatedArgs);
-    if (hasFailed) {
-        var validationMessages = mapIndexed(function (errorMessageOrBool, index) {
-            return isTrue(errorMessageOrBool) ?
-                '' :
-                [
-                    // `${fnName}: argument ${argNames[index]} fails rule
-                    // ${vRules[index].name}`, // cant find a way to do it typescript
-                    (fnName + ": argument " + argNames[index] + " fails validation rule}"),
-                    isBoolean(errorMessageOrBool) ? '' : errorMessageOrBool
-                ].join(': ');
-        }, validatedArgs).join('\n');
-        var errorMessage = ['assertSignature:', validationMessages].join(' ');
-        throw errorMessage;
-    }
-    return !hasFailed;
+var g;
+
+// This works in non-strict mode
+g = (function() { return this; })();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
 }
-exports.assertSignature = assertSignature;
-/**
- * Test against a predicate, and throws an exception if the predicate
- * is not satisfied
- * @param {function(*): (Boolean|String)} contractFn Predicate that must be
- * satisfy. Returns true if predicate is satisfied, otherwise return a
- * string to report about the predicate failure
- * @param {Array<*>} contractArgs
- * @param {String} errorMessage
- * @returns {Boolean}
- * @throws
- */
-function assertContract(contractFn, contractArgs, errorMessage) {
-    var boolOrError = contractFn.apply(null, contractArgs);
-    var isPredicateSatisfied = isBoolean(boolOrError);
-    if (!isPredicateSatisfied) {
-        throw "assertContract: fails contract " + contractFn.name + "\n" + errorMessage + "\n " + boolOrError;
-    }
-    return true;
-}
-exports.assertContract = assertContract;
-function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
-    var arrMessages = [];
-    var strict = defaultsTo(isStrict, false);
-    // Check that object properties in the signature match it
-    ramda_1.mapObjIndexed(function (predicate, property) {
-        if (!(predicate(obj[property]))) {
-            arrMessages.push(signatureErrorMessages[property]);
-        }
-    }, signature);
-    // Check that object properties are all in the signature if strict is set
-    if (strict) {
-        ramda_1.mapObjIndexed(function (value, property) {
-            if (!(property in signature)) {
-                arrMessages.push("Object cannot contain a property called " + property);
-            }
-        }, obj);
-    }
-    return arrMessages.join("").length === 0 ? true : arrMessages;
-}
-exports.checkSignature = checkSignature;
-function unfoldObjOverload(obj, overloads) {
-    var result = { _index: 0 };
-    var index = 0;
-    overloads.some(function (overload) {
-        // can only be one property
-        var property = ramda_1.keys(overload)[0];
-        var predicate = ramda_1.values(overload)[0];
-        var predicateEval = predicate(obj);
-        if (predicateEval) {
-            result[property] = obj;
-            result._index = index;
-        }
-        index++;
-        return predicateEval;
-    });
-    return result;
-}
-exports.unfoldObjOverload = unfoldObjOverload;
-function defaultsTo(obj, defaultsTo) {
-    return !obj ? defaultsTo : obj;
-}
-exports.defaultsTo = defaultsTo;
-/**
- * Returns true iff the parameter is a boolean whose value is false.
- * This hence does both type checking and value checking
- * @param obj
- * @returns {boolean}
- */
-function isFalse(obj) {
-    return isBoolean(obj) ? !obj : false;
-}
-/**
- * Returns true iff the parameter is a boolean whose value is false.
- * This hence does both type checking and value checking
- * @param obj
- * @returns {boolean}
- */
-function isTrue(obj) {
-    return isBoolean(obj) ? obj : false;
-}
-function isMergeSinkFn(obj) {
-    return isFunction(obj);
-}
-exports.isMergeSinkFn = isMergeSinkFn;
-/**
- * Returns true iff the passed parameter is null or undefined OR a POJO
- * @param {Object} obj
- * @returns {boolean}
- */
-function isNullableObject(obj) {
-    // Note that `==` is used instead of `===`
-    // This allows to test for `undefined` and `null` at the same time
-    return obj == null || typeof obj === 'object';
-}
-exports.isNullableObject = isNullableObject;
-/**
- *
- * @param obj
- * @returns {SignatureCheck}
- */
-function isNullableComponentDef(obj) {
-    // Note that `==` is used instead of `===`
-    // This allows to test for `undefined` and `null` at the same time
-    return ramda_1.isNil(obj) || checkSignature(obj, {
-        makeLocalSources: ramda_1.either(ramda_1.isNil, isFunction),
-        makeLocalSettings: ramda_1.either(ramda_1.isNil, isFunction),
-        makeOwnSinks: ramda_1.either(ramda_1.isNil, isFunction),
-        mergeSinks: function (mergeSinks) {
-            if (obj.computeSinks) {
-                return !mergeSinks;
-            }
-            else {
-                return ramda_1.either(ramda_1.isNil, ramda_1.either(isObject, isFunction))(mergeSinks);
-            }
-        },
-        computeSinks: ramda_1.either(ramda_1.isNil, isFunction),
-        sinksContract: ramda_1.either(ramda_1.isNil, isFunction)
-    }, {
-        makeLocalSources: 'makeLocalSources must be undefined or a function',
-        makeLocalSettings: 'makeLocalSettings must be undefined or a' +
-            ' function',
-        makeOwnSinks: 'makeOwnSinks must be undefined or a function',
-        mergeSinks: 'mergeSinks can only be defined when `computeSinks` is' +
-            ' not, and when so, it must be undefined, an object or a function',
-        computeSinks: 'computeSinks must be undefined or a function',
-        sinksContract: 'sinksContract must be undefined or a function'
-    }, true);
-}
-exports.isNullableComponentDef = isNullableComponentDef;
-function isUndefined(obj) {
-    return typeof obj === 'undefined';
-}
-exports.isUndefined = isUndefined;
-function isFunction(obj) {
-    return typeof (obj) === 'function';
-}
-exports.isFunction = isFunction;
-function isObject(obj) {
-    return typeof (obj) == 'object';
-}
-exports.isObject = isObject;
-function isBoolean(obj) {
-    return typeof (obj) == 'boolean';
-}
-exports.isBoolean = isBoolean;
-function isString(obj) {
-    return typeof (obj) == 'string';
-}
-exports.isString = isString;
-function isArray(obj) {
-    return Array.isArray(obj);
-}
-exports.isArray = isArray;
-/**
- * Returns a function which returns true if its parameter is an array,
- * and each element of the array satisfies a given predicate
- * @param {function(*):Boolean} predicateFn
- * @returns {function():Boolean}
- */
-function isArrayOf(predicateFn) {
-    if (typeof predicateFn !== 'function') {
-        console.error('isArrayOf: predicateFn is not a function!!');
-        return ramda_1.always(false);
-    }
-    return function _isArrayOf(obj) {
-        if (!Array.isArray(obj)) {
-            return false;
-        }
-        return ramda_1.all(predicateFn, obj);
-    };
-}
-exports.isArrayOf = isArrayOf;
-function isVNode(obj) {
-    return ["children", "data", "elm", "key", "sel", "text"]
-        .every(function (prop) { return prop in obj; });
-}
-exports.isVNode = isVNode;
-/**
- * Returns true iff the parameter `obj` represents a component.
- * @param obj
- * @returns {boolean}
- */
-function isComponent(obj) {
-    // Without a type system, we just test that it is a function
-    return isFunction(obj);
-}
-exports.isComponent = isComponent;
-function isObservable(obj) {
-    // duck typing in the absence of a type system
-    return isFunction(obj.subscribe);
-}
-exports.isObservable = isObservable;
-function isSource(obj) {
-    return isObservable(obj);
-}
-exports.isSource = isSource;
-function isSources(obj) {
-    // We check the minimal contract which is not to be nil
-    // In `cycle`, sources can have both regular
-    // objects and observables (sign that the design could be improved).
-    // Regular objects are injected dependencies (DOM, router?) which
-    // are initialized in the drivers, and should be separated from
-    // `sources`. `sources` could then have an homogeneous type which
-    // could be checked properly
-    return !ramda_1.isNil(obj);
-}
-function isOptSinks(obj) {
-    // obj can be null
-    return !obj || ramda_1.all(ramda_1.either(ramda_1.isNil, isObservable), ramda_1.values(obj));
-}
-exports.isOptSinks = isOptSinks;
-function isArrayOptSinks(arrSinks) {
-    return ramda_1.all(isOptSinks, arrSinks);
-}
-exports.isArrayOptSinks = isArrayOptSinks;
-function assertSourcesContracts(sources, sourcesContract) {
-    // Check sources contracts
-    assertContract(isSources, [sources], 'm : `sources` parameter is invalid');
-    assertContract(sourcesContract, [sources], 'm: `sources`' +
-        ' parameter fails contract ' + sourcesContract.name);
-}
-exports.assertSourcesContracts = assertSourcesContracts;
-function assertSinksContracts(sinks, sinksContract) {
-    assertContract(isOptSinks, [sinks], 'mergeSinks must return a hash of observable sink');
-    assertContract(sinksContract, [sinks], 'fails custom contract ' + sinksContract.name);
-}
-exports.assertSinksContracts = assertSinksContracts;
-function assertSettingsContracts(mergedSettings, settingsContract) {
-    // Check settings contracts
-    assertContract(settingsContract, [mergedSettings], 'm: `settings`' +
-        ' parameter fails contract ' + settingsContract.name);
-}
-exports.assertSettingsContracts = assertSettingsContracts;
-/**
- * Adds `tap` logging/tracing information to all sinks
- * @param {Sinks} sinks
- * @param {Settings} settings Settings with which the parent component is
- * called
- * @returns {*}
- */
-function trace(sinks, settings) {
-    // TODO BRC
-    return sinks;
-}
-exports.trace = trace;
-function removeNullsFromArray(arr) {
-    return ramda_1.reject(ramda_1.isNil, arr);
-}
-exports.removeNullsFromArray = removeNullsFromArray;
-function removeEmptyVNodes(arrVNode) {
-    return ramda_1.reduce(function (accNonEmptyVNodes, vNode) {
-        return (isNullVNode(vNode)) ?
-            accNonEmptyVNodes :
-            (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes);
-    }, [], arrVNode);
-}
-exports.removeEmptyVNodes = removeEmptyVNodes;
-function isNullVNode(vNode) {
-    return ramda_1.equals(vNode.children, []) &&
-        ramda_1.equals(vNode.data, {}) &&
-        isUndefined(vNode.elm) &&
-        isUndefined(vNode.key) &&
-        isUndefined(vNode.sel) &&
-        isUndefined(vNode.text);
-}
-/**
- * For each element object of the array, returns the indicated property of
- * that object, if it exists, null otherwise.
- * For instance, `projectSinksOn('a', obj)` with obj :
- * - [{a: ..., b: ...}, {b:...}]
- * - result : [..., null]
- * @param {String} prop
- * @param {Array<*>} obj
- * @returns {Array<*>}
- */
-function projectSinksOn(prop, obj) {
-    return ramda_1.map(function (x) { return x ? x[prop] : null; }, obj);
-}
-exports.projectSinksOn = projectSinksOn;
-/**
- * Returns an array with the set of sink names extracted from an array of
- * sinks. The ordering of those names should not be relied on.
- * For instance:
- * - [{DOM, auth},{DOM, route}]
- * results in ['DOM','auth','route']
- * @param {Array<Sinks>} aSinks
- * @returns {Array<String>}
- */
-function getSinkNamesFromSinksArray(aSinks) {
-    return ramda_1.uniq(ramda_1.flatten(ramda_1.map(getValidKeys, aSinks)));
-}
-exports.getSinkNamesFromSinksArray = getSinkNamesFromSinksArray;
-function getValidKeys(obj) {
-    var validKeys = [];
-    ramda_1.mapObjIndexed(function (value, key) {
-        if (value != null) {
-            validKeys.push(key);
-        }
-    }, obj);
-    return validKeys;
-}
-/**
- * Turns a sink which is empty into a sink which emits `Null`
- * This is necessary for use in combination with `combineLatest`
- * As a matter of fact, `combineLatest(obs1, obs2)` will block till both
- * observables emit at least one value. So if `obs2` is empty, it will
- * never emit anything
- * @param sink
- * @returns {Observable|*}
- */
-function emitNullIfEmpty(sink) {
-    return ramda_1.isNil(sink) ?
-        null :
-        $.merge(sink, 
-        // TODO TYS : recreate Rx.Obs.isEmpty in most
-        // https://github.com/Reactive-Extensions/RxJS/blob/master/src/core/linq/observable/isempty.js
-        // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
-        // see also tests
-        // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
-        isEmpty(sink).filter(function (x) { return x; }).map(function (x) { return null; }));
-}
-exports.emitNullIfEmpty = emitNullIfEmpty;
-function makeDivVNode(x) {
-    return {
-        "children": undefined,
-        "data": {},
-        "elm": undefined,
-        "key": undefined,
-        "sel": "div",
-        "text": x
-    };
-}
-exports.makeDivVNode = makeDivVNode;
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fusion_Map__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__ = __webpack_require__(2);
+/* harmony export (immutable) */ exports["b"] = map;
+/* harmony export (immutable) */ exports["c"] = constant;
+/* harmony export (immutable) */ exports["a"] = tap;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+/**
+ * Transform each value in the stream by applying f to each
+ * @param {function(*):*} f mapping function
+ * @param {Stream} stream stream to map
+ * @returns {Stream} stream containing items transformed by f
+ */
+function map (f, stream) {
+  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](__WEBPACK_IMPORTED_MODULE_1__fusion_Map__["a" /* default */].create(f, stream.source))
+}
+
+/**
+* Replace each value in the stream with x
+* @param {*} x
+* @param {Stream} stream
+* @returns {Stream} stream containing items replaced with x
+*/
+function constant (x, stream) {
+  return map(function () {
+    return x
+  }, stream)
+}
+
+/**
+* Perform a side effect for each item in the stream
+* @param {function(x:*):*} f side effect to execute for each item. The
+*  return value will be discarded.
+* @param {Stream} stream stream to tap
+* @returns {Stream} new stream containing the same items as this stream
+*/
+function tap (f, stream) {
+  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new Tap(f, stream.source))
+}
+
+function Tap (f, source) {
+  this.source = source
+  this.f = f
+}
+
+Tap.prototype.run = function (sink, scheduler) {
+  return this.source.run(new TapSink(this.f, sink), scheduler)
+}
+
+function TapSink (f, sink) {
+  this.sink = sink
+  this.f = f
+}
+
+TapSink.prototype.end = __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__["a" /* default */].prototype.end
+TapSink.prototype.error = __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__["a" /* default */].prototype.error
+
+TapSink.prototype.event = function (t, x) {
+  var f = this.f
+  f(x)
+  this.sink.event(t, x)
+}
+
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 //  Ramda v0.22.1
@@ -10830,32 +10528,4614 @@ exports.makeDivVNode = makeDivVNode;
 
 
 /***/ },
-/* 11 */
-/***/ function(module, exports) {
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
 
-var g;
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(24)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('@most/multicast'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.multicast);
+    global.mostHold = mod.exports;
+  }
+})(this, function (exports, _multicast) {
+  'use strict';
 
-// This works in non-strict mode
-g = (function() { return this; })();
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
 
-module.exports = g;
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  // hold :: Stream a -> Stream a
+  var index = function index(stream) {
+    return new stream.constructor(new _multicast.MulticastSource(new Hold(stream.source)));
+  };
+
+  var Hold = function () {
+    function Hold(source) {
+      _classCallCheck(this, Hold);
+
+      this.source = source;
+      this.time = -Infinity;
+      this.value = void 0;
+    }
+
+    _createClass(Hold, [{
+      key: 'run',
+      value: function run(sink, scheduler) {
+        /* istanbul ignore else */
+        if (sink._hold !== this) {
+          sink._hold = this;
+          sink._holdAdd = sink.add;
+          sink.add = holdAdd;
+
+          sink._holdEvent = sink.event;
+          sink.event = holdEvent;
+        }
+
+        return this.source.run(sink, scheduler);
+      }
+    }]);
+
+    return Hold;
+  }();
+
+  function holdAdd(sink) {
+    var len = this._holdAdd(sink);
+    /* istanbul ignore else */
+    if (this._hold.time >= 0) {
+      sink.event(this._hold.time, this._hold.value);
+    }
+    return len;
+  }
+
+  function holdEvent(t, x) {
+    /* istanbul ignore else */
+    if (t >= this._hold.time) {
+      this._hold.time = t;
+      this._hold.value = x;
+    }
+    return this._holdEvent(t, x);
+  }
+
+  exports.default = index;
+});
 
 
 /***/ },
-/* 12 */
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+/// <reference path="../../typings/index.d.ts" />
+var ramda_1 = __webpack_require__(11);
+var $ = __webpack_require__(4);
+// import {isEmpty} from './most/isEmpty'
+var IsEmptySink = function IsEmptySink(sink) {
+    this.sink = sink;
+    this.isEmpty = true;
+};
+IsEmptySink.prototype.event = function event(t, x) {
+    this.isEmpty = false;
+    this.sink.event(t, false);
+    this.sink.end(t, x);
+};
+IsEmptySink.prototype.error = function error(t, e) {
+    this.sink.error(t, e);
+};
+IsEmptySink.prototype.end = function end(t, x) {
+    if (this.isEmpty) {
+        this.sink.event(t, true);
+        this.sink.end(t, x);
+    }
+};
+var IsEmpty = function IsEmpty(source) {
+    this.source = source;
+};
+IsEmpty.prototype.run = function run(sink, scheduler) {
+    return this.source.run(new IsEmptySink(sink), scheduler);
+};
+var isEmpty = function (stream) {
+    return new stream.constructor(new IsEmpty(stream.source));
+};
+var mapIndexed = ramda_1.addIndex(ramda_1.map);
+function assertSignature(fnName, _arguments, vRules) {
+    var argNames = ramda_1.flatten(ramda_1.map(ramda_1.keys, vRules));
+    var ruleFns = ramda_1.flatten(ramda_1.map(function (vRule) {
+        return ramda_1.values(vRule)[0];
+    }, vRules));
+    var args = mapIndexed(function (vRule, index) {
+        return _arguments[index];
+    }, vRules);
+    var validatedArgs = mapIndexed(function (value, index) {
+        var ruleFn = ruleFns[index];
+        return ruleFn(value);
+    }, args);
+    var hasFailed = ramda_1.reduce(function (acc, value) {
+        return isFalse(value) || acc;
+    }, false, validatedArgs);
+    if (hasFailed) {
+        var validationMessages = mapIndexed(function (errorMessageOrBool, index) {
+            return isTrue(errorMessageOrBool) ?
+                '' :
+                [
+                    // `${fnName}: argument ${argNames[index]} fails rule
+                    // ${vRules[index].name}`, // cant find a way to do it typescript
+                    (fnName + ": argument " + argNames[index] + " fails validation rule}"),
+                    isBoolean(errorMessageOrBool) ? '' : errorMessageOrBool
+                ].join(': ');
+        }, validatedArgs).join('\n');
+        var errorMessage = ['assertSignature:', validationMessages].join(' ');
+        throw errorMessage;
+    }
+    return !hasFailed;
+}
+exports.assertSignature = assertSignature;
+/**
+ * Test against a predicate, and throws an exception if the predicate
+ * is not satisfied
+ * @param {function(*): (Boolean|String)} contractFn Predicate that must be
+ * satisfy. Returns true if predicate is satisfied, otherwise return a
+ * string to report about the predicate failure
+ * @param {Array<*>} contractArgs
+ * @param {String} errorMessage
+ * @returns {Boolean}
+ * @throws
+ */
+function assertContract(contractFn, contractArgs, errorMessage) {
+    var boolOrError = contractFn.apply(null, contractArgs);
+    var isPredicateSatisfied = isBoolean(boolOrError);
+    if (!isPredicateSatisfied) {
+        throw "assertContract: fails contract " + contractFn.name + "\n" + errorMessage + "\n " + boolOrError;
+    }
+    return true;
+}
+exports.assertContract = assertContract;
+function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
+    var arrMessages = [];
+    var strict = defaultsTo(isStrict, false);
+    // Check that object properties in the signature match it
+    ramda_1.mapObjIndexed(function (predicate, property) {
+        if (!(predicate(obj[property]))) {
+            arrMessages.push(signatureErrorMessages[property]);
+        }
+    }, signature);
+    // Check that object properties are all in the signature if strict is set
+    if (strict) {
+        ramda_1.mapObjIndexed(function (value, property) {
+            if (!(property in signature)) {
+                arrMessages.push("Object cannot contain a property called " + property);
+            }
+        }, obj);
+    }
+    return arrMessages.join("").length === 0 ? true : arrMessages;
+}
+exports.checkSignature = checkSignature;
+function unfoldObjOverload(obj, overloads) {
+    var result = { _index: 0 };
+    var index = 0;
+    overloads.some(function (overload) {
+        // can only be one property
+        var property = ramda_1.keys(overload)[0];
+        var predicate = ramda_1.values(overload)[0];
+        var predicateEval = predicate(obj);
+        if (predicateEval) {
+            result[property] = obj;
+            result._index = index;
+        }
+        index++;
+        return predicateEval;
+    });
+    return result;
+}
+exports.unfoldObjOverload = unfoldObjOverload;
+function defaultsTo(obj, defaultsTo) {
+    return !obj ? defaultsTo : obj;
+}
+exports.defaultsTo = defaultsTo;
+/**
+ * Returns true iff the parameter is a boolean whose value is false.
+ * This hence does both type checking and value checking
+ * @param obj
+ * @returns {boolean}
+ */
+function isFalse(obj) {
+    return isBoolean(obj) ? !obj : false;
+}
+/**
+ * Returns true iff the parameter is a boolean whose value is false.
+ * This hence does both type checking and value checking
+ * @param obj
+ * @returns {boolean}
+ */
+function isTrue(obj) {
+    return isBoolean(obj) ? obj : false;
+}
+function isMergeSinkFn(obj) {
+    return isFunction(obj);
+}
+exports.isMergeSinkFn = isMergeSinkFn;
+/**
+ * Returns true iff the passed parameter is null or undefined OR a POJO
+ * @param {Object} obj
+ * @returns {boolean}
+ */
+function isNullableObject(obj) {
+    // Note that `==` is used instead of `===`
+    // This allows to test for `undefined` and `null` at the same time
+    return obj == null || typeof obj === 'object';
+}
+exports.isNullableObject = isNullableObject;
+/**
+ *
+ * @param obj
+ * @returns {SignatureCheck}
+ */
+function isNullableComponentDef(obj) {
+    // Note that `==` is used instead of `===`
+    // This allows to test for `undefined` and `null` at the same time
+    return ramda_1.isNil(obj) || checkSignature(obj, {
+        makeLocalSources: ramda_1.either(ramda_1.isNil, isFunction),
+        makeLocalSettings: ramda_1.either(ramda_1.isNil, isFunction),
+        makeOwnSinks: ramda_1.either(ramda_1.isNil, isFunction),
+        mergeSinks: function (mergeSinks) {
+            if (obj.computeSinks) {
+                return !mergeSinks;
+            }
+            else {
+                return ramda_1.either(ramda_1.isNil, ramda_1.either(isObject, isFunction))(mergeSinks);
+            }
+        },
+        computeSinks: ramda_1.either(ramda_1.isNil, isFunction),
+        sinksContract: ramda_1.either(ramda_1.isNil, isFunction)
+    }, {
+        makeLocalSources: 'makeLocalSources must be undefined or a function',
+        makeLocalSettings: 'makeLocalSettings must be undefined or a' +
+            ' function',
+        makeOwnSinks: 'makeOwnSinks must be undefined or a function',
+        mergeSinks: 'mergeSinks can only be defined when `computeSinks` is' +
+            ' not, and when so, it must be undefined, an object or a function',
+        computeSinks: 'computeSinks must be undefined or a function',
+        sinksContract: 'sinksContract must be undefined or a function'
+    }, true);
+}
+exports.isNullableComponentDef = isNullableComponentDef;
+function isUndefined(obj) {
+    return typeof obj === 'undefined';
+}
+exports.isUndefined = isUndefined;
+function isFunction(obj) {
+    return typeof (obj) === 'function';
+}
+exports.isFunction = isFunction;
+function isObject(obj) {
+    return typeof (obj) == 'object';
+}
+exports.isObject = isObject;
+function isBoolean(obj) {
+    return typeof (obj) == 'boolean';
+}
+exports.isBoolean = isBoolean;
+function isString(obj) {
+    return typeof (obj) == 'string';
+}
+exports.isString = isString;
+function isArray(obj) {
+    return Array.isArray(obj);
+}
+exports.isArray = isArray;
+/**
+ * Returns a function which returns true if its parameter is an array,
+ * and each element of the array satisfies a given predicate
+ * @param {function(*):Boolean} predicateFn
+ * @returns {function():Boolean}
+ */
+function isArrayOf(predicateFn) {
+    if (typeof predicateFn !== 'function') {
+        console.error('isArrayOf: predicateFn is not a function!!');
+        return ramda_1.always(false);
+    }
+    return function _isArrayOf(obj) {
+        if (!Array.isArray(obj)) {
+            return false;
+        }
+        return ramda_1.all(predicateFn, obj);
+    };
+}
+exports.isArrayOf = isArrayOf;
+function isVNode(obj) {
+    return ["children", "data", "elm", "key", "sel", "text"]
+        .every(function (prop) { return prop in obj; });
+}
+exports.isVNode = isVNode;
+/**
+ * Returns true iff the parameter `obj` represents a component.
+ * @param obj
+ * @returns {boolean}
+ */
+function isComponent(obj) {
+    // Without a type system, we just test that it is a function
+    return isFunction(obj);
+}
+exports.isComponent = isComponent;
+function isObservable(obj) {
+    // duck typing in the absence of a type system
+    return isFunction(obj.subscribe);
+}
+exports.isObservable = isObservable;
+function isSource(obj) {
+    return isObservable(obj);
+}
+exports.isSource = isSource;
+function isSources(obj) {
+    // We check the minimal contract which is not to be nil
+    // In `cycle`, sources can have both regular
+    // objects and observables (sign that the design could be improved).
+    // Regular objects are injected dependencies (DOM, router?) which
+    // are initialized in the drivers, and should be separated from
+    // `sources`. `sources` could then have an homogeneous type which
+    // could be checked properly
+    return !ramda_1.isNil(obj);
+}
+function isOptSinks(obj) {
+    // obj can be null
+    return !obj || ramda_1.all(ramda_1.either(ramda_1.isNil, isObservable), ramda_1.values(obj));
+}
+exports.isOptSinks = isOptSinks;
+function isArrayOptSinks(arrSinks) {
+    return ramda_1.all(isOptSinks, arrSinks);
+}
+exports.isArrayOptSinks = isArrayOptSinks;
+function assertSourcesContracts(sources, sourcesContract) {
+    // Check sources contracts
+    assertContract(isSources, [sources], 'm : `sources` parameter is invalid');
+    assertContract(sourcesContract, [sources], 'm: `sources`' +
+        ' parameter fails contract ' + sourcesContract.name);
+}
+exports.assertSourcesContracts = assertSourcesContracts;
+function assertSinksContracts(sinks, sinksContract) {
+    assertContract(isOptSinks, [sinks], 'mergeSinks must return a hash of observable sink');
+    assertContract(sinksContract, [sinks], 'fails custom contract ' + sinksContract.name);
+}
+exports.assertSinksContracts = assertSinksContracts;
+function assertSettingsContracts(mergedSettings, settingsContract) {
+    // Check settings contracts
+    assertContract(settingsContract, [mergedSettings], 'm: `settings`' +
+        ' parameter fails contract ' + settingsContract.name);
+}
+exports.assertSettingsContracts = assertSettingsContracts;
+/**
+ * Adds `tap` logging/tracing information to all sinks
+ * @param {Sinks} sinks
+ * @param {Settings} settings Settings with which the parent component is
+ * called
+ * @returns {*}
+ */
+function trace(sinks, settings) {
+    // TODO BRC
+    return sinks;
+}
+exports.trace = trace;
+function removeNullsFromArray(arr) {
+    return ramda_1.reject(ramda_1.isNil, arr);
+}
+exports.removeNullsFromArray = removeNullsFromArray;
+function removeEmptyVNodes(arrVNode) {
+    return ramda_1.reduce(function (accNonEmptyVNodes, vNode) {
+        return (isNullVNode(vNode)) ?
+            accNonEmptyVNodes :
+            (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes);
+    }, [], arrVNode);
+}
+exports.removeEmptyVNodes = removeEmptyVNodes;
+function isNullVNode(vNode) {
+    return ramda_1.equals(vNode.children, []) &&
+        ramda_1.equals(vNode.data, {}) &&
+        isUndefined(vNode.elm) &&
+        isUndefined(vNode.key) &&
+        isUndefined(vNode.sel) &&
+        isUndefined(vNode.text);
+}
+/**
+ * For each element object of the array, returns the indicated property of
+ * that object, if it exists, null otherwise.
+ * For instance, `projectSinksOn('a', obj)` with obj :
+ * - [{a: ..., b: ...}, {b:...}]
+ * - result : [..., null]
+ * @param {String} prop
+ * @param {Array<*>} obj
+ * @returns {Array<*>}
+ */
+function projectSinksOn(prop, obj) {
+    return ramda_1.map(function (x) { return x ? x[prop] : null; }, obj);
+}
+exports.projectSinksOn = projectSinksOn;
+/**
+ * Returns an array with the set of sink names extracted from an array of
+ * sinks. The ordering of those names should not be relied on.
+ * For instance:
+ * - [{DOM, auth},{DOM, route}]
+ * results in ['DOM','auth','route']
+ * @param {Array<Sinks>} aSinks
+ * @returns {Array<String>}
+ */
+function getSinkNamesFromSinksArray(aSinks) {
+    return ramda_1.uniq(ramda_1.flatten(ramda_1.map(getValidKeys, aSinks)));
+}
+exports.getSinkNamesFromSinksArray = getSinkNamesFromSinksArray;
+function getValidKeys(obj) {
+    var validKeys = [];
+    ramda_1.mapObjIndexed(function (value, key) {
+        if (value != null) {
+            validKeys.push(key);
+        }
+    }, obj);
+    return validKeys;
+}
+/**
+ * Turns a sink which is empty into a sink which emits `Null`
+ * This is necessary for use in combination with `combineLatest`
+ * As a matter of fact, `combineLatest(obs1, obs2)` will block till both
+ * observables emit at least one value. So if `obs2` is empty, it will
+ * never emit anything
+ * @param sink
+ * @returns {Observable|*}
+ */
+function emitNullIfEmpty(sink) {
+    return ramda_1.isNil(sink) ?
+        null :
+        $.merge(sink, 
+        // TODO TYS : recreate Rx.Obs.isEmpty in most
+        // https://github.com/Reactive-Extensions/RxJS/blob/master/src/core/linq/observable/isempty.js
+        // https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/operators/isempty.md
+        // see also tests
+        // https://github.com/Reactive-Extensions/RxJS/blob/master/tests/observable/isempty.js
+        isEmpty(sink).filter(function (x) { return x; }).map(function (x) { return null; }));
+}
+exports.emitNullIfEmpty = emitNullIfEmpty;
+function makeDivVNode(x) {
+    return {
+        "children": undefined,
+        "data": {},
+        "elm": undefined,
+        "key": undefined,
+        "sel": "div",
+        "text": x
+    };
+}
+exports.makeDivVNode = makeDivVNode;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module, global) {/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used to determine if values are of the language type `Object`. */
+var objectTypes = {
+  'function': true,
+  'object': true
+};
+
+/** Detect free variable `exports`. */
+var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
+  ? exports
+  : undefined;
+
+/** Detect free variable `module`. */
+var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
+  ? module
+  : undefined;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+
+/** Detect free variable `self`. */
+var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+
+/** Detect free variable `window`. */
+var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+
+/** Detect `this` as the global object. */
+var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+
+/**
+ * Used as a reference to the global object.
+ *
+ * The `this` value is used if it's the global object to avoid Greasemonkey's
+ * restricted `window` object, otherwise the `window` object is used.
+ */
+var root = freeGlobal ||
+  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
+    freeSelf || thisGlobal || Function('return this')();
+
+/**
+ * Checks if `value` is a global object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+ */
+function checkGlobal(value) {
+  return (value && value.Object === Object) ? value : null;
+}
+
+module.exports = root;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(156)(module), __webpack_require__(9)))
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+"use strict";
+'use strict';
+
+var proto = Element.prototype;
+var vendor = proto.matches
+  || proto.matchesSelector
+  || proto.webkitMatchesSelector
+  || proto.mozMatchesSelector
+  || proto.msMatchesSelector
+  || proto.oMatchesSelector;
+
+module.exports = match;
+
+/**
+ * Match `el` to `selector`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @return {Boolean}
+ * @api public
+ */
+
+function match(el, selector) {
+  if (vendor) return vendor.call(el, selector);
+  var nodes = el.parentNode.querySelectorAll(selector);
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i] == el) return true;
+  }
+  return false;
+}
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var SubjectDisposable_1 = __webpack_require__(82);
+var util_1 = __webpack_require__(38);
+var defaultScheduler = __webpack_require__(87);
+var BasicSubjectSource = (function () {
+    function BasicSubjectSource() {
+        this.scheduler = defaultScheduler;
+        this.sinks = [];
+        this.active = false;
+    }
+    BasicSubjectSource.prototype.run = function (sink, scheduler) {
+        var n = this.add(sink);
+        if (n === 1) {
+            this.scheduler = scheduler;
+            this.active = true;
+        }
+        return new SubjectDisposable_1.SubjectDisposable(this, sink);
+    };
+    BasicSubjectSource.prototype.add = function (sink) {
+        this.sinks = util_1.append(sink, this.sinks);
+        return this.sinks.length;
+    };
+    BasicSubjectSource.prototype.remove = function (sink) {
+        var i = util_1.findIndex(sink, this.sinks);
+        if (i >= 0) {
+            this.sinks = util_1.remove(i, this.sinks);
+        }
+        return this.sinks.length;
+    };
+    BasicSubjectSource.prototype._dispose = function () {
+        this.active = false;
+    };
+    BasicSubjectSource.prototype.next = function (value) {
+        if (!this.active || this.scheduler === void 0)
+            return;
+        this._next(this.scheduler.now(), value);
+    };
+    BasicSubjectSource.prototype.error = function (err) {
+        if (!this.active || this.scheduler === void 0)
+            return;
+        this._dispose();
+        this._error(this.scheduler.now(), err);
+    };
+    BasicSubjectSource.prototype.complete = function (value) {
+        if (!this.active || this.scheduler === void 0)
+            return;
+        this._dispose();
+        this._complete(this.scheduler.now(), value);
+    };
+    BasicSubjectSource.prototype._next = function (time, value) {
+        var s = this.sinks;
+        if (s.length === 1) {
+            return s[0].event(time, value);
+        }
+        for (var i = 0; i < s.length; ++i) {
+            util_1.tryEvent(time, value, s[i]);
+        }
+    };
+    BasicSubjectSource.prototype._complete = function (time, value) {
+        var s = this.sinks;
+        for (var i = 0; i < s.length; ++i) {
+            util_1.tryEnd(time, value, s[i]);
+        }
+    };
+    BasicSubjectSource.prototype._error = function (time, err) {
+        var s = this.sinks;
+        for (var i = 0; i < s.length; ++i) {
+            s[i].error(time, err);
+        }
+    };
+    return BasicSubjectSource;
+}());
+exports.BasicSubjectSource = BasicSubjectSource;
+//# sourceMappingURL=SubjectSource.js.map
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LinkedList__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
+/* harmony export (immutable) */ exports["b"] = mergeConcurrently;
+/* harmony export (immutable) */ exports["a"] = mergeMapConcurrently;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+
+function mergeConcurrently (concurrency, stream) {
+  return mergeMapConcurrently(__WEBPACK_IMPORTED_MODULE_3__most_prelude__["id"], concurrency, stream)
+}
+
+function mergeMapConcurrently (f, concurrency, stream) {
+  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new MergeConcurrently(f, concurrency, stream.source))
+}
+
+function MergeConcurrently (f, concurrency, source) {
+  this.f = f
+  this.concurrency = concurrency
+  this.source = source
+}
+
+MergeConcurrently.prototype.run = function (sink, scheduler) {
+  return new Outer(this.f, this.concurrency, this.source, sink, scheduler)
+}
+
+function Outer (f, concurrency, source, sink, scheduler) {
+  this.f = f
+  this.concurrency = concurrency
+  this.sink = sink
+  this.scheduler = scheduler
+  this.pending = []
+  this.current = new __WEBPACK_IMPORTED_MODULE_2__LinkedList__["a" /* default */]()
+  this.disposable = __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["e" /* once */](source.run(this, scheduler))
+  this.active = true
+}
+
+Outer.prototype.event = function (t, x) {
+  this._addInner(t, x)
+}
+
+Outer.prototype._addInner = function (t, x) {
+  if (this.current.length < this.concurrency) {
+    this._startInner(t, x)
+  } else {
+    this.pending.push(x)
+  }
+}
+
+Outer.prototype._startInner = function (t, x) {
+  try {
+    this._initInner(t, x)
+  } catch (e) {
+    this.error(t, e)
+  }
+}
+
+Outer.prototype._initInner = function (t, x) {
+  var innerSink = new Inner(t, this, this.sink)
+  innerSink.disposable = mapAndRun(this.f, x, innerSink, this.scheduler)
+  this.current.add(innerSink)
+}
+
+function mapAndRun (f, x, sink, scheduler) {
+  return f(x).source.run(sink, scheduler)
+}
+
+Outer.prototype.end = function (t, x) {
+  this.active = false
+  __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["f" /* tryDispose */](t, this.disposable, this.sink)
+  this._checkEnd(t, x)
+}
+
+Outer.prototype.error = function (t, e) {
+  this.active = false
+  this.sink.error(t, e)
+}
+
+Outer.prototype.dispose = function () {
+  this.active = false
+  this.pending.length = 0
+  return Promise.all([this.disposable.dispose(), this.current.dispose()])
+}
+
+Outer.prototype._endInner = function (t, x, inner) {
+  this.current.remove(inner)
+  __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["f" /* tryDispose */](t, inner, this)
+
+  if (this.pending.length === 0) {
+    this._checkEnd(t, x)
+  } else {
+    this._startInner(t, this.pending.shift())
+  }
+}
+
+Outer.prototype._checkEnd = function (t, x) {
+  if (!this.active && this.current.isEmpty()) {
+    this.sink.end(t, x)
+  }
+}
+
+function Inner (time, outer, sink) {
+  this.prev = this.next = null
+  this.time = time
+  this.outer = outer
+  this.sink = sink
+  this.disposable = void 0
+}
+
+Inner.prototype.event = function (t, x) {
+  this.sink.event(Math.max(t, this.time), x)
+}
+
+Inner.prototype.end = function (t, x) {
+  this.outer._endInner(Math.max(t, this.time), x, this)
+}
+
+Inner.prototype.error = function (t, e) {
+  this.outer.error(Math.max(t, this.time), e)
+}
+
+Inner.prototype.dispose = function () {
+  return this.disposable.dispose()
+}
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = fatalError;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+function fatalError (e) {
+  setTimeout(function () {
+    throw e
+  }, 0)
+}
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Filter__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FilterMap__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
+/* harmony export (immutable) */ exports["a"] = Map;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+
+function Map (f, source) {
+  this.f = f
+  this.source = source
+}
+
+/**
+ * Create a mapped source, fusing adjacent map.map, filter.map,
+ * and filter.map.map if possible
+ * @param {function(*):*} f mapping function
+ * @param {{run:function}} source source to map
+ * @returns {Map|FilterMap} mapped source, possibly fused
+ */
+Map.create = function createMap (f, source) {
+  if (source instanceof Map) {
+    return new Map(__WEBPACK_IMPORTED_MODULE_3__most_prelude__["compose"](f, source.f), source.source)
+  }
+
+  if (source instanceof __WEBPACK_IMPORTED_MODULE_1__Filter__["a" /* default */]) {
+    return new __WEBPACK_IMPORTED_MODULE_2__FilterMap__["a" /* default */](source.p, f, source.source)
+  }
+
+  return new Map(f, source)
+}
+
+Map.prototype.run = function (sink, scheduler) { // eslint-disable-line no-extend-native
+  return this.source.run(new MapSink(this.f, sink), scheduler)
+}
+
+function MapSink (f, sink) {
+  this.f = f
+  this.sink = sink
+}
+
+MapSink.prototype.end = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.end
+MapSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.error
+
+MapSink.prototype.event = function (t, x) {
+  var f = this.f
+  this.sink.event(t, f(x))
+}
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = invoke;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+function invoke (f, args) {
+	/*eslint complexity: [2,7]*/
+  switch (args.length) {
+    case 0: return f()
+    case 1: return f(args[0])
+    case 2: return f(args[0], args[1])
+    case 3: return f(args[0], args[1], args[2])
+    case 4: return f(args[0], args[1], args[2], args[3])
+    case 5: return f(args[0], args[1], args[2], args[3], args[4])
+    default:
+      return f.apply(void 0, args)
+  }
+}
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Pipe__ = __webpack_require__(2);
+/* harmony export (immutable) */ exports["a"] = IndexSink;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+function IndexSink (i, sink) {
+  this.sink = sink
+  this.index = i
+  this.active = true
+  this.value = void 0
+}
+
+IndexSink.prototype.event = function (t, x) {
+  if (!this.active) {
+    return
+  }
+  this.value = x
+  this.sink.event(t, this)
+}
+
+IndexSink.prototype.end = function (t, x) {
+  if (!this.active) {
+    return
+  }
+  this.active = false
+  this.sink.end(t, { index: this.index, value: x })
+}
+
+IndexSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__Pipe__["a" /* default */].prototype.error
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = tryEvent;
+/* harmony export (immutable) */ exports["b"] = tryEnd;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+function tryEvent (t, x, sink) {
+  try {
+    sink.event(t, x)
+  } catch (e) {
+    sink.error(t, e)
+  }
+}
+
+function tryEnd (t, x, sink) {
+  try {
+    sink.end(t, x)
+  } catch (e) {
+    sink.error(t, e)
+  }
+}
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["b"] = defer;
+/* harmony export (immutable) */ exports["a"] = runTask;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+function defer (task) {
+  return Promise.resolve(task).then(runTask)
+}
+
+function runTask (task) {
+  try {
+    return task.run()
+  } catch (e) {
+    return task.error(e)
+  }
+}
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports, __webpack_require__(3)) :
+  typeof define === 'function' && define.amd ? define(['exports', '@most/prelude'], factory) :
+  (factory((global.mostMulticast = global.mostMulticast || {}),global.mostPrelude));
+}(this, (function (exports,_most_prelude) { 'use strict';
+
+var MulticastDisposable = function MulticastDisposable (source, sink) {
+  this.source = source
+  this.sink = sink
+  this.disposed = false
+};
+
+MulticastDisposable.prototype.dispose = function dispose () {
+  if (this.disposed) {
+    return
+  }
+  this.disposed = true
+  var remaining = this.source.remove(this.sink)
+  return remaining === 0 && this.source._dispose()
+};
+
+function tryEvent (t, x, sink) {
+  try {
+    sink.event(t, x)
+  } catch (e) {
+    sink.error(t, e)
+  }
+}
+
+function tryEnd (t, x, sink) {
+  try {
+    sink.end(t, x)
+  } catch (e) {
+    sink.error(t, e)
+  }
+}
+
+var dispose = function (disposable) { return disposable.dispose(); }
+
+var emptyDisposable = {
+  dispose: function dispose$1 () {}
+}
+
+var MulticastSource = function MulticastSource (source) {
+  this.source = source
+  this.sinks = []
+  this._disposable = emptyDisposable
+};
+
+MulticastSource.prototype.run = function run (sink, scheduler) {
+  var n = this.add(sink)
+  if (n === 1) {
+    this._disposable = this.source.run(this, scheduler)
+  }
+  return new MulticastDisposable(this, sink)
+};
+
+MulticastSource.prototype._dispose = function _dispose () {
+  var disposable = this._disposable
+  this._disposable = emptyDisposable
+  return Promise.resolve(disposable).then(dispose)
+};
+
+MulticastSource.prototype.add = function add (sink) {
+  this.sinks = _most_prelude.append(sink, this.sinks)
+  return this.sinks.length
+};
+
+MulticastSource.prototype.remove = function remove$1 (sink) {
+  var i = _most_prelude.findIndex(sink, this.sinks)
+  // istanbul ignore next
+  if (i >= 0) {
+    this.sinks = _most_prelude.remove(i, this.sinks)
+  }
+
+  return this.sinks.length
+};
+
+MulticastSource.prototype.event = function event (time, value) {
+  var s = this.sinks
+  if (s.length === 1) {
+    return s[0].event(time, value)
+  }
+  for (var i = 0; i < s.length; ++i) {
+    tryEvent(time, value, s[i])
+  }
+};
+
+MulticastSource.prototype.end = function end (time, value) {
+  var s = this.sinks
+  for (var i = 0; i < s.length; ++i) {
+    tryEnd(time, value, s[i])
+  }
+};
+
+MulticastSource.prototype.error = function error (time, err) {
+  var s = this.sinks
+  for (var i = 0; i < s.length; ++i) {
+    s[i].error(time, err)
+  }
+};
+
+function multicast (stream) {
+  var source = stream.source
+  return source instanceof MulticastSource
+    ? stream
+    : new stream.constructor(new MulticastSource(source))
+}
+
+exports['default'] = multicast;
+exports.MulticastSource = MulticastSource;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+//# sourceMappingURL=multicast.js.map
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var most_subject_1 = __webpack_require__(37);
+var SubjectSource_1 = __webpack_require__(16);
+var hold_1 = __webpack_require__(12);
+var domEvent = __webpack_require__(50).domEvent;
+var ElementFinder_1 = __webpack_require__(52);
+var isolate_1 = __webpack_require__(57);
+var EventDelegator_1 = __webpack_require__(53);
+var util_1 = __webpack_require__(7);
+var matchesSelector;
+try {
+    matchesSelector = __webpack_require__(15);
+}
+catch (e) {
+    matchesSelector = function () { return true; };
+}
+var eventTypesThatDontBubble = [
+    "blur",
+    "canplay",
+    "canplaythrough",
+    "change",
+    "durationchange",
+    "emptied",
+    "ended",
+    "focus",
+    "load",
+    "loadeddata",
+    "loadedmetadata",
+    "mouseenter",
+    "mouseleave",
+    "pause",
+    "play",
+    "playing",
+    "ratechange",
+    "reset",
+    "scroll",
+    "seeked",
+    "seeking",
+    "stalled",
+    "submit",
+    "suspend",
+    "timeupdate",
+    "unload",
+    "volumechange",
+    "waiting",
+];
+var EventSubjectSource = (function (_super) {
+    __extends(EventSubjectSource, _super);
+    function EventSubjectSource(_disposeFn) {
+        _super.call(this);
+        this._disposeFn = _disposeFn;
+    }
+    EventSubjectSource.prototype._dispose = function () {
+        _super.prototype._dispose.call(this);
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(this._disposeFn);
+        }
+        else {
+            this._disposeFn();
+        }
+    };
+    return EventSubjectSource;
+}(SubjectSource_1.BasicSubjectSource));
+function determineUseCapture(eventType, options) {
+    var result = false;
+    if (!options) {
+        options = {};
+    }
+    if (typeof options.useCapture === "boolean") {
+        result = options.useCapture;
+    }
+    if (eventTypesThatDontBubble.indexOf(eventType) !== -1) {
+        result = true;
+    }
+    return result;
+}
+var DOMSource = (function () {
+    function DOMSource(_rootElement$, _namespace, _isolateModule, _delegators) {
+        if (_namespace === void 0) { _namespace = []; }
+        this._rootElement$ = _rootElement$;
+        this._namespace = _namespace;
+        this._isolateModule = _isolateModule;
+        this._delegators = _delegators;
+        this.isolateSource = isolate_1.isolateSource;
+        this.isolateSink = isolate_1.isolateSink;
+    }
+    DOMSource.prototype.elements = function () {
+        if (this._namespace.length === 0) {
+            return hold_1.default(this._rootElement$.map(function (element) { return element; }));
+        }
+        var elementFinder = new ElementFinder_1.ElementFinder(this._namespace, this._isolateModule);
+        return hold_1.default(this._rootElement$.map(function (element) { return elementFinder.call(element); }));
+    };
+    Object.defineProperty(DOMSource.prototype, "namespace", {
+        get: function () {
+            return this._namespace;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DOMSource.prototype.select = function (selector) {
+        if (typeof selector !== 'string') {
+            throw new Error("DOM driver's select() expects the argument to be a " +
+                "string as a CSS selector");
+        }
+        var trimmedSelector = selector.trim();
+        var childNamespace = trimmedSelector === ":root"
+            ? this._namespace
+            : this._namespace.concat(trimmedSelector);
+        return new DOMSource(this._rootElement$, childNamespace, this._isolateModule, this._delegators);
+    };
+    DOMSource.prototype.events = function (eventType, options) {
+        if (typeof eventType !== "string") {
+            throw new Error("DOM driver's events() expects argument to be a " +
+                "string representing the event type to listen for.");
+        }
+        var useCapture = determineUseCapture(eventType, options);
+        var namespace = this._namespace;
+        var scope = util_1.getScope(namespace);
+        var keyParts = [eventType, useCapture];
+        if (scope) {
+            keyParts.push(scope);
+        }
+        var key = keyParts.join('~');
+        var domSource = this;
+        var rootElement$;
+        if (scope) {
+            var hadIsolated_mutable_1 = false;
+            rootElement$ = this._rootElement$
+                .filter(function () {
+                var hasIsolated = !!domSource._isolateModule.getIsolatedElement(scope);
+                var shouldPass = hasIsolated && !hadIsolated_mutable_1;
+                hadIsolated_mutable_1 = hasIsolated;
+                return shouldPass;
+            })
+                .multicast();
+        }
+        else {
+            rootElement$ = this._rootElement$.take(2).multicast();
+        }
+        return rootElement$
+            .map(function setupEventDelegatorOnTopElement(rootElement) {
+            // Event listener just for the root element
+            if (!namespace || namespace.length === 0) {
+                return domEvent(eventType, rootElement, useCapture);
+            }
+            // Event listener on the top element as an EventDelegator
+            var delegators = domSource._delegators;
+            var top = scope
+                ? domSource._isolateModule.getIsolatedElement(scope)
+                : rootElement;
+            var delegator;
+            if (delegators.has(key)) {
+                delegator = delegators.get(key);
+                delegator.updateTopElement(top);
+            }
+            else {
+                delegator = new EventDelegator_1.EventDelegator(top, eventType, useCapture, domSource._isolateModule);
+                delegators.set(key, delegator);
+            }
+            if (scope) {
+                domSource._isolateModule.addEventDelegator(scope, delegator);
+            }
+            var destinationId = delegator.createDestinationId();
+            var eventSubject = new most_subject_1.Subject(new EventSubjectSource(function () {
+                delegator.removeDestinationId(destinationId);
+            }));
+            delegator.addDestination(eventSubject, namespace, destinationId);
+            return eventSubject;
+        })
+            .switch()
+            .multicast();
+    };
+    DOMSource.prototype.dispose = function () {
+        this._isolateModule.reset();
+    };
+    return DOMSource;
+}());
+exports.DOMSource = DOMSource;
+//# sourceMappingURL=DOMSource.js.map
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var most_1 = __webpack_require__(4);
+var HTMLSource = (function () {
+    function HTMLSource(html$) {
+        this._html$ = html$;
+        this._empty$ = most_1.empty();
+    }
+    HTMLSource.prototype.elements = function () {
+        return this._html$;
+    };
+    HTMLSource.prototype.select = function (selector) {
+        // to avoid errors about not using selector
+        var html$ = void selector ? most_1.empty() : most_1.empty();
+        return new HTMLSource(html$);
+    };
+    HTMLSource.prototype.events = function (eventType, options) {
+        var x = void eventType ? void 0 : void 0;
+        var y = void options ? void 0 : void 0;
+        return x || y ? this._empty$ : this._empty$;
+    };
+    return HTMLSource;
+}());
+exports.HTMLSource = HTMLSource;
+//# sourceMappingURL=HTMLSource.js.map
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var ScopeChecker = (function () {
+    function ScopeChecker(scope, isolateModule) {
+        this.scope = scope;
+        this.isolateModule = isolateModule;
+    }
+    ScopeChecker.prototype.isStrictlyInRootScope = function (leaf) {
+        for (var el = leaf; el; el = el.parentElement) {
+            var scope = this.isolateModule.isIsolatedElement(el);
+            if (scope && scope !== this.scope) {
+                return false;
+            }
+            if (scope) {
+                return true;
+            }
+        }
+        return true;
+    };
+    return ScopeChecker;
+}());
+exports.ScopeChecker = ScopeChecker;
+//# sourceMappingURL=ScopeChecker.js.map
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+// hyperscript
+__export(__webpack_require__(8));
+__export(__webpack_require__(55));
+__export(__webpack_require__(56));
+__export(__webpack_require__(29));
+var DOMSource_1 = __webpack_require__(25);
+exports.DOMSource = DOMSource_1.DOMSource;
+var makeDOMDriver_1 = __webpack_require__(58);
+exports.makeDOMDriver = makeDOMDriver_1.makeDOMDriver;
+var HTMLSource_1 = __webpack_require__(26);
+exports.HTMLSource = HTMLSource_1.HTMLSource;
+var makeHTMLDriver_1 = __webpack_require__(59);
+exports.makeHTMLDriver = makeHTMLDriver_1.makeHTMLDriver;
+var mockDOMSource_1 = __webpack_require__(60);
+exports.mockDOMSource = mockDOMSource_1.mockDOMSource;
+//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var ClassModule = __webpack_require__(143);
+exports.ClassModule = ClassModule;
+var PropsModule = __webpack_require__(147);
+exports.PropsModule = PropsModule;
+var AttrsModule = __webpack_require__(142);
+exports.AttrsModule = AttrsModule;
+var EventsModule = __webpack_require__(145);
+exports.EventsModule = EventsModule;
+var StyleModule = __webpack_require__(148);
+exports.StyleModule = StyleModule;
+var HeroModule = __webpack_require__(146);
+exports.HeroModule = HeroModule;
+var DataSetModule = __webpack_require__(144);
+exports.DataSetModule = DataSetModule;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = [StyleModule, ClassModule, PropsModule, AttrsModule];
+//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var most_1 = __webpack_require__(4);
+var hyperscript_1 = __webpack_require__(8);
+function createVTree(vnode, children) {
+    return hyperscript_1.MotorcycleVNode.create(vnode.sel, vnode.data, children, vnode.text, vnode.elm, vnode.key);
+}
+var notAStream = {};
+function transposeVNode(vnode) {
+    if (!vnode) {
+        return notAStream;
+    }
+    else if (vnode && typeof vnode.data === "object" && vnode.data.static) {
+        return most_1.just(vnode);
+    }
+    else if (vnode instanceof most_1.Stream) {
+        return vnode.map(transposeVNode).switch();
+    }
+    else if (typeof vnode === "object") {
+        if (!vnode.children || vnode.children.length === 0) {
+            return most_1.just(vnode);
+        }
+        var vnodeChildren = vnode.children
+            .map(transposeVNode)
+            .filter(function (x) { return x !== notAStream; });
+        if (vnodeChildren.length === 0) {
+            return most_1.just(createVTree(vnode, []));
+        }
+        else {
+            return most_1.combineArray(function () {
+                var children = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    children[_i - 0] = arguments[_i];
+                }
+                return createVTree(vnode, children.slice());
+            }, vnodeChildren);
+        }
+    }
+    else {
+        throw new Error("Unhandled vTree Value");
+    }
+}
+exports.transposeVNode = transposeVNode;
+//# sourceMappingURL=transposition.js.map
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+// TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
+console.group = console.group || console.log;
+console.groupCollapsed = console.groupCollapsed || console.log;
+console.groupEnd = console.groupEnd || console.log;
+// Component typings
+/**
+ * @typedef {Object.<string, Observable>} Sources
+ */
+/**
+ * @typedef {Object.<string, Observable>} Sinks
+ * NOTE : this type def is not perfect as we allow sometimes null values
+ */
+/**
+ * @typedef {?Object.<string, ?Object>} Settings
+ */
+/**
+ * @typedef {Object} DetailedComponentDef
+ * @property {?function(Sources, Settings)} makeLocalSources
+ * @property {?function(Settings)} makeLocalSettings
+ * @property {?function(Sources, Settings)} makeOwnSinks
+ * @property {function(Sinks, Array<Sinks>, Settings)} mergeSinks
+ * @property {function(Sinks):Boolean} sinksContract
+ * @property {function(Sources):Boolean} sourcesContract
+ */
+/**
+ * @typedef {Object} ShortComponentDef
+ * @property {?function(Sources, Settings)} makeLocalSources
+ * @property {?function(Settings)} makeLocalSettings
+ * @property {function(Sources, Settings, Array<Component>)} makeAllSinks
+ * @property {function(Sinks):Boolean} sinksContract
+ * @property {function(Sources):Boolean} sourcesContract
+ */
+/**
+ * @typedef {function(Sources, Settings):Sinks} Component
+ */
+var checks_1 = __webpack_require__(13);
+var ramda_1 = __webpack_require__(11);
+var $ = __webpack_require__(4);
+var dom_1 = __webpack_require__(28);
+var deepMerge = function deepMerge(a, b) {
+    return (ramda_1.is(Object, a) && ramda_1.is(Object, b)) ? ramda_1.mergeWith(deepMerge, a, b) : b;
+};
+// Configuration
+var defaultMergeSinkConfig = {
+    DOM: computeDOMSinkDefault,
+    _default: computeSinkDefault
+};
+//////
+// Helpers
+/**
+ * Merges the DOM nodes produced by a parent component with the DOM nodes
+ * produced by children components, such that the parent DOM nodes
+ * wrap around the children DOM nodes
+ * For instance:
+ * - parent -> div(..., [h2(...)])
+ * - children -> [div(...), button(...)]
+ * - result : div(..., [h2(...), div(...), button(...)])
+ * @param {Sink} parentDOMSinkOrNull
+ * @param {Array<Sink>} childrenSink
+ * @param {Settings} settings
+ * @returns {Observable<VNode>|Null}
+ */
+function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
+    // We want `combineLatest` to still emit the parent DOM sink, even when
+    // one of its children sinks is empty, so we modify the children sinks
+    // to emits ONE `Null` value if it is empty
+    // Note : in default function, settings parameter is not used
+    var childrenDOMSinkOrNull = ramda_1.map(checks_1.emitNullIfEmpty, childrenSink);
+    var allSinks = ramda_1.flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull]);
+    var allDOMSinks = checks_1.removeNullsFromArray(allSinks);
+    // Edge case : none of the sinks have a DOM sink
+    // That should not be possible as we come here only
+    // when we detect a DOM sink
+    if (allDOMSinks.length === 0) {
+        throw "mergeDOMSinkDefault: internal error!";
+    }
+    return $.combineArray(function () {
+        return arguments;
+    }, allDOMSinks)
+        .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
+        .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull));
+}
+function computeSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
+    var allSinks = ramda_1.concat([parentDOMSinkOrNull], childrenSink);
+    // Nulls have to be removed as a given sink name will not be in all children
+    // sinks. It is however guaranteed by the caller that the given sink
+    // name will be in at least one of the children. Hence the merged array
+    // is never empty
+    return $.mergeArray(checks_1.removeNullsFromArray(allSinks));
+}
+function mergeChildrenIntoParentDOM(parentDOMSink) {
+    return function mergeChildrenIntoParentDOM(arrayVNode) {
+        // We remove null elements from the array of vNode
+        // We can have a null vNode emitted by a sink if that sink is empty
+        var _arrayVNode = checks_1.removeEmptyVNodes(checks_1.removeNullsFromArray(arrayVNode));
+        checks_1.assertContract(checks_1.isArrayOf(checks_1.isVNode), [_arrayVNode], 'DOM sources must' +
+            ' stream VNode objects! Got ' + _arrayVNode);
+        if (parentDOMSink) {
+            // Case : the parent sinks have a DOM sink
+            // We want to put the children's DOM **inside** the parent's DOM
+            // Two cases here :
+            // - The parent's vNode has a `text` property :
+            //   we move that text to a text vNode at first position in the children
+            //   then we add the children's DOM in last position of the
+            // existing parent's children
+            // - The parent's vNode does not have a `text` property :
+            //   we just add the children's DOM in last position of the exisitng
+            //   parent's children
+            // Note that this is specific to the snabbdom vNode data structure
+            // Note that we defensively clone vNodes so the original vNode remains
+            // inmuted
+            var parentVNode = ramda_1.clone(_arrayVNode.shift());
+            var childrenVNode = _arrayVNode;
+            parentVNode.children = ramda_1.clone(parentVNode.children) || [];
+            // childrenVNode could be null if all children sinks are empty
+            // observables, in which case we just return the parentVNode
+            if (childrenVNode) {
+                if (parentVNode.text) {
+                    parentVNode.children.splice(0, 0, {
+                        children: [],
+                        "data": {},
+                        "elm": undefined,
+                        "key": undefined,
+                        "sel": undefined,
+                        "text": parentVNode.text
+                    });
+                    parentVNode.text = undefined;
+                }
+                Array.prototype.push.apply(parentVNode.children, childrenVNode);
+            }
+            return parentVNode;
+        }
+        else {
+            // Case : the parent sinks does not have a DOM sink
+            // To avoid putting an extra `div` when there is only one vNode
+            // we put the extra `div` only when there are several vNodes
+            switch (_arrayVNode.length) {
+                case 0:
+                    return null;
+                case 1:
+                    return _arrayVNode[0];
+                default:
+                    return dom_1.div(_arrayVNode);
+            }
+        }
+    };
+}
+///////
+// Helpers
+function computeReducedSink(ownSinks, childrenSinks, localSettings, mergeSinks) {
+    return function computeReducedSink(accReducedSinks, sinkName) {
+        var mergeSinkFn = mergeSinks[sinkName]
+            || defaultMergeSinkConfig[sinkName]
+            || defaultMergeSinkConfig['_default'];
+        checks_1.assertContract(checks_1.isMergeSinkFn, [mergeSinkFn], 'm : mergeSinkFn' +
+            ' for sink ${sinkName} must be a function : check' +
+            ' parameter or default merge function!');
+        if (mergeSinkFn) {
+            accReducedSinks[sinkName] = mergeSinkFn(ownSinks ? ownSinks[sinkName] : null, checks_1.projectSinksOn(sinkName, childrenSinks), localSettings);
+        }
+        return accReducedSinks;
+    };
+}
+/**
+ * Returns a component specified by :
+ * - a component definition object (nullable)
+ * - settings (nullable)
+ * - children components
+ * Component definition properties :
+ * - mergeSinks : computes resulting sinks or a specific sinks according to
+ * configuration. See type information
+ * - computeSinks : computes resulting sinks by executing the
+ * children component and parent and merging the result
+ * - sourcesContract : default to checking all sinks are observables or `null`
+ * - sinksContract : default to checking all sinks are observables or `null`
+ * - settingsContract : default to do noting
+ * - makeLocalSources : default -> null
+ * - makeLocalSettings : default -> null
+ * - makeOwnSinks : -> default null
+ *
+ * The factored algorithm which derives sinks from sources is as follows :
+ * - merging current sources with extra sources if any
+ * - creating some sinks by itself
+ * - computing children sinks by executing the children components on the
+ * merged sources
+ * - merging its own computed sinks with the children computed sinks
+ * There are two versions of definition, according to the level of
+ * granularity desired : the short spec and the detailed spec :
+ * - short spec :
+ *   one function `computeSinks` which outputs the sinks from the sources,
+ *   settings and children components
+ * - detailed spec :
+ *   several properties as detailed above
+ * @param {?(DetailedComponentDef|ShortComponentDef)} componentDef
+ * @param {?Object} _settings
+ * @param {Array<Component>} children
+ * @returns {Component}
+ * @throws when type- and user-specified contracts are not satisfied
+ *
+ * Contracts function allows to perform contract checking before computing
+ * the component, for instance :
+ * - check that sources have the expected type
+ * - check that sources include the mandatory source property for
+ * computing the component
+ * - check that the sinks have the expected type/exists
+ *
+ * Source contracts are checked before extending the sources
+ * Settings contracts are checked before merging
+ *
+ */
+// m :: Opt Component_Def -> Opt Settings -> [Component] -> Component
+function m(componentDef, _settings, children) {
+    console.groupCollapsed('Utils > m');
+    console.log('componentDef, _settings, children', componentDef, _settings, children);
+    // check signature
+    var mSignature = [
+        { componentDef: checks_1.isNullableComponentDef },
+        { settings: checks_1.isNullableObject },
+        { children: checks_1.isArrayOf(checks_1.isComponent) },
+    ];
+    checks_1.assertSignature('m', arguments, mSignature);
+    var makeLocalSources = componentDef.makeLocalSources, makeLocalSettings = componentDef.makeLocalSettings, makeOwnSinks = componentDef.makeOwnSinks, mergeSinks = componentDef.mergeSinks, computeSinks = componentDef.computeSinks, sinksContract = componentDef.sinksContract, sourcesContract = componentDef.sourcesContract, settingsContract = componentDef.settingsContract;
+    // Set default values
+    _settings = _settings || {};
+    makeLocalSources = checks_1.defaultsTo(makeLocalSources, ramda_1.always(null));
+    makeLocalSettings = checks_1.defaultsTo(makeLocalSettings, ramda_1.always({}));
+    makeOwnSinks = checks_1.defaultsTo(makeOwnSinks, ramda_1.always(null));
+    mergeSinks = checks_1.defaultsTo(mergeSinks, {});
+    sinksContract = checks_1.defaultsTo(sinksContract, ramda_1.always(true));
+    sourcesContract = checks_1.defaultsTo(sourcesContract, ramda_1.always(true));
+    settingsContract = checks_1.defaultsTo(settingsContract, ramda_1.always(true));
+    console.groupEnd();
+    return function m(sources, innerSettings) {
+        console.groupCollapsed('m\'ed component > Entry');
+        console.log('sources, innerSettings', sources, innerSettings);
+        checks_1.assertSettingsContracts(innerSettings, settingsContract);
+        innerSettings = innerSettings || {};
+        var mergedSettings = deepMerge(innerSettings, _settings);
+        checks_1.assertSourcesContracts(sources, sourcesContract);
+        // Computes and MERGES the extra sources which will be passed
+        // to the children and this component
+        // Extra sources are derived from the `sources`
+        // received as input, which remain untouched
+        var extendedSources = ramda_1.merge(sources, makeLocalSources(sources, mergedSettings));
+        // Note that per `merge` ramda spec. the second object's values
+        // replace those from the first in case of key conflict
+        var localSettings = deepMerge(makeLocalSettings(mergedSettings), mergedSettings);
+        var reducedSinks;
+        // Case : computeSinks is defined
+        if (computeSinks) {
+            reducedSinks = computeSinks(makeOwnSinks, children, extendedSources, localSettings);
+        }
+        else {
+            console.groupCollapsed('m\'ed component > makeOwnSinks');
+            console.log('extendedSources, localSettings', extendedSources, localSettings);
+            var ownSinks = makeOwnSinks(extendedSources, localSettings);
+            console.groupEnd();
+            console.group('m\'ed component > computing children sinks');
+            var childrenSinks = ramda_1.map(function (childComponent) { return childComponent(extendedSources, localSettings); }, children);
+            console.groupEnd();
+            checks_1.assertContract(checks_1.isOptSinks, [ownSinks], 'ownSinks must be a hash of observable sink');
+            checks_1.assertContract(checks_1.isArrayOptSinks, [childrenSinks], 'childrenSinks must' +
+                ' be an array of sinks');
+            // Merge the sinks from children and one-s own...
+            // Case : mergeSinks is defined through a function
+            if (checks_1.isFunction(mergeSinks)) {
+                console.groupCollapsed('m\'ed component > (fn) mergeSinks');
+                console.log('ownSinks, childrenSinks, localSettings', ownSinks, childrenSinks, localSettings);
+                reducedSinks = mergeSinks(ownSinks, childrenSinks, localSettings);
+                console.groupEnd();
+            }
+            else {
+                var allSinks = ramda_1.flatten(checks_1.removeNullsFromArray([ownSinks, childrenSinks]));
+                var sinkNames = checks_1.getSinkNamesFromSinksArray(allSinks);
+                console.groupCollapsed('m\'ed component > (obj) mergeSinks');
+                console.log('ownSinks, childrenSinks, localSettings,' +
+                    ' (fn) mergeSinks', ownSinks, childrenSinks, localSettings, mergeSinks);
+                reducedSinks = ramda_1.reduce(computeReducedSink(ownSinks, childrenSinks, localSettings, mergeSinks), {}, sinkNames);
+                console.groupEnd();
+            }
+        }
+        checks_1.assertSinksContracts(reducedSinks, sinksContract);
+        var tracedSinks = checks_1.trace(reducedSinks, mergedSettings);
+        // ... and add tracing information(sinkPath, timestamp, sinkValue/sinkError) after each sink
+        // TODO : specify trace/debug/error generation information
+        // This would ensure that errors are automatically and systematically
+        //       caught in the component where they occur, and not
+        //       interrupting the application implementation-wise, it might be
+        //       necessary to add a `currentPath` parameter somewhere which
+        //       carries the current path down the tree
+        console.groupEnd();
+        return tracedSinks;
+    };
+}
+exports.m = m;
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+/**
+ * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]';
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in older versions of Chrome and Safari which return 'function' for regexes
+  // and Safari 8 equivalents which return 'object' for typed array constructors.
+  return isObject(value) && objToString.call(value) == funcTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (isFunction(value)) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+module.exports = getNative;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+/**
+ * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var root = __webpack_require__(14);
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/** Used to match HTML entities and HTML characters. */
+var reUnescapedHtml = /[&<>"'`]/g,
+    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
+
+/** Used to map characters to HTML entities. */
+var htmlEscapes = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '`': '&#96;'
+};
+
+/**
+ * Used by `_.escape` to convert characters to HTML entities.
+ *
+ * @private
+ * @param {string} chr The matched character to escape.
+ * @returns {string} Returns the escaped character.
+ */
+function escapeHtmlChar(chr) {
+  return htmlEscapes[chr];
+}
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = Symbol ? symbolProto.toString : undefined;
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to a string if it's not one. An empty string is returned
+ * for `null` and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (value == null) {
+    return '';
+  }
+  if (isSymbol(value)) {
+    return Symbol ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
+ * their corresponding HTML entities.
+ *
+ * **Note:** No other characters are escaped. To escape additional
+ * characters use a third-party library like [_he_](https://mths.be/he).
+ *
+ * Though the ">" character is escaped for symmetry, characters like
+ * ">" and "/" don't need escaping in HTML and have no special meaning
+ * unless they're part of a tag or unquoted attribute value.
+ * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
+ * (under "semi-related fun fact") for more details.
+ *
+ * Backticks are escaped because in IE < 9, they can break out of
+ * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
+ * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
+ * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
+ * for more details.
+ *
+ * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
+ * to reduce XSS vectors.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @example
+ *
+ * _.escape('fred, barney, & pebbles');
+ * // => 'fred, barney, &amp; pebbles'
+ */
+function escape(string) {
+  string = toString(string);
+  return (string && reHasUnescapedHtml.test(string))
+    ? string.replace(reUnescapedHtml, escapeHtmlChar)
+    : string;
+}
+
+module.exports = escape;
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+/**
+ * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseFor = __webpack_require__(68),
+    bindCallback = __webpack_require__(71),
+    keys = __webpack_require__(76);
+
+/**
+ * The base implementation of `_.forOwn` without support for callback
+ * shorthands and `this` binding.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Object} Returns `object`.
+ */
+function baseForOwn(object, iteratee) {
+  return baseFor(object, iteratee, keys);
+}
+
+/**
+ * Creates a function for `_.forOwn` or `_.forOwnRight`.
+ *
+ * @private
+ * @param {Function} objectFunc The function to iterate over an object.
+ * @returns {Function} Returns the new each function.
+ */
+function createForOwn(objectFunc) {
+  return function(object, iteratee, thisArg) {
+    if (typeof iteratee != 'function' || thisArg !== undefined) {
+      iteratee = bindCallback(iteratee, thisArg, 3);
+    }
+    return objectFunc(object, iteratee);
+  };
+}
+
+/**
+ * Iterates over own enumerable properties of an object invoking `iteratee`
+ * for each property. The `iteratee` is bound to `thisArg` and invoked with
+ * three arguments: (value, key, object). Iteratee functions may exit iteration
+ * early by explicitly returning `false`.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.forOwn(new Foo, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => logs 'a' and 'b' (iteration order is not guaranteed)
+ */
+var forOwn = createForOwn(baseForOwn);
+
+module.exports = forOwn;
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+module.exports = isArguments;
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+/**
+ * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var arrayTag = '[object Array]',
+    funcTag = '[object Function]';
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeIsArray = getNative(Array, 'isArray');
+
+/**
+ * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(function() { return arguments; }());
+ * // => false
+ */
+var isArray = nativeIsArray || function(value) {
+  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+};
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in older versions of Chrome and Safari which return 'function' for regexes
+  // and Safari 8 equivalents which return 'object' for typed array constructors.
+  return isObject(value) && objToString.call(value) == funcTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (isFunction(value)) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+module.exports = isArray;
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var most_1 = __webpack_require__(4);
+var SubjectSource_1 = __webpack_require__(16);
+exports.BasicSubjectSource = SubjectSource_1.BasicSubjectSource;
+var HoldSubjectSource_1 = __webpack_require__(81);
+exports.HoldSubjectSource = HoldSubjectSource_1.HoldSubjectSource;
+function subject() {
+    return new Subject(new SubjectSource_1.BasicSubjectSource());
+}
+exports.subject = subject;
+function holdSubject(bufferSize) {
+    if (bufferSize === void 0) { bufferSize = 1; }
+    if (bufferSize <= 0) {
+        throw new Error('bufferSize must be an integer 1 or greater');
+    }
+    return new Subject(new HoldSubjectSource_1.HoldSubjectSource(bufferSize));
+}
+exports.holdSubject = holdSubject;
+var Subject = (function (_super) {
+    __extends(Subject, _super);
+    function Subject(source) {
+        _super.call(this, source);
+    }
+    Subject.prototype.next = function (value) {
+        this.source.next(value);
+    };
+    Subject.prototype.error = function (err) {
+        this.source.error(err);
+    };
+    Subject.prototype.complete = function (value) {
+        this.source.complete(value);
+    };
+    return Subject;
+}(most_1.Stream));
+exports.Subject = Subject;
+//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+function tryEvent(t, x, sink) {
+    try {
+        sink.event(t, x);
+    }
+    catch (e) {
+        sink.error(t, e);
+    }
+}
+exports.tryEvent = tryEvent;
+function tryEnd(t, x, sink) {
+    try {
+        sink.end(t, x);
+    }
+    catch (e) {
+        sink.error(t, e);
+    }
+}
+exports.tryEnd = tryEnd;
+function pushEvents(buffer, sink) {
+    for (var i = 0; i < buffer.length; ++i) {
+        var _a = buffer[i], time = _a.time, value = _a.value;
+        sink.event(time, value);
+    }
+}
+exports.pushEvents = pushEvents;
+function dropAndAppend(event, buffer, bufferSize) {
+    if (buffer.length === bufferSize) {
+        return append(event, drop(1, buffer));
+    }
+    return append(event, buffer);
+}
+exports.dropAndAppend = dropAndAppend;
+function append(x, a) {
+    var l = a.length;
+    var b = new Array(l + 1);
+    for (var i = 0; i < l; ++i) {
+        b[i] = a[i];
+    }
+    b[l] = x;
+    return b;
+}
+exports.append = append;
+function drop(n, a) {
+    if (n < 0) {
+        throw new TypeError('n must be >= 0');
+    }
+    var l = a.length;
+    if (n === 0 || l === 0) {
+        return a;
+    }
+    if (n >= l) {
+        return [];
+    }
+    return unsafeDrop(n, a, l - n);
+}
+// unsafeDrop :: Int -> [a] -> Int -> [a]
+// Internal helper for drop
+function unsafeDrop(n, a, l) {
+    var b = new Array(l);
+    for (var i = 0; i < l; ++i) {
+        b[i] = a[n + i];
+    }
+    return b;
+}
+function remove(i, a) {
+    if (i < 0) {
+        throw new TypeError('i must be >= 0');
+    }
+    var l = a.length;
+    if (l === 0 || i >= l) {
+        return a;
+    }
+    if (l === 1) {
+        return [];
+    }
+    return unsafeRemove(i, a, l - 1);
+}
+exports.remove = remove;
+// unsafeRemove :: Int -> [a] -> Int -> [a]
+// Internal helper to remove element at index
+function unsafeRemove(i, a, l) {
+    var b = new Array(l);
+    var j;
+    for (j = 0; j < i; ++j) {
+        b[j] = a[j];
+    }
+    for (j = i; j < l; ++j) {
+        b[j] = a[j + 1];
+    }
+    return b;
+}
+function findIndex(x, a) {
+    for (var i = 0, l = a.length; i < l; ++i) {
+        if (x === a[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+exports.findIndex = findIndex;
+//# sourceMappingURL=util.js.map
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.defer = defer;
+exports.runTask = runTask;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+function defer(task) {
+  return Promise.resolve(task).then(runTask);
+}
+
+function runTask(task) {
+  try {
+    return task.run();
+  } catch (e) {
+    return task.error(e);
+  }
+}
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sink_Pipe__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__most_prelude__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoke__ = __webpack_require__(20);
+/* harmony export (immutable) */ exports["a"] = combine;
+/* harmony export (immutable) */ exports["b"] = combineArray;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+
+
+
+
+
+var map = __WEBPACK_IMPORTED_MODULE_6__most_prelude__["map"]
+var tail = __WEBPACK_IMPORTED_MODULE_6__most_prelude__["tail"]
+
+/**
+ * Combine latest events from all input streams
+ * @param {function(...events):*} f function to combine most recent events
+ * @returns {Stream} stream containing the result of applying f to the most recent
+ *  event of each input stream, whenever a new event arrives on any stream.
+ */
+function combine (f /*, ...streams */) {
+  return combineArray(f, tail(arguments))
+}
+
+/**
+* Combine latest events from all input streams
+* @param {function(...events):*} f function to combine most recent events
+* @param {[Stream]} streams most recent events
+* @returns {Stream} stream containing the result of applying f to the most recent
+*  event of each input stream, whenever a new event arrives on any stream.
+*/
+function combineArray (f, streams) {
+  var l = streams.length
+  return l === 0 ? __WEBPACK_IMPORTED_MODULE_2__source_core__["b" /* empty */]()
+  : l === 1 ? __WEBPACK_IMPORTED_MODULE_1__transform__["b" /* map */](f, streams[0])
+  : new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](combineSources(f, streams))
+}
+
+function combineSources (f, streams) {
+  return new Combine(f, map(getSource, streams))
+}
+
+function getSource (stream) {
+  return stream.source
+}
+
+function Combine (f, sources) {
+  this.f = f
+  this.sources = sources
+}
+
+Combine.prototype.run = function (sink, scheduler) {
+  var l = this.sources.length
+  var disposables = new Array(l)
+  var sinks = new Array(l)
+
+  var mergeSink = new CombineSink(disposables, sinks, sink, this.f)
+
+  for (var indexSink, i = 0; i < l; ++i) {
+    indexSink = sinks[i] = new __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__["a" /* default */](i, mergeSink)
+    disposables[i] = this.sources[i].run(indexSink, scheduler)
+  }
+
+  return __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__["d" /* all */](disposables)
+}
+
+function CombineSink (disposables, sinks, sink, f) {
+  this.sink = sink
+  this.disposables = disposables
+  this.sinks = sinks
+  this.f = f
+
+  var l = sinks.length
+  this.awaiting = l
+  this.values = new Array(l)
+  this.hasValue = new Array(l)
+  for (var i = 0; i < l; ++i) {
+    this.hasValue[i] = false
+  }
+
+  this.activeCount = sinks.length
+}
+
+CombineSink.prototype.error = __WEBPACK_IMPORTED_MODULE_3__sink_Pipe__["a" /* default */].prototype.error
+
+CombineSink.prototype.event = function (t, indexedValue) {
+  var i = indexedValue.index
+  var awaiting = this._updateReady(i)
+
+  this.values[i] = indexedValue.value
+  if (awaiting === 0) {
+    this.sink.event(t, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__invoke__["a" /* default */])(this.f, this.values))
+  }
+}
+
+CombineSink.prototype._updateReady = function (index) {
+  if (this.awaiting > 0) {
+    if (!this.hasValue[index]) {
+      this.hasValue[index] = true
+      this.awaiting -= 1
+    }
+  }
+  return this.awaiting
+}
+
+CombineSink.prototype.end = function (t, indexedValue) {
+  __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__["f" /* tryDispose */](t, this.disposables[indexedValue.index], this.sink)
+  if (--this.activeCount === 0) {
+    this.sink.end(t, indexedValue.value)
+  }
+}
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
+/* harmony export (immutable) */ exports["a"] = continueWith;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+function continueWith (f, stream) {
+  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new ContinueWith(f, stream.source))
+}
+
+function ContinueWith (f, source) {
+  this.f = f
+  this.source = source
+}
+
+ContinueWith.prototype.run = function (sink, scheduler) {
+  return new ContinueWithSink(this.f, this.source, sink, scheduler)
+}
+
+function ContinueWithSink (f, source, sink, scheduler) {
+  this.f = f
+  this.sink = sink
+  this.scheduler = scheduler
+  this.active = true
+  this.disposable = __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__["e" /* once */](source.run(this, scheduler))
+}
+
+ContinueWithSink.prototype.error = __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__["a" /* default */].prototype.error
+
+ContinueWithSink.prototype.event = function (t, x) {
+  if (!this.active) {
+    return
+  }
+  this.sink.event(t, x)
+}
+
+ContinueWithSink.prototype.end = function (t, x) {
+  if (!this.active) {
+    return
+  }
+
+  __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__["f" /* tryDispose */](t, this.disposable, this.sink)
+  this._startNext(t, x, this.sink)
+}
+
+ContinueWithSink.prototype._startNext = function (t, x, sink) {
+  try {
+    this.disposable = this._continue(this.f, x, sink)
+  } catch (e) {
+    sink.error(t, e)
+  }
+}
+
+ContinueWithSink.prototype._continue = function (f, x, sink) {
+  return f(x).source.run(sink, this.scheduler)
+}
+
+ContinueWithSink.prototype.dispose = function () {
+  this.active = false
+  return this.disposable.dispose()
+}
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__ = __webpack_require__(17);
+/* harmony export (immutable) */ exports["a"] = flatMap;
+/* harmony export (immutable) */ exports["b"] = join;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+/**
+ * Map each value in the stream to a new stream, and merge it into the
+ * returned outer stream. Event arrival times are preserved.
+ * @param {function(x:*):Stream} f chaining function, must return a Stream
+ * @param {Stream} stream
+ * @returns {Stream} new stream containing all events from each stream returned by f
+ */
+function flatMap (f, stream) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__["a" /* mergeMapConcurrently */])(f, Infinity, stream)
+}
+
+/**
+ * Monadic join. Flatten a Stream<Stream<X>> to Stream<X> by merging inner
+ * streams to the outer. Event arrival times are preserved.
+ * @param {Stream<Stream<X>>} stream stream of streams
+ * @returns {Stream<X>} new stream containing all events of all inner streams
+ */
+function join (stream) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__["b" /* mergeConcurrently */])(Infinity, stream)
+}
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__ = __webpack_require__(2);
+/* harmony export (immutable) */ exports["a"] = Filter;
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+function Filter (p, source) {
+  this.p = p
+  this.source = source
+}
+
+/**
+ * Create a filtered source, fusing adjacent filter.filter if possible
+ * @param {function(x:*):boolean} p filtering predicate
+ * @param {{run:function}} source source to filter
+ * @returns {Filter} filtered source
+ */
+Filter.create = function createFilter (p, source) {
+  if (source instanceof Filter) {
+    return new Filter(and(source.p, p), source.source)
+  }
+
+  return new Filter(p, source)
+}
+
+Filter.prototype.run = function (sink, scheduler) {
+  return this.source.run(new FilterSink(this.p, sink), scheduler)
+}
+
+function FilterSink (p, sink) {
+  this.p = p
+  this.sink = sink
+}
+
+FilterSink.prototype.end = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.end
+FilterSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.error
+
+FilterSink.prototype.event = function (t, x) {
+  var p = this.p
+  p(x) && this.sink.event(t, x)
+}
+
+function and (p, q) {
+  return function (x) {
+    return p(x) && q(x)
+  }
+}
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["b"] = isIterable;
+/* harmony export (immutable) */ exports["a"] = getIterator;
+/* unused harmony export makeIterable */
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+/*global Set, Symbol*/
+var iteratorSymbol
+// Firefox ships a partial implementation using the name @@iterator.
+// https://bugzilla.mozilla.org/show_bug.cgi?id=907077#c14
+if (typeof Set === 'function' && typeof new Set()['@@iterator'] === 'function') {
+  iteratorSymbol = '@@iterator'
+} else {
+  iteratorSymbol = typeof Symbol === 'function' && Symbol.iterator ||
+  '_es6shim_iterator_'
+}
+
+function isIterable (o) {
+  return typeof o[iteratorSymbol] === 'function'
+}
+
+function getIterator (o) {
+  return o[iteratorSymbol]()
+}
+
+function makeIterable (f, o) {
+  o[iteratorSymbol] = f
+  return o
+}
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__disposable_dispose__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scheduler_defaultScheduler__ = __webpack_require__(46);
+/* harmony export (immutable) */ exports["a"] = withDefaultScheduler;
+/* unused harmony export withScheduler */
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+function withDefaultScheduler (source) {
+  return withScheduler(source, __WEBPACK_IMPORTED_MODULE_1__scheduler_defaultScheduler__["a" /* default */])
+}
+
+function withScheduler (source, scheduler) {
+  return new Promise(function (resolve, reject) {
+    runSource(source, scheduler, resolve, reject)
+  })
+}
+
+function runSource (source, scheduler, resolve, reject) {
+  var disposable = __WEBPACK_IMPORTED_MODULE_0__disposable_dispose__["c" /* settable */]()
+  var observer = new Drain(resolve, reject, disposable)
+
+  disposable.setDisposable(source.run(observer, scheduler))
+}
+
+function Drain (end, error, disposable) {
+  this._end = end
+  this._error = error
+  this._disposable = disposable
+  this.active = true
+}
+
+Drain.prototype.event = function (t, x) {}
+
+Drain.prototype.end = function (t, x) {
+  if (!this.active) {
+    return
+  }
+  this.active = false
+  disposeThen(this._end, this._error, this._disposable, x)
+}
+
+Drain.prototype.error = function (t, e) {
+  this.active = false
+  disposeThen(this._error, this._error, this._disposable, e)
+}
+
+function disposeThen (end, error, disposable, x) {
+  Promise.resolve(disposable.dispose()).then(function () {
+    end(x)
+  }, error)
+}
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Scheduler__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ClockTimer__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Timeline__ = __webpack_require__(120);
+/** @license MIT License (c) copyright 2010-2016 original author or authors */
+/** @author Brian Cavalier */
+/** @author John Hann */
+
+
+
+
+
+var defaultScheduler = new __WEBPACK_IMPORTED_MODULE_0__Scheduler__["a" /* default */](new __WEBPACK_IMPORTED_MODULE_1__ClockTimer__["a" /* default */](), new __WEBPACK_IMPORTED_MODULE_2__Timeline__["a" /* default */]())
+
+/* harmony default export */ exports["a"] = defaultScheduler;
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+
+// https://github.com/Matt-Esch/virtual-dom/blob/master/virtual-hyperscript/parse-tag.js
+
+var split = __webpack_require__(66);
+
+var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
+var notClassId = /^\.|#/;
+
+module.exports = function parseSelector(selector, upper) {
+  selector = selector || '';
+  var tagName;
+  var id = '';
+  var classes = [];
+
+  var tagParts = split(selector, classIdSplit);
+
+  if (notClassId.test(tagParts[1]) || selector === '') {
+    tagName = 'div';
+  }
+
+  var part, type, i;
+
+  for (i = 0; i < tagParts.length; i++) {
+    part = tagParts[i];
+
+    if (!part) {
+      continue;
+    }
+
+    type = part.charAt(0);
+
+    if (!tagName) {
+      tagName = part;
+    } else if (type === '.') {
+      classes.push(part.substring(1, part.length));
+    } else if (type === '#') {
+      id = part.substring(1, part.length);
+    }
+  }
+
+  return {
+    tagName: upper === true ? tagName.toUpperCase() : tagName,
+    id: id,
+    className: classes.join(' ')
+  };
+};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(151);
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+//import './util/specs/checks-spec';
+//import './util/specs/m-spec';
+//import './util/specs/runTestScenario-spec';
+__webpack_require__(64);
+//import './util/specs/Switch-spec';
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+   true ? factory(exports, __webpack_require__(4)) :
+  typeof define === 'function' && define.amd ? define(['exports', 'most'], factory) :
+  (factory((global.mostDomEvent = global.mostDomEvent || {}),global.most));
+}(this, (function (exports,most) { 'use strict';
+
+  // domEvent :: (EventTarget t, Event e) => String -> t -> boolean=false -> Stream e
+  var domEvent = function (event, node, capture) {
+      if ( capture === void 0 ) capture = false;
+
+      return new most.Stream(new DomEvent(event, node, capture));
+  }
+
+  var blur = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('blur', node, capture);
+  }
+  var focus = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('focus', node, capture);
+  }
+  var focusin = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('focusin', node, capture);
+  }
+  var focusout = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('focusout', node, capture);
+  }
+  var click = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('click', node, capture);
+  }
+  var dblclick = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('dblclick', node, capture);
+  }
+  var mousedown = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mousedown', node, capture);
+  }
+  var mouseup = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mouseup', node, capture);
+  }
+  var mousemove = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mousemove', node, capture);
+  }
+  var mouseover = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mouseover', node, capture);
+  }
+  var mouseenter = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mouseenter', node, capture);
+  }
+  var mouseout = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mouseout', node, capture);
+  }
+  var mouseleave = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('mouseleave', node, capture);
+  }
+  var change = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('change', node, capture);
+  }
+  var select = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('select', node, capture);
+  }
+  var submit = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('submit', node, capture);
+  }
+  var keydown = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('keydown', node, capture);
+  }
+  var keypress = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('keypress', node, capture);
+  }
+  var keyup = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('keyup', node, capture);
+  }
+  var input = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('input', node, capture);
+  }
+  var contextmenu = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('contextmenu', node, capture);
+  }
+  var resize = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('resize', node, capture);
+  }
+  var scroll = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('scroll', node, capture);
+  }
+  var error = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('error', node, capture);
+  }
+
+  var hashchange = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('hashchange', node, capture);
+  }
+  var popstate = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('popstate', node, capture);
+  }
+  var load = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('load', node, capture);
+  }
+  var unload = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('unload', node, capture);
+  }
+
+  var pointerdown = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerdown', node, capture);
+  }
+  var pointerup = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerup', node, capture);
+  }
+  var pointermove = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointermove', node, capture);
+  }
+  var pointerover = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerover', node, capture);
+  }
+  var pointerenter = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerenter', node, capture);
+  }
+  var pointerout = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerout', node, capture);
+  }
+  var pointerleave = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('pointerleave', node, capture);
+  }
+
+  var touchstart = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('touchstart', node, capture);
+  }
+  var touchend = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('touchend', node, capture);
+  }
+  var touchmove = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('touchmove', node, capture);
+  }
+  var touchcancel = function (node, capture) {
+    if ( capture === void 0 ) capture = false;
+
+    return domEvent('touchcancel', node, capture);
+  }
+
+  var DomEvent = function DomEvent (event, node, capture) {
+    this.event = event
+    this.node = node
+    this.capture = capture
+  };
+
+  DomEvent.prototype.run = function run (sink, scheduler) {
+      var this$1 = this;
+
+    var send = function (e) { return tryEvent(scheduler.now(), e, sink); }
+    var dispose = function () { return this$1.node.removeEventListener(this$1.event, send, this$1.capture); }
+
+    this.node.addEventListener(this.event, send, this.capture)
+
+    return { dispose: dispose }
+  };
+
+  function tryEvent (t, x, sink) {
+    try {
+      sink.event(t, x)
+    } catch (e) {
+      sink.error(t, e)
+    }
+  }
+
+  exports.domEvent = domEvent;
+  exports.blur = blur;
+  exports.focus = focus;
+  exports.focusin = focusin;
+  exports.focusout = focusout;
+  exports.click = click;
+  exports.dblclick = dblclick;
+  exports.mousedown = mousedown;
+  exports.mouseup = mouseup;
+  exports.mousemove = mousemove;
+  exports.mouseover = mouseover;
+  exports.mouseenter = mouseenter;
+  exports.mouseout = mouseout;
+  exports.mouseleave = mouseleave;
+  exports.change = change;
+  exports.select = select;
+  exports.submit = submit;
+  exports.keydown = keydown;
+  exports.keypress = keypress;
+  exports.keyup = keyup;
+  exports.input = input;
+  exports.contextmenu = contextmenu;
+  exports.resize = resize;
+  exports.scroll = scroll;
+  exports.error = error;
+  exports.hashchange = hashchange;
+  exports.popstate = popstate;
+  exports.load = load;
+  exports.unload = unload;
+  exports.pointerdown = pointerdown;
+  exports.pointerup = pointerup;
+  exports.pointermove = pointermove;
+  exports.pointerover = pointerover;
+  exports.pointerenter = pointerenter;
+  exports.pointerout = pointerout;
+  exports.pointerleave = pointerleave;
+  exports.touchstart = touchstart;
+  exports.touchend = touchend;
+  exports.touchmove = touchmove;
+  exports.touchcancel = touchcancel;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+//# sourceMappingURL=mostDomEvent.js.map
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('most'), require('@most/prelude'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.most, global.prelude);
+    global.mostSample = mod.exports;
+  }
+})(this, function (exports, _most, _prelude) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.sampleArray = exports.sample = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  var SampleHold = function () {
+    function SampleHold(sink) {
+      _classCallCheck(this, SampleHold);
+
+      this.sink = sink;
+      this.hasValue = false;
+    }
+
+    _createClass(SampleHold, [{
+      key: 'event',
+      value: function event(time, value) {
+        this.value = value;
+        this.hasValue = true;
+      }
+    }, {
+      key: 'end',
+      value: function end() {}
+    }, {
+      key: 'error',
+      value: function error(time, err) {
+        this.sink.error(time, err);
+      }
+    }]);
+
+    return SampleHold;
+  }();
+
+  var SampleSink = function () {
+    function SampleSink(f, source, sink) {
+      _classCallCheck(this, SampleSink);
+
+      this.sink = sink;
+      this.source = source;
+      this.f = f;
+      this.hold = new SampleHold(this);
+    }
+
+    _createClass(SampleSink, [{
+      key: 'event',
+      value: function event(time, value) {
+        if (this.hold.hasValue) {
+          var f = this.f;
+          this.sink.event(time, f(value, this.hold.value));
+        }
+      }
+    }, {
+      key: 'error',
+      value: function error(time, err) {
+        return this.sink.error(time, err);
+      }
+    }, {
+      key: 'end',
+      value: function end(time, value) {
+        return this.sink.end(time, value);
+      }
+    }]);
+
+    return SampleSink;
+  }();
+
+  var SampleDisposable = function () {
+    function SampleDisposable(samplerDisposable, sourceDisposable) {
+      _classCallCheck(this, SampleDisposable);
+
+      this.samplerDisposable = samplerDisposable;
+      this.sourceDisposable = sourceDisposable;
+    }
+
+    _createClass(SampleDisposable, [{
+      key: 'dispose',
+      value: function dispose() {
+        return Promise.all([this.samplerDisposable.dispose(), this.sourceDisposable.dispose()]);
+      }
+    }]);
+
+    return SampleDisposable;
+  }();
+
+  var SampleSource = function () {
+    function SampleSource(f, sampler, stream) {
+      _classCallCheck(this, SampleSource);
+
+      this.source = stream.source;
+      this.sampler = sampler.source;
+      this.f = f;
+    }
+
+    _createClass(SampleSource, [{
+      key: 'run',
+      value: function run(sink, scheduler) {
+        var sampleSink = new SampleSink(this.f, this.source, sink);
+        var sourceDisposable = this.source.run(sampleSink.hold, scheduler);
+        var samplerDisposable = this.sampler.run(sampleSink, scheduler);
+
+        return new SampleDisposable(samplerDisposable, sourceDisposable);
+      }
+    }]);
+
+    return SampleSource;
+  }();
+
+  var sample = (0, _prelude.curry3)(function (f, sampler, stream) {
+    return new _most.Stream(new SampleSource(f, sampler, stream));
+  });
+
+  var arrayId = function arrayId() {
+    for (var _len = arguments.length, values = Array(_len), _key = 0; _key < _len; _key++) {
+      values[_key] = arguments[_key];
+    }
+
+    return values;
+  };
+
+  var sampleArray = (0, _prelude.curry3)(function (f, sampler, arrayOfStreams) {
+    return sample(f, sampler, (0, _most.combineArray)(arrayId, arrayOfStreams));
+  });
+
+  exports.sample = sample;
+  exports.sampleArray = sampleArray;
+});
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var ScopeChecker_1 = __webpack_require__(27);
+var util_1 = __webpack_require__(7);
+var matchesSelector;
+try {
+    matchesSelector = __webpack_require__(15);
+}
+catch (e) {
+    matchesSelector = Function.prototype;
+}
+function toElArray(input) {
+    return Array.prototype.slice.call(input);
+}
+var ElementFinder = (function () {
+    function ElementFinder(namespace, isolateModule) {
+        this.namespace = namespace;
+        this.isolateModule = isolateModule;
+    }
+    ElementFinder.prototype.call = function (rootElement) {
+        var namespace = this.namespace;
+        if (namespace.join("") === "") {
+            return rootElement;
+        }
+        var scope = util_1.getScope(namespace);
+        var scopeChecker = new ScopeChecker_1.ScopeChecker(scope, this.isolateModule);
+        var selector = util_1.getSelectors(namespace);
+        var topNode = rootElement;
+        var topNodeMatches = [];
+        if (scope.length > 0) {
+            topNode = this.isolateModule.getIsolatedElement(scope) || rootElement;
+            if (selector && matchesSelector(topNode, selector)) {
+                topNodeMatches.push(topNode);
+            }
+        }
+        return toElArray(topNode.querySelectorAll(selector))
+            .filter(scopeChecker.isStrictlyInRootScope, scopeChecker)
+            .concat(topNodeMatches);
+    };
+    return ElementFinder;
+}());
+exports.ElementFinder = ElementFinder;
+//# sourceMappingURL=ElementFinder.js.map
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var ScopeChecker_1 = __webpack_require__(27);
+var util_1 = __webpack_require__(7);
+var matchesSelector;
+try {
+    matchesSelector = __webpack_require__(15);
+}
+catch (e) {
+    matchesSelector = Function.prototype;
+}
+var gDestinationId = 0;
+function findDestinationId(arr, searchId) {
+    var minIndex = 0;
+    var maxIndex = arr.length - 1;
+    var currentIndex;
+    var currentElement;
+    while (minIndex <= maxIndex) {
+        currentIndex = (minIndex + maxIndex) / 2 | 0;
+        currentElement = arr[currentIndex];
+        var currentId = currentElement.destinationId;
+        if (currentId < searchId) {
+            minIndex = currentIndex + 1;
+        }
+        else if (currentId > searchId) {
+            maxIndex = currentIndex - 1;
+        }
+        else {
+            return currentIndex;
+        }
+    }
+    return -1;
+}
+/**
+ * Attaches an actual event listener to the DOM root element,
+ * handles "destinations" (interested DOMSource output subjects), and bubbling.
+ */
+var EventDelegator = (function () {
+    function EventDelegator(topElement, eventType, useCapture, isolateModule) {
+        var _this = this;
+        this.topElement = topElement;
+        this.eventType = eventType;
+        this.useCapture = useCapture;
+        this.isolateModule = isolateModule;
+        this.destinations = [];
+        this.roof = topElement.parentElement;
+        if (useCapture) {
+            this.domListener = function (ev) { return _this.capture(ev); };
+        }
+        else {
+            this.domListener = function (ev) { return _this.bubble(ev); };
+        }
+        topElement.addEventListener(eventType, this.domListener, useCapture);
+    }
+    EventDelegator.prototype.bubble = function (rawEvent) {
+        if (!document.body.contains(rawEvent.currentTarget)) {
+            return;
+        }
+        var ev = this.patchEvent(rawEvent);
+        for (var el = ev.target; el && el !== this.roof; el = el.parentElement) {
+            if (!document.body.contains(el)) {
+                ev.stopPropagation();
+            }
+            if (ev.propagationHasBeenStopped) {
+                return;
+            }
+            this.matchEventAgainstDestinations(el, ev);
+        }
+    };
+    EventDelegator.prototype.matchEventAgainstDestinations = function (el, ev) {
+        for (var i = 0, n = this.destinations.length; i < n; i++) {
+            var dest = this.destinations[i];
+            if (!dest.scopeChecker.isStrictlyInRootScope(el)) {
+                continue;
+            }
+            if (matchesSelector(el, dest.selector)) {
+                this.mutateEventCurrentTarget(ev, el);
+                dest.subject.next(ev);
+            }
+        }
+    };
+    EventDelegator.prototype.capture = function (ev) {
+        for (var i = 0, n = this.destinations.length; i < n; i++) {
+            var dest = this.destinations[i];
+            if (matchesSelector(ev.target, dest.selector)) {
+                dest.subject.next(ev);
+            }
+        }
+    };
+    EventDelegator.prototype.addDestination = function (subject, namespace, destinationId) {
+        var scope = util_1.getScope(namespace);
+        var selector = util_1.getSelectors(namespace);
+        var scopeChecker = new ScopeChecker_1.ScopeChecker(scope, this.isolateModule);
+        this.destinations.push({ subject: subject, scopeChecker: scopeChecker, selector: selector, destinationId: destinationId });
+    };
+    EventDelegator.prototype.createDestinationId = function () {
+        return gDestinationId++;
+    };
+    EventDelegator.prototype.removeDestinationId = function (destinationId) {
+        var i = findDestinationId(this.destinations, destinationId);
+        if (i >= 0) {
+            this.destinations.splice(i, 1);
+        }
+    };
+    EventDelegator.prototype.patchEvent = function (event) {
+        var pEvent = event;
+        pEvent.propagationHasBeenStopped = false;
+        var oldStopPropagation = pEvent.stopPropagation;
+        pEvent.stopPropagation = function stopPropagation() {
+            oldStopPropagation.call(this);
+            this.propagationHasBeenStopped = true;
+        };
+        return pEvent;
+    };
+    EventDelegator.prototype.mutateEventCurrentTarget = function (event, currentTargetElement) {
+        try {
+            Object.defineProperty(event, "currentTarget", {
+                value: currentTargetElement,
+                configurable: true,
+            });
+        }
+        catch (err) {
+            console.log("please use event.ownerTarget");
+        }
+        event.ownerTarget = currentTargetElement;
+    };
+    EventDelegator.prototype.updateTopElement = function (newTopElement) {
+        this.topElement.removeEventListener(this.eventType, this.domListener, this.useCapture);
+        newTopElement.addEventListener(this.eventType, this.domListener, this.useCapture);
+        this.topElement = newTopElement;
+    };
+    return EventDelegator;
+}());
+exports.EventDelegator = EventDelegator;
+//# sourceMappingURL=EventDelegator.js.map
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var hyperscript_1 = __webpack_require__(8);
+var util_1 = __webpack_require__(7);
+var VNodeWrapper = (function () {
+    function VNodeWrapper(rootElement) {
+        this.rootElement = rootElement;
+    }
+    VNodeWrapper.prototype.call = function (vnode) {
+        var _a = util_1.selectorParser(vnode.sel), selectorTagName = _a.tagName, selectorId = _a.id;
+        var vNodeClassName = util_1.classNameFromVNode(vnode);
+        var vNodeData = vnode.data || {};
+        var vNodeDataProps = vNodeData.props || {};
+        var _b = vNodeDataProps.id, vNodeId = _b === void 0 ? selectorId : _b;
+        var isVNodeAndRootElementIdentical = vNodeId.toUpperCase() === this.rootElement.id.toUpperCase() &&
+            selectorTagName.toUpperCase() === this.rootElement.tagName.toUpperCase() &&
+            vNodeClassName.toUpperCase() === this.rootElement.className.toUpperCase();
+        if (isVNodeAndRootElementIdentical) {
+            return vnode;
+        }
+        var _c = this.rootElement, tagName = _c.tagName, id = _c.id, className = _c.className;
+        var elementId = id ? "#" + id : "";
+        var elementClassName = className ?
+            "." + className.split(" ").join(".") : "";
+        return hyperscript_1.h("" + tagName + elementId + elementClassName, {}, [vnode]);
+    };
+    return VNodeWrapper;
+}());
+exports.VNodeWrapper = VNodeWrapper;
+//# sourceMappingURL=VNodeWrapper.js.map
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var hyperscript_1 = __webpack_require__(8);
+function isValidString(param) {
+    return typeof param === 'string' && param.length > 0;
+}
+function isSelector(param) {
+    return isValidString(param) && (param[0] === '.' || param[0] === '#');
+}
+function hh(tagName) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i - 0] = arguments[_i];
+        }
+        var first = args[0], b = args[1], c = args[2];
+        if (isSelector(first)) {
+            if (b !== void 0 && c !== void 0) {
+                return hyperscript_1.h(tagName + first, b, c);
+            }
+            else if (b !== void 0) {
+                return hyperscript_1.h(tagName + first, b);
+            }
+            else {
+                return hyperscript_1.h(tagName + first, {});
+            }
+        }
+        else if (!!b) {
+            return hyperscript_1.h(tagName, first, b);
+        }
+        else if (!!first) {
+            return hyperscript_1.h(tagName, first);
+        }
+        else {
+            return hyperscript_1.h(tagName, {});
+        }
+    };
+}
+exports.hh = hh;
+exports.a = hh('a');
+exports.abbr = hh('abbr');
+exports.acronym = hh('acronym');
+exports.address = hh('address');
+exports.applet = hh('applet');
+exports.area = hh('area');
+exports.article = hh('article');
+exports.aside = hh('aside');
+exports.audio = hh('audio');
+exports.b = hh('b');
+exports.base = hh('base');
+exports.basefont = hh('basefont');
+exports.bdi = hh('bdi');
+exports.bdo = hh('bdo');
+exports.bgsound = hh('bgsound');
+exports.big = hh('big');
+exports.blink = hh('blink');
+exports.blockquote = hh('blockquote');
+exports.body = hh('body');
+exports.br = hh('br');
+exports.button = hh('button');
+exports.canvas = hh('canvas');
+exports.caption = hh('caption');
+exports.center = hh('center');
+exports.cite = hh('cite');
+exports.code = hh('code');
+exports.col = hh('col');
+exports.colgroup = hh('colgroup');
+exports.command = hh('command');
+exports.content = hh('content');
+exports.data = hh('data');
+exports.datalist = hh('datalist');
+exports.dd = hh('dd');
+exports.del = hh('del');
+exports.details = hh('details');
+exports.dfn = hh('dfn');
+exports.dialog = hh('dialog');
+exports.dir = hh('dir');
+exports.div = hh('div');
+exports.dl = hh('dl');
+exports.dt = hh('dt');
+exports.element = hh('element');
+exports.em = hh('em');
+exports.embed = hh('embed');
+exports.fieldset = hh('fieldset');
+exports.figcaption = hh('figcaption');
+exports.figure = hh('figure');
+exports.font = hh('font');
+exports.footer = hh('footer');
+exports.form = hh('form');
+exports.frame = hh('frame');
+exports.frameset = hh('frameset');
+exports.h1 = hh('h1');
+exports.h2 = hh('h2');
+exports.h3 = hh('h3');
+exports.h4 = hh('h4');
+exports.h5 = hh('h5');
+exports.h6 = hh('h6');
+exports.head = hh('head');
+exports.header = hh('header');
+exports.hgroup = hh('hgroup');
+exports.hr = hh('hr');
+exports.html = hh('html');
+exports.i = hh('i');
+exports.iframe = hh('iframe');
+exports.image = hh('image');
+exports.img = hh('img');
+exports.input = hh('input');
+exports.ins = hh('ins');
+exports.isindex = hh('isindex');
+exports.kbd = hh('kbd');
+exports.keygen = hh('keygen');
+exports.label = hh('label');
+exports.legend = hh('legend');
+exports.li = hh('li');
+exports.link = hh('link');
+exports.listing = hh('listing');
+exports.main = hh('main');
+exports.map = hh('map');
+exports.mark = hh('mark');
+exports.marquee = hh('marquee');
+exports.math = hh('math');
+exports.menu = hh('menu');
+exports.menuitem = hh('menuitem');
+exports.meta = hh('meta');
+exports.meter = hh('meter');
+exports.multicol = hh('multicol');
+exports.nav = hh('nav');
+exports.nextid = hh('nextid');
+exports.nobr = hh('nobr');
+exports.noembed = hh('noembed');
+exports.noframes = hh('noframes');
+exports.noscript = hh('noscript');
+exports.object = hh('object');
+exports.ol = hh('ol');
+exports.optgroup = hh('optgroup');
+exports.option = hh('option');
+exports.output = hh('output');
+exports.p = hh('p');
+exports.param = hh('param');
+exports.picture = hh('picture');
+exports.plaintext = hh('plaintext');
+exports.pre = hh('pre');
+exports.progress = hh('progress');
+exports.q = hh('q');
+exports.rb = hh('rb');
+exports.rbc = hh('rbc');
+exports.rp = hh('rp');
+exports.rt = hh('rt');
+exports.rtc = hh('rtc');
+exports.ruby = hh('ruby');
+exports.s = hh('s');
+exports.samp = hh('samp');
+exports.script = hh('script');
+exports.section = hh('section');
+exports.select = hh('select');
+exports.shadow = hh('shadow');
+exports.small = hh('small');
+exports.source = hh('source');
+exports.spacer = hh('spacer');
+exports.span = hh('span');
+exports.strike = hh('strike');
+exports.strong = hh('strong');
+exports.style = hh('style');
+exports.sub = hh('sub');
+exports.summary = hh('summary');
+exports.sup = hh('sup');
+exports.table = hh('table');
+exports.tbody = hh('tbody');
+exports.td = hh('td');
+exports.template = hh('template');
+exports.textarea = hh('textarea');
+exports.tfoot = hh('tfoot');
+exports.th = hh('th');
+exports.thead = hh('thead');
+exports.time = hh('time');
+exports.title = hh('title');
+exports.tr = hh('tr');
+exports.track = hh('track');
+exports.tt = hh('tt');
+exports.u = hh('u');
+exports.ul = hh('ul');
+exports.video = hh('video');
+exports.wbr = hh('wbr');
+exports.xmp = hh('xmp');
+function createSVGHelper() {
+    var svg = hh('svg');
+    svg.a = hh('a');
+    svg.altGlyph = hh('altGlyph');
+    svg.altGlyphDef = hh('altGlyphDef');
+    svg.altGlyphItem = hh('altGlyphItem');
+    svg.animate = hh('animate');
+    svg.animateColor = hh('animateColor');
+    svg.animateMotion = hh('animateMotion');
+    svg.animateTransform = hh('animateTransform');
+    svg.circle = hh('circle');
+    svg.clipPath = hh('clipPath');
+    svg.colorProfile = hh('colorProfile');
+    svg.cursor = hh('cursor');
+    svg.defs = hh('defs');
+    svg.desc = hh('desc');
+    svg.ellipse = hh('ellipse');
+    svg.feBlend = hh('feBlend');
+    svg.feColorMatrix = hh('feColorMatrix');
+    svg.feComponentTransfer = hh('feComponentTransfer');
+    svg.feComposite = hh('feComposite');
+    svg.feConvolveMatrix = hh('feConvolveMatrix');
+    svg.feDiffuseLighting = hh('feDiffuseLighting');
+    svg.feDisplacementMap = hh('feDisplacementMap');
+    svg.feDistantLight = hh('feDistantLight');
+    svg.feFlood = hh('feFlood');
+    svg.feFuncA = hh('feFuncA');
+    svg.feFuncB = hh('feFuncB');
+    svg.feFuncG = hh('feFuncG');
+    svg.feFuncR = hh('feFuncR');
+    svg.feGaussianBlur = hh('feGaussianBlur');
+    svg.feImage = hh('feImage');
+    svg.feMerge = hh('feMerge');
+    svg.feMergeNode = hh('feMergeNode');
+    svg.feMorphology = hh('feMorphology');
+    svg.feOffset = hh('feOffset');
+    svg.fePointLight = hh('fePointLight');
+    svg.feSpecularLighting = hh('feSpecularLighting');
+    svg.feSpotlight = hh('feSpotlight');
+    svg.feTile = hh('feTile');
+    svg.feTurbulence = hh('feTurbulence');
+    svg.filter = hh('filter');
+    svg.font = hh('font');
+    svg.fontFace = hh('fontFace');
+    svg.fontFaceFormat = hh('fontFaceFormat');
+    svg.fontFaceName = hh('fontFaceName');
+    svg.fontFaceSrc = hh('fontFaceSrc');
+    svg.fontFaceUri = hh('fontFaceUri');
+    svg.foreignObject = hh('foreignObject');
+    svg.g = hh('g');
+    svg.glyph = hh('glyph');
+    svg.glyphRef = hh('glyphRef');
+    svg.hkern = hh('hkern');
+    svg.image = hh('image');
+    svg.linearGradient = hh('linearGradient');
+    svg.marker = hh('marker');
+    svg.mask = hh('mask');
+    svg.metadata = hh('metadata');
+    svg.missingGlyph = hh('missingGlyph');
+    svg.mpath = hh('mpath');
+    svg.path = hh('path');
+    svg.pattern = hh('pattern');
+    svg.polygon = hh('polygon');
+    svg.polyline = hh('polyline');
+    svg.radialGradient = hh('radialGradient');
+    svg.rect = hh('rect');
+    svg.script = hh('script');
+    svg.set = hh('set');
+    svg.stop = hh('stop');
+    svg.style = hh('style');
+    svg.switch = hh('switch');
+    svg.symbol = hh('symbol');
+    svg.text = hh('text');
+    svg.textPath = hh('textPath');
+    svg.title = hh('title');
+    svg.tref = hh('tref');
+    svg.tspan = hh('tspan');
+    svg.use = hh('use');
+    svg.view = hh('view');
+    svg.vkern = hh('vkern');
+    return svg;
+}
+exports.svg = createSVGHelper();
+//# sourceMappingURL=helpers.js.map
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var hyperscript_1 = __webpack_require__(8);
+/* tslint:enable:max-line-length */
+function copyToThunk(vNode, thunk) {
+    thunk.elm = vNode.elm;
+    if (!vNode.data) {
+        vNode.data = {};
+    }
+    vNode.data.fn = thunk.data.fn;
+    vNode.data.args = thunk.data.args;
+    thunk.data = vNode.data;
+    thunk.children = vNode.children;
+    thunk.text = vNode.text;
+    thunk.elm = vNode.elm;
+}
+function init(thunk) {
+    var cur = thunk.data;
+    var vNode = cur.fn.apply(undefined, cur.args);
+    copyToThunk(vNode, thunk);
+}
+function prepatch(oldVnode, thunk) {
+    var old = oldVnode.data;
+    var cur = thunk.data;
+    var oldArgs = old ? old.args : [];
+    var args = cur.args;
+    if (old && old.fn !== cur.fn || oldArgs && oldArgs.length !== args.length) {
+        copyToThunk(cur.fn.apply(undefined, args), thunk);
+    }
+    for (var i = 0; i < args.length; ++i) {
+        if (oldArgs && oldArgs[i] !== args[i]) {
+            copyToThunk(cur.fn.apply(undefined, args), thunk);
+            return;
+        }
+    }
+    copyToThunk(oldVnode, thunk);
+}
+exports.thunk = function thunk(selector, key, render) {
+    var state = [];
+    for (var _i = 3; _i < arguments.length; _i++) {
+        state[_i - 3] = arguments[_i];
+    }
+    return hyperscript_1.h(selector, {
+        key: key,
+        hook: { init: init, prepatch: prepatch },
+        fn: render,
+        args: state
+    });
+};
+//# sourceMappingURL=thunk.js.map
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var util_1 = __webpack_require__(7);
+function isolateSource(source, scope) {
+    return source.select(util_1.SCOPE_PREFIX + scope);
+}
+exports.isolateSource = isolateSource;
+function isolateSink(sink, scope) {
+    return sink.map(function (vTree) {
+        if (vTree.data.isolate) {
+            var existingScope = parseInt(vTree.data.isolate.split(util_1.SCOPE_PREFIX + 'cycle')[1]);
+            var _scope = parseInt(scope.split('cycle')[1]);
+            if (isNaN(existingScope) || isNaN(_scope) || existingScope > _scope) {
+                return vTree;
+            }
+        }
+        vTree.data.isolate = util_1.SCOPE_PREFIX + scope;
+        if (typeof vTree.key === 'undefined') {
+            vTree.key = util_1.SCOPE_PREFIX + scope;
+        }
+        return vTree;
+    });
+}
+exports.isolateSink = isolateSink;
+//# sourceMappingURL=isolate.js.map
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var init = __webpack_require__(149).init;
+var most_1 = __webpack_require__(4);
+var hold_1 = __webpack_require__(12);
+var DOMSource_1 = __webpack_require__(25);
+var VNodeWrapper_1 = __webpack_require__(54);
+var util_1 = __webpack_require__(7);
+var modules_1 = __webpack_require__(29);
+var isolate_1 = __webpack_require__(61);
+var transposition_1 = __webpack_require__(30);
+function makeDOMDriverInputGuard(modules) {
+    if (!Array.isArray(modules)) {
+        throw new Error("Optional modules option must be " +
+            "an array for snabbdom modules");
+    }
+}
+function domDriverInputGuard(view$) {
+    if (view$ instanceof most_1.Stream === false) {
+        throw new Error("The DOM driver function expects as input a Stream of " +
+            "virtual DOM elements");
+    }
+}
+function mapVNodeToElement(vNode) {
+    return vNode.elm ? vNode.elm : vNode;
+}
+function makeDOMDriver(container, options) {
+    if (!options) {
+        options = {};
+    }
+    var transposition = options.transposition || false;
+    var modules = options.modules || modules_1.default;
+    var isolateModule = new isolate_1.IsolateModule((new Map()));
+    var patch = init([isolateModule.createModule()].concat(modules));
+    var rootElement = util_1.getElement(container);
+    var vnodeWrapper = new VNodeWrapper_1.VNodeWrapper(rootElement);
+    var delegators = new Map();
+    makeDOMDriverInputGuard(modules);
+    return function DOMDriver(vnode$) {
+        domDriverInputGuard(vnode$);
+        var preprocessedVNode$ = transposition
+            ? vnode$.map(transposition_1.transposeVNode).switch()
+            : vnode$;
+        var rootElement$ = preprocessedVNode$
+            .map(function (vnode) { return vnodeWrapper.call(vnode); })
+            .scan(patch, rootElement)
+            .map(mapVNodeToElement)
+            .thru(hold_1.default);
+        rootElement$.drain()
+            .catch(function (err) { return console.error(err); })
+            .then(function () { return 'DOM Driver vnode$ has terminated'; });
+        return new DOMSource_1.DOMSource(rootElement$, [], isolateModule, delegators);
+    };
+}
+exports.makeDOMDriver = makeDOMDriver;
+//# sourceMappingURL=makeDOMDriver.js.map
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var transposition_1 = __webpack_require__(30);
+var HTMLSource_1 = __webpack_require__(26);
+var toHTML = __webpack_require__(135);
+/* tslint:disable:no-empty */
+var noop = function () { };
+/* tslint:enable:no-empty */
+function makeHTMLDriver(effect, options) {
+    if (!options) {
+        options = {};
+    }
+    var transposition = options.transposition || false;
+    return function htmlDriver(vnode$) {
+        var preprocessedVNode$ = (transposition ? vnode$.map(transposition_1.transposeVNode).switch() : vnode$);
+        var html$ = preprocessedVNode$.map(toHTML);
+        html$.subscribe({
+            next: effect || noop,
+            error: noop,
+            complete: noop,
+        });
+        return new HTMLSource_1.HTMLSource(html$);
+    };
+}
+exports.makeHTMLDriver = makeHTMLDriver;
+//# sourceMappingURL=makeHTMLDriver.js.map
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var most_1 = __webpack_require__(4);
+var SCOPE_PREFIX = '___';
+var MockedDOMSource = (function () {
+    function MockedDOMSource(_mockConfig) {
+        this._mockConfig = _mockConfig;
+        if (_mockConfig.elements) {
+            this._elements = _mockConfig.elements;
+        }
+        else {
+            this._elements = most_1.empty();
+        }
+    }
+    MockedDOMSource.prototype.elements = function () {
+        return this._elements;
+    };
+    MockedDOMSource.prototype.events = function (eventType, options) {
+        var mockConfig = void options ? this._mockConfig : this._mockConfig;
+        var keys = Object.keys(mockConfig);
+        var keysLen = keys.length;
+        for (var i = 0; i < keysLen; i++) {
+            var key = keys[i];
+            if (key === eventType) {
+                return mockConfig[key];
+            }
+        }
+        return most_1.empty();
+    };
+    MockedDOMSource.prototype.select = function (selector) {
+        var mockConfig = this._mockConfig;
+        var keys = Object.keys(mockConfig);
+        var keysLen = keys.length;
+        for (var i = 0; i < keysLen; i++) {
+            var key = keys[i];
+            if (key === selector) {
+                return new MockedDOMSource(mockConfig[key]);
+            }
+        }
+        return new MockedDOMSource({});
+    };
+    MockedDOMSource.prototype.isolateSource = function (source, scope) {
+        return source.select('.' + SCOPE_PREFIX + scope);
+    };
+    MockedDOMSource.prototype.isolateSink = function (sink, scope) {
+        return sink.map(function (vnode) {
+            if (vnode.sel.indexOf(SCOPE_PREFIX + scope) !== -1) {
+                return vnode;
+            }
+            else {
+                vnode.sel += "." + SCOPE_PREFIX + scope;
+                return vnode;
+            }
+        });
+    };
+    return MockedDOMSource;
+}());
+exports.MockedDOMSource = MockedDOMSource;
+function mockDOMSource(mockConfig) {
+    return new MockedDOMSource(mockConfig);
+}
+exports.mockDOMSource = mockDOMSource;
+//# sourceMappingURL=mockDOMSource.js.map
+
+/***/ },
+/* 61 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var IsolateModule = (function () {
+    function IsolateModule(isolatedElements) {
+        this.isolatedElements = isolatedElements;
+        this.eventDelegators = new Map();
+    }
+    IsolateModule.prototype.setScope = function (elm, scope) {
+        this.isolatedElements.set(scope, elm);
+    };
+    IsolateModule.prototype.removeScope = function (scope) {
+        this.isolatedElements.delete(scope);
+    };
+    IsolateModule.prototype.getIsolatedElement = function (scope) {
+        return this.isolatedElements.get(scope);
+    };
+    IsolateModule.prototype.isIsolatedElement = function (elm) {
+        var iterator = this.isolatedElements.entries();
+        var hasNext = true;
+        while (hasNext) {
+            try {
+                var result = iterator.next();
+                var _a = result.value, scope = _a[0], element = _a[1];
+                if (elm === element) {
+                    return scope;
+                }
+            }
+            catch (err) {
+                hasNext = false;
+            }
+        }
+        return false;
+    };
+    IsolateModule.prototype.addEventDelegator = function (scope, eventDelegator) {
+        var delegators = this.eventDelegators.get(scope);
+        if (!delegators) {
+            delegators = [];
+            this.eventDelegators.set(scope, delegators);
+        }
+        delegators[delegators.length] = eventDelegator;
+    };
+    IsolateModule.prototype.reset = function () {
+        this.isolatedElements.clear();
+    };
+    IsolateModule.prototype.createModule = function () {
+        var self = this;
+        return {
+            create: function (oldVNode, vNode) {
+                var _a = oldVNode.data, oldData = _a === void 0 ? {} : _a;
+                var elm = vNode.elm, _b = vNode.data, data = _b === void 0 ? {} : _b;
+                var oldScope = oldData.isolate || "";
+                var scope = data.isolate || "";
+                if (scope) {
+                    if (oldScope) {
+                        self.removeScope(oldScope);
+                    }
+                    self.setScope(elm, scope);
+                    var delegators = self.eventDelegators.get(scope);
+                    if (delegators) {
+                        for (var i = 0, len = delegators.length; i < len; ++i) {
+                            delegators[i].updateTopElement(elm);
+                        }
+                    }
+                    else if (delegators === void 0) {
+                        self.eventDelegators.set(scope, []);
+                    }
+                }
+                if (oldScope && !scope) {
+                    self.removeScope(scope);
+                }
+            },
+            update: function (oldVNode, vNode) {
+                var _a = oldVNode.data, oldData = _a === void 0 ? {} : _a;
+                var elm = vNode.elm, _b = vNode.data, data = _b === void 0 ? {} : _b;
+                var oldScope = oldData.isolate || "";
+                var scope = data.isolate || "";
+                if (scope && scope !== oldScope) {
+                    if (oldScope) {
+                        self.removeScope(oldScope);
+                    }
+                    self.setScope(elm, scope);
+                }
+                if (oldScope && !scope) {
+                    self.removeScope(scope);
+                }
+            },
+            remove: function (_a, cb) {
+                var data = _a.data;
+                data = data || {};
+                var scope = data.isolate;
+                if (scope) {
+                    self.removeScope(scope);
+                    if (self.eventDelegators.get(scope)) {
+                        self.eventDelegators.set(scope, []);
+                    }
+                }
+                cb();
+            },
+            destroy: function (_a) {
+                var data = _a.data;
+                data = data || {};
+                var scope = data.isolate;
+                if (scope) {
+                    self.removeScope(scope);
+                    if (self.eventDelegators.get(scope)) {
+                        self.eventDelegators.set(scope, []);
+                    }
+                }
+            }
+        };
+    };
+    return IsolateModule;
+}());
+exports.IsolateModule = IsolateModule;
+//# sourceMappingURL=isolate.js.map
+
+/***/ },
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10927,7 +15207,7 @@ function isBuffer(b) {
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var util = __webpack_require__(158);
+var util = __webpack_require__(155);
 var hasOwn = Object.prototype.hasOwnProperty;
 var pSlice = Array.prototype.slice;
 var functionsHaveNames = (function () {
@@ -11350,420 +15630,1051 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fusion_Map__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__ = __webpack_require__(2);
-/* harmony export (immutable) */ exports["b"] = map;
-/* harmony export (immutable) */ exports["c"] = constant;
-/* harmony export (immutable) */ exports["a"] = tap;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-/**
- * Transform each value in the stream by applying f to each
- * @param {function(*):*} f mapping function
- * @param {Stream} stream stream to map
- * @returns {Stream} stream containing items transformed by f
- */
-function map (f, stream) {
-  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](__WEBPACK_IMPORTED_MODULE_1__fusion_Map__["a" /* default */].create(f, stream.source))
-}
-
-/**
-* Replace each value in the stream with x
-* @param {*} x
-* @param {Stream} stream
-* @returns {Stream} stream containing items replaced with x
-*/
-function constant (x, stream) {
-  return map(function () {
-    return x
-  }, stream)
-}
-
-/**
-* Perform a side effect for each item in the stream
-* @param {function(x:*):*} f side effect to execute for each item. The
-*  return value will be discarded.
-* @param {Stream} stream stream to tap
-* @returns {Stream} new stream containing the same items as this stream
-*/
-function tap (f, stream) {
-  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new Tap(f, stream.source))
-}
-
-function Tap (f, source) {
-  this.source = source
-  this.f = f
-}
-
-Tap.prototype.run = function (sink, scheduler) {
-  return this.source.run(new TapSink(this.f, sink), scheduler)
-}
-
-function TapSink (f, sink) {
-  this.sink = sink
-  this.f = f
-}
-
-TapSink.prototype.end = __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__["a" /* default */].prototype.end
-TapSink.prototype.error = __WEBPACK_IMPORTED_MODULE_2__sink_Pipe__["a" /* default */].prototype.error
-
-TapSink.prototype.event = function (t, x) {
-  var f = this.f
-  f(x)
-  this.sink.event(t, x)
-}
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-// hyperscript
-__export(__webpack_require__(8));
-__export(__webpack_require__(57));
-__export(__webpack_require__(58));
-__export(__webpack_require__(32));
-var DOMSource_1 = __webpack_require__(29);
-exports.DOMSource = DOMSource_1.DOMSource;
-var makeDOMDriver_1 = __webpack_require__(60);
-exports.makeDOMDriver = makeDOMDriver_1.makeDOMDriver;
-var HTMLSource_1 = __webpack_require__(30);
-exports.HTMLSource = HTMLSource_1.HTMLSource;
-var makeHTMLDriver_1 = __webpack_require__(61);
-exports.makeHTMLDriver = makeHTMLDriver_1.makeHTMLDriver;
-var mockDOMSource_1 = __webpack_require__(62);
-exports.mockDOMSource = mockDOMSource_1.mockDOMSource;
-//# sourceMappingURL=index.js.map
-
-/***/ },
-/* 15 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
 console.group = console.group || console.log;
 console.groupCollapsed = console.groupCollapsed || console.log;
 console.groupEnd = console.groupEnd || console.log;
-// Component typings
+// TODO : include history driver of cycle but modified so that only the
+// Observable<Location> is passed. Optimally use rackt history driver
+// last version, or else keep current version but remove the objects passed
+// on the observable and include them as dependencies through import
 /**
- * @typedef {Object.<string, Observable>} Sources
+ * Usage : m(Router, {route: RouteSpec, sinkNames: [...]}, [children
+ * components])
  */
-/**
- * @typedef {Object.<string, Observable>} Sinks
- * NOTE : this type def is not perfect as we allow sometimes null values
- */
-/**
- * @typedef {?Object.<string, ?Object>} Settings
- */
-/**
- * @typedef {Object} DetailedComponentDef
- * @property {?function(Sources, Settings)} makeLocalSources
- * @property {?function(Settings)} makeLocalSettings
- * @property {?function(Sources, Settings)} makeOwnSinks
- * @property {function(Sinks, Array<Sinks>, Settings)} mergeSinks
- * @property {function(Sinks):Boolean} sinksContract
- * @property {function(Sources):Boolean} sourcesContract
- */
-/**
- * @typedef {Object} ShortComponentDef
- * @property {?function(Sources, Settings)} makeLocalSources
- * @property {?function(Settings)} makeLocalSettings
- * @property {function(Sources, Settings, Array<Component>)} makeAllSinks
- * @property {function(Sinks):Boolean} sinksContract
- * @property {function(Sources):Boolean} sourcesContract
- */
-/**
- * @typedef {function(Sources, Settings):Sinks} Component
- */
-var checks_1 = __webpack_require__(9);
-var ramda_1 = __webpack_require__(10);
+var checks_1 = __webpack_require__(13);
+var ramda_1 = __webpack_require__(11);
 var $ = __webpack_require__(4);
-var dom_1 = __webpack_require__(14);
-var deepMerge = function deepMerge(a, b) {
-    return (ramda_1.is(Object, a) && ramda_1.is(Object, b)) ? ramda_1.mergeWith(deepMerge, a, b) : b;
-};
+var m_1 = __webpack_require__(31);
+// TODO : pass routeMatcher to typescript module format
+// import {routeMatcher} from '../routeMatcher'
+var hold_1 = __webpack_require__(12);
+var sample_1 = __webpack_require__(51);
 // Configuration
-var defaultMergeSinkConfig = {
-    DOM: computeDOMSinkDefault,
-    _default: computeSinkDefault
-};
-//////
-// Helpers
-/**
- * Merges the DOM nodes produced by a parent component with the DOM nodes
- * produced by children components, such that the parent DOM nodes
- * wrap around the children DOM nodes
- * For instance:
- * - parent -> div(..., [h2(...)])
- * - children -> [div(...), button(...)]
- * - result : div(..., [h2(...), div(...), button(...)])
- * @param {Sink} parentDOMSinkOrNull
- * @param {Array<Sink>} childrenSink
- * @param {Settings} settings
- * @returns {Observable<VNode>|Null}
- */
-function computeDOMSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
-    // We want `combineLatest` to still emit the parent DOM sink, even when
-    // one of its children sinks is empty, so we modify the children sinks
-    // to emits ONE `Null` value if it is empty
-    // Note : in default function, settings parameter is not used
-    var childrenDOMSinkOrNull = ramda_1.map(checks_1.emitNullIfEmpty, childrenSink);
-    var allSinks = ramda_1.flatten([parentDOMSinkOrNull, childrenDOMSinkOrNull]);
-    var allDOMSinks = checks_1.removeNullsFromArray(allSinks);
-    // Edge case : none of the sinks have a DOM sink
-    // That should not be possible as we come here only
-    // when we detect a DOM sink
-    if (allDOMSinks.length === 0) {
-        throw "mergeDOMSinkDefault: internal error!";
+var routeSourceName = 'route$';
+// const nullVNode = {
+//   "children": undefined,
+//   "data": undefined,
+//   "elm": undefined,
+//   "key": undefined,
+//   "sel": undefined,
+//   "text": undefined
+// }
+///////////
+// Route matcher
+// TODO BRC: pass to typescript
+/* JavaScript Route Matcher - v0.1.0 - 10/19/2011
+ * http://github.com/cowboy/javascript-route-matcher
+ * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
+var routeMatcher = (function () {
+    var exports = {};
+    // Characters to be escaped with \. RegExp borrowed from the Backbone router
+    // but escaped (note: unnecessarily) to keep JSHint from complaining.
+    var reEscape = /[\-\[\]{}()+?.,\\\^$|#\s]/g;
+    // Match named :param or *splat placeholders.
+    var reParam = /([:*])(\w+)/g;
+    // Test to see if a value matches the corresponding rule.
+    function validateRule(rule, value) {
+        // For a given rule, get the first letter of the string name of its
+        // constructor function. "R" -> RegExp, "F" -> Function (these shouldn't
+        // conflict with any other types one might specify). Note: instead of
+        // getting .toString from a new object {} or Object.prototype, I'm assuming
+        // that exports will always be an object, and using its .toString method.
+        // Bad idea? Let me know by filing an issue
+        var type = exports.toString.call(rule).charAt(8);
+        // If regexp, match. If function, invoke. Otherwise, compare. Note that ==
+        // is used because type coercion is needed, as `value` will always be a
+        // string, but `rule` might not.
+        return type === "R" ? rule.test(value) : type === "F" ? rule(value) : rule == value;
     }
-    return $.combineArray(function () {
-        return arguments;
-    }, allDOMSinks)
-        .tap(console.log.bind(console, 'mergeDOMSinkDefault: allDOMSinks'))
-        .map(mergeChildrenIntoParentDOM(parentDOMSinkOrNull));
+    // Pass in a route string (or RegExp) plus an optional map of rules, and get
+    // back an object with .parse and .stringify methods.
+    exports.routeMatcher = function (route, rules) {
+        // Object to be returned. The public API.
+        var self = {};
+        // Matched param or splat names, in order
+        var names = [];
+        // Route matching RegExp.
+        var re = route;
+        // Build route RegExp from passed string.
+        if (typeof route === "string") {
+            // Escape special chars.
+            re = re.replace(reEscape, "\\$&");
+            // Replace any :param or *splat with the appropriate capture group.
+            re = re.replace(reParam, function (_, mode, name) {
+                names.push(name);
+                // :param should capture until the next / or EOL, while *splat should
+                // capture until the next :param, *splat, or EOL.
+                return mode === ":" ? "([^/]*)" : "(.*)";
+            });
+            // Add ^/$ anchors and create the actual RegExp.
+            re = new RegExp("^" + re + "$");
+            // Match the passed url against the route, returning an object of params
+            // and values.
+            self.parse = function (url) {
+                var i = 0;
+                var param, value;
+                var params = {};
+                var matches = url.match(re);
+                // If no matches, return null.
+                if (!matches) {
+                    return null;
+                }
+                // Add all matched :param / *splat values into the params object.
+                while (i < names.length) {
+                    param = names[i++];
+                    value = matches[i];
+                    // If a rule exists for thie param and it doesn't validate, return null.
+                    if (rules && param in rules && !validateRule(rules[param], value)) {
+                        return null;
+                    }
+                    params[param] = value;
+                }
+                return params;
+            };
+            // Build path by inserting the given params into the route.
+            self.stringify = function (params) {
+                var param, re;
+                var result = route;
+                // Insert each passed param into the route string. Note that this loop
+                // doesn't check .hasOwnProperty because this script doesn't support
+                // modifications to Object.prototype.
+                for (param in params) {
+                    re = new RegExp("[:*]" + param + "\\b");
+                    result = result.replace(re, params[param]);
+                }
+                // Missing params should be replaced with empty string.
+                return result.replace(reParam, "");
+            };
+        }
+        else {
+            // RegExp route was passed. This is super-simple.
+            self.parse = function (url) {
+                var matches = url.match(re);
+                return matches && { captures: matches.slice(1) };
+            };
+            // There's no meaningful way to stringify based on a RegExp route, so
+            // return empty string.
+            self.stringify = function () {
+                return "";
+            };
+        }
+        return self;
+    };
+    return exports.routeMatcher;
+})();
+///////////
+// Helpers
+function match(routeToMatch) {
+    var rm1 = routeMatcher(routeToMatch);
+    var rm2 = routeMatcher(routeToMatch + '/*routeRemainder');
+    return function match(incomingRoute) {
+        if (ramda_1.isNil(incomingRoute)) {
+            return {
+                match: null
+            };
+        }
+        var matched = rm1.parse(incomingRoute);
+        var remainder = rm2.parse(incomingRoute);
+        return {
+            match: matched || remainder
+        };
+    };
 }
-function computeSinkDefault(parentDOMSinkOrNull, childrenSink, settings) {
-    var allSinks = ramda_1.concat([parentDOMSinkOrNull], childrenSink);
-    // Nulls have to be removed as a given sink name will not be in all children
-    // sinks. It is however guaranteed by the caller that the given sink
-    // name will be in at least one of the children. Hence the merged array
-    // is never empty
-    return $.mergeArray(checks_1.removeNullsFromArray(allSinks));
+function isRouteSettings(obj) {
+    return obj.route && checks_1.isString(obj.route) &&
+        obj.sinkNames && checks_1.isArray(obj.sinkNames) && obj.sinkNames.length > 0;
 }
-function mergeChildrenIntoParentDOM(parentDOMSink) {
-    return function mergeChildrenIntoParentDOM(arrayVNode) {
-        // We remove null elements from the array of vNode
-        // We can have a null vNode emitted by a sink if that sink is empty
-        var _arrayVNode = checks_1.removeEmptyVNodes(checks_1.removeNullsFromArray(arrayVNode));
-        checks_1.assertContract(checks_1.isArrayOf(checks_1.isVNode), [_arrayVNode], 'DOM sources must' +
-            ' stream VNode objects! Got ' + _arrayVNode);
-        if (parentDOMSink) {
-            // Case : the parent sinks have a DOM sink
-            // We want to put the children's DOM **inside** the parent's DOM
-            // Two cases here :
-            // - The parent's vNode has a `text` property :
-            //   we move that text to a text vNode at first position in the children
-            //   then we add the children's DOM in last position of the
-            // existing parent's children
-            // - The parent's vNode does not have a `text` property :
-            //   we just add the children's DOM in last position of the exisitng
-            //   parent's children
-            // Note that this is specific to the snabbdom vNode data structure
-            // Note that we defensively clone vNodes so the original vNode remains
-            // inmuted
-            var parentVNode = ramda_1.clone(_arrayVNode.shift());
-            var childrenVNode = _arrayVNode;
-            parentVNode.children = ramda_1.clone(parentVNode.children) || [];
-            // childrenVNode could be null if all children sinks are empty
-            // observables, in which case we just return the parentVNode
-            if (childrenVNode) {
-                if (parentVNode.text) {
-                    parentVNode.children.splice(0, 0, {
-                        children: [],
+/**
+ * Definition for a router component which :
+ * - will pass the sinks of its children components iff the new route
+ * matches the route configured for the components
+ * - when the route no longer matches, components sinks are terminated
+ * - when the route matches, changes but keeps the same value, children
+ * sinks remain in place
+ * Route information is read on the `route$` property
+ * Children components pass to their own children a `route$` which is the
+ * `route$` they received from their parent, from which they remove the
+ * part of the route that they have matched (passing what is called here the
+ * remainder).
+ * Params parsed from the matched route are passed to the children
+ * component through their `settings` parameters, with the `routeParams`
+ * property.
+ * The `route$` property can be but should not be manipulated directly out
+ * of a `Router` component.
+ *
+ * Two settings are necessary :
+ * - route : the route which triggers the component sinks activation.
+ *   1. Note that a route value of `undefined` will produce no matching,
+ *   while a value of `""` will match `":user"` ! See the tests
+ *   2. Every new nested route will trigger the emission of a nested route
+ *   value, even if that new nested route value is the same as the
+ *   previous one.
+ *   3. In the routed component, the `route$` will emit the matched
+ *   portion of the route. However, the same information is already broken
+ *   down in `routeParams` and should be read from there.
+ *
+ * - sinkNames : the list of sinks (names) which must be activated in
+ * response to the matching route
+ *
+ * Note that the DOM sink will emit null on some specific circumstances,
+ * hence the component receiving the routed DOM sink must plan for that
+ * case accordingly. That means DOM :: Observable<VNode>|Null
+ *
+ * @param {Sources} sources
+ * @param {{route: string, sinkNames: Array<string>, trace: string}} settings
+ * @param {Array<Component>} childrenComponents
+ */
+function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
+    console.groupCollapsed('Router component > makeAllSinks');
+    console.log('sources, settings, childrenComponents', sources, settings, childrenComponents);
+    var signature = [{ settings: isRouteSettings },];
+    checks_1.assertSignature('Router > computeSinks', [settings], signature);
+    // The sink names are necessary as we cannot know otherwise in
+    // advance what are the sinks output by the children components without
+    // executing all the children components.
+    // However to execute the children components, we need to pass the route
+    // params to the children. To get those params, in turn, we need to
+    // enter the observable monad, from which we can't get out.
+    // This behaviour results in having to handle null cases for sinks (some
+    // sinks might be present only on some children components).
+    var sinkNames = settings.sinkNames;
+    var trace = 'router:' + (settings.trace || "");
+    var route$ = sources[routeSourceName]
+        .tap(console.error.bind(console, 'route$'));
+    var matchedRoute$ = hold_1.default(route$.map(match(settings.route))
+        .tap(console.warn.bind(console, trace + '|matchedRoute$'))); //.shareReplay(1)
+    var changedRouteEvents$ = matchedRoute$
+        .map(ramda_1.prop('match'))
+        .tap(console.warn.bind(console, 'matchedRoute$'))
+        .skipRepeatsWith(function eq(x, y) {
+        var _x = x ? ramda_1.omit(['routeRemainder'], x) : null;
+        var _y = y ? ramda_1.omit(['routeRemainder'], y) : null;
+        return ramda_1.equals(_x, _y);
+    })
+        .tap(console.warn.bind(console, 'changedRouteEvents$'))
+        .multicast(); // TODO BRC : check the level of equivalency to share
+    // Note : must be shared, used twice here
+    var cachedSinks$ = hold_1.default(changedRouteEvents$
+        .map(function (params) {
+        var cachedSinks;
+        console.error('changedRouteEvents$ > params', params);
+        if (params != null) {
+            console.info('computing children components sinks', params);
+            var componentFromChildren = m_1.m({
+                makeLocalSources: function makeLocalSources(sources, __settings) {
+                    console.group('makeLocalSources');
+                    console.log('sources, __settings', sources, __settings);
+                    console.groupEnd();
+                    return {
+                        route$: hold_1.default(matchedRoute$
+                            .map(ramda_1.path(['match', 'routeRemainder']))
+                            .tap(function (x) {
+                            console.warn(settings.trace + ' :' +
+                                ' changedRouteEvents$ : routeRemainder: ', x);
+                        })),
+                    };
+                },
+            }, {
+                routeParams: ramda_1.omit(['routeRemainder'], params),
+                trace: 'inner - ' + trace
+            }, childrenComponents);
+            cachedSinks = componentFromChildren(sources, settings);
+        }
+        else {
+            cachedSinks = null;
+        }
+        return cachedSinks;
+    })); //.multicast()
+    function makeRoutedSinkFromCache(sinkName) {
+        return function makeRoutedSinkFromCache(params, cachedSinks) {
+            var cached$, preCached$, prefix$;
+            if (params != null) {
+                // Case : new route matches component configured route
+                if (cachedSinks[sinkName] != null) {
+                    // Case : the component produces a sink with that name
+                    // This is an important case, as parent can have children
+                    // nested at arbitrary levels, with either :
+                    // 1. sinks which will not be retained (not in `sinkNames`
+                    // settings)
+                    // 2. or no sinks matching a particular `sinkNames`
+                    // Casuistic 1. is taken care of automatically as we only
+                    // construct the sinks in `sinkNames`
+                    // Casuistic 2. is taken care of thereafter
+                    prefix$ = sinkName === 'DOM' ?
+                        // Case : DOM sink
+                        // actually any sink which is merged with a `combineLatest`
+                        // but here by default only DOM sinks are merged that way
+                        // Because the `combineLatest` blocks till all its sources
+                        // have started, and that behaviour interacts badly with
+                        // route changes desired behavior, we forcibly emits a `null`
+                        // value at the beginning of every sink.
+                        $.of(null) :
+                        // Case : Non-DOM sink
+                        // Non-DOM sinks are merged with a simple `merge`, there
+                        // is no conflict here, so we just return nothing
+                        $.empty();
+                    preCached$ = cachedSinks[sinkName]
+                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'));
+                    // TODO TYS/BRC : pass to most
+                    //            .finally(_ => {
+                    //              console.log(trace + ' : sink ' + sinkName + ': terminating' +
+                    //              ' due to' +
+                    //                ' route change')
+                    //            }) // inexistant in most
+                    cached$ = $.concat(prefix$, preCached$);
+                }
+                else {
+                    // Case : the component does not have any sinks with the
+                    // corresponding sinkName
+                    cached$ = $.empty();
+                }
+            }
+            else {
+                // Case : new route does NOT match component configured route
+                console.log('params is null!!! no match for this component on' +
+                    ' this route :' + trace);
+                cached$ = sinkName === 'DOM' ? $.of(null) : $.empty();
+            }
+            return cached$;
+        };
+    }
+    function makeRoutedSink(sinkName) {
+        return (_a = {},
+            // !!!!!!!!!!!!! changed the sample implementation to start the source
+            // first, then then sampler, this allow cachedSinks$ values to be read
+            // before the sampler is subscribed to
+            _a[sinkName] = sample_1.sample(makeRoutedSinkFromCache(sinkName), changedRouteEvents$, cachedSinks$)
+                .switch(),
+            _a
+        );
+        var _a;
+    }
+    console.groupEnd();
+    return ramda_1.mergeAll(ramda_1.map(makeRoutedSink, sinkNames));
+}
+var Router = { computeSinks: computeSinks };
+exports.Router = Router;
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+/// <reference path="../../../typings/index.d.ts" />
+var assert = __webpack_require__(62);
+var dom_1 = __webpack_require__(28);
+var $ = __webpack_require__(4);
+var runTestScenario_1 = __webpack_require__(65);
+var m_1 = __webpack_require__(31);
+var Router_1 = __webpack_require__(63);
+// TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
+console.groupCollapsed = console.groupCollapsed || console.log;
+function plan(n) {
+    return function _done(done) {
+        if (--n === 0) {
+            done();
+        }
+    };
+}
+describe('Testing Router component', function () {
+    it('main cases - non-nested routing', function (done) {
+        var assertAsync = plan(4);
+        var childComponent1 = function childComponent1(sources, settings) {
+            return {
+                DOM: sources.DOM1.take(4)
+                    .tap(console.warn.bind(console, 'DOM : component 1: '))
+                    .map(function (x) { return dom_1.h('span', {}, 'Component 1 : id=' + settings.routeParams.id + ' - ' + x); })
+                    .concat($.never()),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 1 - route$'))
+                    .map(function (x) { return 'Component 1 - routeLog - ' +
+                    settings.routeParams.user + settings.routeParams.id; }),
+                a: sources.userAction$.map(function (x) { return 'Component1 - user action - ' + x; })
+            };
+        };
+        var childComponent2 = function childComponent1(sources, settings) {
+            return {
+                DOM: sources.DOM2.take(4)
+                    .tap(console.warn.bind(console, 'DOM : component 2: '))
+                    .map(function (x) { return dom_1.h('span', {}, 'Component 2 : id=' + settings.routeParams.id + ' - ' + x); })
+                    .concat($.never()),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 2 - route$'))
+                    .map(function (x) { return 'Component2 - routeLog - routeRemainder: ' + x; }),
+                b: sources.userAction$.map(function (x) { return 'Component2 - user action - ' + x; })
+            };
+        };
+        var mComponent = m_1.m(Router_1.Router, { route: ':user/:id', sinkNames: ['DOM', 'routeLog', 'a', 'b'] }, [childComponent1, childComponent2]);
+        var inputs = [
+            { DOM1: { diagram: '-a--b--c--d--e--f--a--b--c--d-' } },
+            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d-e-f-' } },
+            {
+                userAction$: {
+                    diagram: 'a---b-ac--ab---c',
+                    values: { a: 'click', b: 'select', c: 'hover', }
+                }
+            },
+            {
+                route$: {
+                    //diagr: '-a--b--c--d--e--f--a--b--c--d--e--f-',
+                    //diagr: '-a-b-c-d-e-f-abb-c-d-e-f-',
+                    diagram: '-a---b--cdef--g', values: {
+                        a: 'bruno/1',
+                        b: 'ted',
+                        c: 'bruno/2',
+                        d: 'bruno/2/remainder',
+                        e: 'bruno/2/remainder',
+                        f: 'bruno/3/bigger/remainder',
+                        g: 'paul',
+                    }
+                }
+            }
+        ];
+        function makeVNode(componentNum, id, x) {
+            return dom_1.h('span', {}, 'Component ' + componentNum + ' : id=' + id + ' - ' + x);
+        }
+        var vNodes = [
+            null,
+            dom_1.div([
+                makeVNode(1, 1, 'b'),
+                makeVNode(2, 1, 'b'),
+            ]),
+            dom_1.div([
+                makeVNode(1, 1, 'b'),
+                makeVNode(2, 1, 'c'),
+            ]),
+            null,
+            null,
+            dom_1.div([
+                makeVNode(1, 2, 'd'),
+                makeVNode(2, 2, 'e'),
+            ]),
+            dom_1.div([
+                makeVNode(1, 2, 'd'),
+                makeVNode(2, 2, 'f'),
+            ]),
+            null,
+            dom_1.div([
+                makeVNode(1, 3, 'e'),
+                makeVNode(2, 3, 'a'),
+            ]),
+            dom_1.div([
+                makeVNode(1, 3, 'e'),
+                makeVNode(2, 3, 'b'),
+            ]),
+            null,
+        ];
+        /** @type TestResults */
+        var expected = {
+            DOM: {
+                outputs: vNodes,
+                successMessage: 'sink DOM produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            routeLog: {
+                outputs: [
+                    "Component 1 - routeLog - bruno1",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno3",
+                    "Component2 - routeLog - routeRemainder: bigger/remainder"
+                ],
+                successMessage: 'sink routeLog produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            a: {
+                outputs: [
+                    "Component1 - user action - select",
+                    "Component1 - user action - click",
+                    "Component1 - user action - select"
+                ],
+                successMessage: 'sink a produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            b: {
+                outputs: [
+                    "Component2 - user action - select",
+                    "Component2 - user action - click",
+                    "Component2 - user action - select"
+                ],
+                successMessage: 'sink b produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+        };
+        function analyzeTestResults(actual, expected, message) {
+            assert.deepEqual(actual, expected, message);
+            assertAsync(done);
+        }
+        var testFn = mComponent;
+        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
+            tickDuration: 5,
+            waitForFinishDelay: 30
+        });
+    });
+    /**
+     // Note that `:user` matches the empty string! It is somewhat of a
+     // pathological case but important to have in mind.
+     //
+     // We have 6 transitions to test against :
+     //   A    | child  |  n          B    | child  |  n
+     //-------------------------    ------------------------
+     // parent |   o    |  1        parent |   1    |  o
+     // n      |   x    |  2        n      |   x    |  2
+     //
+     //   C    | child  |  n
+     //-------------------------
+     // parent |   1    |  2
+     // n      |   x    |  o
+     //
+     // Legend:
+     // - (n,n) : the streamed route does not match any of the configured route
+     // - (parent, child) : the streamed route match the parent, and the
+     // nested child configured route
+     // - (parent, n) | (child, n) : the streamed route matches only one of
+     // parent or child configured route
+     // - x : state which is not possible
+     //
+     // Transition A -> A1:
+     // The parent sink emits immediately a value which is the last seen
+     // value of the parent sink (i.e. as if children sinks became null) if any
+     // Transition A -> A2:
+     // All children and parent sinks are terminated. Nothing is emitted,
+     //
+     // Transition B -> B1:
+     // Nothing is visibly emitted on any sinks (actually null is emitted at
+     // children's level but filtered out), but children sinks are activated.
+     // Whenever a child sink will emit a value, that value will be merged
+     // into the parent sinks
+     //
+     // Transition B -> B2:
+     // Nothing is emitted on the parent sinks, which are terminated.
+     //
+     // Transition C -> C1:
+     // Parent and children sinks are activated and combined. The current
+     // logic is hierarchical :
+     // - if the parent sinks emit first, then that value is passed
+     // - if the children sinks emit first, then till the parent value emit
+     // its first value, nothing is passed (à la `combineLatest`)
+     // Starting the top level parent sink will emit a null.
+     //
+     // Transition C -> C2:
+     // Parent sinks are activated.
+     // Starting the top level parent sink will emit a null.
+     */
+    it('main cases - nested routing', function (done) {
+        var assertAsync = plan(4);
+        var counter = 0;
+        var childComponent = {
+            makeOwnSinks: function (sources, settings) {
+                console.group("executing childComponent own");
+                console.log('sources, settings', sources, settings);
+                console.groupEnd();
+                var user = settings.routeParams.user;
+                console.error('settings.routeParams user', user, ++counter);
+                return {
+                    DOM: sources.DOM1.take(4)
+                        .tap(console.warn.bind(console, 'DOM : child component : '))
+                        .map(function (x) { return dom_1.h('span', {}, 'Child component : user=' + user + ' - ' + x); })
+                        .concat($.never()),
+                    routeLog: sources.route$
+                        .tap(console.warn.bind(console, 'routeLog : child component -' +
+                        ' route$'))
+                        .map(function (x) {
+                        return 'Child component 1 - routeLog - ' + user;
+                    }),
+                    userAction1$: sources.userAction$.map(function (x) { return 'child component - user' +
+                        ' action - ' + x; }).startWith('child component - starting')
+                };
+            }
+        };
+        var greatChildComponent = function greatChildComponent(sources, settings) {
+            console.group("executing greatChildComponent own");
+            console.log('sources, settings', sources, settings);
+            console.groupEnd();
+            return {
+                DOM: sources.DOM2.take(4)
+                    .tap(console.warn.bind(console, 'DOM : great child component : '))
+                    .map(function (x) { return dom_1.h('span', {}, 'Great child component : id=' + settings.routeParams.id + ' - ' + x); })
+                    .concat($.never()),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : great child component -' +
+                    ' route$'))
+                    .map(function (x) { return [
+                    'great child component - routeLog -',
+                    '(user: ' + settings.routeParams.user + ',',
+                    'id: ' + settings.routeParams.id + ')'
+                ].join(' '); }),
+                userAction2$: sources.userAction$.map(function (x) { return 'great child component -' +
+                    ' user action - ' + x; }).startWith('great child component - starting'),
+                notMerged: sources.DOM1.map(function (x) { return 'ERROR'; })
+                    .tap(console.log.bind(console, 'notMerged:'))
+            };
+        };
+        // Note that if nested routers redefine `sinkNames` it will have no impact
+        // on previous definition, as settings are local to each child : children
+        // inherit settings from the parent through copy (passing by value)
+        console.groupCollapsed('creating mComponent');
+        var mComponent = m_1.m(Router_1.Router, {
+            route: ':user',
+            sinkNames: ['DOM', 'routeLog', 'userAction1$', 'userAction2$'],
+            trace: 'top'
+        }, [
+            m_1.m(childComponent, { trace: 'middle' }, [
+                m_1.m(Router_1.Router, { route: ':id', trace: 'bottom' }, [greatChildComponent])
+            ])
+        ]);
+        console.groupEnd();
+        var inputs = [
+            { DOM1: { diagram: '-a--b--c--d--e--f--a--b--c--d-' } },
+            { DOM2: { diagram: '-a-b-c-d-e-f-a-b-c-d-e-f-' } },
+            {
+                userAction$: {
+                    diagram: 'a---b-ac--aba--c',
+                    values: { a: 'click', b: 'select', c: 'hover', }
+                }
+            },
+            {
+                route$: {
+                    //userA: 'a---b-ac--aba--c',
+                    //diagr: '-a--b--c--d--e--f--a--b--c--d-'}},
+                    //diagr: '-a-b-c-d-e-f-a-b-c-d-e-f-'}},
+                    //          diagram: '-a--b--c--def--g-h-i-j-k', values: {
+                    diagram: '-a----------------------', values: {
+                        a: 'bruno/1',
+                        b: 'ted/1',
+                        c: 'ted',
+                        d: 'bruno/2',
+                        e: 'bruno/2/remainder',
+                        f: 'bruno/2/remainder',
+                        g: 'bruno/3/bigger/remainder',
+                        h: '',
+                        i: undefined,
+                        j: 'ted/1/sth',
+                        k: undefined,
+                    }
+                }
+            }
+        ];
+        function makeVNode(user, id, x, y) {
+            return y != null ? {
+                "children": [
+                    {
+                        "children": [],
                         "data": {},
                         "elm": undefined,
                         "key": undefined,
                         "sel": undefined,
-                        "text": parentVNode.text
-                    });
-                    parentVNode.text = undefined;
+                        "text": "Child component : user=" + user + " - " + x
+                    },
+                    {
+                        "children": undefined,
+                        "data": {},
+                        "elm": undefined,
+                        "key": undefined,
+                        "sel": "span",
+                        "text": "Great child component : id=" + id + " - " + y
+                    }
+                ],
+                "data": {},
+                "elm": undefined,
+                "key": undefined,
+                "sel": "span",
+                "text": undefined
+            } : {
+                "children": [
+                    {
+                        "children": [],
+                        "data": {},
+                        "elm": undefined,
+                        "key": undefined,
+                        "sel": undefined,
+                        "text": "Child component : user=" + user + " - " + x
+                    },
+                ],
+                "data": {},
+                "elm": undefined,
+                "key": undefined,
+                "sel": "span",
+                "text": undefined
+            };
+        }
+        var expectedVNodes = [
+            null,
+            makeVNode('bruno', 1, 'b', 'b'),
+            null,
+            makeVNode('ted', 1, 'c', 'c'),
+            makeVNode('ted', 1, 'c', 'd'),
+            makeVNode('ted', 0, 'c', null),
+            makeVNode('ted', 0, 'd', null),
+            null,
+            makeVNode('bruno', 2, 'e', 'f'),
+            makeVNode('bruno', 2, 'e', 'a'),
+            makeVNode('bruno', 2, 'e', 'b'),
+            makeVNode('bruno', 0, 'e', null),
+            makeVNode('bruno', 0, 'f', null),
+            makeVNode('bruno', 3, 'f', 'c'),
+            null,
+            makeVNode('', 0, 'a', null),
+            null,
+            null,
+            makeVNode('ted', 1, 'b', null),
+            makeVNode('ted', 1, 'b', 'f'),
+            null
+        ];
+        var expectedRouteLog = [
+            "Child component 1 - routeLog - bruno",
+            "great child component - routeLog - (user: bruno, id: 1)",
+            "Child component 1 - routeLog - ted",
+            "great child component - routeLog - (user: ted, id: 1)",
+            "Child component 1 - routeLog - ted",
+            "Child component 1 - routeLog - bruno",
+            "great child component - routeLog - (user: bruno, id: 2)",
+            "Child component 1 - routeLog - bruno",
+            "great child component - routeLog - (user: bruno, id: 2)",
+            "Child component 1 - routeLog - bruno",
+            "great child component - routeLog - (user: bruno, id: 2)",
+            "Child component 1 - routeLog - bruno",
+            "great child component - routeLog - (user: bruno, id: 3)",
+            "Child component 1 - routeLog - ",
+            "Child component 1 - routeLog - ted",
+            "great child component - routeLog - (user: ted, id: 1)"
+        ];
+        var expectedUserAction1 = [
+            "child component - starting",
+            "child component - user action - select",
+            "child component - starting",
+            "child component - user action - click",
+            "child component - user action - hover",
+            "child component - user action - click",
+            "child component - starting",
+            "child component - user action - select",
+            "child component - user action - click",
+            "child component - user action - hover",
+            "child component - starting",
+            "child component - starting",
+        ];
+        var expectedUserAction2 = [
+            "great child component - starting",
+            "great child component - user action - select",
+            "great child component - starting",
+            "great child component - user action - click",
+            "great child component - user action - hover",
+            "great child component - starting",
+            "great child component - user action - select",
+            "great child component - user action - click",
+            "great child component - user action - hover",
+            "great child component - starting",
+            "great child component - starting",
+        ];
+        /** @type TestResults */
+        var expected = {
+            DOM: {
+                outputs: expectedVNodes,
+                successMessage: 'sink DOM produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            routeLog: {
+                outputs: expectedRouteLog,
+                successMessage: 'routeParams are merged recursively, i.e. the nested children have access to the routeParams from parent level',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            userAction1$: {
+                outputs: expectedUserAction1,
+                successMessage: 'sink userAction1$ produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            userAction2$: {
+                outputs: expectedUserAction2,
+                successMessage: 'sink userAction2$ produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+        };
+        function analyzeTestResults(actual, expected, message) {
+            assert.deepEqual(actual, expected, message);
+            assertAsync(done);
+        }
+        var testFn = mComponent;
+        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
+            tickDuration: 5,
+            waitForFinishDelay: 30
+        });
+        assert.equal(true, true, 'sinks whose name is not present in sinkNames' +
+            ' are not merged');
+    });
+    it('edge cases - non-nested routing - empty DOM sink', function (done) {
+        var assertAsync = plan(4);
+        var childComponent1 = function childComponent1(sources, settings) {
+            return {
+                DOM: sources.DOM1.take(4)
+                    .tap(console.warn.bind(console, 'DOM : component 1: '))
+                    .map(function (x) { return dom_1.h('span', {}, 'Component 1 : id=' + settings.routeParams.id + ' - ' + x); })
+                    .concat($.never()),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 1 - route$'))
+                    .map(function (x) { return 'Component 1 - routeLog - ' +
+                    settings.routeParams.user + settings.routeParams.id; }),
+                a: sources.userAction$.map(function (x) { return 'Component1 - user action - ' + x; })
+            };
+        };
+        var childComponent2 = function childComponent1(sources, settings) {
+            return {
+                DOM: $.empty(),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 2 - route$'))
+                    .map(function (x) { return 'Component2 - routeLog - routeRemainder: ' + x; }),
+                b: sources.userAction$.map(function (x) { return 'Component2 - user action - ' + x; })
+            };
+        };
+        var mComponent = m_1.m(Router_1.Router, { route: ':user/:id', sinkNames: ['DOM', 'routeLog', 'a', 'b'] }, [childComponent1, childComponent2]);
+        var inputs = [
+            { DOM1: { diagram: '-a--b--c--d--e--f--a--b--c--d-' } },
+            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d-e-f-' } },
+            {
+                userAction$: {
+                    diagram: 'a---b-ac--ab---c',
+                    values: { a: 'click', b: 'select', c: 'hover', }
                 }
-                Array.prototype.push.apply(parentVNode.children, childrenVNode);
+            },
+            {
+                route$: {
+                    //diagr: '-a--b--c--d--e--f--a--b--c--d--e--f-',
+                    //diagr: '-a-b-c-d-e-f-abb-c-d-e-f-',
+                    diagram: '-a---b--cdef--g', values: {
+                        a: 'bruno/1',
+                        b: 'ted',
+                        c: 'bruno/2',
+                        d: 'bruno/2/remainder',
+                        e: 'bruno/2/remainder',
+                        f: 'bruno/3/bigger/remainder',
+                        g: 'paul',
+                    }
+                }
             }
-            return parentVNode;
+        ];
+        function makeVNode(componentNum, id, x) {
+            return dom_1.h('span', {}, 'Component ' + componentNum + ' : id=' + id + ' - ' + x);
         }
-        else {
-            // Case : the parent sinks does not have a DOM sink
-            // To avoid putting an extra `div` when there is only one vNode
-            // we put the extra `div` only when there are several vNodes
-            switch (_arrayVNode.length) {
-                case 0:
-                    return null;
-                case 1:
-                    return _arrayVNode[0];
-                default:
-                    return dom_1.div(_arrayVNode);
+        var vNodes = [
+            null,
+            makeVNode(1, 1, 'b'),
+            null,
+            null,
+            makeVNode(1, 2, 'd'),
+            null,
+            makeVNode(1, 3, 'e'),
+            null,
+        ];
+        /** @type TestResults */
+        var expected = {
+            DOM: {
+                outputs: vNodes,
+                successMessage: 'sink DOM produces the expected values :' +
+                    ' <div>non-empty children content<\div>',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            routeLog: {
+                outputs: [
+                    "Component 1 - routeLog - bruno1",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno3",
+                    "Component2 - routeLog - routeRemainder: bigger/remainder"
+                ],
+                successMessage: 'sink routeLog produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            a: {
+                outputs: [
+                    "Component1 - user action - select",
+                    "Component1 - user action - click",
+                    "Component1 - user action - select"
+                ],
+                successMessage: 'sink a produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            b: {
+                outputs: [
+                    "Component2 - user action - select",
+                    "Component2 - user action - click",
+                    "Component2 - user action - select"
+                ],
+                successMessage: 'sink b produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+        };
+        function analyzeTestResults(actual, expected, message) {
+            assert.deepEqual(actual, expected, message);
+            assertAsync(done);
+        }
+        var testFn = mComponent;
+        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
+            tickDuration: 10,
+            waitForFinishDelay: 100
+        });
+    });
+    it("edge cases - non-nested routing - 1 child with null DOM sink," +
+        " 1 with non-null DOM sink", function (done) {
+        var assertAsync = plan(4);
+        var childComponent1 = function childComponent1(sources, settings) {
+            return {
+                DOM: sources.DOM1.take(4)
+                    .tap(console.warn.bind(console, 'DOM : component 1: '))
+                    .map(function (x) { return dom_1.h('span', {}, 'Component 1 : id=' + settings.routeParams.id + ' - ' + x); })
+                    .concat($.never()),
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 1 - route$'))
+                    .map(function (x) { return 'Component 1 - routeLog - ' +
+                    settings.routeParams.user + settings.routeParams.id; }),
+                a: sources.userAction$.map(function (x) { return 'Component1 - user action - ' + x; })
+            };
+        };
+        var childComponent2 = function childComponent1(sources, settings) {
+            return {
+                DOM: null,
+                routeLog: sources.route$
+                    .tap(console.warn.bind(console, 'routeLog : component 2 - route$'))
+                    .map(function (x) { return 'Component2 - routeLog - routeRemainder: ' + x; }),
+                b: sources.userAction$.map(function (x) { return 'Component2 - user action - ' + x; })
+            };
+        };
+        var mComponent = m_1.m(Router_1.Router, { route: ':user/:id', sinkNames: ['DOM', 'routeLog', 'a', 'b'] }, [childComponent1, childComponent2]);
+        var inputs = [
+            { DOM1: { diagram: '-a--b--c--d--e--f--a--b--c--d-' } },
+            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d-e-f-' } },
+            {
+                userAction$: {
+                    diagram: 'a---b-ac--ab---c',
+                    values: { a: 'click', b: 'select', c: 'hover', }
+                }
+            },
+            {
+                route$: {
+                    //diagr: '-a--b--c--d--e--f--a--b--c--d--e--f-',
+                    //diagr: '-a-b-c-d-e-f-abb-c-d-e-f-',
+                    diagram: '-a---b--cdef--g', values: {
+                        a: 'bruno/1',
+                        b: 'ted',
+                        c: 'bruno/2',
+                        d: 'bruno/2/remainder',
+                        e: 'bruno/2/remainder',
+                        f: 'bruno/3/bigger/remainder',
+                        g: 'paul',
+                    }
+                }
             }
+        ];
+        function makeVNode(componentNum, id, x) {
+            return dom_1.h('span', {}, 'Component ' + componentNum + ' : id=' + id + ' - ' + x);
         }
-    };
-}
-///////
-// Helpers
-function computeReducedSink(ownSinks, childrenSinks, localSettings, mergeSinks) {
-    return function computeReducedSink(accReducedSinks, sinkName) {
-        var mergeSinkFn = mergeSinks[sinkName]
-            || defaultMergeSinkConfig[sinkName]
-            || defaultMergeSinkConfig['_default'];
-        checks_1.assertContract(checks_1.isMergeSinkFn, [mergeSinkFn], 'm : mergeSinkFn' +
-            ' for sink ${sinkName} must be a function : check' +
-            ' parameter or default merge function!');
-        if (mergeSinkFn) {
-            accReducedSinks[sinkName] = mergeSinkFn(ownSinks ? ownSinks[sinkName] : null, checks_1.projectSinksOn(sinkName, childrenSinks), localSettings);
+        var vNodes = [
+            null,
+            makeVNode(1, 1, 'b'),
+            null,
+            null,
+            makeVNode(1, 2, 'd'),
+            null,
+            makeVNode(1, 3, 'e'),
+            null,
+        ];
+        /** @type TestResults */
+        var expected = {
+            DOM: {
+                outputs: vNodes,
+                successMessage: 'sink DOM produces the expected values : non-null' +
+                    ' child content are not wrapped into a div if there are no more than' +
+                    ' 1 child',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            routeLog: {
+                outputs: [
+                    "Component 1 - routeLog - bruno1",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: undefined",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno2",
+                    "Component2 - routeLog - routeRemainder: remainder",
+                    "Component 1 - routeLog - bruno3",
+                    "Component2 - routeLog - routeRemainder: bigger/remainder"
+                ],
+                successMessage: 'sink routeLog produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            a: {
+                outputs: [
+                    "Component1 - user action - select",
+                    "Component1 - user action - click",
+                    "Component1 - user action - select"
+                ],
+                successMessage: 'sink a produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+            b: {
+                outputs: [
+                    "Component2 - user action - select",
+                    "Component2 - user action - click",
+                    "Component2 - user action - select"
+                ],
+                successMessage: 'sink b produces the expected values',
+                analyzeTestResults: analyzeTestResults,
+                transformFn: undefined,
+            },
+        };
+        function analyzeTestResults(actual, expected, message) {
+            assert.deepEqual(actual, expected, message);
+            assertAsync(done);
         }
-        return accReducedSinks;
-    };
-}
-/**
- * Returns a component specified by :
- * - a component definition object (nullable)
- * - settings (nullable)
- * - children components
- * Component definition properties :
- * - mergeSinks : computes resulting sinks or a specific sinks according to
- * configuration. See type information
- * - computeSinks : computes resulting sinks by executing the
- * children component and parent and merging the result
- * - sourcesContract : default to checking all sinks are observables or `null`
- * - sinksContract : default to checking all sinks are observables or `null`
- * - settingsContract : default to do noting
- * - makeLocalSources : default -> null
- * - makeLocalSettings : default -> null
- * - makeOwnSinks : -> default null
- *
- * The factored algorithm which derives sinks from sources is as follows :
- * - merging current sources with extra sources if any
- * - creating some sinks by itself
- * - computing children sinks by executing the children components on the
- * merged sources
- * - merging its own computed sinks with the children computed sinks
- * There are two versions of definition, according to the level of
- * granularity desired : the short spec and the detailed spec :
- * - short spec :
- *   one function `computeSinks` which outputs the sinks from the sources,
- *   settings and children components
- * - detailed spec :
- *   several properties as detailed above
- * @param {?(DetailedComponentDef|ShortComponentDef)} componentDef
- * @param {?Object} _settings
- * @param {Array<Component>} children
- * @returns {Component}
- * @throws when type- and user-specified contracts are not satisfied
- *
- * Contracts function allows to perform contract checking before computing
- * the component, for instance :
- * - check that sources have the expected type
- * - check that sources include the mandatory source property for
- * computing the component
- * - check that the sinks have the expected type/exists
- *
- * Source contracts are checked before extending the sources
- * Settings contracts are checked before merging
- *
- */
-// m :: Opt Component_Def -> Opt Settings -> [Component] -> Component
-function m(componentDef, _settings, children) {
-    console.groupCollapsed('Utils > m');
-    console.log('componentDef, _settings, children', componentDef, _settings, children);
-    // check signature
-    var mSignature = [
-        { componentDef: checks_1.isNullableComponentDef },
-        { settings: checks_1.isNullableObject },
-        { children: checks_1.isArrayOf(checks_1.isComponent) },
-    ];
-    checks_1.assertSignature('m', arguments, mSignature);
-    var makeLocalSources = componentDef.makeLocalSources, makeLocalSettings = componentDef.makeLocalSettings, makeOwnSinks = componentDef.makeOwnSinks, mergeSinks = componentDef.mergeSinks, computeSinks = componentDef.computeSinks, sinksContract = componentDef.sinksContract, sourcesContract = componentDef.sourcesContract, settingsContract = componentDef.settingsContract;
-    // Set default values
-    _settings = _settings || {};
-    makeLocalSources = checks_1.defaultsTo(makeLocalSources, ramda_1.always(null));
-    makeLocalSettings = checks_1.defaultsTo(makeLocalSettings, ramda_1.always({}));
-    makeOwnSinks = checks_1.defaultsTo(makeOwnSinks, ramda_1.always(null));
-    mergeSinks = checks_1.defaultsTo(mergeSinks, {});
-    sinksContract = checks_1.defaultsTo(sinksContract, ramda_1.always(true));
-    sourcesContract = checks_1.defaultsTo(sourcesContract, ramda_1.always(true));
-    settingsContract = checks_1.defaultsTo(settingsContract, ramda_1.always(true));
-    console.groupEnd();
-    return function m(sources, innerSettings) {
-        console.groupCollapsed('m\'ed component > Entry');
-        console.log('sources, innerSettings', sources, innerSettings);
-        checks_1.assertSettingsContracts(innerSettings, settingsContract);
-        innerSettings = innerSettings || {};
-        var mergedSettings = deepMerge(innerSettings, _settings);
-        checks_1.assertSourcesContracts(sources, sourcesContract);
-        // Computes and MERGES the extra sources which will be passed
-        // to the children and this component
-        // Extra sources are derived from the `sources`
-        // received as input, which remain untouched
-        var extendedSources = ramda_1.merge(sources, makeLocalSources(sources, mergedSettings));
-        // Note that per `merge` ramda spec. the second object's values
-        // replace those from the first in case of key conflict
-        var localSettings = deepMerge(makeLocalSettings(mergedSettings), mergedSettings);
-        var reducedSinks;
-        // Case : computeSinks is defined
-        if (computeSinks) {
-            reducedSinks = computeSinks(makeOwnSinks, children, extendedSources, localSettings);
-        }
-        else {
-            console.groupCollapsed('m\'ed component > makeOwnSinks');
-            console.log('extendedSources, localSettings', extendedSources, localSettings);
-            var ownSinks = makeOwnSinks(extendedSources, localSettings);
-            console.groupEnd();
-            console.group('m\'ed component > computing children sinks');
-            var childrenSinks = ramda_1.map(function (childComponent) { return childComponent(extendedSources, localSettings); }, children);
-            console.groupEnd();
-            checks_1.assertContract(checks_1.isOptSinks, [ownSinks], 'ownSinks must be a hash of observable sink');
-            checks_1.assertContract(checks_1.isArrayOptSinks, [childrenSinks], 'childrenSinks must' +
-                ' be an array of sinks');
-            // Merge the sinks from children and one-s own...
-            // Case : mergeSinks is defined through a function
-            if (checks_1.isFunction(mergeSinks)) {
-                console.groupCollapsed('m\'ed component > (fn) mergeSinks');
-                console.log('ownSinks, childrenSinks, localSettings', ownSinks, childrenSinks, localSettings);
-                reducedSinks = mergeSinks(ownSinks, childrenSinks, localSettings);
-                console.groupEnd();
-            }
-            else {
-                var allSinks = ramda_1.flatten(checks_1.removeNullsFromArray([ownSinks, childrenSinks]));
-                var sinkNames = checks_1.getSinkNamesFromSinksArray(allSinks);
-                console.groupCollapsed('m\'ed component > (obj) mergeSinks');
-                console.log('ownSinks, childrenSinks, localSettings,' +
-                    ' (fn) mergeSinks', ownSinks, childrenSinks, localSettings, mergeSinks);
-                reducedSinks = ramda_1.reduce(computeReducedSink(ownSinks, childrenSinks, localSettings, mergeSinks), {}, sinkNames);
-                console.groupEnd();
-            }
-        }
-        checks_1.assertSinksContracts(reducedSinks, sinksContract);
-        var tracedSinks = checks_1.trace(reducedSinks, mergedSettings);
-        // ... and add tracing information(sinkPath, timestamp, sinkValue/sinkError) after each sink
-        // TODO : specify trace/debug/error generation information
-        // This would ensure that errors are automatically and systematically
-        //       caught in the component where they occur, and not
-        //       interrupting the application implementation-wise, it might be
-        //       necessary to add a `currentPath` parameter somewhere which
-        //       carries the current path down the tree
-        console.groupEnd();
-        return tracedSinks;
-    };
-}
-exports.m = m;
+        var testFn = mComponent;
+        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
+            tickDuration: 5,
+            waitForFinishDelay: 30
+        });
+    });
+});
 
 
 /***/ },
-/* 16 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
-var ramda_1 = __webpack_require__(10);
-var U = __webpack_require__(9);
+var ramda_1 = __webpack_require__(11);
+var U = __webpack_require__(13);
 var $ = __webpack_require__(4);
-var most_last_1 = __webpack_require__(83);
-var most_subject_1 = __webpack_require__(39);
+var most_last_1 = __webpack_require__(80);
+var most_subject_1 = __webpack_require__(37);
 var mapIndexed = ramda_1.addIndex(ramda_1.map);
 // TODO : find a solution to use it in the browser
 //console.log = function(){}
@@ -12007,11 +16918,15 @@ function runTestScenario(inputs, expected, testFn, settings) {
     // makes use of `assert` and can lead to program interruption
     /** @type {Object.<string, Observable<Array<Output>>>} */
     var resultAnalysis = ramda_1.mapObjIndexed(analyzeTestResults(expected), sinksResults);
+    var allResults = removeNullsFromArray(ramda_1.values(resultAnalysis));
     // This takes care of actually starting the producers
     // which generate the execution of the test assertions
-    $.mergeArray(removeNullsFromArray(ramda_1.values(resultAnalysis)))
+    $.mergeArray(allResults)
         .subscribe({
-        next: rxlog('Test completed for sink:'),
+        //      next: rxlog('Test completed for sink:'),
+        next: function (x) {
+            console.warn('Test completed for sink:', x);
+        },
         error: rxlog('An error occurred while executing test!'),
         complete: rxlog('Tests completed!')
     });
@@ -12026,5507 +16941,7 @@ exports.runTestScenario = runTestScenario;
 
 
 /***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(module, global) {/**
- * lodash 3.0.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** Used to determine if values are of the language type `Object`. */
-var objectTypes = {
-  'function': true,
-  'object': true
-};
-
-/** Detect free variable `exports`. */
-var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-  ? exports
-  : undefined;
-
-/** Detect free variable `module`. */
-var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-  ? module
-  : undefined;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
-
-/** Detect free variable `self`. */
-var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-/** Detect free variable `window`. */
-var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-/** Detect `this` as the global object. */
-var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
-
-/**
- * Used as a reference to the global object.
- *
- * The `this` value is used if it's the global object to avoid Greasemonkey's
- * restricted `window` object, otherwise the `window` object is used.
- */
-var root = freeGlobal ||
-  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-    freeSelf || thisGlobal || Function('return this')();
-
-/**
- * Checks if `value` is a global object.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {null|Object} Returns `value` if it's a global object, else `null`.
- */
-function checkGlobal(value) {
-  return (value && value.Object === Object) ? value : null;
-}
-
-module.exports = root;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(159)(module), __webpack_require__(11)))
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-"use strict";
-'use strict';
-
-var proto = Element.prototype;
-var vendor = proto.matches
-  || proto.matchesSelector
-  || proto.webkitMatchesSelector
-  || proto.mozMatchesSelector
-  || proto.msMatchesSelector
-  || proto.oMatchesSelector;
-
-module.exports = match;
-
-/**
- * Match `el` to `selector`.
- *
- * @param {Element} el
- * @param {String} selector
- * @return {Boolean}
- * @api public
- */
-
-function match(el, selector) {
-  if (vendor) return vendor.call(el, selector);
-  var nodes = el.parentNode.querySelectorAll(selector);
-  for (var i = 0; i < nodes.length; i++) {
-    if (nodes[i] == el) return true;
-  }
-  return false;
-}
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var SubjectDisposable_1 = __webpack_require__(85);
-var util_1 = __webpack_require__(40);
-var defaultScheduler = __webpack_require__(90);
-var BasicSubjectSource = (function () {
-    function BasicSubjectSource() {
-        this.scheduler = defaultScheduler;
-        this.sinks = [];
-        this.active = false;
-    }
-    BasicSubjectSource.prototype.run = function (sink, scheduler) {
-        var n = this.add(sink);
-        if (n === 1) {
-            this.scheduler = scheduler;
-            this.active = true;
-        }
-        return new SubjectDisposable_1.SubjectDisposable(this, sink);
-    };
-    BasicSubjectSource.prototype.add = function (sink) {
-        this.sinks = util_1.append(sink, this.sinks);
-        return this.sinks.length;
-    };
-    BasicSubjectSource.prototype.remove = function (sink) {
-        var i = util_1.findIndex(sink, this.sinks);
-        if (i >= 0) {
-            this.sinks = util_1.remove(i, this.sinks);
-        }
-        return this.sinks.length;
-    };
-    BasicSubjectSource.prototype._dispose = function () {
-        this.active = false;
-    };
-    BasicSubjectSource.prototype.next = function (value) {
-        if (!this.active || this.scheduler === void 0)
-            return;
-        this._next(this.scheduler.now(), value);
-    };
-    BasicSubjectSource.prototype.error = function (err) {
-        if (!this.active || this.scheduler === void 0)
-            return;
-        this._dispose();
-        this._error(this.scheduler.now(), err);
-    };
-    BasicSubjectSource.prototype.complete = function (value) {
-        if (!this.active || this.scheduler === void 0)
-            return;
-        this._dispose();
-        this._complete(this.scheduler.now(), value);
-    };
-    BasicSubjectSource.prototype._next = function (time, value) {
-        var s = this.sinks;
-        if (s.length === 1) {
-            return s[0].event(time, value);
-        }
-        for (var i = 0; i < s.length; ++i) {
-            util_1.tryEvent(time, value, s[i]);
-        }
-    };
-    BasicSubjectSource.prototype._complete = function (time, value) {
-        var s = this.sinks;
-        for (var i = 0; i < s.length; ++i) {
-            util_1.tryEnd(time, value, s[i]);
-        }
-    };
-    BasicSubjectSource.prototype._error = function (time, err) {
-        var s = this.sinks;
-        for (var i = 0; i < s.length; ++i) {
-            s[i].error(time, err);
-        }
-    };
-    return BasicSubjectSource;
-}());
-exports.BasicSubjectSource = BasicSubjectSource;
-//# sourceMappingURL=SubjectSource.js.map
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LinkedList__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
-/* harmony export (immutable) */ exports["b"] = mergeConcurrently;
-/* harmony export (immutable) */ exports["a"] = mergeMapConcurrently;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-
-function mergeConcurrently (concurrency, stream) {
-  return mergeMapConcurrently(__WEBPACK_IMPORTED_MODULE_3__most_prelude__["id"], concurrency, stream)
-}
-
-function mergeMapConcurrently (f, concurrency, stream) {
-  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new MergeConcurrently(f, concurrency, stream.source))
-}
-
-function MergeConcurrently (f, concurrency, source) {
-  this.f = f
-  this.concurrency = concurrency
-  this.source = source
-}
-
-MergeConcurrently.prototype.run = function (sink, scheduler) {
-  return new Outer(this.f, this.concurrency, this.source, sink, scheduler)
-}
-
-function Outer (f, concurrency, source, sink, scheduler) {
-  this.f = f
-  this.concurrency = concurrency
-  this.sink = sink
-  this.scheduler = scheduler
-  this.pending = []
-  this.current = new __WEBPACK_IMPORTED_MODULE_2__LinkedList__["a" /* default */]()
-  this.disposable = __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["e" /* once */](source.run(this, scheduler))
-  this.active = true
-}
-
-Outer.prototype.event = function (t, x) {
-  this._addInner(t, x)
-}
-
-Outer.prototype._addInner = function (t, x) {
-  if (this.current.length < this.concurrency) {
-    this._startInner(t, x)
-  } else {
-    this.pending.push(x)
-  }
-}
-
-Outer.prototype._startInner = function (t, x) {
-  try {
-    this._initInner(t, x)
-  } catch (e) {
-    this.error(t, e)
-  }
-}
-
-Outer.prototype._initInner = function (t, x) {
-  var innerSink = new Inner(t, this, this.sink)
-  innerSink.disposable = mapAndRun(this.f, x, innerSink, this.scheduler)
-  this.current.add(innerSink)
-}
-
-function mapAndRun (f, x, sink, scheduler) {
-  return f(x).source.run(sink, scheduler)
-}
-
-Outer.prototype.end = function (t, x) {
-  this.active = false
-  __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["f" /* tryDispose */](t, this.disposable, this.sink)
-  this._checkEnd(t, x)
-}
-
-Outer.prototype.error = function (t, e) {
-  this.active = false
-  this.sink.error(t, e)
-}
-
-Outer.prototype.dispose = function () {
-  this.active = false
-  this.pending.length = 0
-  return Promise.all([this.disposable.dispose(), this.current.dispose()])
-}
-
-Outer.prototype._endInner = function (t, x, inner) {
-  this.current.remove(inner)
-  __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__["f" /* tryDispose */](t, inner, this)
-
-  if (this.pending.length === 0) {
-    this._checkEnd(t, x)
-  } else {
-    this._startInner(t, this.pending.shift())
-  }
-}
-
-Outer.prototype._checkEnd = function (t, x) {
-  if (!this.active && this.current.isEmpty()) {
-    this.sink.end(t, x)
-  }
-}
-
-function Inner (time, outer, sink) {
-  this.prev = this.next = null
-  this.time = time
-  this.outer = outer
-  this.sink = sink
-  this.disposable = void 0
-}
-
-Inner.prototype.event = function (t, x) {
-  this.sink.event(Math.max(t, this.time), x)
-}
-
-Inner.prototype.end = function (t, x) {
-  this.outer._endInner(Math.max(t, this.time), x, this)
-}
-
-Inner.prototype.error = function (t, e) {
-  this.outer.error(Math.max(t, this.time), e)
-}
-
-Inner.prototype.dispose = function () {
-  return this.disposable.dispose()
-}
-
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = fatalError;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-function fatalError (e) {
-  setTimeout(function () {
-    throw e
-  }, 0)
-}
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Filter__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FilterMap__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
-/* harmony export (immutable) */ exports["a"] = Map;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-
-function Map (f, source) {
-  this.f = f
-  this.source = source
-}
-
-/**
- * Create a mapped source, fusing adjacent map.map, filter.map,
- * and filter.map.map if possible
- * @param {function(*):*} f mapping function
- * @param {{run:function}} source source to map
- * @returns {Map|FilterMap} mapped source, possibly fused
- */
-Map.create = function createMap (f, source) {
-  if (source instanceof Map) {
-    return new Map(__WEBPACK_IMPORTED_MODULE_3__most_prelude__["compose"](f, source.f), source.source)
-  }
-
-  if (source instanceof __WEBPACK_IMPORTED_MODULE_1__Filter__["a" /* default */]) {
-    return new __WEBPACK_IMPORTED_MODULE_2__FilterMap__["a" /* default */](source.p, f, source.source)
-  }
-
-  return new Map(f, source)
-}
-
-Map.prototype.run = function (sink, scheduler) { // eslint-disable-line no-extend-native
-  return this.source.run(new MapSink(this.f, sink), scheduler)
-}
-
-function MapSink (f, sink) {
-  this.f = f
-  this.sink = sink
-}
-
-MapSink.prototype.end = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.end
-MapSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.error
-
-MapSink.prototype.event = function (t, x) {
-  var f = this.f
-  this.sink.event(t, f(x))
-}
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = invoke;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-function invoke (f, args) {
-	/*eslint complexity: [2,7]*/
-  switch (args.length) {
-    case 0: return f()
-    case 1: return f(args[0])
-    case 2: return f(args[0], args[1])
-    case 3: return f(args[0], args[1], args[2])
-    case 4: return f(args[0], args[1], args[2], args[3])
-    case 5: return f(args[0], args[1], args[2], args[3], args[4])
-    default:
-      return f.apply(void 0, args)
-  }
-}
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Pipe__ = __webpack_require__(2);
-/* harmony export (immutable) */ exports["a"] = IndexSink;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-function IndexSink (i, sink) {
-  this.sink = sink
-  this.index = i
-  this.active = true
-  this.value = void 0
-}
-
-IndexSink.prototype.event = function (t, x) {
-  if (!this.active) {
-    return
-  }
-  this.value = x
-  this.sink.event(t, this)
-}
-
-IndexSink.prototype.end = function (t, x) {
-  if (!this.active) {
-    return
-  }
-  this.active = false
-  this.sink.end(t, { index: this.index, value: x })
-}
-
-IndexSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__Pipe__["a" /* default */].prototype.error
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = tryEvent;
-/* harmony export (immutable) */ exports["b"] = tryEnd;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-function tryEvent (t, x, sink) {
-  try {
-    sink.event(t, x)
-  } catch (e) {
-    sink.error(t, e)
-  }
-}
-
-function tryEnd (t, x, sink) {
-  try {
-    sink.end(t, x)
-  } catch (e) {
-    sink.error(t, e)
-  }
-}
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["b"] = defer;
-/* harmony export (immutable) */ exports["a"] = runTask;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-function defer (task) {
-  return Promise.resolve(task).then(runTask)
-}
-
-function runTask (task) {
-  try {
-    return task.run()
-  } catch (e) {
-    return task.error(e)
-  }
-}
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(28)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require('@most/multicast'));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports, global.multicast);
-    global.mostHold = mod.exports;
-  }
-})(this, function (exports, _multicast) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
-
-  // hold :: Stream a -> Stream a
-  var index = function index(stream) {
-    return new stream.constructor(new _multicast.MulticastSource(new Hold(stream.source)));
-  };
-
-  var Hold = function () {
-    function Hold(source) {
-      _classCallCheck(this, Hold);
-
-      this.source = source;
-      this.time = -Infinity;
-      this.value = void 0;
-    }
-
-    _createClass(Hold, [{
-      key: 'run',
-      value: function run(sink, scheduler) {
-        /* istanbul ignore else */
-        if (sink._hold !== this) {
-          sink._hold = this;
-          sink._holdAdd = sink.add;
-          sink.add = holdAdd;
-
-          sink._holdEvent = sink.event;
-          sink.event = holdEvent;
-        }
-
-        return this.source.run(sink, scheduler);
-      }
-    }]);
-
-    return Hold;
-  }();
-
-  function holdAdd(sink) {
-    var len = this._holdAdd(sink);
-    /* istanbul ignore else */
-    if (this._hold.time >= 0) {
-      sink.event(this._hold.time, this._hold.value);
-    }
-    return len;
-  }
-
-  function holdEvent(t, x) {
-    /* istanbul ignore else */
-    if (t >= this._hold.time) {
-      this._hold.time = t;
-      this._hold.value = x;
-    }
-    return this._holdEvent(t, x);
-  }
-
-  exports.default = index;
-});
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-(function (global, factory) {
-   true ? factory(exports, __webpack_require__(3)) :
-  typeof define === 'function' && define.amd ? define(['exports', '@most/prelude'], factory) :
-  (factory((global.mostMulticast = global.mostMulticast || {}),global.mostPrelude));
-}(this, (function (exports,_most_prelude) { 'use strict';
-
-var MulticastDisposable = function MulticastDisposable (source, sink) {
-  this.source = source
-  this.sink = sink
-  this.disposed = false
-};
-
-MulticastDisposable.prototype.dispose = function dispose () {
-  if (this.disposed) {
-    return
-  }
-  this.disposed = true
-  var remaining = this.source.remove(this.sink)
-  return remaining === 0 && this.source._dispose()
-};
-
-function tryEvent (t, x, sink) {
-  try {
-    sink.event(t, x)
-  } catch (e) {
-    sink.error(t, e)
-  }
-}
-
-function tryEnd (t, x, sink) {
-  try {
-    sink.end(t, x)
-  } catch (e) {
-    sink.error(t, e)
-  }
-}
-
-var dispose = function (disposable) { return disposable.dispose(); }
-
-var emptyDisposable = {
-  dispose: function dispose$1 () {}
-}
-
-var MulticastSource = function MulticastSource (source) {
-  this.source = source
-  this.sinks = []
-  this._disposable = emptyDisposable
-};
-
-MulticastSource.prototype.run = function run (sink, scheduler) {
-  var n = this.add(sink)
-  if (n === 1) {
-    this._disposable = this.source.run(this, scheduler)
-  }
-  return new MulticastDisposable(this, sink)
-};
-
-MulticastSource.prototype._dispose = function _dispose () {
-  var disposable = this._disposable
-  this._disposable = emptyDisposable
-  return Promise.resolve(disposable).then(dispose)
-};
-
-MulticastSource.prototype.add = function add (sink) {
-  this.sinks = _most_prelude.append(sink, this.sinks)
-  return this.sinks.length
-};
-
-MulticastSource.prototype.remove = function remove$1 (sink) {
-  var i = _most_prelude.findIndex(sink, this.sinks)
-  // istanbul ignore next
-  if (i >= 0) {
-    this.sinks = _most_prelude.remove(i, this.sinks)
-  }
-
-  return this.sinks.length
-};
-
-MulticastSource.prototype.event = function event (time, value) {
-  var s = this.sinks
-  if (s.length === 1) {
-    return s[0].event(time, value)
-  }
-  for (var i = 0; i < s.length; ++i) {
-    tryEvent(time, value, s[i])
-  }
-};
-
-MulticastSource.prototype.end = function end (time, value) {
-  var s = this.sinks
-  for (var i = 0; i < s.length; ++i) {
-    tryEnd(time, value, s[i])
-  }
-};
-
-MulticastSource.prototype.error = function error (time, err) {
-  var s = this.sinks
-  for (var i = 0; i < s.length; ++i) {
-    s[i].error(time, err)
-  }
-};
-
-function multicast (stream) {
-  var source = stream.source
-  return source instanceof MulticastSource
-    ? stream
-    : new stream.constructor(new MulticastSource(source))
-}
-
-exports['default'] = multicast;
-exports.MulticastSource = MulticastSource;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-//# sourceMappingURL=multicast.js.map
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var most_subject_1 = __webpack_require__(39);
-var SubjectSource_1 = __webpack_require__(19);
-var hold_1 = __webpack_require__(27);
-var domEvent = __webpack_require__(52).domEvent;
-var ElementFinder_1 = __webpack_require__(54);
-var isolate_1 = __webpack_require__(59);
-var EventDelegator_1 = __webpack_require__(55);
-var util_1 = __webpack_require__(7);
-var matchesSelector;
-try {
-    matchesSelector = __webpack_require__(18);
-}
-catch (e) {
-    matchesSelector = function () { return true; };
-}
-var eventTypesThatDontBubble = [
-    "blur",
-    "canplay",
-    "canplaythrough",
-    "change",
-    "durationchange",
-    "emptied",
-    "ended",
-    "focus",
-    "load",
-    "loadeddata",
-    "loadedmetadata",
-    "mouseenter",
-    "mouseleave",
-    "pause",
-    "play",
-    "playing",
-    "ratechange",
-    "reset",
-    "scroll",
-    "seeked",
-    "seeking",
-    "stalled",
-    "submit",
-    "suspend",
-    "timeupdate",
-    "unload",
-    "volumechange",
-    "waiting",
-];
-var EventSubjectSource = (function (_super) {
-    __extends(EventSubjectSource, _super);
-    function EventSubjectSource(_disposeFn) {
-        _super.call(this);
-        this._disposeFn = _disposeFn;
-    }
-    EventSubjectSource.prototype._dispose = function () {
-        _super.prototype._dispose.call(this);
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(this._disposeFn);
-        }
-        else {
-            this._disposeFn();
-        }
-    };
-    return EventSubjectSource;
-}(SubjectSource_1.BasicSubjectSource));
-function determineUseCapture(eventType, options) {
-    var result = false;
-    if (!options) {
-        options = {};
-    }
-    if (typeof options.useCapture === "boolean") {
-        result = options.useCapture;
-    }
-    if (eventTypesThatDontBubble.indexOf(eventType) !== -1) {
-        result = true;
-    }
-    return result;
-}
-var DOMSource = (function () {
-    function DOMSource(_rootElement$, _namespace, _isolateModule, _delegators) {
-        if (_namespace === void 0) { _namespace = []; }
-        this._rootElement$ = _rootElement$;
-        this._namespace = _namespace;
-        this._isolateModule = _isolateModule;
-        this._delegators = _delegators;
-        this.isolateSource = isolate_1.isolateSource;
-        this.isolateSink = isolate_1.isolateSink;
-    }
-    DOMSource.prototype.elements = function () {
-        if (this._namespace.length === 0) {
-            return hold_1.default(this._rootElement$.map(function (element) { return element; }));
-        }
-        var elementFinder = new ElementFinder_1.ElementFinder(this._namespace, this._isolateModule);
-        return hold_1.default(this._rootElement$.map(function (element) { return elementFinder.call(element); }));
-    };
-    Object.defineProperty(DOMSource.prototype, "namespace", {
-        get: function () {
-            return this._namespace;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    DOMSource.prototype.select = function (selector) {
-        if (typeof selector !== 'string') {
-            throw new Error("DOM driver's select() expects the argument to be a " +
-                "string as a CSS selector");
-        }
-        var trimmedSelector = selector.trim();
-        var childNamespace = trimmedSelector === ":root"
-            ? this._namespace
-            : this._namespace.concat(trimmedSelector);
-        return new DOMSource(this._rootElement$, childNamespace, this._isolateModule, this._delegators);
-    };
-    DOMSource.prototype.events = function (eventType, options) {
-        if (typeof eventType !== "string") {
-            throw new Error("DOM driver's events() expects argument to be a " +
-                "string representing the event type to listen for.");
-        }
-        var useCapture = determineUseCapture(eventType, options);
-        var namespace = this._namespace;
-        var scope = util_1.getScope(namespace);
-        var keyParts = [eventType, useCapture];
-        if (scope) {
-            keyParts.push(scope);
-        }
-        var key = keyParts.join('~');
-        var domSource = this;
-        var rootElement$;
-        if (scope) {
-            var hadIsolated_mutable_1 = false;
-            rootElement$ = this._rootElement$
-                .filter(function () {
-                var hasIsolated = !!domSource._isolateModule.getIsolatedElement(scope);
-                var shouldPass = hasIsolated && !hadIsolated_mutable_1;
-                hadIsolated_mutable_1 = hasIsolated;
-                return shouldPass;
-            })
-                .multicast();
-        }
-        else {
-            rootElement$ = this._rootElement$.take(2).multicast();
-        }
-        return rootElement$
-            .map(function setupEventDelegatorOnTopElement(rootElement) {
-            // Event listener just for the root element
-            if (!namespace || namespace.length === 0) {
-                return domEvent(eventType, rootElement, useCapture);
-            }
-            // Event listener on the top element as an EventDelegator
-            var delegators = domSource._delegators;
-            var top = scope
-                ? domSource._isolateModule.getIsolatedElement(scope)
-                : rootElement;
-            var delegator;
-            if (delegators.has(key)) {
-                delegator = delegators.get(key);
-                delegator.updateTopElement(top);
-            }
-            else {
-                delegator = new EventDelegator_1.EventDelegator(top, eventType, useCapture, domSource._isolateModule);
-                delegators.set(key, delegator);
-            }
-            if (scope) {
-                domSource._isolateModule.addEventDelegator(scope, delegator);
-            }
-            var destinationId = delegator.createDestinationId();
-            var eventSubject = new most_subject_1.Subject(new EventSubjectSource(function () {
-                delegator.removeDestinationId(destinationId);
-            }));
-            delegator.addDestination(eventSubject, namespace, destinationId);
-            return eventSubject;
-        })
-            .switch()
-            .multicast();
-    };
-    DOMSource.prototype.dispose = function () {
-        this._isolateModule.reset();
-    };
-    return DOMSource;
-}());
-exports.DOMSource = DOMSource;
-//# sourceMappingURL=DOMSource.js.map
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var most_1 = __webpack_require__(4);
-var HTMLSource = (function () {
-    function HTMLSource(html$) {
-        this._html$ = html$;
-        this._empty$ = most_1.empty();
-    }
-    HTMLSource.prototype.elements = function () {
-        return this._html$;
-    };
-    HTMLSource.prototype.select = function (selector) {
-        // to avoid errors about not using selector
-        var html$ = void selector ? most_1.empty() : most_1.empty();
-        return new HTMLSource(html$);
-    };
-    HTMLSource.prototype.events = function (eventType, options) {
-        var x = void eventType ? void 0 : void 0;
-        var y = void options ? void 0 : void 0;
-        return x || y ? this._empty$ : this._empty$;
-    };
-    return HTMLSource;
-}());
-exports.HTMLSource = HTMLSource;
-//# sourceMappingURL=HTMLSource.js.map
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-var ScopeChecker = (function () {
-    function ScopeChecker(scope, isolateModule) {
-        this.scope = scope;
-        this.isolateModule = isolateModule;
-    }
-    ScopeChecker.prototype.isStrictlyInRootScope = function (leaf) {
-        for (var el = leaf; el; el = el.parentElement) {
-            var scope = this.isolateModule.isIsolatedElement(el);
-            if (scope && scope !== this.scope) {
-                return false;
-            }
-            if (scope) {
-                return true;
-            }
-        }
-        return true;
-    };
-    return ScopeChecker;
-}());
-exports.ScopeChecker = ScopeChecker;
-//# sourceMappingURL=ScopeChecker.js.map
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var ClassModule = __webpack_require__(146);
-exports.ClassModule = ClassModule;
-var PropsModule = __webpack_require__(150);
-exports.PropsModule = PropsModule;
-var AttrsModule = __webpack_require__(145);
-exports.AttrsModule = AttrsModule;
-var EventsModule = __webpack_require__(148);
-exports.EventsModule = EventsModule;
-var StyleModule = __webpack_require__(151);
-exports.StyleModule = StyleModule;
-var HeroModule = __webpack_require__(149);
-exports.HeroModule = HeroModule;
-var DataSetModule = __webpack_require__(147);
-exports.DataSetModule = DataSetModule;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = [StyleModule, ClassModule, PropsModule, AttrsModule];
-//# sourceMappingURL=index.js.map
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var most_1 = __webpack_require__(4);
-var hyperscript_1 = __webpack_require__(8);
-function createVTree(vnode, children) {
-    return hyperscript_1.MotorcycleVNode.create(vnode.sel, vnode.data, children, vnode.text, vnode.elm, vnode.key);
-}
-var notAStream = {};
-function transposeVNode(vnode) {
-    if (!vnode) {
-        return notAStream;
-    }
-    else if (vnode && typeof vnode.data === "object" && vnode.data.static) {
-        return most_1.just(vnode);
-    }
-    else if (vnode instanceof most_1.Stream) {
-        return vnode.map(transposeVNode).switch();
-    }
-    else if (typeof vnode === "object") {
-        if (!vnode.children || vnode.children.length === 0) {
-            return most_1.just(vnode);
-        }
-        var vnodeChildren = vnode.children
-            .map(transposeVNode)
-            .filter(function (x) { return x !== notAStream; });
-        if (vnodeChildren.length === 0) {
-            return most_1.just(createVTree(vnode, []));
-        }
-        else {
-            return most_1.combineArray(function () {
-                var children = [];
-                for (var _i = 0; _i < arguments.length; _i++) {
-                    children[_i - 0] = arguments[_i];
-                }
-                return createVTree(vnode, children.slice());
-            }, vnodeChildren);
-        }
-    }
-    else {
-        throw new Error("Unhandled vTree Value");
-    }
-}
-exports.transposeVNode = transposeVNode;
-//# sourceMappingURL=transposition.js.map
-
-/***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-/**
- * lodash 3.9.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** `Object#toString` result references. */
-var funcTag = '[object Function]';
-
-/** Used to detect host constructors (Safari > 5). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/**
- * Checks if `value` is object-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var fnToString = Function.prototype.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = object == null ? undefined : object[key];
-  return isNative(value) ? value : undefined;
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in older versions of Chrome and Safari which return 'function' for regexes
-  // and Safari 8 equivalents which return 'object' for typed array constructors.
-  return isObject(value) && objToString.call(value) == funcTag;
-}
-
-/**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(1);
- * // => false
- */
-function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is a native function.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
- * @example
- *
- * _.isNative(Array.prototype.push);
- * // => true
- *
- * _.isNative(_);
- * // => false
- */
-function isNative(value) {
-  if (value == null) {
-    return false;
-  }
-  if (isFunction(value)) {
-    return reIsNative.test(fnToString.call(value));
-  }
-  return isObjectLike(value) && reIsHostCtor.test(value);
-}
-
-module.exports = getNative;
-
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-/**
- * lodash 3.2.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var root = __webpack_require__(17);
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
-
-/** `Object#toString` result references. */
-var symbolTag = '[object Symbol]';
-
-/** Used to match HTML entities and HTML characters. */
-var reUnescapedHtml = /[&<>"'`]/g,
-    reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
-
-/** Used to map characters to HTML entities. */
-var htmlEscapes = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-  '`': '&#96;'
-};
-
-/**
- * Used by `_.escape` to convert characters to HTML entities.
- *
- * @private
- * @param {string} chr The matched character to escape.
- * @returns {string} Returns the escaped character.
- */
-function escapeHtmlChar(chr) {
-  return htmlEscapes[chr];
-}
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/** Built-in value references. */
-var Symbol = root.Symbol;
-
-/** Used to convert symbols to primitives and strings. */
-var symbolProto = Symbol ? Symbol.prototype : undefined,
-    symbolToString = Symbol ? symbolProto.toString : undefined;
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Checks if `value` is classified as a `Symbol` primitive or object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isSymbol(Symbol.iterator);
- * // => true
- *
- * _.isSymbol('abc');
- * // => false
- */
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString.call(value) == symbolTag);
-}
-
-/**
- * Converts `value` to a string if it's not one. An empty string is returned
- * for `null` and `undefined` values. The sign of `-0` is preserved.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to process.
- * @returns {string} Returns the string.
- * @example
- *
- * _.toString(null);
- * // => ''
- *
- * _.toString(-0);
- * // => '-0'
- *
- * _.toString([1, 2, 3]);
- * // => '1,2,3'
- */
-function toString(value) {
-  // Exit early for strings to avoid a performance hit in some environments.
-  if (typeof value == 'string') {
-    return value;
-  }
-  if (value == null) {
-    return '';
-  }
-  if (isSymbol(value)) {
-    return Symbol ? symbolToString.call(value) : '';
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-}
-
-/**
- * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
- * their corresponding HTML entities.
- *
- * **Note:** No other characters are escaped. To escape additional
- * characters use a third-party library like [_he_](https://mths.be/he).
- *
- * Though the ">" character is escaped for symmetry, characters like
- * ">" and "/" don't need escaping in HTML and have no special meaning
- * unless they're part of a tag or unquoted attribute value.
- * See [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
- * (under "semi-related fun fact") for more details.
- *
- * Backticks are escaped because in IE < 9, they can break out of
- * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
- * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
- * [#133](https://html5sec.org/#133) of the [HTML5 Security Cheatsheet](https://html5sec.org/)
- * for more details.
- *
- * When working with HTML you should always [quote attribute values](http://wonko.com/post/html-escaping)
- * to reduce XSS vectors.
- *
- * @static
- * @memberOf _
- * @category String
- * @param {string} [string=''] The string to escape.
- * @returns {string} Returns the escaped string.
- * @example
- *
- * _.escape('fred, barney, & pebbles');
- * // => 'fred, barney, &amp; pebbles'
- */
-function escape(string) {
-  string = toString(string);
-  return (string && reHasUnescapedHtml.test(string))
-    ? string.replace(reUnescapedHtml, escapeHtmlChar)
-    : string;
-}
-
-module.exports = escape;
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-/**
- * lodash 3.0.2 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var baseFor = __webpack_require__(71),
-    bindCallback = __webpack_require__(74),
-    keys = __webpack_require__(79);
-
-/**
- * The base implementation of `_.forOwn` without support for callback
- * shorthands and `this` binding.
- *
- * @private
- * @param {Object} object The object to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Object} Returns `object`.
- */
-function baseForOwn(object, iteratee) {
-  return baseFor(object, iteratee, keys);
-}
-
-/**
- * Creates a function for `_.forOwn` or `_.forOwnRight`.
- *
- * @private
- * @param {Function} objectFunc The function to iterate over an object.
- * @returns {Function} Returns the new each function.
- */
-function createForOwn(objectFunc) {
-  return function(object, iteratee, thisArg) {
-    if (typeof iteratee != 'function' || thisArg !== undefined) {
-      iteratee = bindCallback(iteratee, thisArg, 3);
-    }
-    return objectFunc(object, iteratee);
-  };
-}
-
-/**
- * Iterates over own enumerable properties of an object invoking `iteratee`
- * for each property. The `iteratee` is bound to `thisArg` and invoked with
- * three arguments: (value, key, object). Iteratee functions may exit iteration
- * early by explicitly returning `false`.
- *
- * @static
- * @memberOf _
- * @category Object
- * @param {Object} object The object to iterate over.
- * @param {Function} [iteratee=_.identity] The function invoked per iteration.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
- * @returns {Object} Returns `object`.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.forOwn(new Foo, function(value, key) {
- *   console.log(key);
- * });
- * // => logs 'a' and 'b' (iteration order is not guaranteed)
- */
-var forOwn = createForOwn(baseForOwn);
-
-module.exports = forOwn;
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports) {
-
-/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/** `Object#toString` result references. */
-var argsTag = '[object Arguments]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]';
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/** Built-in value references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-/**
- * Checks if `value` is likely an `arguments` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- *  else `false`.
- * @example
- *
- * _.isArguments(function() { return arguments; }());
- * // => true
- *
- * _.isArguments([1, 2, 3]);
- * // => false
- */
-function isArguments(value) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
-    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-}
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-/**
- * This method is like `_.isArrayLike` except that it also checks if `value`
- * is an object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array-like object,
- *  else `false`.
- * @example
- *
- * _.isArrayLikeObject([1, 2, 3]);
- * // => true
- *
- * _.isArrayLikeObject(document.body.children);
- * // => true
- *
- * _.isArrayLikeObject('abc');
- * // => false
- *
- * _.isArrayLikeObject(_.noop);
- * // => false
- */
-function isArrayLikeObject(value) {
-  return isObjectLike(value) && isArrayLike(value);
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-module.exports = isArguments;
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-/**
- * lodash 3.0.4 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** `Object#toString` result references. */
-var arrayTag = '[object Array]',
-    funcTag = '[object Function]';
-
-/** Used to detect host constructors (Safari > 5). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/**
- * Checks if `value` is object-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var fnToString = Function.prototype.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeIsArray = getNative(Array, 'isArray');
-
-/**
- * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
- * of an array-like value.
- */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = object == null ? undefined : object[key];
-  return isNative(value) ? value : undefined;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(function() { return arguments; }());
- * // => false
- */
-var isArray = nativeIsArray || function(value) {
-  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
-};
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in older versions of Chrome and Safari which return 'function' for regexes
-  // and Safari 8 equivalents which return 'object' for typed array constructors.
-  return isObject(value) && objToString.call(value) == funcTag;
-}
-
-/**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(1);
- * // => false
- */
-function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is a native function.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
- * @example
- *
- * _.isNative(Array.prototype.push);
- * // => true
- *
- * _.isNative(_);
- * // => false
- */
-function isNative(value) {
-  if (value == null) {
-    return false;
-  }
-  if (isFunction(value)) {
-    return reIsNative.test(fnToString.call(value));
-  }
-  return isObjectLike(value) && reIsHostCtor.test(value);
-}
-
-module.exports = isArray;
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var most_1 = __webpack_require__(4);
-var SubjectSource_1 = __webpack_require__(19);
-exports.BasicSubjectSource = SubjectSource_1.BasicSubjectSource;
-var HoldSubjectSource_1 = __webpack_require__(84);
-exports.HoldSubjectSource = HoldSubjectSource_1.HoldSubjectSource;
-function subject() {
-    return new Subject(new SubjectSource_1.BasicSubjectSource());
-}
-exports.subject = subject;
-function holdSubject(bufferSize) {
-    if (bufferSize === void 0) { bufferSize = 1; }
-    if (bufferSize <= 0) {
-        throw new Error('bufferSize must be an integer 1 or greater');
-    }
-    return new Subject(new HoldSubjectSource_1.HoldSubjectSource(bufferSize));
-}
-exports.holdSubject = holdSubject;
-var Subject = (function (_super) {
-    __extends(Subject, _super);
-    function Subject(source) {
-        _super.call(this, source);
-    }
-    Subject.prototype.next = function (value) {
-        this.source.next(value);
-    };
-    Subject.prototype.error = function (err) {
-        this.source.error(err);
-    };
-    Subject.prototype.complete = function (value) {
-        this.source.complete(value);
-    };
-    return Subject;
-}(most_1.Stream));
-exports.Subject = Subject;
-//# sourceMappingURL=index.js.map
-
-/***/ },
-/* 40 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-function tryEvent(t, x, sink) {
-    try {
-        sink.event(t, x);
-    }
-    catch (e) {
-        sink.error(t, e);
-    }
-}
-exports.tryEvent = tryEvent;
-function tryEnd(t, x, sink) {
-    try {
-        sink.end(t, x);
-    }
-    catch (e) {
-        sink.error(t, e);
-    }
-}
-exports.tryEnd = tryEnd;
-function pushEvents(buffer, sink) {
-    for (var i = 0; i < buffer.length; ++i) {
-        var _a = buffer[i], time = _a.time, value = _a.value;
-        sink.event(time, value);
-    }
-}
-exports.pushEvents = pushEvents;
-function dropAndAppend(event, buffer, bufferSize) {
-    if (buffer.length === bufferSize) {
-        return append(event, drop(1, buffer));
-    }
-    return append(event, buffer);
-}
-exports.dropAndAppend = dropAndAppend;
-function append(x, a) {
-    var l = a.length;
-    var b = new Array(l + 1);
-    for (var i = 0; i < l; ++i) {
-        b[i] = a[i];
-    }
-    b[l] = x;
-    return b;
-}
-exports.append = append;
-function drop(n, a) {
-    if (n < 0) {
-        throw new TypeError('n must be >= 0');
-    }
-    var l = a.length;
-    if (n === 0 || l === 0) {
-        return a;
-    }
-    if (n >= l) {
-        return [];
-    }
-    return unsafeDrop(n, a, l - n);
-}
-// unsafeDrop :: Int -> [a] -> Int -> [a]
-// Internal helper for drop
-function unsafeDrop(n, a, l) {
-    var b = new Array(l);
-    for (var i = 0; i < l; ++i) {
-        b[i] = a[n + i];
-    }
-    return b;
-}
-function remove(i, a) {
-    if (i < 0) {
-        throw new TypeError('i must be >= 0');
-    }
-    var l = a.length;
-    if (l === 0 || i >= l) {
-        return a;
-    }
-    if (l === 1) {
-        return [];
-    }
-    return unsafeRemove(i, a, l - 1);
-}
-exports.remove = remove;
-// unsafeRemove :: Int -> [a] -> Int -> [a]
-// Internal helper to remove element at index
-function unsafeRemove(i, a, l) {
-    var b = new Array(l);
-    var j;
-    for (j = 0; j < i; ++j) {
-        b[j] = a[j];
-    }
-    for (j = i; j < l; ++j) {
-        b[j] = a[j + 1];
-    }
-    return b;
-}
-function findIndex(x, a) {
-    for (var i = 0, l = a.length; i < l; ++i) {
-        if (x === a[i]) {
-            return i;
-        }
-    }
-    return -1;
-}
-exports.findIndex = findIndex;
-//# sourceMappingURL=util.js.map
-
-/***/ },
-/* 41 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.defer = defer;
-exports.runTask = runTask;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-function defer(task) {
-  return Promise.resolve(task).then(runTask);
-}
-
-function runTask(task) {
-  try {
-    return task.run();
-  } catch (e) {
-    return task.error(e);
-  }
-}
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__most_prelude__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoke__ = __webpack_require__(23);
-/* harmony export (immutable) */ exports["a"] = combine;
-/* harmony export (immutable) */ exports["b"] = combineArray;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-
-
-
-
-
-var map = __WEBPACK_IMPORTED_MODULE_6__most_prelude__["map"]
-var tail = __WEBPACK_IMPORTED_MODULE_6__most_prelude__["tail"]
-
-/**
- * Combine latest events from all input streams
- * @param {function(...events):*} f function to combine most recent events
- * @returns {Stream} stream containing the result of applying f to the most recent
- *  event of each input stream, whenever a new event arrives on any stream.
- */
-function combine (f /*, ...streams */) {
-  return combineArray(f, tail(arguments))
-}
-
-/**
-* Combine latest events from all input streams
-* @param {function(...events):*} f function to combine most recent events
-* @param {[Stream]} streams most recent events
-* @returns {Stream} stream containing the result of applying f to the most recent
-*  event of each input stream, whenever a new event arrives on any stream.
-*/
-function combineArray (f, streams) {
-  var l = streams.length
-  return l === 0 ? __WEBPACK_IMPORTED_MODULE_2__source_core__["b" /* empty */]()
-  : l === 1 ? __WEBPACK_IMPORTED_MODULE_1__transform__["b" /* map */](f, streams[0])
-  : new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](combineSources(f, streams))
-}
-
-function combineSources (f, streams) {
-  return new Combine(f, map(getSource, streams))
-}
-
-function getSource (stream) {
-  return stream.source
-}
-
-function Combine (f, sources) {
-  this.f = f
-  this.sources = sources
-}
-
-Combine.prototype.run = function (sink, scheduler) {
-  var l = this.sources.length
-  var disposables = new Array(l)
-  var sinks = new Array(l)
-
-  var mergeSink = new CombineSink(disposables, sinks, sink, this.f)
-
-  for (var indexSink, i = 0; i < l; ++i) {
-    indexSink = sinks[i] = new __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__["a" /* default */](i, mergeSink)
-    disposables[i] = this.sources[i].run(indexSink, scheduler)
-  }
-
-  return __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__["d" /* all */](disposables)
-}
-
-function CombineSink (disposables, sinks, sink, f) {
-  this.sink = sink
-  this.disposables = disposables
-  this.sinks = sinks
-  this.f = f
-
-  var l = sinks.length
-  this.awaiting = l
-  this.values = new Array(l)
-  this.hasValue = new Array(l)
-  for (var i = 0; i < l; ++i) {
-    this.hasValue[i] = false
-  }
-
-  this.activeCount = sinks.length
-}
-
-CombineSink.prototype.error = __WEBPACK_IMPORTED_MODULE_3__sink_Pipe__["a" /* default */].prototype.error
-
-CombineSink.prototype.event = function (t, indexedValue) {
-  var i = indexedValue.index
-  var awaiting = this._updateReady(i)
-
-  this.values[i] = indexedValue.value
-  if (awaiting === 0) {
-    this.sink.event(t, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__invoke__["a" /* default */])(this.f, this.values))
-  }
-}
-
-CombineSink.prototype._updateReady = function (index) {
-  if (this.awaiting > 0) {
-    if (!this.hasValue[index]) {
-      this.hasValue[index] = true
-      this.awaiting -= 1
-    }
-  }
-  return this.awaiting
-}
-
-CombineSink.prototype.end = function (t, indexedValue) {
-  __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__["f" /* tryDispose */](t, this.disposables[indexedValue.index], this.sink)
-  if (--this.activeCount === 0) {
-    this.sink.end(t, indexedValue.value)
-  }
-}
-
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
-/* harmony export (immutable) */ exports["a"] = continueWith;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-function continueWith (f, stream) {
-  return new __WEBPACK_IMPORTED_MODULE_0__Stream__["a" /* default */](new ContinueWith(f, stream.source))
-}
-
-function ContinueWith (f, source) {
-  this.f = f
-  this.source = source
-}
-
-ContinueWith.prototype.run = function (sink, scheduler) {
-  return new ContinueWithSink(this.f, this.source, sink, scheduler)
-}
-
-function ContinueWithSink (f, source, sink, scheduler) {
-  this.f = f
-  this.sink = sink
-  this.scheduler = scheduler
-  this.active = true
-  this.disposable = __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__["e" /* once */](source.run(this, scheduler))
-}
-
-ContinueWithSink.prototype.error = __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__["a" /* default */].prototype.error
-
-ContinueWithSink.prototype.event = function (t, x) {
-  if (!this.active) {
-    return
-  }
-  this.sink.event(t, x)
-}
-
-ContinueWithSink.prototype.end = function (t, x) {
-  if (!this.active) {
-    return
-  }
-
-  __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__["f" /* tryDispose */](t, this.disposable, this.sink)
-  this._startNext(t, x, this.sink)
-}
-
-ContinueWithSink.prototype._startNext = function (t, x, sink) {
-  try {
-    this.disposable = this._continue(this.f, x, sink)
-  } catch (e) {
-    sink.error(t, e)
-  }
-}
-
-ContinueWithSink.prototype._continue = function (f, x, sink) {
-  return f(x).source.run(sink, this.scheduler)
-}
-
-ContinueWithSink.prototype.dispose = function () {
-  this.active = false
-  return this.disposable.dispose()
-}
-
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__ = __webpack_require__(20);
-/* harmony export (immutable) */ exports["a"] = flatMap;
-/* harmony export (immutable) */ exports["b"] = join;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-/**
- * Map each value in the stream to a new stream, and merge it into the
- * returned outer stream. Event arrival times are preserved.
- * @param {function(x:*):Stream} f chaining function, must return a Stream
- * @param {Stream} stream
- * @returns {Stream} new stream containing all events from each stream returned by f
- */
-function flatMap (f, stream) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__["a" /* mergeMapConcurrently */])(f, Infinity, stream)
-}
-
-/**
- * Monadic join. Flatten a Stream<Stream<X>> to Stream<X> by merging inner
- * streams to the outer. Event arrival times are preserved.
- * @param {Stream<Stream<X>>} stream stream of streams
- * @returns {Stream<X>} new stream containing all events of all inner streams
- */
-function join (stream) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__["b" /* mergeConcurrently */])(Infinity, stream)
-}
-
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__ = __webpack_require__(2);
-/* harmony export (immutable) */ exports["a"] = Filter;
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-function Filter (p, source) {
-  this.p = p
-  this.source = source
-}
-
-/**
- * Create a filtered source, fusing adjacent filter.filter if possible
- * @param {function(x:*):boolean} p filtering predicate
- * @param {{run:function}} source source to filter
- * @returns {Filter} filtered source
- */
-Filter.create = function createFilter (p, source) {
-  if (source instanceof Filter) {
-    return new Filter(and(source.p, p), source.source)
-  }
-
-  return new Filter(p, source)
-}
-
-Filter.prototype.run = function (sink, scheduler) {
-  return this.source.run(new FilterSink(this.p, sink), scheduler)
-}
-
-function FilterSink (p, sink) {
-  this.p = p
-  this.sink = sink
-}
-
-FilterSink.prototype.end = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.end
-FilterSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* default */].prototype.error
-
-FilterSink.prototype.event = function (t, x) {
-  var p = this.p
-  p(x) && this.sink.event(t, x)
-}
-
-function and (p, q) {
-  return function (x) {
-    return p(x) && q(x)
-  }
-}
-
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["b"] = isIterable;
-/* harmony export (immutable) */ exports["a"] = getIterator;
-/* unused harmony export makeIterable */
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-/*global Set, Symbol*/
-var iteratorSymbol
-// Firefox ships a partial implementation using the name @@iterator.
-// https://bugzilla.mozilla.org/show_bug.cgi?id=907077#c14
-if (typeof Set === 'function' && typeof new Set()['@@iterator'] === 'function') {
-  iteratorSymbol = '@@iterator'
-} else {
-  iteratorSymbol = typeof Symbol === 'function' && Symbol.iterator ||
-  '_es6shim_iterator_'
-}
-
-function isIterable (o) {
-  return typeof o[iteratorSymbol] === 'function'
-}
-
-function getIterator (o) {
-  return o[iteratorSymbol]()
-}
-
-function makeIterable (f, o) {
-  o[iteratorSymbol] = f
-  return o
-}
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scheduler_defaultScheduler__ = __webpack_require__(48);
-/* harmony export (immutable) */ exports["a"] = withDefaultScheduler;
-/* unused harmony export withScheduler */
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-function withDefaultScheduler (source) {
-  return withScheduler(source, __WEBPACK_IMPORTED_MODULE_1__scheduler_defaultScheduler__["a" /* default */])
-}
-
-function withScheduler (source, scheduler) {
-  return new Promise(function (resolve, reject) {
-    runSource(source, scheduler, resolve, reject)
-  })
-}
-
-function runSource (source, scheduler, resolve, reject) {
-  var disposable = __WEBPACK_IMPORTED_MODULE_0__disposable_dispose__["c" /* settable */]()
-  var observer = new Drain(resolve, reject, disposable)
-
-  disposable.setDisposable(source.run(observer, scheduler))
-}
-
-function Drain (end, error, disposable) {
-  this._end = end
-  this._error = error
-  this._disposable = disposable
-  this.active = true
-}
-
-Drain.prototype.event = function (t, x) {}
-
-Drain.prototype.end = function (t, x) {
-  if (!this.active) {
-    return
-  }
-  this.active = false
-  disposeThen(this._end, this._error, this._disposable, x)
-}
-
-Drain.prototype.error = function (t, e) {
-  this.active = false
-  disposeThen(this._error, this._error, this._disposable, e)
-}
-
-function disposeThen (end, error, disposable, x) {
-  Promise.resolve(disposable.dispose()).then(function () {
-    end(x)
-  }, error)
-}
-
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Scheduler__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ClockTimer__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Timeline__ = __webpack_require__(123);
-/** @license MIT License (c) copyright 2010-2016 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-
-
-
-
-var defaultScheduler = new __WEBPACK_IMPORTED_MODULE_0__Scheduler__["a" /* default */](new __WEBPACK_IMPORTED_MODULE_1__ClockTimer__["a" /* default */](), new __WEBPACK_IMPORTED_MODULE_2__Timeline__["a" /* default */]())
-
-/* harmony default export */ exports["a"] = defaultScheduler;
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-
-// https://github.com/Matt-Esch/virtual-dom/blob/master/virtual-hyperscript/parse-tag.js
-
-var split = __webpack_require__(69);
-
-var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
-var notClassId = /^\.|#/;
-
-module.exports = function parseSelector(selector, upper) {
-  selector = selector || '';
-  var tagName;
-  var id = '';
-  var classes = [];
-
-  var tagParts = split(selector, classIdSplit);
-
-  if (notClassId.test(tagParts[1]) || selector === '') {
-    tagName = 'div';
-  }
-
-  var part, type, i;
-
-  for (i = 0; i < tagParts.length; i++) {
-    part = tagParts[i];
-
-    if (!part) {
-      continue;
-    }
-
-    type = part.charAt(0);
-
-    if (!tagName) {
-      tagName = part;
-    } else if (type === '.') {
-      classes.push(part.substring(1, part.length));
-    } else if (type === '#') {
-      id = part.substring(1, part.length);
-    }
-  }
-
-  return {
-    tagName: upper === true ? tagName.toUpperCase() : tagName,
-    id: id,
-    className: classes.join(' ')
-  };
-};
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(154);
-
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-__webpack_require__(66);
-__webpack_require__(67);
-__webpack_require__(68);
-// import './util/specs/Router-spec';
-__webpack_require__(65);
-
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-(function (global, factory) {
-   true ? factory(exports, __webpack_require__(4)) :
-  typeof define === 'function' && define.amd ? define(['exports', 'most'], factory) :
-  (factory((global.mostDomEvent = global.mostDomEvent || {}),global.most));
-}(this, (function (exports,most) { 'use strict';
-
-  // domEvent :: (EventTarget t, Event e) => String -> t -> boolean=false -> Stream e
-  var domEvent = function (event, node, capture) {
-      if ( capture === void 0 ) capture = false;
-
-      return new most.Stream(new DomEvent(event, node, capture));
-  }
-
-  var blur = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('blur', node, capture);
-  }
-  var focus = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('focus', node, capture);
-  }
-  var focusin = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('focusin', node, capture);
-  }
-  var focusout = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('focusout', node, capture);
-  }
-  var click = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('click', node, capture);
-  }
-  var dblclick = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('dblclick', node, capture);
-  }
-  var mousedown = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mousedown', node, capture);
-  }
-  var mouseup = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mouseup', node, capture);
-  }
-  var mousemove = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mousemove', node, capture);
-  }
-  var mouseover = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mouseover', node, capture);
-  }
-  var mouseenter = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mouseenter', node, capture);
-  }
-  var mouseout = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mouseout', node, capture);
-  }
-  var mouseleave = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('mouseleave', node, capture);
-  }
-  var change = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('change', node, capture);
-  }
-  var select = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('select', node, capture);
-  }
-  var submit = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('submit', node, capture);
-  }
-  var keydown = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('keydown', node, capture);
-  }
-  var keypress = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('keypress', node, capture);
-  }
-  var keyup = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('keyup', node, capture);
-  }
-  var input = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('input', node, capture);
-  }
-  var contextmenu = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('contextmenu', node, capture);
-  }
-  var resize = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('resize', node, capture);
-  }
-  var scroll = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('scroll', node, capture);
-  }
-  var error = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('error', node, capture);
-  }
-
-  var hashchange = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('hashchange', node, capture);
-  }
-  var popstate = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('popstate', node, capture);
-  }
-  var load = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('load', node, capture);
-  }
-  var unload = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('unload', node, capture);
-  }
-
-  var pointerdown = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerdown', node, capture);
-  }
-  var pointerup = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerup', node, capture);
-  }
-  var pointermove = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointermove', node, capture);
-  }
-  var pointerover = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerover', node, capture);
-  }
-  var pointerenter = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerenter', node, capture);
-  }
-  var pointerout = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerout', node, capture);
-  }
-  var pointerleave = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('pointerleave', node, capture);
-  }
-
-  var touchstart = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('touchstart', node, capture);
-  }
-  var touchend = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('touchend', node, capture);
-  }
-  var touchmove = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('touchmove', node, capture);
-  }
-  var touchcancel = function (node, capture) {
-    if ( capture === void 0 ) capture = false;
-
-    return domEvent('touchcancel', node, capture);
-  }
-
-  var DomEvent = function DomEvent (event, node, capture) {
-    this.event = event
-    this.node = node
-    this.capture = capture
-  };
-
-  DomEvent.prototype.run = function run (sink, scheduler) {
-      var this$1 = this;
-
-    var send = function (e) { return tryEvent(scheduler.now(), e, sink); }
-    var dispose = function () { return this$1.node.removeEventListener(this$1.event, send, this$1.capture); }
-
-    this.node.addEventListener(this.event, send, this.capture)
-
-    return { dispose: dispose }
-  };
-
-  function tryEvent (t, x, sink) {
-    try {
-      sink.event(t, x)
-    } catch (e) {
-      sink.error(t, e)
-    }
-  }
-
-  exports.domEvent = domEvent;
-  exports.blur = blur;
-  exports.focus = focus;
-  exports.focusin = focusin;
-  exports.focusout = focusout;
-  exports.click = click;
-  exports.dblclick = dblclick;
-  exports.mousedown = mousedown;
-  exports.mouseup = mouseup;
-  exports.mousemove = mousemove;
-  exports.mouseover = mouseover;
-  exports.mouseenter = mouseenter;
-  exports.mouseout = mouseout;
-  exports.mouseleave = mouseleave;
-  exports.change = change;
-  exports.select = select;
-  exports.submit = submit;
-  exports.keydown = keydown;
-  exports.keypress = keypress;
-  exports.keyup = keyup;
-  exports.input = input;
-  exports.contextmenu = contextmenu;
-  exports.resize = resize;
-  exports.scroll = scroll;
-  exports.error = error;
-  exports.hashchange = hashchange;
-  exports.popstate = popstate;
-  exports.load = load;
-  exports.unload = unload;
-  exports.pointerdown = pointerdown;
-  exports.pointerup = pointerup;
-  exports.pointermove = pointermove;
-  exports.pointerover = pointerover;
-  exports.pointerenter = pointerenter;
-  exports.pointerout = pointerout;
-  exports.pointerleave = pointerleave;
-  exports.touchstart = touchstart;
-  exports.touchend = touchend;
-  exports.touchmove = touchmove;
-  exports.touchcancel = touchcancel;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-//# sourceMappingURL=mostDomEvent.js.map
-
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(4), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require('most'), require('@most/prelude'));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports, global.most, global.prelude);
-    global.mostSample = mod.exports;
-  }
-})(this, function (exports, _most, _prelude) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.sampleArray = exports.sample = undefined;
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
-
-  var SampleHold = function () {
-    function SampleHold(sink) {
-      _classCallCheck(this, SampleHold);
-
-      this.sink = sink;
-      this.hasValue = false;
-    }
-
-    _createClass(SampleHold, [{
-      key: 'event',
-      value: function event(time, value) {
-        this.value = value;
-        this.hasValue = true;
-      }
-    }, {
-      key: 'end',
-      value: function end() {}
-    }, {
-      key: 'error',
-      value: function error(time, err) {
-        this.sink.error(time, err);
-      }
-    }]);
-
-    return SampleHold;
-  }();
-
-  var SampleSink = function () {
-    function SampleSink(f, source, sink) {
-      _classCallCheck(this, SampleSink);
-
-      this.sink = sink;
-      this.source = source;
-      this.f = f;
-      this.hold = new SampleHold(this);
-    }
-
-    _createClass(SampleSink, [{
-      key: 'event',
-      value: function event(time, value) {
-        if (this.hold.hasValue) {
-          var f = this.f;
-          this.sink.event(time, f(value, this.hold.value));
-        }
-      }
-    }, {
-      key: 'error',
-      value: function error(time, err) {
-        return this.sink.error(time, err);
-      }
-    }, {
-      key: 'end',
-      value: function end(time, value) {
-        return this.sink.end(time, value);
-      }
-    }]);
-
-    return SampleSink;
-  }();
-
-  var SampleDisposable = function () {
-    function SampleDisposable(samplerDisposable, sourceDisposable) {
-      _classCallCheck(this, SampleDisposable);
-
-      this.samplerDisposable = samplerDisposable;
-      this.sourceDisposable = sourceDisposable;
-    }
-
-    _createClass(SampleDisposable, [{
-      key: 'dispose',
-      value: function dispose() {
-        return Promise.all([this.samplerDisposable.dispose(), this.sourceDisposable.dispose()]);
-      }
-    }]);
-
-    return SampleDisposable;
-  }();
-
-  var SampleSource = function () {
-    function SampleSource(f, sampler, stream) {
-      _classCallCheck(this, SampleSource);
-
-      this.source = stream.source;
-      this.sampler = sampler.source;
-      this.f = f;
-    }
-
-    _createClass(SampleSource, [{
-      key: 'run',
-      value: function run(sink, scheduler) {
-        var sampleSink = new SampleSink(this.f, this.source, sink);
-        var samplerDisposable = this.sampler.run(sampleSink, scheduler);
-        var sourceDisposable = this.source.run(sampleSink.hold, scheduler);
-
-        return new SampleDisposable(samplerDisposable, sourceDisposable);
-      }
-    }]);
-
-    return SampleSource;
-  }();
-
-  var sample = (0, _prelude.curry3)(function (f, sampler, stream) {
-    return new _most.Stream(new SampleSource(f, sampler, stream));
-  });
-
-  var arrayId = function arrayId() {
-    for (var _len = arguments.length, values = Array(_len), _key = 0; _key < _len; _key++) {
-      values[_key] = arguments[_key];
-    }
-
-    return values;
-  };
-
-  var sampleArray = (0, _prelude.curry3)(function (f, sampler, arrayOfStreams) {
-    return sample(f, sampler, (0, _most.combineArray)(arrayId, arrayOfStreams));
-  });
-
-  exports.sample = sample;
-  exports.sampleArray = sampleArray;
-});
-
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var ScopeChecker_1 = __webpack_require__(31);
-var util_1 = __webpack_require__(7);
-var matchesSelector;
-try {
-    matchesSelector = __webpack_require__(18);
-}
-catch (e) {
-    matchesSelector = Function.prototype;
-}
-function toElArray(input) {
-    return Array.prototype.slice.call(input);
-}
-var ElementFinder = (function () {
-    function ElementFinder(namespace, isolateModule) {
-        this.namespace = namespace;
-        this.isolateModule = isolateModule;
-    }
-    ElementFinder.prototype.call = function (rootElement) {
-        var namespace = this.namespace;
-        if (namespace.join("") === "") {
-            return rootElement;
-        }
-        var scope = util_1.getScope(namespace);
-        var scopeChecker = new ScopeChecker_1.ScopeChecker(scope, this.isolateModule);
-        var selector = util_1.getSelectors(namespace);
-        var topNode = rootElement;
-        var topNodeMatches = [];
-        if (scope.length > 0) {
-            topNode = this.isolateModule.getIsolatedElement(scope) || rootElement;
-            if (selector && matchesSelector(topNode, selector)) {
-                topNodeMatches.push(topNode);
-            }
-        }
-        return toElArray(topNode.querySelectorAll(selector))
-            .filter(scopeChecker.isStrictlyInRootScope, scopeChecker)
-            .concat(topNodeMatches);
-    };
-    return ElementFinder;
-}());
-exports.ElementFinder = ElementFinder;
-//# sourceMappingURL=ElementFinder.js.map
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var ScopeChecker_1 = __webpack_require__(31);
-var util_1 = __webpack_require__(7);
-var matchesSelector;
-try {
-    matchesSelector = __webpack_require__(18);
-}
-catch (e) {
-    matchesSelector = Function.prototype;
-}
-var gDestinationId = 0;
-function findDestinationId(arr, searchId) {
-    var minIndex = 0;
-    var maxIndex = arr.length - 1;
-    var currentIndex;
-    var currentElement;
-    while (minIndex <= maxIndex) {
-        currentIndex = (minIndex + maxIndex) / 2 | 0;
-        currentElement = arr[currentIndex];
-        var currentId = currentElement.destinationId;
-        if (currentId < searchId) {
-            minIndex = currentIndex + 1;
-        }
-        else if (currentId > searchId) {
-            maxIndex = currentIndex - 1;
-        }
-        else {
-            return currentIndex;
-        }
-    }
-    return -1;
-}
-/**
- * Attaches an actual event listener to the DOM root element,
- * handles "destinations" (interested DOMSource output subjects), and bubbling.
- */
-var EventDelegator = (function () {
-    function EventDelegator(topElement, eventType, useCapture, isolateModule) {
-        var _this = this;
-        this.topElement = topElement;
-        this.eventType = eventType;
-        this.useCapture = useCapture;
-        this.isolateModule = isolateModule;
-        this.destinations = [];
-        this.roof = topElement.parentElement;
-        if (useCapture) {
-            this.domListener = function (ev) { return _this.capture(ev); };
-        }
-        else {
-            this.domListener = function (ev) { return _this.bubble(ev); };
-        }
-        topElement.addEventListener(eventType, this.domListener, useCapture);
-    }
-    EventDelegator.prototype.bubble = function (rawEvent) {
-        if (!document.body.contains(rawEvent.currentTarget)) {
-            return;
-        }
-        var ev = this.patchEvent(rawEvent);
-        for (var el = ev.target; el && el !== this.roof; el = el.parentElement) {
-            if (!document.body.contains(el)) {
-                ev.stopPropagation();
-            }
-            if (ev.propagationHasBeenStopped) {
-                return;
-            }
-            this.matchEventAgainstDestinations(el, ev);
-        }
-    };
-    EventDelegator.prototype.matchEventAgainstDestinations = function (el, ev) {
-        for (var i = 0, n = this.destinations.length; i < n; i++) {
-            var dest = this.destinations[i];
-            if (!dest.scopeChecker.isStrictlyInRootScope(el)) {
-                continue;
-            }
-            if (matchesSelector(el, dest.selector)) {
-                this.mutateEventCurrentTarget(ev, el);
-                dest.subject.next(ev);
-            }
-        }
-    };
-    EventDelegator.prototype.capture = function (ev) {
-        for (var i = 0, n = this.destinations.length; i < n; i++) {
-            var dest = this.destinations[i];
-            if (matchesSelector(ev.target, dest.selector)) {
-                dest.subject.next(ev);
-            }
-        }
-    };
-    EventDelegator.prototype.addDestination = function (subject, namespace, destinationId) {
-        var scope = util_1.getScope(namespace);
-        var selector = util_1.getSelectors(namespace);
-        var scopeChecker = new ScopeChecker_1.ScopeChecker(scope, this.isolateModule);
-        this.destinations.push({ subject: subject, scopeChecker: scopeChecker, selector: selector, destinationId: destinationId });
-    };
-    EventDelegator.prototype.createDestinationId = function () {
-        return gDestinationId++;
-    };
-    EventDelegator.prototype.removeDestinationId = function (destinationId) {
-        var i = findDestinationId(this.destinations, destinationId);
-        if (i >= 0) {
-            this.destinations.splice(i, 1);
-        }
-    };
-    EventDelegator.prototype.patchEvent = function (event) {
-        var pEvent = event;
-        pEvent.propagationHasBeenStopped = false;
-        var oldStopPropagation = pEvent.stopPropagation;
-        pEvent.stopPropagation = function stopPropagation() {
-            oldStopPropagation.call(this);
-            this.propagationHasBeenStopped = true;
-        };
-        return pEvent;
-    };
-    EventDelegator.prototype.mutateEventCurrentTarget = function (event, currentTargetElement) {
-        try {
-            Object.defineProperty(event, "currentTarget", {
-                value: currentTargetElement,
-                configurable: true,
-            });
-        }
-        catch (err) {
-            console.log("please use event.ownerTarget");
-        }
-        event.ownerTarget = currentTargetElement;
-    };
-    EventDelegator.prototype.updateTopElement = function (newTopElement) {
-        this.topElement.removeEventListener(this.eventType, this.domListener, this.useCapture);
-        newTopElement.addEventListener(this.eventType, this.domListener, this.useCapture);
-        this.topElement = newTopElement;
-    };
-    return EventDelegator;
-}());
-exports.EventDelegator = EventDelegator;
-//# sourceMappingURL=EventDelegator.js.map
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var hyperscript_1 = __webpack_require__(8);
-var util_1 = __webpack_require__(7);
-var VNodeWrapper = (function () {
-    function VNodeWrapper(rootElement) {
-        this.rootElement = rootElement;
-    }
-    VNodeWrapper.prototype.call = function (vnode) {
-        var _a = util_1.selectorParser(vnode.sel), selectorTagName = _a.tagName, selectorId = _a.id;
-        var vNodeClassName = util_1.classNameFromVNode(vnode);
-        var vNodeData = vnode.data || {};
-        var vNodeDataProps = vNodeData.props || {};
-        var _b = vNodeDataProps.id, vNodeId = _b === void 0 ? selectorId : _b;
-        var isVNodeAndRootElementIdentical = vNodeId.toUpperCase() === this.rootElement.id.toUpperCase() &&
-            selectorTagName.toUpperCase() === this.rootElement.tagName.toUpperCase() &&
-            vNodeClassName.toUpperCase() === this.rootElement.className.toUpperCase();
-        if (isVNodeAndRootElementIdentical) {
-            return vnode;
-        }
-        var _c = this.rootElement, tagName = _c.tagName, id = _c.id, className = _c.className;
-        var elementId = id ? "#" + id : "";
-        var elementClassName = className ?
-            "." + className.split(" ").join(".") : "";
-        return hyperscript_1.h("" + tagName + elementId + elementClassName, {}, [vnode]);
-    };
-    return VNodeWrapper;
-}());
-exports.VNodeWrapper = VNodeWrapper;
-//# sourceMappingURL=VNodeWrapper.js.map
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var hyperscript_1 = __webpack_require__(8);
-function isValidString(param) {
-    return typeof param === 'string' && param.length > 0;
-}
-function isSelector(param) {
-    return isValidString(param) && (param[0] === '.' || param[0] === '#');
-}
-function hh(tagName) {
-    return function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
-        }
-        var first = args[0], b = args[1], c = args[2];
-        if (isSelector(first)) {
-            if (b !== void 0 && c !== void 0) {
-                return hyperscript_1.h(tagName + first, b, c);
-            }
-            else if (b !== void 0) {
-                return hyperscript_1.h(tagName + first, b);
-            }
-            else {
-                return hyperscript_1.h(tagName + first, {});
-            }
-        }
-        else if (!!b) {
-            return hyperscript_1.h(tagName, first, b);
-        }
-        else if (!!first) {
-            return hyperscript_1.h(tagName, first);
-        }
-        else {
-            return hyperscript_1.h(tagName, {});
-        }
-    };
-}
-exports.hh = hh;
-exports.a = hh('a');
-exports.abbr = hh('abbr');
-exports.acronym = hh('acronym');
-exports.address = hh('address');
-exports.applet = hh('applet');
-exports.area = hh('area');
-exports.article = hh('article');
-exports.aside = hh('aside');
-exports.audio = hh('audio');
-exports.b = hh('b');
-exports.base = hh('base');
-exports.basefont = hh('basefont');
-exports.bdi = hh('bdi');
-exports.bdo = hh('bdo');
-exports.bgsound = hh('bgsound');
-exports.big = hh('big');
-exports.blink = hh('blink');
-exports.blockquote = hh('blockquote');
-exports.body = hh('body');
-exports.br = hh('br');
-exports.button = hh('button');
-exports.canvas = hh('canvas');
-exports.caption = hh('caption');
-exports.center = hh('center');
-exports.cite = hh('cite');
-exports.code = hh('code');
-exports.col = hh('col');
-exports.colgroup = hh('colgroup');
-exports.command = hh('command');
-exports.content = hh('content');
-exports.data = hh('data');
-exports.datalist = hh('datalist');
-exports.dd = hh('dd');
-exports.del = hh('del');
-exports.details = hh('details');
-exports.dfn = hh('dfn');
-exports.dialog = hh('dialog');
-exports.dir = hh('dir');
-exports.div = hh('div');
-exports.dl = hh('dl');
-exports.dt = hh('dt');
-exports.element = hh('element');
-exports.em = hh('em');
-exports.embed = hh('embed');
-exports.fieldset = hh('fieldset');
-exports.figcaption = hh('figcaption');
-exports.figure = hh('figure');
-exports.font = hh('font');
-exports.footer = hh('footer');
-exports.form = hh('form');
-exports.frame = hh('frame');
-exports.frameset = hh('frameset');
-exports.h1 = hh('h1');
-exports.h2 = hh('h2');
-exports.h3 = hh('h3');
-exports.h4 = hh('h4');
-exports.h5 = hh('h5');
-exports.h6 = hh('h6');
-exports.head = hh('head');
-exports.header = hh('header');
-exports.hgroup = hh('hgroup');
-exports.hr = hh('hr');
-exports.html = hh('html');
-exports.i = hh('i');
-exports.iframe = hh('iframe');
-exports.image = hh('image');
-exports.img = hh('img');
-exports.input = hh('input');
-exports.ins = hh('ins');
-exports.isindex = hh('isindex');
-exports.kbd = hh('kbd');
-exports.keygen = hh('keygen');
-exports.label = hh('label');
-exports.legend = hh('legend');
-exports.li = hh('li');
-exports.link = hh('link');
-exports.listing = hh('listing');
-exports.main = hh('main');
-exports.map = hh('map');
-exports.mark = hh('mark');
-exports.marquee = hh('marquee');
-exports.math = hh('math');
-exports.menu = hh('menu');
-exports.menuitem = hh('menuitem');
-exports.meta = hh('meta');
-exports.meter = hh('meter');
-exports.multicol = hh('multicol');
-exports.nav = hh('nav');
-exports.nextid = hh('nextid');
-exports.nobr = hh('nobr');
-exports.noembed = hh('noembed');
-exports.noframes = hh('noframes');
-exports.noscript = hh('noscript');
-exports.object = hh('object');
-exports.ol = hh('ol');
-exports.optgroup = hh('optgroup');
-exports.option = hh('option');
-exports.output = hh('output');
-exports.p = hh('p');
-exports.param = hh('param');
-exports.picture = hh('picture');
-exports.plaintext = hh('plaintext');
-exports.pre = hh('pre');
-exports.progress = hh('progress');
-exports.q = hh('q');
-exports.rb = hh('rb');
-exports.rbc = hh('rbc');
-exports.rp = hh('rp');
-exports.rt = hh('rt');
-exports.rtc = hh('rtc');
-exports.ruby = hh('ruby');
-exports.s = hh('s');
-exports.samp = hh('samp');
-exports.script = hh('script');
-exports.section = hh('section');
-exports.select = hh('select');
-exports.shadow = hh('shadow');
-exports.small = hh('small');
-exports.source = hh('source');
-exports.spacer = hh('spacer');
-exports.span = hh('span');
-exports.strike = hh('strike');
-exports.strong = hh('strong');
-exports.style = hh('style');
-exports.sub = hh('sub');
-exports.summary = hh('summary');
-exports.sup = hh('sup');
-exports.table = hh('table');
-exports.tbody = hh('tbody');
-exports.td = hh('td');
-exports.template = hh('template');
-exports.textarea = hh('textarea');
-exports.tfoot = hh('tfoot');
-exports.th = hh('th');
-exports.thead = hh('thead');
-exports.time = hh('time');
-exports.title = hh('title');
-exports.tr = hh('tr');
-exports.track = hh('track');
-exports.tt = hh('tt');
-exports.u = hh('u');
-exports.ul = hh('ul');
-exports.video = hh('video');
-exports.wbr = hh('wbr');
-exports.xmp = hh('xmp');
-function createSVGHelper() {
-    var svg = hh('svg');
-    svg.a = hh('a');
-    svg.altGlyph = hh('altGlyph');
-    svg.altGlyphDef = hh('altGlyphDef');
-    svg.altGlyphItem = hh('altGlyphItem');
-    svg.animate = hh('animate');
-    svg.animateColor = hh('animateColor');
-    svg.animateMotion = hh('animateMotion');
-    svg.animateTransform = hh('animateTransform');
-    svg.circle = hh('circle');
-    svg.clipPath = hh('clipPath');
-    svg.colorProfile = hh('colorProfile');
-    svg.cursor = hh('cursor');
-    svg.defs = hh('defs');
-    svg.desc = hh('desc');
-    svg.ellipse = hh('ellipse');
-    svg.feBlend = hh('feBlend');
-    svg.feColorMatrix = hh('feColorMatrix');
-    svg.feComponentTransfer = hh('feComponentTransfer');
-    svg.feComposite = hh('feComposite');
-    svg.feConvolveMatrix = hh('feConvolveMatrix');
-    svg.feDiffuseLighting = hh('feDiffuseLighting');
-    svg.feDisplacementMap = hh('feDisplacementMap');
-    svg.feDistantLight = hh('feDistantLight');
-    svg.feFlood = hh('feFlood');
-    svg.feFuncA = hh('feFuncA');
-    svg.feFuncB = hh('feFuncB');
-    svg.feFuncG = hh('feFuncG');
-    svg.feFuncR = hh('feFuncR');
-    svg.feGaussianBlur = hh('feGaussianBlur');
-    svg.feImage = hh('feImage');
-    svg.feMerge = hh('feMerge');
-    svg.feMergeNode = hh('feMergeNode');
-    svg.feMorphology = hh('feMorphology');
-    svg.feOffset = hh('feOffset');
-    svg.fePointLight = hh('fePointLight');
-    svg.feSpecularLighting = hh('feSpecularLighting');
-    svg.feSpotlight = hh('feSpotlight');
-    svg.feTile = hh('feTile');
-    svg.feTurbulence = hh('feTurbulence');
-    svg.filter = hh('filter');
-    svg.font = hh('font');
-    svg.fontFace = hh('fontFace');
-    svg.fontFaceFormat = hh('fontFaceFormat');
-    svg.fontFaceName = hh('fontFaceName');
-    svg.fontFaceSrc = hh('fontFaceSrc');
-    svg.fontFaceUri = hh('fontFaceUri');
-    svg.foreignObject = hh('foreignObject');
-    svg.g = hh('g');
-    svg.glyph = hh('glyph');
-    svg.glyphRef = hh('glyphRef');
-    svg.hkern = hh('hkern');
-    svg.image = hh('image');
-    svg.linearGradient = hh('linearGradient');
-    svg.marker = hh('marker');
-    svg.mask = hh('mask');
-    svg.metadata = hh('metadata');
-    svg.missingGlyph = hh('missingGlyph');
-    svg.mpath = hh('mpath');
-    svg.path = hh('path');
-    svg.pattern = hh('pattern');
-    svg.polygon = hh('polygon');
-    svg.polyline = hh('polyline');
-    svg.radialGradient = hh('radialGradient');
-    svg.rect = hh('rect');
-    svg.script = hh('script');
-    svg.set = hh('set');
-    svg.stop = hh('stop');
-    svg.style = hh('style');
-    svg.switch = hh('switch');
-    svg.symbol = hh('symbol');
-    svg.text = hh('text');
-    svg.textPath = hh('textPath');
-    svg.title = hh('title');
-    svg.tref = hh('tref');
-    svg.tspan = hh('tspan');
-    svg.use = hh('use');
-    svg.view = hh('view');
-    svg.vkern = hh('vkern');
-    return svg;
-}
-exports.svg = createSVGHelper();
-//# sourceMappingURL=helpers.js.map
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var hyperscript_1 = __webpack_require__(8);
-/* tslint:enable:max-line-length */
-function copyToThunk(vNode, thunk) {
-    thunk.elm = vNode.elm;
-    if (!vNode.data) {
-        vNode.data = {};
-    }
-    vNode.data.fn = thunk.data.fn;
-    vNode.data.args = thunk.data.args;
-    thunk.data = vNode.data;
-    thunk.children = vNode.children;
-    thunk.text = vNode.text;
-    thunk.elm = vNode.elm;
-}
-function init(thunk) {
-    var cur = thunk.data;
-    var vNode = cur.fn.apply(undefined, cur.args);
-    copyToThunk(vNode, thunk);
-}
-function prepatch(oldVnode, thunk) {
-    var old = oldVnode.data;
-    var cur = thunk.data;
-    var oldArgs = old ? old.args : [];
-    var args = cur.args;
-    if (old && old.fn !== cur.fn || oldArgs && oldArgs.length !== args.length) {
-        copyToThunk(cur.fn.apply(undefined, args), thunk);
-    }
-    for (var i = 0; i < args.length; ++i) {
-        if (oldArgs && oldArgs[i] !== args[i]) {
-            copyToThunk(cur.fn.apply(undefined, args), thunk);
-            return;
-        }
-    }
-    copyToThunk(oldVnode, thunk);
-}
-exports.thunk = function thunk(selector, key, render) {
-    var state = [];
-    for (var _i = 3; _i < arguments.length; _i++) {
-        state[_i - 3] = arguments[_i];
-    }
-    return hyperscript_1.h(selector, {
-        key: key,
-        hook: { init: init, prepatch: prepatch },
-        fn: render,
-        args: state
-    });
-};
-//# sourceMappingURL=thunk.js.map
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var util_1 = __webpack_require__(7);
-function isolateSource(source, scope) {
-    return source.select(util_1.SCOPE_PREFIX + scope);
-}
-exports.isolateSource = isolateSource;
-function isolateSink(sink, scope) {
-    return sink.map(function (vTree) {
-        if (vTree.data.isolate) {
-            var existingScope = parseInt(vTree.data.isolate.split(util_1.SCOPE_PREFIX + 'cycle')[1]);
-            var _scope = parseInt(scope.split('cycle')[1]);
-            if (isNaN(existingScope) || isNaN(_scope) || existingScope > _scope) {
-                return vTree;
-            }
-        }
-        vTree.data.isolate = util_1.SCOPE_PREFIX + scope;
-        if (typeof vTree.key === 'undefined') {
-            vTree.key = util_1.SCOPE_PREFIX + scope;
-        }
-        return vTree;
-    });
-}
-exports.isolateSink = isolateSink;
-//# sourceMappingURL=isolate.js.map
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var init = __webpack_require__(152).init;
-var most_1 = __webpack_require__(4);
-var hold_1 = __webpack_require__(27);
-var DOMSource_1 = __webpack_require__(29);
-var VNodeWrapper_1 = __webpack_require__(56);
-var util_1 = __webpack_require__(7);
-var modules_1 = __webpack_require__(32);
-var isolate_1 = __webpack_require__(63);
-var transposition_1 = __webpack_require__(33);
-function makeDOMDriverInputGuard(modules) {
-    if (!Array.isArray(modules)) {
-        throw new Error("Optional modules option must be " +
-            "an array for snabbdom modules");
-    }
-}
-function domDriverInputGuard(view$) {
-    if (view$ instanceof most_1.Stream === false) {
-        throw new Error("The DOM driver function expects as input a Stream of " +
-            "virtual DOM elements");
-    }
-}
-function mapVNodeToElement(vNode) {
-    return vNode.elm ? vNode.elm : vNode;
-}
-function makeDOMDriver(container, options) {
-    if (!options) {
-        options = {};
-    }
-    var transposition = options.transposition || false;
-    var modules = options.modules || modules_1.default;
-    var isolateModule = new isolate_1.IsolateModule((new Map()));
-    var patch = init([isolateModule.createModule()].concat(modules));
-    var rootElement = util_1.getElement(container);
-    var vnodeWrapper = new VNodeWrapper_1.VNodeWrapper(rootElement);
-    var delegators = new Map();
-    makeDOMDriverInputGuard(modules);
-    return function DOMDriver(vnode$) {
-        domDriverInputGuard(vnode$);
-        var preprocessedVNode$ = transposition
-            ? vnode$.map(transposition_1.transposeVNode).switch()
-            : vnode$;
-        var rootElement$ = preprocessedVNode$
-            .map(function (vnode) { return vnodeWrapper.call(vnode); })
-            .scan(patch, rootElement)
-            .map(mapVNodeToElement)
-            .thru(hold_1.default);
-        rootElement$.drain()
-            .catch(function (err) { return console.error(err); })
-            .then(function () { return 'DOM Driver vnode$ has terminated'; });
-        return new DOMSource_1.DOMSource(rootElement$, [], isolateModule, delegators);
-    };
-}
-exports.makeDOMDriver = makeDOMDriver;
-//# sourceMappingURL=makeDOMDriver.js.map
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var transposition_1 = __webpack_require__(33);
-var HTMLSource_1 = __webpack_require__(30);
-var toHTML = __webpack_require__(138);
-/* tslint:disable:no-empty */
-var noop = function () { };
-/* tslint:enable:no-empty */
-function makeHTMLDriver(effect, options) {
-    if (!options) {
-        options = {};
-    }
-    var transposition = options.transposition || false;
-    return function htmlDriver(vnode$) {
-        var preprocessedVNode$ = (transposition ? vnode$.map(transposition_1.transposeVNode).switch() : vnode$);
-        var html$ = preprocessedVNode$.map(toHTML);
-        html$.subscribe({
-            next: effect || noop,
-            error: noop,
-            complete: noop,
-        });
-        return new HTMLSource_1.HTMLSource(html$);
-    };
-}
-exports.makeHTMLDriver = makeHTMLDriver;
-//# sourceMappingURL=makeHTMLDriver.js.map
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var most_1 = __webpack_require__(4);
-var SCOPE_PREFIX = '___';
-var MockedDOMSource = (function () {
-    function MockedDOMSource(_mockConfig) {
-        this._mockConfig = _mockConfig;
-        if (_mockConfig.elements) {
-            this._elements = _mockConfig.elements;
-        }
-        else {
-            this._elements = most_1.empty();
-        }
-    }
-    MockedDOMSource.prototype.elements = function () {
-        return this._elements;
-    };
-    MockedDOMSource.prototype.events = function (eventType, options) {
-        var mockConfig = void options ? this._mockConfig : this._mockConfig;
-        var keys = Object.keys(mockConfig);
-        var keysLen = keys.length;
-        for (var i = 0; i < keysLen; i++) {
-            var key = keys[i];
-            if (key === eventType) {
-                return mockConfig[key];
-            }
-        }
-        return most_1.empty();
-    };
-    MockedDOMSource.prototype.select = function (selector) {
-        var mockConfig = this._mockConfig;
-        var keys = Object.keys(mockConfig);
-        var keysLen = keys.length;
-        for (var i = 0; i < keysLen; i++) {
-            var key = keys[i];
-            if (key === selector) {
-                return new MockedDOMSource(mockConfig[key]);
-            }
-        }
-        return new MockedDOMSource({});
-    };
-    MockedDOMSource.prototype.isolateSource = function (source, scope) {
-        return source.select('.' + SCOPE_PREFIX + scope);
-    };
-    MockedDOMSource.prototype.isolateSink = function (sink, scope) {
-        return sink.map(function (vnode) {
-            if (vnode.sel.indexOf(SCOPE_PREFIX + scope) !== -1) {
-                return vnode;
-            }
-            else {
-                vnode.sel += "." + SCOPE_PREFIX + scope;
-                return vnode;
-            }
-        });
-    };
-    return MockedDOMSource;
-}());
-exports.MockedDOMSource = MockedDOMSource;
-function mockDOMSource(mockConfig) {
-    return new MockedDOMSource(mockConfig);
-}
-exports.mockDOMSource = mockDOMSource;
-//# sourceMappingURL=mockDOMSource.js.map
-
-/***/ },
-/* 63 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-var IsolateModule = (function () {
-    function IsolateModule(isolatedElements) {
-        this.isolatedElements = isolatedElements;
-        this.eventDelegators = new Map();
-    }
-    IsolateModule.prototype.setScope = function (elm, scope) {
-        this.isolatedElements.set(scope, elm);
-    };
-    IsolateModule.prototype.removeScope = function (scope) {
-        this.isolatedElements.delete(scope);
-    };
-    IsolateModule.prototype.getIsolatedElement = function (scope) {
-        return this.isolatedElements.get(scope);
-    };
-    IsolateModule.prototype.isIsolatedElement = function (elm) {
-        var iterator = this.isolatedElements.entries();
-        var hasNext = true;
-        while (hasNext) {
-            try {
-                var result = iterator.next();
-                var _a = result.value, scope = _a[0], element = _a[1];
-                if (elm === element) {
-                    return scope;
-                }
-            }
-            catch (err) {
-                hasNext = false;
-            }
-        }
-        return false;
-    };
-    IsolateModule.prototype.addEventDelegator = function (scope, eventDelegator) {
-        var delegators = this.eventDelegators.get(scope);
-        if (!delegators) {
-            delegators = [];
-            this.eventDelegators.set(scope, delegators);
-        }
-        delegators[delegators.length] = eventDelegator;
-    };
-    IsolateModule.prototype.reset = function () {
-        this.isolatedElements.clear();
-    };
-    IsolateModule.prototype.createModule = function () {
-        var self = this;
-        return {
-            create: function (oldVNode, vNode) {
-                var _a = oldVNode.data, oldData = _a === void 0 ? {} : _a;
-                var elm = vNode.elm, _b = vNode.data, data = _b === void 0 ? {} : _b;
-                var oldScope = oldData.isolate || "";
-                var scope = data.isolate || "";
-                if (scope) {
-                    if (oldScope) {
-                        self.removeScope(oldScope);
-                    }
-                    self.setScope(elm, scope);
-                    var delegators = self.eventDelegators.get(scope);
-                    if (delegators) {
-                        for (var i = 0, len = delegators.length; i < len; ++i) {
-                            delegators[i].updateTopElement(elm);
-                        }
-                    }
-                    else if (delegators === void 0) {
-                        self.eventDelegators.set(scope, []);
-                    }
-                }
-                if (oldScope && !scope) {
-                    self.removeScope(scope);
-                }
-            },
-            update: function (oldVNode, vNode) {
-                var _a = oldVNode.data, oldData = _a === void 0 ? {} : _a;
-                var elm = vNode.elm, _b = vNode.data, data = _b === void 0 ? {} : _b;
-                var oldScope = oldData.isolate || "";
-                var scope = data.isolate || "";
-                if (scope && scope !== oldScope) {
-                    if (oldScope) {
-                        self.removeScope(oldScope);
-                    }
-                    self.setScope(elm, scope);
-                }
-                if (oldScope && !scope) {
-                    self.removeScope(scope);
-                }
-            },
-            remove: function (_a, cb) {
-                var data = _a.data;
-                data = data || {};
-                var scope = data.isolate;
-                if (scope) {
-                    self.removeScope(scope);
-                    if (self.eventDelegators.get(scope)) {
-                        self.eventDelegators.set(scope, []);
-                    }
-                }
-                cb();
-            },
-            destroy: function (_a) {
-                var data = _a.data;
-                data = data || {};
-                var scope = data.isolate;
-                if (scope) {
-                    self.removeScope(scope);
-                    if (self.eventDelegators.get(scope)) {
-                        self.eventDelegators.set(scope, []);
-                    }
-                }
-            }
-        };
-    };
-    return IsolateModule;
-}());
-exports.IsolateModule = IsolateModule;
-//# sourceMappingURL=isolate.js.map
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-// TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.group = console.group || console.log;
-console.groupCollapsed = console.groupCollapsed || console.log;
-console.debug = console.debug || console.log;
-// Type checking typings
-/**
- * @typedef {function(Sources,Settings):Source} SwitchOnCondition
- */
-/**
- * @typedef {SourceName} SwitchOnSource
- */
-/**
- * @typedef {Object} SwitchCaseSettings
- * @property {SwitchOnCondition | SwitchOnSource} on
- * @property {Array<SinkName>} sinkNames
- * @property {?function(*,*): Boolean} eqFn
- */
-var checks_1 = __webpack_require__(9);
-var m_1 = __webpack_require__(15);
-var ramda_1 = __webpack_require__(10);
-var $ = __webpack_require__(4);
-var sample_1 = __webpack_require__(53);
-// CONFIG
-var DEFAULT_SWITCH_COMPONENT_SOURCE_NAME = 'switch$'; // NOT USED
-var defaultEqFn = function swichCptDefaultEqFn(a, b) {
-    return a === b;
-};
-var cfg = {
-    defaultSwitchComponentSourceName: DEFAULT_SWITCH_COMPONENT_SOURCE_NAME,
-    defaultEqFn: defaultEqFn
-};
-//////
-// Helper functions
-function isSwitchSettings(settings) {
-    var signature = {
-        eqFn: ramda_1.either(ramda_1.isNil, checks_1.isFunction),
-        caseWhen: ramda_1.complement(ramda_1.isNil),
-        sinkNames: checks_1.isArrayOf(checks_1.isString),
-        on: ramda_1.either(checks_1.isString, checks_1.isFunction)
-    };
-    var signatureErrorMessages = {
-        eqFn: 'eqFn property, when not undefined, must be a function.',
-        caseWhen: 'caseWhen property is mandatory.',
-        sinkNames: 'sinkNames property must be an array of strings',
-        on: '`on` property is mandatory and must be a string or a function.'
-    };
-    return checks_1.checkSignature(settings, signature, signatureErrorMessages, false);
-}
-function hasAtLeastOneChildComponent(childrenComponents) {
-    return childrenComponents &&
-        checks_1.isArray(childrenComponents) &&
-        childrenComponents.length >= 1 ? true : '';
-}
-function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
-    // TODO (later): Be careful that the inheritance of settings down the
-    // chain can pollute children... So I need to check the presence of the
-    // passed settings before merge to check that mandatory properties are
-    // passed and not inherited unexpectedly from an ancestor.
-    // This will have to be done via settingsContracts at SwitchCase level
-    // debug info
-    console.groupCollapsed('Switch component > computeSinks');
-    console.debug('sources, settings, childrenComponents', sources, settings, childrenComponents);
-    checks_1.assertContract(isSwitchSettings, [settings], 'Invalid switch' +
-        ' component settings!');
-    checks_1.assertContract(hasAtLeastOneChildComponent, [childrenComponents], 'switch combinator must at least have one child component to switch to!');
-    var eqFn = settings.eqFn, caseWhen = settings.caseWhen, sinkNames = settings.sinkNames, on = settings.on;
-    var overload = checks_1.unfoldObjOverload(on, [
-        { 'guard$': checks_1.isFunction },
-        { 'sourceName': checks_1.isString }
-    ]);
-    var _a = overload, guard$ = _a.guard$, sourceName = _a.sourceName, _index = _a._index;
-    var switchSource;
-    if (_index === 1) {
-        // Case : overload `settings.on :: SourceName`
-        switchSource = sources[sourceName];
-        checks_1.assertContract(checks_1.isSource, [switchSource], "An observable with name " + sourceName + " could not be found in sources");
-    }
-    if (_index === 0) {
-        // Case : overload `settings.on :: SourceName`
-        switchSource = guard$(sources, settings);
-        checks_1.assertContract(checks_1.isSource, [switchSource], "The function used for conditional switching did not return an observable!");
-    }
-    // set default values for optional properties
-    eqFn = checks_1.defaultsTo(eqFn, cfg.defaultEqFn);
-    var shouldSwitch$ = switchSource
-        .map(function (x) { return eqFn(caseWhen, x); });
-    var cachedSinks$ = shouldSwitch$
-        .filter(function (x) { return x; })
-        .map(function (_) {
-        var mergedChildrenComponentsSinks = m_1.m({}, { matched: caseWhen }, childrenComponents);
-        return mergedChildrenComponentsSinks(sources, settings);
-    })
-        .multicast(); // multicasted to all sinks
-    function makeSwitchedSinkFromCache(sinkName) {
-        return function makeSwitchedSinkFromCache(isMatchingCase, cachedSinks) {
-            var cached$, preCached$, prefix$;
-            if (isMatchingCase) {
-                // Case : the switch source emits a value corresponding to the
-                // configured case in the component
-                // Case : matches configured value
-                if (cachedSinks[sinkName] != null) {
-                    // Case : the component produces a sink with that name
-                    // This is an important case, as parent can have children
-                    // nested at arbitrary levels, with either :
-                    // 1. sinks which will not be retained (not in `sinkNames`
-                    // settings)
-                    // 2. or no sinks matching a particular `sinkNames`
-                    // Casuistic 1. is taken care of automatically as we only
-                    // construct the sinks in `sinkNames`
-                    // Casuistic 2. is taken care of thereafter
-                    prefix$ = sinkName === 'DOM' ?
-                        // Case : DOM sink
-                        // actually any sink which is merged with a `combineLatest`
-                        // but here by default only DOM sinks are merged that way
-                        // Because the `combineLatest` blocks till all its sources
-                        // have started, and that behaviour interacts badly with
-                        // route changes desired behavior, we forcibly emits a `null`
-                        // value at the beginning of every sink.
-                        // !! Don't start with null in case of switching IN, only
-                        // when switching OUT
-                        $.empty() :
-                        // Case : Non-DOM sink
-                        // Non-DOM sinks are merged with a simple `merge`, there
-                        // is no conflict here, so we just return nothing
-                        $.empty();
-                    preCached$ = cachedSinks[sinkName]
-                        .tap(console.log.bind(console, 'sink ' + sinkName + ':'));
-                    // TODO BRC : add the finally operator
-                    //            .finally(_ => {
-                    //              console.log(`sink ${sinkName} terminating due to route change`)
-                    //            })
-                    cached$ = $.concat(prefix$, preCached$);
-                }
-                else {
-                    // Case : the component does not have any sinks with the
-                    // corresponding sinkName
-                    cached$ = $.empty();
-                }
-            }
-            else {
-                // Case : the switch source emits a value NOT corresponding to the
-                // configured case in the component
-                console.log('isMatchingCase is null!!! no match for this component on' +
-                    ' this route!');
-                cached$ = sinkName === 'DOM' ? $.of(null) : $.empty();
-            }
-            return cached$;
-        };
-    }
-    function makeSwitchedSink(sinkName) {
-        return (_a = {},
-            _a[sinkName] = sample_1.sample(makeSwitchedSinkFromCache(sinkName), shouldSwitch$, cachedSinks$)
-                .tap(function () { console.warn("switching: " + sinkName); })
-                .switch(),
-            _a
-        );
-        var _a;
-    }
-    console.groupEnd();
-    return ramda_1.mergeAll(ramda_1.map(makeSwitchedSink, sinkNames));
-}
-/**
- * Usage : m(SwitchCase, ::SwitchCaseSettings, ::Array<CaseComponent>)
- * Example : cf. specs
- *   > const mComponent = m(SwitchCase, {
-   *   >    on: (sources,settings) => sources.sweatch$,
-   *   >    sinkNames: ['DOM', 'a', 'b']
-   *   >  }, [
- *   > m(Case, {caseWhen: true}, [childComponent1, childComponent2]),
- *   > m(Case, {caseWhen: false}, [childComponent3])
- *   > ])
- *
- * The switch combinator activates a component conditionally depending on
- * whether a condition on a 'switched' source stream is satisfied. Note
- * that the condition is evaluated every time there is an incoming value
- * on the relevant sources.
- * If it is necessary to implement a logic by which, the component activation
- * should only trigger on **changes** of the incoming value, that logic
- * could be implemented with a `distinctUntilChanged`.
- * When the condition is no longer satisfied, the previously activated
- * component is deactivated automatically :
- * - DOM sink emits null and terminates
- * - Non-DOM sinks are empty
- * DOM sinks are treated differently because the DOM is a behaviour
- * (continuous value), not an event, so we need to update to null its value
- * when there is no longer a match. i.e. match => DOM, no match => Null
- *
- * Signature 1: SwitchOnCondition -> [Component] -> Component
- * - settings.on :: Sources -> Settings -> Source
- * The function passed as parameter is returning a source observable whose
- * values will be used for the conditional switching.
- * - settings.sinkNames :: [SinkName]
- * This is an array with the names of the sinks to be constructed. This is
- * mandatory as we can't know in advance which sinks to produce
- * - settings.eqFn :: * -> * -> Boolean
- * A predicate which returns true if both parameters are considered equal.
- * This parameter defaults to `===`
- *
- * Signature 2: SwitchOnSource -> [Component] -> Component
- * - settings.on :: SourceName
- * A string which is the source name whose values will be used for the
- * conditional activation of the component. The sources used will be
- * sources[sourceName]
- * - Cf. Signature 1 for the meaning of the rest of parameters
- *
- * Contracts :
- * - SwitchCase combinator must have at least one child component
- * - Case combinator must have at least one child component
- * - Conditions should be defined such that there is for any given value
- * of the 'switched' stream only one matching component
- *   - If that is not the case, the last matching component will be the one
- *   prevailing. It is however how to predict which of the components will
- *   be the last in a given configuration
- * - on, sinkNames, caseWhen are mandatory
- *
- * Case component
- * - settings.caseWhen :: *
- * An object which will activate the switched-to component whenever the source
- * observable returned by the `on` parameter emits that object
- *
- * Contracts :
- * - caseWhen is mandatory
- *
- */
-var SwitchCase = {
-    mergeSinks: {
-        DOM: function mergeDomSwitchedSinks(ownSink, childrenDOMSink, settings) {
-            var allSinks = ramda_1.flatten([ownSink, childrenDOMSink]);
-            var allDOMSinks = checks_1.removeNullsFromArray(allSinks);
-            // debugger
-            return $.mergeArray(allDOMSinks)
-                .tap(console.warn.bind(console, 'Switch.specs' +
-                ' > mergeDomSwitchedSinks > merge'))
-                .filter(Boolean);
-            // Most values will be null
-            // All non-null values correspond to a match
-            // In the degenerated case, all values will be null (no match
-            // at all)
-        }
-    }
-};
-exports.SwitchCase = SwitchCase;
-var Case = { computeSinks: computeSinks };
-exports.Case = Case;
-
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-/// <reference path="../../../typings/index.d.ts" />
-/**
- * Test plan
- *
- * A. Testing strategy
- * Main case tests must cover HaveParent x Signature x Children
- * That makes for 2 x 3 potential tests:
- * - Signature : whether Signature 1 or 2
- * - Children : whether the component has no children, 1 child, or several
- * children (We assume here that if the tests pass for two children, they will
- * pass for any number of children > 2)
- *
- * We will reduce the number of tests to perform to: 3 x (3 > 2 ?1 :2) by:
- * - assuming that the behaviour linked to the signature is
- * independent of the behaviour linked to the other arguments. Hence that
- * behaviour can be tested 'for free' on the way to testing expected
- * behaviour under the rest of the arguments.
- *
- * We hence remain with 3 tests to perform:
- * - (0,1,2) children
- * which will include along the way:
- * - default for optional properties (eqFn)
- * - signature 1 and 2
- *
- * B. Test scenarii
- */
-var assert = __webpack_require__(12);
-var $ = __webpack_require__(4);
-var Switch_1 = __webpack_require__(64);
-var m_1 = __webpack_require__(15);
-var dom_1 = __webpack_require__(14);
-var runTestScenario_1 = __webpack_require__(16);
-function plan(n) {
-    return function _done(done) {
-        if (--n === 0) {
-            done();
-        }
-    };
-}
-describe('Testing Switch component', function () {
-    it('edge cases - no children - switch on source', function (done) {
-        var mComponent = m_1.m(Switch_1.SwitchCase, {
-            on: 'switch$',
-            sinkNames: ['DOM', 'a', 'b']
-        }, [m_1.m(Switch_1.Case, { caseWhen: true }, [])]);
-        var inputs = [
-            { DOM1: { diagram: '-a--b--c--d--e--f--a' } },
-            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d' } },];
-        /** @type TestResults */
-        var expected = {
-            DOM: {
-                outputs: [],
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            b: {
-                outputs: [],
-                successMessage: 'sink b produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            done();
-        }
-        var testFn = mComponent;
-        assert.throws(function () {
-            runTestScenario_1.runTestScenario(inputs, expected, testFn, {
-                tickDuration: 5,
-                waitForFinishDelay: 30
-            });
-        }, /contract/, 'Throws if the switch combinator is called with no' +
-            ' child component to switch to');
-    });
-    it('main cases - 1 child - switch on source', function (done) {
-        var assertAsync = plan(3);
-        var childComponent1 = function childComponent1(sources, settings) {
-            return {
-                DOM: sources.DOM1.take(4)
-                    .tap(console.warn.bind(console, 'DOM : component 1: '))
-                    .map(function (x) { return dom_1.h('span', {}, "Component 1 : " + x); })
-                    .concat($.never()),
-                a: sources.userAction$.map(function (x) { return ("Component1 - user action : " + x); })
-            };
-        };
-        var childComponent2 = function childComponent1(sources, settings) {
-            return {
-                DOM: sources.DOM2.take(4)
-                    .tap(console.warn.bind(console, 'DOM : component 2: '))
-                    .map(function (x) { return dom_1.h('span', {}, "Component 2 : " + x); })
-                    .concat($.never()),
-                b: sources.userAction$.map(function (x) { return ("Component2 - user action : " + x); })
-            };
-        };
-        var mComponent = m_1.m(Switch_1.SwitchCase, {
-            on: 'switch$',
-            sinkNames: ['DOM', 'a', 'b'],
-            eqFn: function (a, b) { return a === b; }
-        }, [
-            m_1.m(Switch_1.Case, { caseWhen: true }, [childComponent1, childComponent2])
-        ]);
-        var inputs = [
-            { DOM1: { diagram: '-a--b--c--d--e--f--a' } },
-            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d' } },
-            {
-                userAction$: {
-                    diagram: 'abc-b-ac--ab---c',
-                    values: { a: 'click', b: 'select', c: 'hover', }
-                }
-            },
-            {
-                switch$: {
-                    //diagr: '-a--b--c--d--e--f--a',
-                    //diagr: '-a-b-c-d-e-f-abb-c-d',
-                    //userA: 'abc-b-ac--ab---c',
-                    diagram: '-t-f-tttttff-t', values: {
-                        t: true,
-                        f: false,
-                    }
-                }
-            }
-        ];
-        function makeVNode(x, y) {
-            return dom_1.div([
-                dom_1.h('span', {}, "Component 1 : " + x),
-                dom_1.h('span', {}, "Component 2 : " + y),
-            ]);
-        }
-        var vNodes = [
-            makeVNode('c', 'd'),
-            //      makeVNode('c','e'), // won't happen because combineLatest
-            // (a,b) needs a first value for both a and b to emits its first value
-            //      makeVNode('d','e'),
-            makeVNode('f', 'b'),
-            makeVNode('f', 'c'),
-            makeVNode('a', 'c'),
-            makeVNode('a', 'd'),
-        ];
-        /** @type TestResults */
-        var expected = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [
-                    'Component1 - user action : hover',
-                    'Component1 - user action : click',
-                    'Component1 - user action : hover',
-                    'Component1 - user action : click',
-                    'Component1 - user action : hover',
-                ],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            b: {
-                outputs: [
-                    'Component2 - user action : hover',
-                    'Component2 - user action : click',
-                    'Component2 - user action : hover',
-                    'Component2 - user action : click',
-                    'Component2 - user action : hover',
-                ],
-                successMessage: 'sink b produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        var testFn = mComponent;
-        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
-            tickDuration: 5,
-            waitForFinishDelay: 30
-        });
-    });
-    it.only('main cases - 2 children - switch on condition', function (done) {
-        var assertAsync = plan(3);
-        var childComponent1 = function childComponent1(sources, settings) {
-            return {
-                DOM: sources.DOM1.take(4)
-                    .tap(console.warn.bind(console, 'DOM : component 1: '))
-                    .map(function (x) { return dom_1.h('span', {}, "Component 1 : " + x); })
-                    .concat($.never()),
-                a: sources.userAction$.map(function (x) { return ("Component1 - user action : " + x); })
-            };
-        };
-        var childComponent2 = function childComponent1(sources, settings) {
-            return {
-                DOM: sources.DOM2.take(4)
-                    .tap(console.warn.bind(console, 'DOM : component 2: '))
-                    .map(function (x) { return dom_1.h('span', {}, "Component 2 : " + x); })
-                    .concat($.never()),
-                b: sources.userAction$.map(function (x) { return ("Component2 - user action : " + x); })
-            };
-        };
-        var childComponent3 = function childComponent1(sources, settings) {
-            return {
-                DOM: sources.DOM2.take(4)
-                    .tap(console.warn.bind(console, 'DOM : component 3: '))
-                    .map(function (x) { return dom_1.h('span', {}, "Component 3 : " + x); })
-                    .concat($.never()),
-                b: sources.userAction$.map(function (x) { return ("Component3 - user action : " + x); })
-            };
-        };
-        var mComponent = m_1.m(Switch_1.SwitchCase, {
-            on: function (sources, settings) { return sources.sweatch$; },
-            sinkNames: ['DOM', 'a', 'b']
-        }, [
-            m_1.m(Switch_1.Case, { caseWhen: true }, [childComponent1, childComponent2]),
-            m_1.m(Switch_1.Case, { caseWhen: false }, [childComponent3])
-        ]);
-        var inputs = [
-            { DOM1: { diagram: '-a--b--c--d--e--f--a' } },
-            { DOM2: { diagram: '-a-b-c-d-e-f-abb-c-d' } },
-            {
-                userAction$: {
-                    diagram: 'abc-b-ac--ab---c',
-                    values: { a: 'click', b: 'select', c: 'hover', }
-                }
-            },
-            {
-                'sweatch$': {
-                    //diagr: '-a--b--c--d--e--f--a',
-                    //diagr: '-a-b-c-d-e-f-abb-c-d',
-                    //userA: 'abc-b-ac--ab---c',
-                    diagram: '-t-f-tttttff-t', values: {
-                        t: true,
-                        f: false,
-                    }
-                }
-            }
-        ];
-        function makeVNode(x, y, z) {
-            return !z ?
-                dom_1.div([
-                    dom_1.h('span', {}, "Component 1 : " + x),
-                    dom_1.h('span', {}, "Component 2 : " + y),
-                ]) :
-                dom_1.h('span', {}, "Component 3 : " + z);
-        }
-        var vNodes = [
-            makeVNode('', '', 'c'),
-            makeVNode('c', 'd', undefined),
-            //      makeVNode('c','e'), // won't happen because combineLatest
-            // (a,b) needs a first value for both a and b to emits its first value
-            //      makeVNode('d','e'),
-            makeVNode('', '', 'f'),
-            makeVNode('', '', 'a'),
-            makeVNode('f', 'b', undefined),
-            makeVNode('f', 'c', undefined),
-            makeVNode('a', 'c', undefined),
-            makeVNode('a', 'd', undefined),
-        ];
-        /** @type TestResults */
-        var expected = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [
-                    'Component1 - user action : hover',
-                    'Component1 - user action : click',
-                    'Component1 - user action : hover',
-                    'Component1 - user action : click',
-                    'Component1 - user action : hover',
-                ],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            b: {
-                outputs: [
-                    // basically all userAction after first value of switch$ is emitted
-                    "Component2 - user action : hover",
-                    "Component3 - user action : select",
-                    "Component2 - user action : click",
-                    "Component2 - user action : hover",
-                    "Component2 - user action : click",
-                    "Component3 - user action : select",
-                    "Component2 - user action : hover"
-                ],
-                successMessage: 'sink b produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        function analyzeTestResults(actual, expected, message) {
-            debugger;
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        var testFn = mComponent;
-        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
-            tickDuration: 3,
-            waitForFinishDelay: 30
-        });
-    });
-});
-
-
-/***/ },
 /* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-/// <reference path="../../../typings/index.d.ts" />
-var assert = __webpack_require__(12);
-var checks_1 = __webpack_require__(9);
-describe('Testing utils functions', function () {
-    it('assertSignature(fnName, _arguments, vRules', function () {
-        var fnName = 'test';
-        var _arguments = [2, false];
-        var _argInvalid = [false, 2];
-        var vRules = [
-            { arg1: function isNumber(x) { return typeof x === 'number'; } },
-            { arg2: function isBoolean(x) { return typeof x === 'boolean'; } },
-        ];
-        assert.equal(checks_1.assertSignature(fnName, _arguments, vRules), true, 'assertSignature validates the arguments of a function according to a list' +
-            'of validation rules. When those validation rules are observed, ' +
-            'it should return true.');
-        assert.throws(function () { checks_1.assertSignature(fnName, _argInvalid, vRules); }, /fails/, 'Each failing validation rule generates an error message; error messages' +
-            'are gathered and thrown in an exception.');
-    });
-});
-
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-/// <reference path="../../../typings/index.d.ts" />
-var assert = __webpack_require__(12);
-var ramda_1 = __webpack_require__(10);
-var dom_1 = __webpack_require__(14);
-var $ = __webpack_require__(4);
-var runTestScenario_1 = __webpack_require__(16);
-var m_1 = __webpack_require__(15);
-var checks_1 = __webpack_require__(9);
-// TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
-console.groupCollapsed = console.groupCollapsed || console.log;
-// Fixtures
-var PROVIDERS = {
-    google: 'google',
-    facebook: 'facebook',
-};
-function plan(n) {
-    return function _done(done) {
-        if (--n === 0) {
-            done();
-        }
-    };
-}
-describe('Testing m(component_def, settings, children)', function () {
-    it('edge cases - no arguments', function () {
-        // NOTE
-        // skipping more edge cases where arguments are of the wrong type
-        // there are too many of them and they do not add so much value
-        // As much as possible, the helper is written so it fails early with a
-        // reasonably descriptive error message when it detects invalid arguments
-        assert.throws(function () {
-            m_1.m();
-        }, /fails/, 'it throws an exception if it is called with an invalid ' +
-            'combination of arguments');
-    });
-    it('main cases - only children components', function (done) {
-        // NOTE
-        // skipping also a number of main cases corresponding to combination of inputs
-        // which are deem to be tested
-        // Inputs : component_def x settings x children
-        // - component_def: 7 classes of values for properties
-        // - settings: two classes of values (null, {...})
-        // - children: three classes of values ([], [component], [component, component])
-        // That makes for 7x2x3 = 42 tests
-        // We assume that those inputs are 'independent', so the number of cases
-        // gets down to 7 + 2 + 3 = 12
-        // We assume that case children : [component, component] takes care of [component]
-        // and we test several conditions in the same test case
-        // which brings down the number of tests to 4
-        var assertAsync = plan(4);
-        // Test case 2
-        // 2 children: [component (sink DOM, a, c), component(sink DOM, a, d)], settings : {...}, no component_def, no local sources
-        //   + sources : DOM, a, b, c, d, e
-        //   + output.sinks = children component sinks merged with default values of the component_def
-        //   + i.e. sinkNames = [DOM, auth, route, queue], DOM is merged with default,
-        //     auth is merged with both, queue, route merged with 1
-        //   + settings are taken into account (have all of the sinks depend on settings differently)
-        var testSettings = { main: 'parent settings' };
-        var childComponent1 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (user) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, settings.main),
-                ]); }, sources.a),
-                a: sources.b.map(function (x) { return 'child1-a-' + x; }),
-                c: sources.c.map(function (x) { return 'child1-c-' + x; }),
-            };
-        };
-        var childComponent2 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (user) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, settings.local),
-                ]); }, sources.a),
-                a: sources.d.map(function (x) { return 'child2-a-' + x; }),
-                d: sources.e.map(function (x) { return 'child2-e-' + x; }),
-            };
-        };
-        var mComponent = m_1.m({
-            makeLocalSettings: function (settings) { return ({ local: 'local setting' }); },
-        }, testSettings, [childComponent1, childComponent2]);
-        var inputs = [
-            { a: { diagram: 'ab|', values: { a: 'a-0', b: 'a-1' } } },
-            { b: { diagram: 'abc|', values: { a: 'b-0', b: 'b-1', c: 'b-2' } } },
-            { c: { diagram: 'abc|', values: { a: 'c-0', b: 'c-1', c: 'c-2' } } },
-            { d: { diagram: 'a-b|', values: { a: 'd-0', b: 'd-2' } } },
-            { e: { diagram: 'a|', values: { a: 'e-0' } } }
-        ];
-        var vNodes = [
-            // 1
-            dom_1.div([
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                ]),
-            ]),
-            // 2
-            dom_1.div([
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                ]),
-            ]),
-            dom_1.div([
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                ]),
-            ]),
-        ];
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        /** @type TestResults */
-        var testResults = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [
-                    "child1-a-b-0",
-                    "child2-a-d-0",
-                    "child1-a-b-1",
-                    "child1-a-b-2",
-                    "child2-a-d-2"
-                ],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-            },
-            c: {
-                outputs: ["child1-c-c-0", "child1-c-c-1", "child1-c-c-2"],
-                successMessage: 'sink c produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            d: {
-                outputs: ["child2-e-e-0"],
-                successMessage: 'sink d produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        var testFn = mComponent;
-        runTestScenario_1.runTestScenario(inputs, testResults, testFn, {
-            timeUnit: 50,
-            waitForFinishDelay: 100
-        });
-        it('main cases - only children components', function (done) {
-            // NOTE
-            // skipping also a number of main cases corresponding to combination of inputs
-            // which are deem to be tested
-            // Inputs : component_def x settings x children
-            // - component_def: 7 classes of values for properties
-            // - settings: two classes of values (null, {...})
-            // - children: three classes of values ([], [component], [component, component])
-            // That makes for 7x2x3 = 42 tests
-            // We assume that those inputs are 'independent', so the number of cases
-            // gets down to 7 + 2 + 3 = 12
-            // We assume that case children : [component, component] takes care of [component]
-            // and we test several conditions in the same test case
-            // which brings down the number of tests to 4
-            var assertAsync = plan(4);
-            // Test case 2
-            // 2 children: [component (sink DOM, a, c), component(sink DOM, a, d)], settings : {...}, no component_def, no local sources
-            //   + sources : DOM, a, b, c, d, e
-            //   + output.sinks = children component sinks merged with default values of the component_def
-            //   + i.e. sinkNames = [DOM, auth, route, queue], DOM is merged with default,
-            //     auth is merged with both, queue, route merged with 1
-            //   + settings are taken into account (have all of the sinks depend on settings differently)
-            var testSettings = { main: 'parent settings' };
-            var childComponent1 = function childComponent1(sources, settings) {
-                return {
-                    DOM: $.empty(),
-                    a: sources.b.map(function (x) { return 'child1-a-' + x; }),
-                    c: sources.c.map(function (x) { return 'child1-c-' + x; }),
-                };
-            };
-            var childComponent2 = function childComponent1(sources, settings) {
-                return {
-                    DOM: $.map(function (user) { return dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, settings.local),
-                    ]); }, sources.a),
-                    a: sources.d.map(function (x) { return 'child2-a-' + x; }),
-                    d: sources.e.map(function (x) { return 'child2-e-' + x; }),
-                };
-            };
-            var mComponent = m_1.m({
-                makeLocalSettings: function (settings) { return ({ local: 'local setting' }); },
-            }, testSettings, [childComponent1, childComponent2]);
-            var inputs = [
-                { a: { diagram: 'ab|', values: { a: 'a-0', b: 'a-1' } } },
-                { b: { diagram: 'abc|', values: { a: 'b-0', b: 'b-1', c: 'b-2' } } },
-                { c: { diagram: 'abc|', values: { a: 'c-0', b: 'c-1', c: 'c-2' } } },
-                { d: { diagram: 'a-b|', values: { a: 'd-0', b: 'd-2' } } },
-                { e: { diagram: 'a|', values: { a: 'e-0' } } }
-            ];
-            var vNodes = [
-                // 1
-                dom_1.div([
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                    ]),
-                ]),
-                // 2
-                dom_1.div([
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                    ]),
-                ]),
-                dom_1.div([
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'bold' } }, testSettings.main),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, 'local setting'),
-                    ]),
-                ]),
-            ];
-            function analyzeTestResults(actual, expected, message) {
-                assert.deepEqual(actual, expected, message);
-                assertAsync(done);
-            }
-            /** @type TestResults */
-            var testResults = {
-                DOM: {
-                    outputs: vNodes,
-                    successMessage: 'sink DOM produces the expected values',
-                    analyzeTestResults: analyzeTestResults,
-                    transformFn: undefined,
-                },
-                a: {
-                    outputs: [
-                        "child1-a-b-0",
-                        "child2-a-d-0",
-                        "child1-a-b-1",
-                        "child1-a-b-2",
-                        "child2-a-d-2"
-                    ],
-                    successMessage: 'sink a produces the expected values',
-                    analyzeTestResults: analyzeTestResults,
-                },
-                c: {
-                    outputs: ["child1-c-c-0", "child1-c-c-1", "child1-c-c-2"],
-                    successMessage: 'sink c produces the expected values',
-                    analyzeTestResults: analyzeTestResults,
-                    transformFn: undefined,
-                },
-                d: {
-                    outputs: ["child2-e-e-0"],
-                    successMessage: 'sink d produces the expected values',
-                    analyzeTestResults: analyzeTestResults,
-                    transformFn: undefined,
-                },
-            };
-            var testFn = mComponent;
-            runTestScenario_1.runTestScenario(inputs, testResults, testFn, {
-                timeUnit: 50,
-                waitForFinishDelay: 100
-            });
-        });
-    });
-    it("main cases - no children", function (done) {
-        var assertAsync = plan(5);
-        // Test input 4
-        // No children, settings : ?, full component def(sink DOM, auth,
-        //   queue, extra source user$) using the extra sources created
-        var vNode = {
-            "children": [
-                {
-                    "children": undefined,
-                    "data": {
-                        "style": {
-                            "fontWeight": "bold"
-                        }
-                    },
-                    "elm": undefined,
-                    "key": undefined,
-                    "sel": "span",
-                    "text": "parent settings"
-                },
-                {
-                    "children": undefined,
-                    "data": undefined,
-                    "elm": undefined,
-                    "key": undefined,
-                    "sel": undefined,
-                    "text": " and this is local settings"
-                },
-                {
-                    "children": undefined,
-                    "data": {
-                        "style": {
-                            "fontWeight": "italic"
-                        }
-                    },
-                    "elm": undefined,
-                    "key": undefined,
-                    "sel": "span",
-                    "text": "local setting"
-                }
-            ],
-            "data": {},
-            "elm": undefined,
-            "key": undefined,
-            "sel": "div#container.two.classes",
-            "text": undefined
-        };
-        var testSettings = { key: 'parent settings' };
-        var mComponent = m_1.m({
-            makeLocalSources: function (sources, settings) {
-                return {
-                    user$: $.of(settings),
-                };
-            },
-            makeLocalSettings: function (settings) { return ({ localSetting: 'local setting' }); },
-            makeOwnSinks: function (sources, settings) { return ({
-                DOM: $.map(function (user) { return dom_1.h('div#container.two.classes', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, user.key),
-                    ' and this is local settings',
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, settings.localSetting),
-                ]); }, sources.user$),
-                auth$: sources.auth$.startWith(PROVIDERS.google),
-            }); },
-            mergeSinks: function (parentSinks, childrenSinks, settings) { return ({
-                DOM: parentSinks.DOM,
-                auth$: parentSinks.auth$,
-                user$: parentSinks.user$,
-                childrenSinks$: $.of(childrenSinks),
-                settings$: $.of(settings),
-            }); },
-            sinksContract: function checkMSinksContracts() {
-                return true;
-            }
-        }, null, []);
-        var inputs = [
-            { auth$: { diagram: '-a|', values: { a: PROVIDERS.facebook } } },
-        ];
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        /** @type TestResults */
-        var testResults = {
-            DOM: {
-                outputs: [vNode],
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            auth$: {
-                outputs: ['google', 'facebook'],
-                successMessage: 'sink auth produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-            },
-            user$: {
-                outputs: [],
-                successMessage: 'sink user produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            childrenSinks$: {
-                outputs: [[]],
-                successMessage: 'sink childrenSinks produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            settings$: {
-                outputs: [{
-                        "key": "parent settings",
-                        "localSetting": "local setting"
-                    }],
-                successMessage: 'sink settings produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        var testFn = function mComponentTestFn(settings) {
-            return function _mComponentTestFn(sources) {
-                return mComponent(sources, settings);
-            };
-        };
-        runTestScenario_1.runTestScenario(inputs, testResults, testFn(testSettings), {
-            timeUnit: 10,
-            waitForFinishDelay: 30
-        });
-    });
-    it('main cases - children components and parent component - default merge', function (done) {
-        var assertAsync = plan(5);
-        // Test case 4
-        // 4 children: [component, component], settings : {...}, full component def (DOM, queue, auth, action)
-        var testSettings = null;
-        var childComponent1 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (a) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-' + a),
-                ]); }, sources.a),
-                a: sources.b.map(function (x) { return 'child1-a-' + x; }),
-                c: sources.c.map(function (x) { return 'child1-c-' + x; }),
-            };
-        };
-        var childComponent2 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (a) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-' + a),
-                ]); }, sources.a),
-                a: sources.d.map(function (x) { return 'child2-a-' + x; }),
-                d: sources.e.map(function (x) { return 'child2-e-' + x; }),
-            };
-        };
-        var mComponent = m_1.m({
-            makeLocalSources: function (sources, settings) {
-                return {
-                    user$: $.of(settings),
-                };
-            },
-            makeOwnSinks: function (sources, settings) { return ({
-                DOM: $.of(dom_1.div('.parent')),
-                auth$: sources.auth$.startWith(PROVIDERS.google),
-            }); },
-            sinksContract: function checkMSinksContracts() {
-                return true;
-            }
-        }, testSettings, [childComponent1, childComponent2]);
-        var vNodes = [
-            dom_1.div('.parent', [
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-a-0'),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-a-0'),
-                ]),
-            ]),
-            dom_1.div('.parent', [
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-a-1'),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-a-0'),
-                ]),
-            ]),
-            dom_1.div('.parent', [
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-a-1'),
-                ]),
-                dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-a-1'),
-                ]),
-            ]),
-        ];
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        var inputs = [
-            { auth$: { diagram: 'a|', values: { a: 'auth-0' } } },
-            { a: { diagram: 'ab|', values: { a: 'a-0', b: 'a-1' } } },
-            { b: { diagram: 'abc|', values: { a: 'b-0', b: 'b-1', c: 'b-2' } } },
-            { c: { diagram: 'abc|', values: { a: 'c-0', b: 'c-1', c: 'c-2' } } },
-            { d: { diagram: 'a-b|', values: { a: 'd-0', b: 'd-2' } } },
-            { e: { diagram: 'a|', values: { a: 'e-0' } } },
-        ];
-        /** @type TestResults */
-        var TestResults = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            auth$: {
-                outputs: ["google", "auth-0"],
-                successMessage: 'sink auth$ produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [
-                    "child1-a-b-0",
-                    "child2-a-d-0",
-                    "child1-a-b-1",
-                    "child1-a-b-2",
-                    "child2-a-d-2"
-                ],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-            },
-            c: {
-                outputs: ["child1-c-c-0", "child1-c-c-1", "child1-c-c-2"],
-                successMessage: 'sink c produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            d: {
-                outputs: ["child2-e-e-0"],
-                successMessage: 'sink d produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        var testFn = mComponent;
-        runTestScenario_1.runTestScenario(inputs, TestResults, testFn, {
-            timeUnit: 5,
-            waitForFinishDelay: 20
-        });
-    });
-    it('main cases - children components and parent component - customized merge', function (done) {
-        var assertAsync = plan(5);
-        var testSettings = null;
-        var childComponent1 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (a) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-' + a),
-                ]); }, sources.a),
-                a: sources.b.map(function (x) { return 'child1-a-' + x; }),
-                c: sources.c.map(function (x) { return 'child1-c-' + x; }),
-            };
-        };
-        var childComponent2 = function childComponent1(sources, settings) {
-            return {
-                DOM: $.map(function (a) { return dom_1.h('div', {}, [
-                    dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-' + a),
-                ]); }, sources.a),
-                a: sources.d.map(function (x) { return 'child2-a-' + x; }),
-                d: sources.e.map(function (x) { return 'child2-e-' + x; }),
-            };
-        };
-        var mComponent = m_1.m({
-            makeLocalSources: function (sources, settings) {
-                return {
-                    user$: $.of(settings),
-                };
-            },
-            makeOwnSinks: function (sources, settings) { return ({
-                DOM: $.of(dom_1.div('.parent')),
-                auth$: sources.auth$.startWith(PROVIDERS.google),
-            }); },
-            mergeSinks: function (parentSinks, childrenSinks, settings) { return ({
-                DOM: parentSinks.DOM,
-                auth$: parentSinks.auth$,
-                user$: parentSinks.user$,
-                childrenSinks$: $.mergeArray(checks_1.projectSinksOn('DOM', childrenSinks)),
-                settings$: $.of(settings),
-            }); },
-            sinksContract: function checkMSinksContracts() {
-                return true;
-            }
-        }, testSettings, [childComponent1, childComponent2]);
-        var inputs = [
-            { auth$: { diagram: 'a|', values: { a: 'auth-0' } } },
-            { a: { diagram: 'ab|', values: { a: 'a-0', b: 'a-1' } } },
-            { b: { diagram: 'abc|', values: { a: 'b-0', b: 'b-1', c: 'b-2' } } },
-            { c: { diagram: 'abc|', values: { a: 'c-0', b: 'c-1', c: 'c-2' } } },
-            { d: { diagram: 'a-b|', values: { a: 'd-0', b: 'd-2' } } },
-            { e: { diagram: 'a|', values: { a: 'e-0' } } }
-        ];
-        var vNodes = [
-            {
-                "children": undefined,
-                "data": {},
-                "elm": undefined,
-                "key": undefined,
-                "sel": "div.parent",
-                "text": undefined
-            }
-        ];
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        /** @type TestResults */
-        var testResults = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            user$: {
-                outputs: [],
-                successMessage: 'sink user produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            childrenSinks$: {
-                outputs: [
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-a-0'),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-a-0'),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'bold' } }, 'child1-a-1'),
-                    ]),
-                    dom_1.h('div', {}, [
-                        dom_1.h('span', { style: { fontWeight: 'italic' } }, 'child2-a-1'),
-                    ]),
-                ],
-                successMessage: 'sink childrenSinks produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            settings$: {
-                outputs: [{}],
-                successMessage: 'sink settings produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            auth$: {
-                outputs: ["google", "auth-0"],
-                successMessage: 'sink auth$ produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            a: {
-                outputs: [
-                    "child1-a-b-0",
-                    "child2-a-d-0",
-                    "child1-a-b-1",
-                    "child1-a-b-2",
-                    "child2-a-d-2"
-                ],
-                successMessage: 'sink a produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-            },
-            c: {
-                outputs: ["child1-c-c-0", "child1-c-c-1", "child1-c-c-2"],
-                successMessage: 'sink c produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            d: {
-                outputs: ["child2-e-e-0"],
-                successMessage: 'sink d produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        var testFn = mComponent;
-        runTestScenario_1.runTestScenario(inputs, testResults, testFn, {
-            timeUnit: 50,
-            waitForFinishDelay: 100
-        });
-    });
-    it('main cases - great children components - default merge - settings', function (done) {
-        var assertAsync = plan(4);
-        var child = {
-            makeOwnSinks: function childMakeOwnSinks(sources, settings) {
-                return {
-                    DOM: sources.DOM1.map(checks_1.makeDivVNode),
-                    childSettings$: sources.DOM1.map(ramda_1.always(settings))
-                };
-            },
-            makeLocalSettings: function makeLocalSettings(settings) {
-                return {
-                    childKey1: '.settingInMOverloaded'
-                };
-            }
-        };
-        var greatChild = {
-            makeOwnSinks: function greatCMakeOwnSinks(sources, settings) {
-                return {
-                    DOM: sources.DOM2.map(checks_1.makeDivVNode),
-                    gCSettings$: sources.DOM2.map(ramda_1.always(settings))
-                };
-            }
-        };
-        var parent = {
-            makeOwnSinks: function parentMakeOwnSinks(sources, settings) {
-                return {
-                    DOM: sources.DOMp.map(checks_1.makeDivVNode),
-                    parentSettings$: sources.DOMp.map(ramda_1.always(settings))
-                };
-            }
-        };
-        var component = m_1.m(parent, {
-            parentKey1: 'MOverloaded',
-            parentKey2: 'settingInM',
-            parentKey3: { parent: 1 }
-        }, [
-            m_1.m(child, {
-                childKey1: '.settingInM',
-                parentKey2: 'parentSettingOverloadByChild',
-                parentKey3: { child: 2 }
-            }, [
-                m_1.m(greatChild, {
-                    greatChildKey: '..settingInM',
-                    parentKey3: { greatChild: 3 }
-                }, [])
-            ])
-        ]);
-        var inputs = [
-            { DOMp: { diagram: '-a---b--' } },
-            { DOM1: { diagram: '-a--b--c--' } },
-            { DOM2: { diagram: '-a-b-c-d-e-' } },
-        ];
-        function makeTestVNode(p, c, gc) {
-            // p: parent, c: child, gc: greatchild
-            return {
-                "children": [
-                    {
-                        "children": [],
-                        "data": {},
-                        "elm": undefined,
-                        "key": undefined,
-                        "sel": undefined,
-                        "text": p
-                    },
-                    {
-                        "children": [
-                            {
-                                "children": [],
-                                "data": {},
-                                "elm": undefined,
-                                "key": undefined,
-                                "sel": undefined,
-                                "text": c
-                            },
-                            {
-                                "children": [
-                                    {
-                                        "children": [],
-                                        "data": {},
-                                        "elm": undefined,
-                                        "key": undefined,
-                                        "sel": undefined,
-                                        "text": gc
-                                    },
-                                ],
-                                "data": {},
-                                "elm": undefined,
-                                "key": undefined,
-                                "sel": "div",
-                                "text": undefined
-                            }
-                        ],
-                        "data": {},
-                        "elm": undefined,
-                        "key": undefined,
-                        "sel": "div",
-                        "text": undefined
-                    }
-                ],
-                "data": {},
-                "elm": undefined,
-                "key": undefined,
-                "sel": "div",
-                "text": undefined
-            };
-        }
-        var vNodes = [
-            makeTestVNode('a', 'a', 'a'),
-            makeTestVNode('a', 'a', 'b'),
-            makeTestVNode('a', 'b', 'b'),
-            makeTestVNode('b', 'b', 'b'),
-            makeTestVNode('b', 'b', 'c'),
-            makeTestVNode('b', 'c', 'c'),
-            makeTestVNode('b', 'c', 'd'),
-            makeTestVNode('b', 'c', 'e'),
-        ];
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        /** @type TestResults */
-        var testResults = {
-            DOM: {
-                outputs: vNodes,
-                successMessage: 'sink DOM produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            parentSettings$: {
-                outputs: [
-                    {
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "settingInM",
-                        "parentKey3": {
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "settingInM",
-                        "parentKey3": {
-                            "parent": 1
-                        }
-                    }
-                ],
-                successMessage: 'Component settings are the resulting merge of :\n' +
-                    '1. settings passed through `m` helper, \n' +
-                    '2. settings passed when calling the component which is a result of the `m` helper,\n' +
-                    '3. settings resulting from `makeLocalSettings`\n' +
-                    'in decreasing precedency order.',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            childSettings$: {
-                outputs: [
-                    {
-                        "childKey1": ".settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "parent": 1
-                        }
-                    }
-                ],
-                successMessage: 'Children settings are computed like any component ' +
-                    'settings, but also merge with the settings from the parent.\n' +
-                    ' In case of conflict with the parent, the children settings ' +
-                    'have higher precedency.',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            gCSettings$: {
-                outputs: [
-                    {
-                        "childKey1": ".settingInM",
-                        "greatChildKey": "..settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "greatChild": 3,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "greatChildKey": "..settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "greatChild": 3,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "greatChildKey": "..settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "greatChild": 3,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "greatChildKey": "..settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "greatChild": 3,
-                            "parent": 1
-                        }
-                    },
-                    {
-                        "childKey1": ".settingInM",
-                        "greatChildKey": "..settingInM",
-                        "parentKey1": "MOverloaded",
-                        "parentKey2": "parentSettingOverloadByChild",
-                        "parentKey3": {
-                            "child": 2,
-                            "greatChild": 3,
-                            "parent": 1
-                        }
-                    }
-                ],
-                successMessage: 'Each child has its own setting object, ' +
-                    'i.e settings are passed down the component tree by value, ' +
-                    'not by reference',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-        };
-        var testFn = function (sources, settings) {
-            return component(sources, { parentKey1: 'settingOut' });
-        };
-        runTestScenario_1.runTestScenario(inputs, testResults, testFn, {
-            timeUnit: 50,
-            waitForFinishDelay: 100
-        });
-    });
-});
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-var assert = __webpack_require__(12);
-var runTestScenario_1 = __webpack_require__(16);
-var $ = __webpack_require__(4);
-function plan(n) {
-    return function _done(done) {
-        if (--n === 0) {
-            done();
-        }
-    };
-}
-describe("Testings runTestScenario helper", function () {
-    it('runTestScenario(testSources, testCase, testFn, settings) :', function (done) {
-        var assertAsync = plan(3);
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        var inputs = [
-            { a: { diagram: 'xy|', values: { x: 'a-0', y: 'a-1' } } },
-            { b: { diagram: 'xyz|', values: { x: 'b-0', y: 'b-1', z: 'b-2' } } }
-        ];
-        /** @type TestResults */
-        var testCase = {
-            m: {
-                outputs: ['m-a-0', 'm-b-0', 'm-a-1', 'm-b-1', 'm-b-2'],
-                successMessage: 'sink m produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            n: {
-                outputs: ['t-n-a-0', 't-n-a-1'],
-                successMessage: 'sink n produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: function (x) { return 't-' + x; },
-            },
-            o: {
-                outputs: ['o-b-0', 'o-b-1', 'o-b-2'],
-                successMessage: 'sink o produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            }
-        };
-        var testFn = function (sources) { return ({
-            m: $.merge(sources.a, sources.b).map((function (x) { return 'm-' + x; })),
-            n: sources.a.map(function (x) { return 'n-' + x; }),
-            o: sources.b.delay(3).map(function (x) { return 'o-' + x; })
-        }); };
-        runTestScenario_1.runTestScenario(inputs, testCase, testFn, {
-            timeUnit: 10,
-            waitForFinishDelay: 30
-        });
-    });
-    it('runTestScenario(inputs, testCase, testFn, settings) : Main case', function (done) {
-        var assertAsync = plan(3);
-        function analyzeTestResults(actual, expected, message) {
-            assert.deepEqual(actual, expected, message);
-            assertAsync(done);
-        }
-        var inputs = [
-            { a: { diagram: 'xy|', values: { x: 'a-0', y: 'a-1' } } },
-            { b: { diagram: 'xyz|', values: { x: 'b-0', y: 'b-1', z: 'b-2' } } },
-        ];
-        /** @type TestResults */
-        var expected = {
-            m: {
-                outputs: ['m-a-0', 'm-b-0', 'm-a-1', 'm-b-1', 'm-b-2'],
-                successMessage: 'sink m produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            },
-            n: {
-                outputs: ['t-n-a-0', 't-n-a-1'],
-                successMessage: 'sink n produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: function (x) { return 't-' + x; },
-            },
-            o: {
-                outputs: ['o-b-0', 'o-b-1', 'o-b-2'],
-                successMessage: 'sink o produces the expected values',
-                analyzeTestResults: analyzeTestResults,
-                transformFn: undefined,
-            }
-        };
-        var testFn = function (sources) { return ({
-            m: $.merge(sources.a, sources.b).map((function (x) { return 'm-' + x; })),
-            n: sources.a.map(function (x) { return 'n-' + x; }),
-            o: sources.b.delay(3).map(function (x) { return 'o-' + x; })
-        }); };
-        runTestScenario_1.runTestScenario(inputs, expected, testFn, {
-            tickDuration: 10,
-            waitForFinishDelay: 30
-        });
-    });
-});
-
-
-/***/ },
-/* 69 */
 /***/ function(module, exports) {
 
 /*!
@@ -17638,7 +17053,7 @@ module.exports = (function split(undef) {
 
 
 /***/ },
-/* 70 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -17649,8 +17064,8 @@ module.exports = (function split(undef) {
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var isArguments = __webpack_require__(37),
-    isArray = __webpack_require__(38);
+var isArguments = __webpack_require__(35),
+    isArray = __webpack_require__(36);
 
 /**
  * Checks if `value` is object-like.
@@ -17775,7 +17190,7 @@ module.exports = baseFlatten;
 
 
 /***/ },
-/* 71 */
+/* 68 */
 /***/ function(module, exports) {
 
 /**
@@ -17829,7 +17244,7 @@ module.exports = baseFor;
 
 
 /***/ },
-/* 72 */
+/* 69 */
 /***/ function(module, exports) {
 
 /**
@@ -17892,7 +17307,7 @@ module.exports = baseIndexOf;
 
 
 /***/ },
-/* 73 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -17903,9 +17318,9 @@ module.exports = baseIndexOf;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseIndexOf = __webpack_require__(72),
-    cacheIndexOf = __webpack_require__(75),
-    createCache = __webpack_require__(76);
+var baseIndexOf = __webpack_require__(69),
+    cacheIndexOf = __webpack_require__(72),
+    createCache = __webpack_require__(73);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -17966,7 +17381,7 @@ module.exports = baseUniq;
 
 
 /***/ },
-/* 74 */
+/* 71 */
 /***/ function(module, exports) {
 
 /**
@@ -18037,7 +17452,7 @@ module.exports = bindCallback;
 
 
 /***/ },
-/* 75 */
+/* 72 */
 /***/ function(module, exports) {
 
 /**
@@ -18096,7 +17511,7 @@ module.exports = cacheIndexOf;
 
 
 /***/ },
-/* 76 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -18107,7 +17522,7 @@ module.exports = cacheIndexOf;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var getNative = __webpack_require__(34);
+var getNative = __webpack_require__(32);
 
 /** Native method references. */
 var Set = getNative(global, 'Set');
@@ -18191,10 +17606,10 @@ SetCache.prototype.push = cachePush;
 
 module.exports = createCache;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 77 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -18205,7 +17620,7 @@ module.exports = createCache;
  * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var root = __webpack_require__(17);
+var root = __webpack_require__(14);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -18383,7 +17798,7 @@ module.exports = deburr;
 
 
 /***/ },
-/* 78 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -18394,8 +17809,8 @@ module.exports = deburr;
  * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var deburr = __webpack_require__(77),
-    words = __webpack_require__(82);
+var deburr = __webpack_require__(74),
+    words = __webpack_require__(79);
 
 /**
  * A specialized version of `_.reduce` for arrays without support for
@@ -18461,7 +17876,7 @@ module.exports = kebabCase;
 
 
 /***/ },
-/* 79 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -18472,9 +17887,9 @@ module.exports = kebabCase;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var getNative = __webpack_require__(34),
-    isArguments = __webpack_require__(37),
-    isArray = __webpack_require__(38);
+var getNative = __webpack_require__(32),
+    isArguments = __webpack_require__(35),
+    isArray = __webpack_require__(36);
 
 /** Used to detect unsigned integer values. */
 var reIsUint = /^\d+$/;
@@ -18703,7 +18118,7 @@ module.exports = keys;
 
 
 /***/ },
-/* 80 */
+/* 77 */
 /***/ function(module, exports) {
 
 /**
@@ -18776,7 +18191,7 @@ module.exports = restParam;
 
 
 /***/ },
-/* 81 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -18787,9 +18202,9 @@ module.exports = restParam;
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseFlatten = __webpack_require__(70),
-    baseUniq = __webpack_require__(73),
-    restParam = __webpack_require__(80);
+var baseFlatten = __webpack_require__(67),
+    baseUniq = __webpack_require__(70),
+    restParam = __webpack_require__(77);
 
 /**
  * Creates an array of unique values, in order, of the provided arrays using
@@ -18817,7 +18232,7 @@ module.exports = union;
 
 
 /***/ },
-/* 82 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 /**
@@ -18828,7 +18243,7 @@ module.exports = union;
  * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var root = __webpack_require__(17);
+var root = __webpack_require__(14);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -19021,7 +18436,7 @@ module.exports = words;
 
 
 /***/ },
-/* 83 */
+/* 80 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -19063,7 +18478,7 @@ LastSink.prototype.end = function end (t, x) {
 };
 
 /***/ },
-/* 84 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19073,8 +18488,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var SubjectSource_1 = __webpack_require__(19);
-var util_1 = __webpack_require__(40);
+var SubjectSource_1 = __webpack_require__(16);
+var util_1 = __webpack_require__(38);
 var HoldSubjectSource = (function (_super) {
     __extends(HoldSubjectSource, _super);
     function HoldSubjectSource(bufferSize) {
@@ -19105,7 +18520,7 @@ exports.HoldSubjectSource = HoldSubjectSource;
 //# sourceMappingURL=HoldSubjectSource.js.map
 
 /***/ },
-/* 85 */
+/* 82 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -19129,7 +18544,7 @@ exports.SubjectDisposable = SubjectDisposable;
 //# sourceMappingURL=SubjectDisposable.js.map
 
 /***/ },
-/* 86 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19140,7 +18555,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = ClockTimer;
 
-var _task = __webpack_require__(41);
+var _task = __webpack_require__(39);
 
 /*global setTimeout, clearTimeout*/
 
@@ -19182,7 +18597,7 @@ function runAsap(f) {
 }
 
 /***/ },
-/* 87 */
+/* 84 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -19218,7 +18633,7 @@ ScheduledTask.prototype.dispose = function () {
 };
 
 /***/ },
-/* 88 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19229,11 +18644,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = Scheduler;
 
-var _ScheduledTask = __webpack_require__(87);
+var _ScheduledTask = __webpack_require__(84);
 
 var _ScheduledTask2 = _interopRequireDefault(_ScheduledTask);
 
-var _task = __webpack_require__(41);
+var _task = __webpack_require__(39);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19333,7 +18748,7 @@ Scheduler.prototype._runReadyTasks = function (now) {
 };
 
 /***/ },
-/* 89 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19480,7 +18895,7 @@ function newTimeslot(t, events) {
 }
 
 /***/ },
-/* 90 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19490,15 +18905,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Scheduler = __webpack_require__(88);
+var _Scheduler = __webpack_require__(85);
 
 var _Scheduler2 = _interopRequireDefault(_Scheduler);
 
-var _ClockTimer = __webpack_require__(86);
+var _ClockTimer = __webpack_require__(83);
 
 var _ClockTimer2 = _interopRequireDefault(_ClockTimer);
 
-var _Timeline = __webpack_require__(89);
+var _Timeline = __webpack_require__(86);
 
 var _Timeline2 = _interopRequireDefault(_Timeline);
 
@@ -19511,7 +18926,7 @@ var defaultScheduler = new _Scheduler2.default(new _ClockTimer2.default(), new _
 exports.default = defaultScheduler;
 
 /***/ },
-/* 91 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19593,7 +19008,7 @@ LinkedList.prototype.dispose = function () {
 
 
 /***/ },
-/* 92 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19608,7 +19023,7 @@ function isPromise (p) {
 
 
 /***/ },
-/* 93 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19678,13 +19093,13 @@ function copy (src, srcIndex, dst, dstIndex, len) {
 
 
 /***/ },
-/* 94 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__runSource__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__runSource__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__disposable_dispose__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scheduler_PropagateTask__ = __webpack_require__(5);
 /* harmony export (immutable) */ exports["a"] = scan;
@@ -19781,11 +19196,11 @@ ReduceSink.prototype.end = function (t) {
 
 
 /***/ },
-/* 95 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__combine__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__combine__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__most_prelude__);
 /* harmony export (immutable) */ exports["a"] = ap;
@@ -19812,12 +19227,12 @@ function ap (fs, xs) {
 
 
 /***/ },
-/* 96 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__source_core__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__continueWith__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__continueWith__ = __webpack_require__(41);
 /* harmony export (immutable) */ exports["b"] = cons;
 /* harmony export (immutable) */ exports["a"] = concat;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -19850,11 +19265,11 @@ function concat (left, right) {
 
 
 /***/ },
-/* 97 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mergeConcurrently__ = __webpack_require__(17);
 /* harmony export (immutable) */ exports["a"] = concatMap;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -19879,7 +19294,7 @@ function concatMap (f, stream) {
 
 
 /***/ },
-/* 98 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19942,14 +19357,14 @@ DelaySink.prototype.error = __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__["a" /* defa
 
 
 /***/ },
-/* 99 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_SafeSink__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_SafeSink__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__source_tryEvent__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__source_tryEvent__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scheduler_PropagateTask__ = __webpack_require__(5);
 /* harmony export (immutable) */ exports["a"] = recoverWith;
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return flatMapError; });
@@ -20048,13 +19463,13 @@ RecoverWithSink.prototype.dispose = function () {
 
 
 /***/ },
-/* 100 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fusion_Filter__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fusion_Filter__ = __webpack_require__(43);
 /* harmony export (immutable) */ exports["b"] = filter;
 /* harmony export (immutable) */ exports["a"] = skipRepeats;
 /* harmony export (immutable) */ exports["c"] = skipRepeatsWith;
@@ -20131,7 +19546,7 @@ function same (a, b) {
 
 
 /***/ },
-/* 101 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20139,7 +19554,7 @@ function same (a, b) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scheduler_PropagateTask__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fusion_Map__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fusion_Map__ = __webpack_require__(19);
 /* harmony export (immutable) */ exports["b"] = throttle;
 /* harmony export (immutable) */ exports["a"] = debounce;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -20267,7 +19682,7 @@ DebounceSink.prototype._clearTimer = function () {
 
 
 /***/ },
-/* 102 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20326,13 +19741,13 @@ LoopSink.prototype.end = function (t) {
 
 
 /***/ },
-/* 103 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sink_IndexSink__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sink_IndexSink__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__source_core__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__disposable_dispose__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__most_prelude__ = __webpack_require__(3);
@@ -20435,12 +19850,12 @@ MergeSink.prototype.end = function (t, indexedValue) {
 
 
 /***/ },
-/* 104 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__runSource__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__runSource__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(10);
 /* harmony export (immutable) */ exports["b"] = observe;
 /* harmony export (immutable) */ exports["a"] = drain;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -20474,12 +19889,12 @@ function drain (stream) {
 
 
 /***/ },
-/* 105 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fatalError__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fatalError__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
 /* harmony export (immutable) */ exports["a"] = fromPromise;
 /* harmony export (immutable) */ exports["b"] = awaitPromises;
@@ -20573,7 +19988,7 @@ AwaitSink.prototype._end = function (x) {
 
 
 /***/ },
-/* 106 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20582,7 +19997,7 @@ AwaitSink.prototype._end = function (x) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__most_prelude__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoke__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoke__ = __webpack_require__(20);
 /* harmony export (immutable) */ exports["c"] = sample;
 /* harmony export (immutable) */ exports["a"] = sampleWith;
 /* harmony export (immutable) */ exports["b"] = sampleArray;
@@ -20696,7 +20111,7 @@ function getValue (hold) {
 
 
 /***/ },
-/* 107 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20704,7 +20119,7 @@ function getValue (hold) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fusion_Map__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__fusion_Map__ = __webpack_require__(19);
 /* harmony export (immutable) */ exports["c"] = take;
 /* harmony export (immutable) */ exports["b"] = skip;
 /* harmony export (immutable) */ exports["a"] = slice;
@@ -20886,7 +20301,7 @@ SkipWhileSink.prototype.event = function (t, x) {
 
 
 /***/ },
-/* 108 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21007,7 +20422,7 @@ Segment.prototype._dispose = function (t) {
 
 
 /***/ },
-/* 109 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21022,14 +20437,14 @@ function thru (f, stream) {
 
 
 /***/ },
-/* 110 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sink_Pipe__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__combinator_flatMap__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__combinator_flatMap__ = __webpack_require__(42);
 /* harmony export (immutable) */ exports["a"] = takeUntil;
 /* harmony export (immutable) */ exports["b"] = skipUntil;
 /* harmony export (immutable) */ exports["c"] = during;
@@ -21148,7 +20563,7 @@ function noop () {}
 
 
 /***/ },
-/* 111 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21187,7 +20602,7 @@ TimestampSink.prototype.event = function (t, x) {
 
 
 /***/ },
-/* 112 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21317,20 +20732,20 @@ LegacyTxAdapter.prototype.getResult = function (x) {
 
 
 /***/ },
-/* 113 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__source_core__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sink_Pipe__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sink_IndexSink__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__disposable_dispose__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__most_prelude__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoke__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Queue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__invoke__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Queue__ = __webpack_require__(90);
 /* harmony export (immutable) */ exports["a"] = zip;
 /* harmony export (immutable) */ exports["b"] = zipArray;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -21466,7 +20881,7 @@ function ready (buffers) {
 
 
 /***/ },
-/* 114 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21492,7 +20907,7 @@ Disposable.prototype.dispose = function () {
 
 
 /***/ },
-/* 115 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21540,7 +20955,7 @@ SettableDisposable.prototype.dispose = function () {
 
 
 /***/ },
-/* 116 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21579,7 +20994,7 @@ FilterMapSink.prototype.error = __WEBPACK_IMPORTED_MODULE_0__sink_Pipe__["a" /* 
 
 
 /***/ },
-/* 117 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21637,11 +21052,11 @@ function unsubscribe (subscription) {
 
 
 /***/ },
-/* 118 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_symbol_observable__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_symbol_observable__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_symbol_observable__);
 /* harmony export (immutable) */ exports["a"] = getObservable;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -21668,13 +21083,13 @@ function getObservable (o) { // eslint-disable-line complexity
 
 
 /***/ },
-/* 119 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scheduler_defaultScheduler__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scheduler_defaultScheduler__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fatalError__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fatalError__ = __webpack_require__(18);
 /* harmony export (immutable) */ exports["a"] = subscribe;
 /* unused harmony export SubscribeObserver */
 /* unused harmony export Subscription */
@@ -21743,11 +21158,11 @@ function doDispose (fatal, subscriber, complete, error, disposable, x) {
 
 
 /***/ },
-/* 120 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__task__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__task__ = __webpack_require__(23);
 /* harmony export (immutable) */ exports["a"] = ClockTimer;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -21794,7 +21209,7 @@ function runAsap (f) {
 
 
 /***/ },
-/* 121 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21826,12 +21241,12 @@ ScheduledTask.prototype.dispose = function () {
 
 
 /***/ },
-/* 122 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ScheduledTask__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__task__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ScheduledTask__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__task__ = __webpack_require__(23);
 /* harmony export (immutable) */ exports["a"] = Scheduler;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -21932,7 +21347,7 @@ Scheduler.prototype._runReadyTasks = function (now) {
 
 
 /***/ },
-/* 123 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22067,11 +21482,11 @@ function newTimeslot (t, events) {
 
 
 /***/ },
-/* 124 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__task__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__task__ = __webpack_require__(23);
 /* harmony export (immutable) */ exports["a"] = DeferredSink;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -22168,7 +21583,7 @@ ErrorTask.prototype.error = function (e) {
 
 
 /***/ },
-/* 125 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22209,13 +21624,13 @@ SafeSink.prototype.disable = function () {
 
 
 /***/ },
-/* 126 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_DeferredSink__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sink_DeferredSink__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tryEvent__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tryEvent__ = __webpack_require__(22);
 /* harmony export (immutable) */ exports["a"] = EventEmitterSource;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -22263,12 +21678,12 @@ function disposeEventEmitter (info) {
 
 
 /***/ },
-/* 127 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__disposable_dispose__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tryEvent__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tryEvent__ = __webpack_require__(22);
 /* harmony export (immutable) */ exports["a"] = EventTargetSource;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -22301,16 +21716,16 @@ function disposeEventTarget (info) {
 
 
 /***/ },
-/* 128 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fromArray__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iterable__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fromIterable__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__observable_getObservable__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__observable_fromObservable__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fromArray__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__iterable__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fromIterable__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__observable_getObservable__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__observable_fromObservable__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__most_prelude___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__most_prelude__);
 /* harmony export (immutable) */ exports["a"] = from;
@@ -22349,7 +21764,7 @@ function from (a) { // eslint-disable-line complexity
 
 
 /***/ },
-/* 129 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22389,13 +21804,13 @@ function runProducer (t, array, sink) {
 
 
 /***/ },
-/* 130 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EventTargetSource__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EventEmitterSource__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EventTargetSource__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EventEmitterSource__ = __webpack_require__(123);
 /* harmony export (immutable) */ exports["a"] = fromEvent;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
 /** @author Brian Cavalier */
@@ -22434,12 +21849,12 @@ function fromEvent (event, source, capture) { // eslint-disable-line complexity
 
 
 /***/ },
-/* 131 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Stream__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iterable__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__iterable__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scheduler_PropagateTask__ = __webpack_require__(5);
 /* harmony export (immutable) */ exports["a"] = fromIterable;
 /** @license MIT License (c) copyright 2010-2016 original author or authors */
@@ -22486,7 +21901,7 @@ function runProducer (t, producer, sink) {
 
 
 /***/ },
-/* 132 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22565,7 +21980,7 @@ Generate.prototype.dispose = function () {
 
 
 /***/ },
-/* 133 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22640,7 +22055,7 @@ function continueIterate (iterate, x) {
 
 
 /***/ },
-/* 134 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22675,7 +22090,7 @@ Periodic.prototype.run = function (sink, scheduler) {
 
 
 /***/ },
-/* 135 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22755,7 +22170,7 @@ function continueUnfold (unfold, tuple) {
 
 
 /***/ },
-/* 136 */
+/* 133 */
 /***/ function(module, exports) {
 
 // shim for using process in browser
@@ -22941,7 +22356,7 @@ process.umask = function() { return 0; };
 
 
 /***/ },
-/* 137 */
+/* 134 */
 /***/ function(module, exports) {
 
 
@@ -22968,22 +22383,22 @@ module.exports = {
 };
 
 /***/ },
-/* 138 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 
-var init = __webpack_require__(139);
+var init = __webpack_require__(136);
 
-module.exports = init([__webpack_require__(140), __webpack_require__(141)]);
+module.exports = init([__webpack_require__(137), __webpack_require__(138)]);
 
 /***/ },
-/* 139 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 
-var parseSelector = __webpack_require__(49);
-var VOID_ELEMENTS = __webpack_require__(142);
-var CONTAINER_ELEMENTS = __webpack_require__(137);
+var parseSelector = __webpack_require__(47);
+var VOID_ELEMENTS = __webpack_require__(139);
+var CONTAINER_ELEMENTS = __webpack_require__(134);
 
 module.exports = function init(modules) {
   function parse(data) {
@@ -23041,15 +22456,15 @@ module.exports = function init(modules) {
 };
 
 /***/ },
-/* 140 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 
-var forOwn = __webpack_require__(36);
-var escape = __webpack_require__(35);
-var union = __webpack_require__(81);
+var forOwn = __webpack_require__(34);
+var escape = __webpack_require__(33);
+var union = __webpack_require__(78);
 
-var parseSelector = __webpack_require__(49);
+var parseSelector = __webpack_require__(47);
 
 // data.attrs, data.props, data.class
 
@@ -23110,14 +22525,14 @@ function setAttributes(values, target) {
 }
 
 /***/ },
-/* 141 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var forOwn = __webpack_require__(36);
-var escape = __webpack_require__(35);
-var kebabCase = __webpack_require__(78);
+var forOwn = __webpack_require__(34);
+var escape = __webpack_require__(33);
+var kebabCase = __webpack_require__(75);
 
 // data.style
 
@@ -23141,7 +22556,7 @@ module.exports = function style(vnode) {
 };
 
 /***/ },
-/* 142 */
+/* 139 */
 /***/ function(module, exports) {
 
 
@@ -23166,7 +22581,7 @@ module.exports = {
 };
 
 /***/ },
-/* 143 */
+/* 140 */
 /***/ function(module, exports) {
 
 function createElement(tagName){
@@ -23226,7 +22641,7 @@ module.exports = {
 
 
 /***/ },
-/* 144 */
+/* 141 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -23236,7 +22651,7 @@ module.exports = {
 
 
 /***/ },
-/* 145 */
+/* 142 */
 /***/ function(module, exports) {
 
 var booleanAttrs = ["allowfullscreen", "async", "autofocus", "autoplay", "checked", "compact", "controls", "declare",
@@ -23285,7 +22700,7 @@ module.exports = {create: updateAttrs, update: updateAttrs};
 
 
 /***/ },
-/* 146 */
+/* 143 */
 /***/ function(module, exports) {
 
 function updateClass(oldVnode, vnode) {
@@ -23314,7 +22729,7 @@ module.exports = {create: updateClass, update: updateClass};
 
 
 /***/ },
-/* 147 */
+/* 144 */
 /***/ function(module, exports) {
 
 function updateDataset(oldVnode, vnode) {
@@ -23343,7 +22758,7 @@ module.exports = {create: updateDataset, update: updateDataset}
 
 
 /***/ },
-/* 148 */
+/* 145 */
 /***/ function(module, exports) {
 
 function invokeHandler(handler, vnode, event) {
@@ -23450,7 +22865,7 @@ module.exports = {
 
 
 /***/ },
-/* 149 */
+/* 146 */
 /***/ function(module, exports) {
 
 var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
@@ -23608,7 +23023,7 @@ module.exports = {pre: pre, create: create, destroy: destroy, post: post};
 
 
 /***/ },
-/* 150 */
+/* 147 */
 /***/ function(module, exports) {
 
 function updateProps(oldVnode, vnode) {
@@ -23637,7 +23052,7 @@ module.exports = {create: updateProps, update: updateProps};
 
 
 /***/ },
-/* 151 */
+/* 148 */
 /***/ function(module, exports) {
 
 var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
@@ -23712,7 +23127,7 @@ module.exports = {create: updateStyle, update: updateStyle, destroy: applyDestro
 
 
 /***/ },
-/* 152 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23720,9 +23135,9 @@ module.exports = {create: updateStyle, update: updateStyle, destroy: applyDestro
 /* global require, module, document, Node */
 'use strict';
 
-var VNode = __webpack_require__(153);
-var is = __webpack_require__(144);
-var domApi = __webpack_require__(143);
+var VNode = __webpack_require__(150);
+var is = __webpack_require__(141);
+var domApi = __webpack_require__(140);
 
 function isUndef(s) { return s === undefined; }
 function isDef(s) { return s !== undefined; }
@@ -23979,7 +23394,7 @@ module.exports = {init: init};
 
 
 /***/ },
-/* 153 */
+/* 150 */
 /***/ function(module, exports) {
 
 module.exports = function(sel, data, children, text, elm) {
@@ -23990,7 +23405,7 @@ module.exports = function(sel, data, children, text, elm) {
 
 
 /***/ },
-/* 154 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24000,7 +23415,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _ponyfill = __webpack_require__(155);
+var _ponyfill = __webpack_require__(152);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -24016,10 +23431,10 @@ if (typeof global !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 155 */
+/* 152 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -24048,7 +23463,7 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ },
-/* 156 */
+/* 153 */
 /***/ function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -24077,7 +23492,7 @@ if (typeof Object.create === 'function') {
 
 
 /***/ },
-/* 157 */
+/* 154 */
 /***/ function(module, exports) {
 
 module.exports = function isBuffer(arg) {
@@ -24088,7 +23503,7 @@ module.exports = function isBuffer(arg) {
 }
 
 /***/ },
-/* 158 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -24616,7 +24031,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
-exports.isBuffer = __webpack_require__(157);
+exports.isBuffer = __webpack_require__(154);
 
 function objectToString(o) {
   return Object.prototype.toString.call(o);
@@ -24660,7 +24075,7 @@ exports.log = function() {
  *     prototype.
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
-exports.inherits = __webpack_require__(156);
+exports.inherits = __webpack_require__(153);
 
 exports._extend = function(origin, add) {
   // Don't do anything if add isn't an object
@@ -24678,10 +24093,10 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(136)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(133)))
 
 /***/ },
-/* 159 */
+/* 156 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -24707,10 +24122,10 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 160 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(51);
+module.exports = __webpack_require__(49);
 
 
 /***/ }

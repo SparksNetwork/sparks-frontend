@@ -247,11 +247,15 @@ function runTestScenario(inputs, expected, testFn, settings) {
     // makes use of `assert` and can lead to program interruption
     /** @type {Object.<string, Observable<Array<Output>>>} */
     var resultAnalysis = ramda_1.mapObjIndexed(analyzeTestResults(expected), sinksResults);
+    var allResults = removeNullsFromArray(ramda_1.values(resultAnalysis));
     // This takes care of actually starting the producers
     // which generate the execution of the test assertions
-    $.mergeArray(removeNullsFromArray(ramda_1.values(resultAnalysis)))
+    $.mergeArray(allResults)
         .subscribe({
-        next: rxlog('Test completed for sink:'),
+        //      next: rxlog('Test completed for sink:'),
+        next: function (x) {
+            console.warn('Test completed for sink:', x);
+        },
         error: rxlog('An error occurred while executing test!'),
         complete: rxlog('Tests completed!')
     });

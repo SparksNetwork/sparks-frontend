@@ -80,8 +80,9 @@ describe('Testing Switch component', function () {
             });
         }, /contract/, 'Throws if the switch combinator is called with no' +
             ' child component to switch to');
+        done();
     });
-    it('main cases - 1 child - switch on source', function (done) {
+    it('main cases - 1 child - switch on source - one case', function (done) {
         var assertAsync = plan(3);
         var childComponent1 = function childComponent1(sources, settings) {
             return {
@@ -188,7 +189,7 @@ describe('Testing Switch component', function () {
             waitForFinishDelay: 30
         });
     });
-    it.only('main cases - 2 children - switch on condition', function (done) {
+    it('main cases - 2 children - switch on condition - two cases', function (done) {
         var assertAsync = plan(3);
         var childComponent1 = function childComponent1(sources, settings) {
             return {
@@ -239,6 +240,8 @@ describe('Testing Switch component', function () {
                     //diagr: '-a-b-c-d-e-f-abb-c-d',
                     //userA: 'abc-b-ac--ab---c',
                     diagram: '-t-f-tttttff-t', values: {
+                        //          diagram: 'f-------------', values: {// TODO : works if there is a
+                        // second f!!!
                         t: true,
                         f: false,
                     }
@@ -303,7 +306,7 @@ describe('Testing Switch component', function () {
             },
         };
         function analyzeTestResults(actual, expected, message) {
-            debugger;
+            // debugger
             assert.deepEqual(actual, expected, message);
             assertAsync(done);
         }

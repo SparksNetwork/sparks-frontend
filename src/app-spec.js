@@ -1,6 +1,6 @@
 "use strict";
-require('./util/specs/checks-spec');
-require('./util/specs/m-spec');
-require('./util/specs/runTestScenario-spec');
-// import './util/specs/Router-spec';
-require('./util/specs/Switch-spec');
+//import './util/specs/checks-spec';
+//import './util/specs/m-spec';
+//import './util/specs/runTestScenario-spec';
+require('./util/specs/Router-spec');
+//import './util/specs/Switch-spec';

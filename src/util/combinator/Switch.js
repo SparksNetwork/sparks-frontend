@@ -21,6 +21,7 @@ var m_1 = require('./m');
 var ramda_1 = require('ramda');
 var $ = require('most');
 var sample_1 = require('@most/sample');
+//import hold from '@most/hold'
 // CONFIG
 var DEFAULT_SWITCH_COMPONENT_SOURCE_NAME = 'switch$'; // NOT USED
 var defaultEqFn = function swichCptDefaultEqFn(a, b) {
@@ -111,14 +112,8 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                     // Casuistic 2. is taken care of thereafter
                     prefix$ = sinkName === 'DOM' ?
                         // Case : DOM sink
-                        // actually any sink which is merged with a `combineLatest`
-                        // but here by default only DOM sinks are merged that way
-                        // Because the `combineLatest` blocks till all its sources
-                        // have started, and that behaviour interacts badly with
-                        // route changes desired behavior, we forcibly emits a `null`
-                        // value at the beginning of every sink.
-                        // !! Don't start with null in case of switching IN, only
-                        // when switching OUT
+                        // Here DOM sinks are merged with a simple 'merge' so same
+                        // behaviour as other sinks
                         $.empty() :
                         // Case : Non-DOM sink
                         // Non-DOM sinks are merged with a simple `merge`, there
@@ -126,7 +121,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
                         $.empty();
                     preCached$ = cachedSinks[sinkName]
                         .tap(console.log.bind(console, 'sink ' + sinkName + ':'));
-                    // TODO BRC : add the finally operator
+                    // TODO BRC : MOAT -> add the finally operator
                     //            .finally(_ => {
                     //              console.log(`sink ${sinkName} terminating due to route change`)
                     //            })
@@ -224,19 +219,34 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
  *
  */
 var SwitchCase = {
+    // https://jsfiddle.net/tk6ec5th/ mergeArray obviously works
     mergeSinks: {
         DOM: function mergeDomSwitchedSinks(ownSink, childrenDOMSink, settings) {
             var allSinks = ramda_1.flatten([ownSink, childrenDOMSink]);
             var allDOMSinks = checks_1.removeNullsFromArray(allSinks);
-            // debugger
-            return $.mergeArray(allDOMSinks)
+            var mergedSinks = $.mergeArray(allDOMSinks)
                 .tap(console.warn.bind(console, 'Switch.specs' +
                 ' > mergeDomSwitchedSinks > merge'))
-                .filter(Boolean);
-            // Most values will be null
-            // All non-null values correspond to a match
-            // In the degenerated case, all values will be null (no match
-            // at all)
+                .filter(function (x) { return x; });
+            // Note : For some obscure reasons, when moving from rxjs to most,
+            // when not subscribing here directly, no subscription ever happens...
+            // NO IDEA WHAT IS GOING ON but wasted 2 days already figuring it out
+            // so going with this hack
+            //      const observer = {
+            //          next:function(x){
+            //            console.warn('SwitchCase  > mergeDomSwitchedSinks > fake' +
+            //              ' observer', x)
+            //          },
+            //        error: function(x){
+            //          console.warn('SwitchCase  > mergeDomSwitchedSinks > fake' +
+            //            ' observer : error!', x)
+            //          },
+            //        complete: function(){console.warn('SWITCH CASE complete')}
+            //      }
+            //
+            //      mergedSinks.subscribe(observer)
+            //
+            return mergedSinks;
         }
     }
 };

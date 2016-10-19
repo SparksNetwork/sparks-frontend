@@ -24,25 +24,131 @@ import {
   isNil,
   omit,
   path as pathR,
-  pluck,
+  prop,
+  equals,
 } from 'ramda'
 import * as $ from 'most'
 import {m} from './m'
 // TODO : pass routeMatcher to typescript module format
-import {routeMatcher} from '../routeMatcher'
+// import {routeMatcher} from '../routeMatcher'
 import hold from '@most/hold'
 import {sample} from '@most/sample'
 
 // Configuration
 const routeSourceName = 'route$'
-const nullVNode = {
-  "children": undefined,
-  "data": undefined,
-  "elm": undefined,
-  "key": undefined,
-  "sel": undefined,
-  "text": undefined
-}
+// const nullVNode = {
+//   "children": undefined,
+//   "data": undefined,
+//   "elm": undefined,
+//   "key": undefined,
+//   "sel": undefined,
+//   "text": undefined
+// }
+
+///////////
+// Route matcher
+// TODO BRC: pass to typescript
+/* JavaScript Route Matcher - v0.1.0 - 10/19/2011
+ * http://github.com/cowboy/javascript-route-matcher
+ * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
+const routeMatcher = (function () {
+  var exports: any = {};
+  // Characters to be escaped with \. RegExp borrowed from the Backbone router
+  // but escaped (note: unnecessarily) to keep JSHint from complaining.
+  var reEscape = /[\-\[\]{}()+?.,\\\^$|#\s]/g;
+  // Match named :param or *splat placeholders.
+  var reParam = /([:*])(\w+)/g;
+  // Test to see if a value matches the corresponding rule.
+  function validateRule(rule, value) {
+    // For a given rule, get the first letter of the string name of its
+    // constructor function. "R" -> RegExp, "F" -> Function (these shouldn't
+    // conflict with any other types one might specify). Note: instead of
+    // getting .toString from a new object {} or Object.prototype, I'm assuming
+    // that exports will always be an object, and using its .toString method.
+    // Bad idea? Let me know by filing an issue
+    var type = exports.toString.call(rule).charAt(8);
+    // If regexp, match. If function, invoke. Otherwise, compare. Note that ==
+    // is used because type coercion is needed, as `value` will always be a
+    // string, but `rule` might not.
+    return type === "R" ? rule.test(value) : type === "F" ? rule(value) : rule == value;
+  }
+
+  // Pass in a route string (or RegExp) plus an optional map of rules, and get
+  // back an object with .parse and .stringify methods.
+  exports.routeMatcher = function (route, rules) {
+    // Object to be returned. The public API.
+    var self: any = {};
+    // Matched param or splat names, in order
+    var names: any = [];
+    // Route matching RegExp.
+    var re = route;
+    // Build route RegExp from passed string.
+    if (typeof route === "string") {
+      // Escape special chars.
+      re = re.replace(reEscape, "\\$&");
+      // Replace any :param or *splat with the appropriate capture group.
+      re = re.replace(reParam, function (_, mode, name) {
+        names.push(name);
+        // :param should capture until the next / or EOL, while *splat should
+        // capture until the next :param, *splat, or EOL.
+        return mode === ":" ? "([^/]*)" : "(.*)";
+      });
+      // Add ^/$ anchors and create the actual RegExp.
+      re = new RegExp("^" + re + "$");
+      // Match the passed url against the route, returning an object of params
+      // and values.
+      self.parse = function (url) {
+        var i = 0;
+        var param, value;
+        var params = {};
+        var matches = url.match(re);
+        // If no matches, return null.
+        if (!matches) {
+          return null;
+        }
+        // Add all matched :param / *splat values into the params object.
+        while (i < names.length) {
+          param = names[i++];
+          value = matches[i];
+          // If a rule exists for thie param and it doesn't validate, return null.
+          if (rules && param in rules && !validateRule(rules[param], value)) {
+            return null;
+          }
+          params[param] = value;
+        }
+        return params;
+      };
+      // Build path by inserting the given params into the route.
+      self.stringify = function (params) {
+        var param, re;
+        var result = route;
+        // Insert each passed param into the route string. Note that this loop
+        // doesn't check .hasOwnProperty because this script doesn't support
+        // modifications to Object.prototype.
+        for (param in params) {
+          re = new RegExp("[:*]" + param + "\\b");
+          result = result.replace(re, params[param]);
+        }
+        // Missing params should be replaced with empty string.
+        return result.replace(reParam, "");
+      };
+    }
+    else {
+      // RegExp route was passed. This is super-simple.
+      self.parse = function (url) {
+        var matches = url.match(re);
+        return matches && {captures: matches.slice(1)};
+      };
+      // There's no meaningful way to stringify based on a RegExp route, so
+      // return empty string.
+      self.stringify = function () {
+        return "";
+      };
+    }
+    return self;
+  };
+  return exports.routeMatcher;
+})()
 
 ///////////
 // Helpers
@@ -141,25 +247,26 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     // connect to it AFTER the `route$` has emitted its value...
     // In short, while time is abstracted out in the case of a static
     // graph, dynamic stream graphs come with synchronization pains
-    // TODO BRC: use hold for now, but check that edge cases not covered
+    // TODO BRC: use hold for now, but check those edge cases not covered
     // by hold do not play too badly (hold does not replay a completed source)
   )//.shareReplay(1)
 
   let changedRouteEvents$ = matchedRoute$
-    .map(pluck('match'))
+    .map(prop('match'))
+    .tap(console.warn.bind(console, 'matchedRoute$'))
     .skipRepeatsWith(function eq(x, y) {
-      console.log('distinctUntilChanged on : ', x ? omit(['routeRemainder'], x) : null)
-      const _x = x ? omit(['routeRemainder'], y) : null
+      const _x = x ? omit(['routeRemainder'], x) : null
       const _y = y ? omit(['routeRemainder'], y) : null
-      return _x === _y
-    }) // check eq. to distinctUntilChanged with selector
+      return equals(_x, _y)
+    })
     .tap(console.warn.bind(console, 'changedRouteEvents$'))
     .multicast() // TODO BRC : check the level of equivalency to share
   // Note : must be shared, used twice here
 
-  const cachedSinks$ = changedRouteEvents$
+  const cachedSinks$ = hold(changedRouteEvents$
     .map(function (params) {
       let cachedSinks
+      console.error('changedRouteEvents$ > params', params)
 
       if (params != null) {
         console.info('computing children components sinks', params)
@@ -170,12 +277,13 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
               console.groupEnd()
 
               return {
-                route$: matchedRoute$
+                route$: hold(matchedRoute$
                   .map(pathR(['match', 'routeRemainder']))
-                  .tap(console.warn.bind(console, settings.trace + ' :' +
-                    ' changedRouteEvents$' +
-                    ' : routeRemainder: '))
-                  .multicast(),
+//                  .multicast()
+                  .tap(function (x) {
+                    console.warn(settings.trace + ' :' +
+                      ' changedRouteEvents$ : routeRemainder: ', x)
+                  })),
               }
             },
           }, {
@@ -191,7 +299,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
       return cachedSinks
     })
-    .multicast()
+  )//.multicast()
 
   function makeRoutedSinkFromCache(sinkName) {
     return function makeRoutedSinkFromCache(params, cachedSinks) {
@@ -254,6 +362,9 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
   function makeRoutedSink(sinkName) {
     return {
+      // !!!!!!!!!!!!! changed the sample implementation to start the source
+      // first, then then sampler, this allow cachedSinks$ values to be read
+      // before the sampler is subscribed to
       [sinkName]: sample(
         makeRoutedSinkFromCache(sinkName),
         changedRouteEvents$,

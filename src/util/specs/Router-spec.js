@@ -228,7 +228,7 @@ describe('Testing Router component', function () {
                         .tap(console.warn.bind(console, 'routeLog : child component -' +
                         ' route$'))
                         .map(function (x) {
-                        return 'Child component 1 - routeLog - ' + user; //+ '-' + counter
+                        return 'Child component 1 - routeLog - ' + user;
                     }),
                     userAction1$: sources.userAction$.map(function (x) { return 'child component - user' +
                         ' action - ' + x; }).startWith('child component - starting')
@@ -286,7 +286,8 @@ describe('Testing Router component', function () {
                     //userA: 'a---b-ac--aba--c',
                     //diagr: '-a--b--c--d--e--f--a--b--c--d-'}},
                     //diagr: '-a-b-c-d-e-f-a-b-c-d-e-f-'}},
-                    diagram: '-a--b--c--def--g-h-i-j-k', values: {
+                    //          diagram: '-a--b--c--def--g-h-i-j-k', values: {
+                    diagram: '-a----------------------', values: {
                         a: 'bruno/1',
                         b: 'ted/1',
                         c: 'ted',

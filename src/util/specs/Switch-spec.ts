@@ -30,11 +30,11 @@ import * as assert from 'assert'
 import * as $ from 'most'
 import {SwitchCase, Case} from '../combinator/Switch'
 import {m} from '../combinator/m'
-import { h, div } from '@motorcycle/dom'
-import { runTestScenario } from '../test/runTestScenario'
+import {h, div} from '@motorcycle/dom'
+import {runTestScenario} from '../test/runTestScenario'
 
-function plan (n) {
-  return function _done (done) {
+function plan(n) {
+  return function _done(done) {
     if (--n === 0) {
       done()
     }
@@ -88,9 +88,10 @@ describe('Testing Switch component', () => {
       })
     }, /contract/, 'Throws if the switch combinator is called with no' +
       ' child component to switch to')
+    done()
   })
 
-  it('main cases - 1 child - switch on source', (done) => {
+  it('main cases - 1 child - switch on source - one case', (done) => {
     const assertAsync = plan(3)
 
     const childComponent1 = function childComponent1(sources, settings) {
@@ -115,7 +116,7 @@ describe('Testing Switch component', () => {
     const mComponent = m(SwitchCase, {
       on: 'switch$',
       sinkNames: ['DOM', 'a', 'b'],
-      eqFn: (a,b) => a === b
+      eqFn: (a, b) => a === b
     }, [
       m(Case, {caseWhen: true}, [childComponent1, childComponent2])
     ])
@@ -207,7 +208,7 @@ describe('Testing Switch component', () => {
     })
   })
 
-  it.only('main cases - 2 children - switch on condition', (done) => {
+  it('main cases - 2 children - switch on condition - two cases', (done) => {
     const assertAsync = plan(3)
 
     const childComponent1 = function childComponent1(sources, settings) {
@@ -239,7 +240,7 @@ describe('Testing Switch component', () => {
     }
 
     const mComponent = m(SwitchCase, {
-      on: (sources,settings) => sources.sweatch$,
+      on: (sources, settings) => sources.sweatch$,
       sinkNames: ['DOM', 'a', 'b']
     }, [
       m(Case, {caseWhen: true}, [childComponent1, childComponent2]),
@@ -260,7 +261,9 @@ describe('Testing Switch component', () => {
           //diagr: '-a--b--c--d--e--f--a',
           //diagr: '-a-b-c-d-e-f-abb-c-d',
           //userA: 'abc-b-ac--ab---c',
-          diagram: '-t-f-tttttff-t', values: {
+        diagram: '-t-f-tttttff-t', values: {
+//          diagram: 'f-------------', values: {// TODO : works if there is a
+            // second f!!!
             t: true,
             f: false,
           }
@@ -329,7 +332,7 @@ describe('Testing Switch component', () => {
     }
 
     function analyzeTestResults(actual, expected, message) {
-      debugger
+      // debugger
       assert.deepEqual(actual, expected, message)
       assertAsync(done)
     }
