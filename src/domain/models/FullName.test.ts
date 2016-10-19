@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import { FullName } from './FullName';
 
 describe(`domain/models`, () => {
-  describe.only(`FullName`, () => {
+  describe(`FullName`, () => {
     it(`should be a function`, () => {
       assert(typeof FullName === `function`);
     });
