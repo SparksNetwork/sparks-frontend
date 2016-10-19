@@ -2,7 +2,7 @@
 import * as assert from 'assert';
 import { isEmailAddressValid } from './isEmailAddressValid';
 
-describe(`domain/models/isEmailAddressValid`, () => {
+describe(`domain/services/isEmailAddressValid`, () => {
   it(`should be a function`, () => {
     assert.strictEqual(typeof isEmailAddressValid, `function`);
   });
