@@ -46,7 +46,7 @@ export class FullName {
   }
 
   private setLastName(lastName: string) {
-    guarLastName(lastName);
+    guardLastName(lastName);
     this._lastName = lastName;
   }
 }
@@ -62,7 +62,7 @@ function guardFirstName(firstName: string) {
     FAILURE_ARGUMENT_FIRST_NAME_LENGTH_RANGE);
 }
 
-function guarLastName(lastName: string) {
+function guardLastName(lastName: string) {
   assertStringMatchesPattern(lastName,
     RE_LAST_NAME,
     FAILURE_ARGUMENT_LAST_NAME_FORMAT);
