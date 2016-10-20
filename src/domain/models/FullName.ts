@@ -75,14 +75,6 @@ function guarLastName(lastName: string) {
 
 // @TODO Move assertion functions below to a core repo/directory.
 
-function assertStringIsNotEmpty(string: string, message = ``): boolean {
-  if (string.length === 0) {
-    throw new Error(message);
-  }
-
-  return true;
-}
-
 function assertStringLengthIsWithinRange(
     string: string,
     minimum: number = 0,
