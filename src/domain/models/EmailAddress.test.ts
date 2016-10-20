@@ -40,9 +40,18 @@ describe(`domain/models/EmailAddress`, () => {
     assert.throws(() => new EmailAddress(`someone@somewhere_com`));
     assert.throws(() => new EmailAddress(`.`));
   });
+
+  it(`should return false when calling isMissing()`, () => {
+    const sut = sutFixture();
+    assert.ok(!sut.isMissing());
+  });
 });
 
+function sutFixture(address: string = `dummy@email.address`) {
+  return new EmailAddress(address);
+}
+
 function assertAddress(address: string) {
-  const sut = new EmailAddress(address);
+  const sut = sutFixture(address);
   assert.strictEqual(sut.address(), address);
 }

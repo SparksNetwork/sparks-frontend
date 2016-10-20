@@ -1,6 +1,7 @@
+import { Missing } from '../../common/Missing';
 import { isEmailAddressValid } from '../services/isEmailAddressValid';
 
-export class EmailAddress {
+export class EmailAddress implements Missing {
   private _address: string;
 
   constructor(address: string) {
@@ -9,6 +10,10 @@ export class EmailAddress {
 
   address(): string {
     return this._address;
+  }
+
+  isMissing(): boolean {
+    return false;
   }
 
   private setAddress(address: string) {
