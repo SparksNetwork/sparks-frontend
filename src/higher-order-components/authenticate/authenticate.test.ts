@@ -30,7 +30,7 @@ const defaultSources = {
   authentication$: defaultAuthenticationOuptut$
 };
 
-describe('authenticate', () => {
+describe('higher-order-components/authenticate', () => {
   it('should be a function', () => {
     assert(typeof authenticate === 'function');
   });
@@ -258,28 +258,32 @@ describe('authenticate', () => {
 
           describe('User', () => {
             it('should have data retrieved from firebase', (done) => {
+              const firstUser = {
+                displayName: 'First User',
+                email: 'firstuser@sparks.network',
+                photoURL: 'http://somewhere.com/image',
+                uid: '42'
+              } as firebase.User;
+
+              const secondUser = {
+                displayName: 'Second User',
+                email: 'seconduser@sparks.network',
+                photoURL: 'http://somewhere.com/image2',
+                uid: '43'
+              } as firebase.User;
+
               const authenticationInputs = [
                 {
                   error: null,
                   userCredential: {
-                    user: {
-                      displayName: 'User',
-                      email: 'user@sparks.network',
-                      photoURL: 'http://somewhere.com/image',
-                      uid: '42'
-                    } as firebase.User,
+                    user: firstUser,
                     credential: null
                   }
                 },
                 {
                   error: null,
                   userCredential: {
-                    user: {
-                      displayName: 'User2',
-                      email: 'user2@sparks.network',
-                      photoURL: 'http://somewhere.com/image2',
-                      uid: '43'
-                    } as firebase.User,
+                    user: secondUser,
                     credential: null
                   }
                 }
@@ -295,17 +299,17 @@ describe('authenticate', () => {
 
               authenticate((sources) => {
                 sources.user$.take(1).observe((user: User) => {
-                  assert(user.fullName() === 'User', 'User is incorrect');
-                  assert(user.email() === 'user@sparks.network', 'email is incorrect');
-                  assert(user.portraitUrl() === 'http://somewhere.com/image', 'portraitUrl is incorrect');
-                  assert(user.id() === '42', 'id is incorrect');
+                  assert.strictEqual(user.displayName(), firstUser.displayName);
+                  assert.strictEqual(user.emailAddress().address(), firstUser.email);
+                  assert.strictEqual(user.portraitUrl().value(), firstUser.photoURL);
+                  assert.strictEqual(user.uid(), firstUser.uid);
                 });
 
                 sources.user$.skip(1).observe((user: User) => {
-                  assert(user.fullName() === 'User2', 'User is incorrect');
-                  assert(user.email() === 'user2@sparks.network', 'email is incorrect');
-                  assert(user.portraitUrl() === 'http://somewhere.com/image2', 'portraitUrl is incorrect');
-                  assert(user.id() === '43', 'id is incorrect');
+                  assert.strictEqual(user.displayName(), secondUser.displayName);
+                  assert.strictEqual(user.emailAddress().address(), secondUser.email);
+                  assert.strictEqual(user.portraitUrl().value(), secondUser.photoURL);
+                  assert.strictEqual(user.uid(), secondUser.uid);
                   done();
                 });
 
