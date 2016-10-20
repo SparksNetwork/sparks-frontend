@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/index.d.ts" />
+/// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { mockDOMSource, DOMSource } from '@motorcycle/dom';
 import { just } from 'most';
@@ -8,7 +8,7 @@ import {
   GOOGLE,
   FACEBOOK,
   EMAIL_AND_PASSWORD
-} from '../../higher-order-components/authenticate';
+} from '../../../higher-order-components/authenticate';
 
 function mockAsDomSource(mockConfig): DOMSource {
   return mockDOMSource(mockConfig) as any as DOMSource;

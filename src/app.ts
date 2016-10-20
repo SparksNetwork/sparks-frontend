@@ -11,9 +11,9 @@ import { preventDefault } from './drivers/prevent-default';
 import switchPath from 'switch-path';
 import { just } from 'most';
 
-import { makePolyglotModule } from './modules/polyglot';
+import { makePolyglotModule } from './ui/modules/polyglot';
 import { translations }from './translations';
-import { main } from './pages/main';
+import { main } from './main';
 
 const modules = [
   makePolyglotModule(translations),

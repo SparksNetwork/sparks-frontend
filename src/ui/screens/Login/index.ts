@@ -1,8 +1,8 @@
 import { Stream } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
-import { Sources } from '../../components/types';
+import { Sources } from '../../../components/types';
 
-import { authenticate, AuthenticationSinks } from '../../higher-order-components/authenticate';
+import { authenticate, AuthenticationSinks } from '../../../higher-order-components/authenticate';
 import isolate from '@cycle/isolate';
 import { createAuthenticationMethod$ } from './createAuthenticationMethod$';
 import { view } from './view';

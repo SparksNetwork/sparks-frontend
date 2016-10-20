@@ -1,8 +1,8 @@
-/// <reference path="../../../typings/index.d.ts" />
+/// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { just } from 'most';
-import { AuthenticationMethod } from '../../higher-order-components/authenticate';
+import { AuthenticationMethod } from '../../../higher-order-components/authenticate';
 import { Login, LoginSinks } from './index';
 
 // This function exists because @motorcycle/dom v3.0.0 does not yet

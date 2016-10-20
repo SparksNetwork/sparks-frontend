@@ -3,7 +3,7 @@
 *.local.*
 node_modules/
 report/
-screens/
+.screens
 dist/bundle.js
 dist/bundle.js.map
 dist/styles.css

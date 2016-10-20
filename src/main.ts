@@ -1,15 +1,15 @@
-import { FirebaseSource, QueueSink, QueueSource } from '../drivers/cyclic-fire';
-import { AuthenticationInput, AuthenticationOutput } from '../drivers/firebase-authentication';
+import { FirebaseSource, QueueSink, QueueSource } from './drivers/cyclic-fire';
+import { AuthenticationInput, AuthenticationOutput } from './drivers/firebase-authentication';
 import { Stream, just } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
-import { Sources, Sinks } from '../components/types';
+import { Sources, Sinks } from './components/types';
 import { merge } from 'ramda';
 
-import Landing from './Landing';
-import Login from './Login';
+import Landing from './ui/screens/Landing';
+import Login from './ui/screens/Login';
 
-import ComponentRouter from '../components/ComponentRouter';
+import ComponentRouter from './components/ComponentRouter';
 
 const routes = {
   '/': Landing,

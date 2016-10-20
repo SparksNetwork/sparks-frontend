@@ -1,6 +1,6 @@
 import { div, span, section, form, fieldset, label, a, p, input, h1, button, VNode } from '@motorcycle/dom';
 
-import {cssClasses} from '../../utils/classes';
+import {cssClasses} from '../../helpers/cssClasses';
 const classes = cssClasses({});
 
 const backgroundImages = [

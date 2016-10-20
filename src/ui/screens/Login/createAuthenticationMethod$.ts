@@ -2,7 +2,7 @@ import { Stream, merge, combine } from 'most';
 import { DOMSource } from '@motorcycle/dom';
 import { AuthenticationRequest, EmailAndPasswordAuthenticationRequest, model } from './model';
 
-import {cssClasses} from '../../utils/classes';
+import {cssClasses} from '../../helpers/cssClasses';
 const classes = cssClasses({});
 
 export function createAuthenticationMethod$(domSource: DOMSource):

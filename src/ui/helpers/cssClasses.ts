@@ -1,5 +1,5 @@
 import { assoc } from 'ramda';
-const styleguide = require('../styleguide.scss');
+const styleguide = require('../../styleguide.scss');
 
 class CSSClasses {
   private styles;
