@@ -12,7 +12,12 @@ import { Stream } from 'most';
 import { merge } from 'ramda';
 import { model } from './model';
 import { AuthenticationMethod } from './types';
-import { User } from './User';
+import { User } from '../../domain/models/User';
+import { WebUrl } from '../../domain/models/WebUrl';
+import { instance as missingWebUrl } from '../../domain/models/MissingWebUrl';
+import { EmailAddress } from '../../domain/models/EmailAddress';
+import { instance as missingEmailAddress }
+  from '../../domain/models/MissingEmailAddress';
 import hold from '@most/hold';
 
 export * from './types';
@@ -37,8 +42,7 @@ export function authenticate(
     const user$ = sources.authentication$
       .map(authenticationOutput => authenticationOutput.userCredential.user as firebase.User)
       .filter(Boolean)
-      .map(firebaseUser => new User(firebaseUser.uid,
-        firebaseUser.displayName || '', firebaseUser.photoURL || '', firebaseUser.email || ''))
+      .map(makeUserFromFirebaseUser)
       .thru(hold);
 
     const authenticationSources = merge(sources, {
@@ -54,4 +58,18 @@ export function authenticate(
 
     return merge(sinks, { authentication$ });
   };
+}
+
+function makeUserFromFirebaseUser(firebaseUser: firebase.User): User {
+  const { uid, displayName, photoURL: portraitUrl, email: emailAddress } =
+    firebaseUser;
+
+  return new User(
+    uid,
+    displayName || '',
+    portraitUrl ? new WebUrl(portraitUrl) : missingWebUrl(),
+    emailAddress
+      ? new EmailAddress(emailAddress)
+      : missingEmailAddress()
+  );
 }
