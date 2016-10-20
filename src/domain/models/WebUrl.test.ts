@@ -105,11 +105,6 @@ describe(`domain/models/WebUrl`, () => {
     const sut = sutFixture();
     assert.ok(!sut.isMissing());
   });
-
-  it(`should return MissingWebUrl instance when calling missingWebUrl()`, () => {
-    const missingWebUrl = WebUrl.missingWebUrl();
-    assert.strictEqual((missingWebUrl.constructor as any).name, `MissingWebUrl`)
-  })
 });
 
 function sutFixture(url: string = `http://www.foo.bar`) {
