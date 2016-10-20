@@ -6,7 +6,7 @@ function containsText (element, text) {
   return '//' + element + '[text()="' + text + '"]'
 }
 
-describe('Logging in with Google', () => {
+describe.skip('Logging in with Google', () => {
   it('should redirect to google login when clicking google button', (browser) => {
     browser
       .url(URL)

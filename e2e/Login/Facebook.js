@@ -6,7 +6,7 @@ function containsText (element, text) {
   return '//' + element + '[text()="' + text + '"]'
 }
 
-describe('Logging in with Facebook', () => {
+describe.skip('Logging in with Facebook', () => {
   it('should redirect to facebook login when clicking facebook button', (browser) => {
     browser.useXpath()
       .url(URL)
