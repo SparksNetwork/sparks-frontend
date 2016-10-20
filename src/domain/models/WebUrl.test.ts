@@ -100,9 +100,23 @@ describe(`domain/models/WebUrl`, () => {
     assert.throws(() => new WebUrl(`http://localhost:8080/`));
     assert.throws(() => new WebUrl(`http://localhost:8080/endpoint`));
   });
+
+  it(`should return false when calling isMissing()`, () => {
+    const sut = sutFixture();
+    assert.ok(!sut.isMissing());
+  });
+
+  it(`should return MissingWebUrl instance when calling missingWebUrl()`, () => {
+    const missingWebUrl = WebUrl.missingWebUrl();
+    assert.strictEqual((missingWebUrl.constructor as any).name, `MissingWebUrl`)
+  })
 });
 
+function sutFixture(url: string = `http://www.foo.bar`) {
+  return new WebUrl(url);
+}
+
 function assertUrl(url: string) {
-  const sut = new WebUrl(url);
+  const sut = sutFixture(url);
   assert.strictEqual(sut.value(), url);
 }

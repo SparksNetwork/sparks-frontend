@@ -1,6 +1,8 @@
-import { isWebUrlValid } from '../services/isWebUrlValid'
+import { Missing } from '../../common/Missing';
+import { isWebUrlValid } from '../services/isWebUrlValid';
+import { instance as missingWebUrlInstance } from './MissingWebUrl';
 
-export class WebUrl {
+export class WebUrl implements Missing {
   private _value: string;
 
   constructor(value: string) {
@@ -9,6 +11,14 @@ export class WebUrl {
 
   value(): string {
     return this._value;
+  }
+
+  isMissing(): boolean {
+    return false;
+  }
+
+  static missingWebUrl(): WebUrl {
+    return missingWebUrlInstance();
   }
 
   private setValue(value: string) {
