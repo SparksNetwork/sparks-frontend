@@ -12,11 +12,10 @@ import switchPath from 'switch-path';
 import { just } from 'most';
 
 import { makePolyglotModule } from './ui/modules/polyglot';
-import { translations }from './translations';
 import { main } from './main';
 
 const modules = [
-  makePolyglotModule(translations),
+  makePolyglotModule(require('./translations')),
   PropsModule,
   StyleModule,
   ClassModule,

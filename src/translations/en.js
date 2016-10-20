@@ -17,6 +17,6 @@ const enUS = {
     'google': 'Login with Google',
     'facebook': 'Login with Facebook'
   }
-};
+}
 
-export default enUS;
+module.exports = enUS
