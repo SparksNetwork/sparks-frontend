@@ -1,13 +1,13 @@
 import { EmailAddress } from './EmailAddress';
 
-export class User {
+export class UserCandidate {
   private _emailAddress: EmailAddress;
 
   private _password: string;
 
   constructor(emailAddress: EmailAddress, password: string) {
-    this.setEmailAddress(emailAddress);
-    this.setPassword(password);
+    this._emailAddress = emailAddress;
+    this._password = password;
   }
 
   emailAddress(): EmailAddress {
@@ -16,13 +16,5 @@ export class User {
 
   password(): string {
     return this._password;
-  }
-
-  private setEmailAddress(emailAddress) {
-    this._emailAddress = emailAddress;
-  }
-
-  private setPassword(password) {
-    this._password = password;
   }
 }

@@ -2,43 +2,60 @@
 import * as assert from 'assert';
 import { registerUserService } from './registerUserService';
 import { RegisterUserCommand } from '../commands/RegisterUserCommand';
+import { UserId } from '../../domain/model/identity/UserId';
+import { UserCandidate } from '../../domain/model/identity/UserCandidate';
+import { User } from '../../domain/model/identity/User';
+import { MissingUser } from '../../domain/model/identity/MissingUser'
+import { addToUserRepository } from '../../domain/model/identity/addToUserRepository'
 
-interface User {
-  emailAddress(): EmailAddress;
-  password(): string;
-}
+const userRepositoryForTest: Map<UserId, User> =
+  new Map<UserId, User>();
 
-interface EmailAddress {
-  address(): string;
-}
+const userIdForTest = new UserId(`T12345`);
 
-const userRepositoryForTest: Map<string, User> =
-  new Map<string, User>();
+const userForTest = new User();
 
-function addToUserRepositoryForTest(user: User) {
-  userRepositoryForTest.set(user.emailAddress().address(), user);
-}
+const missingUserForTest = new MissingUser();
+
+const addToUserRepositoryForTest: addToUserRepository =
+  function addToUserRepository(userCandidate: UserCandidate): User {
+    if (!!userRepositoryForTest.get(userIdForTest)) {
+      return missingUserForTest;
+    }
+
+    userRepositoryForTest.set(userIdForTest, userForTest);
+
+    return userIdForTest;
+  };
 
 const commandForTest = new RegisterUserCommand(
   `mailbox@email.address`,
   `secret pass phrase`
 )
 
-describe(`identityAndAccess/application/identityServices/registerUserService`, () => {
+describe.only(`identityAndAccess/application/identityServices/registerUserService`, () => {
+  beforeEach(() => {
+    userRepositoryForTest.clear();
+  });
+
   it(`should be a function`, () => {
     assert.strictEqual(typeof registerUserService, `function`);
   });
 
-  it(`should add User to User Repository`, () => {
-    registerUserService(commandForTest, addToUserRepositoryForTest);
-    assert.strictEqual(
-      userRepositoryForTest.get(commandForTest.emailAddress())
-        .emailAddress().address(),
-      commandForTest.emailAddress()
-    );
-    assert.strictEqual(
-      userRepositoryForTest.get(commandForTest.emailAddress()).password(),
-      commandForTest.password()
+  it(`should return a User`, () => {
+    const user: User =
+      registerUserService(commandForTest, addToUserRepositoryForTest);
+
+    assert.ok(user);
+  });
+
+  it(`should throw error if User wasn’t registered`, () => {
+    assert.throws(
+      () => {
+        registerUserService(commandForTest, addToUserRepositoryForTest);
+        registerUserService(commandForTest, addToUserRepositoryForTest);
+      },
+      /User/
     );
   });
 });
