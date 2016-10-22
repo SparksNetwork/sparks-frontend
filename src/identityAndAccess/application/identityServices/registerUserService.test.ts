@@ -33,7 +33,7 @@ const commandForTest = new RegisterUserCommand(
   `secret pass phrase`
 )
 
-describe.only(`identityAndAccess/application/identityServices/registerUserService`, () => {
+describe(`identityAndAccess/application/identityServices/registerUserService`, () => {
   beforeEach(() => {
     userRepositoryForTest.clear();
   });
