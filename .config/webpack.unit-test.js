@@ -27,7 +27,7 @@ const plugins = [
     'FIREBASE_MESSAGING_SENDER_ID'
   ]),
   new webpack.DefinePlugin({ Sparks }),
-  new ExtractTextPlugin({filename: 'styles.css', allChunks: true })
+  new ExtractTextPlugin({ filename: 'styles.css', allChunks: true })
 ]
 
 const TSLoader = {

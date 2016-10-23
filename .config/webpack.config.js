@@ -37,11 +37,12 @@ const basePlugins = [
     'FIREBASE_MESSAGING_SENDER_ID'
   ]),
   new webpack.DefinePlugin({ Sparks }),
-  new ExtractTextPlugin({filename: 'styles.css', allChunks: true })
+  new ExtractTextPlugin({filename: 'styles.css', allChunks: true }),
 ]
 
 const prodPlugins = [
-  new webpack.optimize.UglifyJsPlugin({ minimize: true })
+  new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+  new webpack.NoErrorsPlugin()
 ]
 
 const devPlugins = []
@@ -135,7 +136,7 @@ module.exports = {
     alias: {
       assets: assetsPath
       // You can not get in-editor typings with aliases
-      // component: srcPath + '/component', 
+      // component: srcPath + '/component',
       // page: srcPath + '/page',
       // driver: srcPath + '/driver',
       // module: srcPath + '/module',
