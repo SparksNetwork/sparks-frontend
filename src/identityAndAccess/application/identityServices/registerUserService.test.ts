@@ -5,7 +5,7 @@ import { UserId, User, UserRepository, UserCandidate }
 import { RegisterUserCommand } from '../commands/';
 import { registerUserService } from './';
 
-describe.only(`register user service`, () => {
+describe(`register user service`, () => {
   const usersForTest: Map<UserId, User> = new Map<UserId, User>();
 
   class FakeUserRepository
