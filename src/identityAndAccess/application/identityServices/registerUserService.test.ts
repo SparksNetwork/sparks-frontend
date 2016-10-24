@@ -5,19 +5,19 @@ import { UserId, User, UserRepository, UserCandidate }
 import { RegisterUserCommand } from '../commands/';
 import { registerUserService } from './';
 
-describe(`register user service`, () => {
+describe.only(`register user service`, () => {
   const usersForTest: Map<UserId, User> = new Map<UserId, User>();
 
   class FakeUserRepository
       implements UserRepository {
 
-    add(candidate: UserCandidate): User {
+    add(candidate: UserCandidate): Promise<User> {
       const userId: UserId = new UserId(`T12345`);
       const user: User = new User(userId, candidate.emailAddress());
 
       usersForTest.set(userId, user);
 
-      return user;
+      return Promise.resolve(user);
     }
   }
 
@@ -26,9 +26,13 @@ describe(`register user service`, () => {
     new RegisterUserCommand(`dummy@email.address`, `secret`);
 
   it(`adds user to repository`, () => {
-    const user: User = registerUserService(commandForTest, userRepositoryForTest);
-    const userId: UserId = user.userId();
+    const userPromise: Promise<User> = registerUserService(commandForTest, userRepositoryForTest);
 
-    assert.strictEqual(user, usersForTest.get(userId));
+    userPromise
+      .then((user: User) => {
+        const userId: UserId = user.userId();
+
+        assert.strictEqual(user, usersForTest.get(userId));
+      });
   });
 });

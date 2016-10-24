@@ -4,13 +4,13 @@ import { UserRepository, User, UserCandidate, EmailAddress }
 
 export function registerUserService(
     command: RegisterUserCommand,
-    userRepository: UserRepository): User {
+    userRepository: UserRepository): Promise<User> {
 
-  const user: User = userRepository.add(
+  const userPromise: Promise<User> = userRepository.add(
     new UserCandidate(
       new EmailAddress(command.emailAddress()),
       command.password()
     ));
 
-  return user;
+  return userPromise;
 }
