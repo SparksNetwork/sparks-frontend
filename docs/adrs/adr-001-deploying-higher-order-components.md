@@ -43,7 +43,7 @@ Where HOCs should live in the code base came down to these choices:
 ## Decision
 
 We will place HOCs under their own designated directory
-`higherOrderComponents/higherOrderComponent`.
+`higher-order-components/higherOrderComponent`.
 
 ## Consequences
 

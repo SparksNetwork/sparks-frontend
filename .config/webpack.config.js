@@ -37,21 +37,19 @@ const basePlugins = [
     'FIREBASE_MESSAGING_SENDER_ID'
   ]),
   new webpack.DefinePlugin({ Sparks }),
-  new ExtractTextPlugin({filename: 'styles.css', allChunks: true })
+  new ExtractTextPlugin({filename: 'styles.css', allChunks: true }),
 ]
 
 const prodPlugins = [
-  new webpack.optimize.UglifyJsPlugin({ minimize: true })
+  new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+  new webpack.NoErrorsPlugin()
 ]
 
-const devPlugins = [
-]
+const devPlugins = []
 
-
-const plugins = process.env.BUILD_ENV === DEV 
+const plugins = process.env.BUILD_ENV === DEV
   ? basePlugins.concat(devPlugins)
   : basePlugins.concat(prodPlugins)
-
 
 const TSLoader = {
   test: /\.ts$/,
@@ -65,7 +63,7 @@ const SASSLoader = {
     fallbackLoader: 'style-loader',
     loader: 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' +
     '!postcss-loader' +
-    '!sass-loader?outputStyle=expanded' 
+    '!sass-loader?outputStyle=expanded'
   })
 }
 
@@ -102,7 +100,7 @@ module.exports = {
   ],
 
   output: {
-    path: './dist', 
+    path: './dist',
     filename: 'bundle.js',
     publicPath: 'http://localhost:8080/',
   },
@@ -119,6 +117,7 @@ module.exports = {
   },
 
   devServer: {
+    host: '0.0.0.0',
     contentBase: path.resolve('./dist'),
     historyApiFallback: true,
   },
@@ -137,7 +136,7 @@ module.exports = {
     alias: {
       assets: assetsPath
       // You can not get in-editor typings with aliases
-      // component: srcPath + '/component', 
+      // component: srcPath + '/component',
       // page: srcPath + '/page',
       // driver: srcPath + '/driver',
       // module: srcPath + '/module',

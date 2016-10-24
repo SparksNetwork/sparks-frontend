@@ -1,4 +1,5 @@
-require('ts-node/').register(require('../tsconfig.json'))
+require('ts-node').register(require('../tsconfig.json'))
+require('buba/register')
 
 const config = process.env.LOCAL
   ? require('./nightwatch_local.json')

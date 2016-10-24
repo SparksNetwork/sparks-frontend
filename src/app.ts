@@ -5,15 +5,17 @@ import { makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule } fro
 import { makeRouterDriver } from 'cyclic-router';
 import { createHistory } from 'history';
 import firebase = require('firebase');
-import { makeAuthDriver, makeFirebaseDriver, makeQueueDriver } from './driver/cyclic-fire';
+import { makeFirebaseDriver, makeQueueDriver } from './drivers/cyclic-fire';
+import { makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication';
+import { preventDefault } from './drivers/prevent-default';
 import switchPath from 'switch-path';
+import { just } from 'most';
 
-import { makePolyglotModule } from './module/polyglot';
-import { translations }from './translations';
-import { main } from './page/main';
+import { makePolyglotModule } from './ui/modules/polyglot';
+import { main } from './main';
 
 const modules = [
-  makePolyglotModule(translations),
+  makePolyglotModule(require('./translations')),
   PropsModule,
   StyleModule,
   ClassModule,
@@ -28,9 +30,11 @@ const firebaseRef = firebase.database().ref();
 const drivers = {
   DOM: makeDOMDriver('#app', { transposition: false, modules }),
   router: makeRouterDriver(createHistory() as any, switchPath),
-  auth$: makeAuthDriver(firebase),
+  authentication$: makeFirebaseAuthenticationDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
-  queue$: makeQueueDriver(firebaseRef.child('!queue'))
+  queue$: makeQueueDriver(firebaseRef.child('!queue')),
+  preventDefault,
+  random: () => just(Math.random())
 };
 
 Cycle.run(main, drivers);
