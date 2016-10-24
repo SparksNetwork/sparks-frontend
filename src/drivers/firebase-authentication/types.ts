@@ -1,5 +1,5 @@
 import firebase = require('firebase');
-import { AuthenticationError } from './AuthenticationError';
+import {AuthenticationError} from './AuthenticationError';
 
 export const ANONYMOUSLY: 'ANONYMOUSLY' = 'ANONYMOUSLY';
 export const EMAIL_AND_PASSWORD: 'EMAIL_AND_PASSWORD' = 'EMAIL_AND_PASSWORD';
@@ -43,14 +43,20 @@ export interface GetRedirectResultAuthenticationInput {
   method: 'GET_REDIRECT_RESULT';
 }
 
+export interface PasswordResetAuthenticationInput {
+  method: 'SEND_PASSWORD_RESET_EMAIL';
+  email: string;
+}
+
 export type AuthenticationInput =
   AnonymousAuthenticationInput |
-  EmailAndPasswordAuthenticationInput |
-  PopupAuthenticationInput |
-  RedirectAuthenticationInput |
-  SignOutAuthenticationInput |
-  CreateUserAuthenticationInput |
-  GetRedirectResultAuthenticationInput;
+    EmailAndPasswordAuthenticationInput |
+    PopupAuthenticationInput |
+    RedirectAuthenticationInput |
+    SignOutAuthenticationInput |
+    CreateUserAuthenticationInput |
+    GetRedirectResultAuthenticationInput |
+    PasswordResetAuthenticationInput;
 
 export type AuthenticationOutput = {
   error: AuthenticationError | null;

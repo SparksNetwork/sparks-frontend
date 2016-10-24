@@ -13,6 +13,7 @@ import {
   Sinks
 } from '../../components/types';
 import {VNode, DOMSource} from '@motorcycle/dom';
+import {merge as mergeR} from 'ramda';
 
 export * from './types';
 
@@ -32,11 +33,12 @@ function computeAuthenticationSinks(sources, childSinks) {
   const {google$, facebook$, emailAndPasswordAuthenticationInput$, cancel$, forgotPassword$}= childSinks
 
   return {
+    DOM : childSinks.DOM,
     authentication$: mergeM<AuthenticationInput>(
       google$, facebook$, emailAndPasswordAuthenticationInput$
     )
       .startWith({method: GET_REDIRECT_RESULT})
-      .multicast(), // TODO not sure about the multicast here
+      .multicast(),
     router: mergeM(
       cancel$.map(redirectToHome),
       forgotPassword$.map(redirectToForgotPassword)
@@ -80,13 +82,14 @@ export type AuthenticationSources = Sources & {
   random: Stream<number>;
 }
 
-function Authenticate(specs, [childComponent]) {
+function LogInActions(specs, [childComponent]) {
   return function Authenticate(sources: AuthenticationSources): AuthenticationSinks {
     // compute the extra sources which are inputs to the children components
     const fetchedSources = specs.fetch(sources)
+    const extendedSources = mergeR(sources, fetchedSources)
 
     // compute the children sinks
-    const childrenSinks = childComponent(fetchedSources)
+    const childrenSinks = childComponent(extendedSources)
 
     // compute the final component sinks
     return specs.merge(sources, childrenSinks)
@@ -96,5 +99,5 @@ function Authenticate(specs, [childComponent]) {
 export {
   computeAuthenticationSinks,
   computeAuthenticationSources,
-  Authenticate,
+  LogInActions,
 }

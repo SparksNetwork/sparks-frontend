@@ -30,12 +30,13 @@ const firebaseRef = firebase.database().ref();
 
 const drivers = {
   DOM: makeDOMDriver('#app', { transposition: false, modules }),
+  // TODO : update router driver to most and also typings to do
   router: makeRouterDriver(createHistory() as any, switchPath),
   authentication$: makeFirebaseAuthenticationDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),
   queue$: makeQueueDriver(firebaseRef.child('!queue')),
   preventDefault,
-  random: () => just(Math.random())
+  random: () => just(Math.random()),
 };
 
 Cycle.run(main, drivers);

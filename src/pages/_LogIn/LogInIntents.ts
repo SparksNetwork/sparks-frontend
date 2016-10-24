@@ -1,4 +1,4 @@
-import {merge as mergeR, mapObjIndexed} from 'ramda';
+import {merge as mergeR, mapObjIndexed, values, reduce} from 'ramda';
 import {cssClasses} from '../../utils/classes';
 import firebase = require('firebase');
 import {
@@ -8,28 +8,28 @@ import {
   REDIRECT,
   SIGN_OUT
 } from '../../drivers/firebase-authentication';
-import { Stream, merge, combine } from 'most';
+import {Stream, merge, combine} from 'most';
 
 const classes = cssClasses({});
 
 // TODO : edge cases. null string, empty string etc.
-function breakdown (selector : string) {
+function breakdown(selector: string) {
   const parts = selector.split('@');
 
   return {
-    cssSelector : parts[0],
-    event : parts[1]
+    cssSelector: parts[0],
+    event: parts[1]
   }
 }
 
-function Intents(intents, [childComponent]) {
+function LogInIntents(intents, [childComponent]) {
   return function (sources) {
     // merge all sinks ine one object
     return mergeR( // ramda merge
       childComponent(sources),
-      mapObjIndexed((curriedIntentComponent:any, selector) => {
-        curriedIntentComponent(selector)(sources)
-      }, intents)
+      reduce(mergeR, {}, values(mapObjIndexed((curriedIntentComponent: any, selector) =>
+          curriedIntentComponent(selector)(sources)
+        , intents)))
     )
   }
 }
@@ -141,7 +141,7 @@ function ForgotPasswordIntent(sinkName) {
 }
 
 export {
-  Intents,
+  LogInIntents,
   LogInWithGoogleIntent,
   LogInWithFacebookIntent,
   LogInWithEmailIntent,

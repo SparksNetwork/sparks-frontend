@@ -1,26 +1,30 @@
 import isolate from '@cycle/isolate';
 import LogInView from './LogInView';
 import {
-  Intents, LogInWithGoogleIntent, LogInWithFacebookIntent,
+  LogInIntents, LogInWithGoogleIntent, LogInWithFacebookIntent,
   LogInWithEmailIntent, CancelIntent, ForgotPasswordIntent
 } from './LogInIntents';
 import {
-  Authenticate, computeAuthenticationSources, computeAuthenticationSinks
+  LogInActions, computeAuthenticationSources, computeAuthenticationSinks
 } from './LogInActions';
 
-export const LogIn = Authenticate({
+export const LogInComponent = LogInActions({
+  // compute the extra sources for downstream components
   fetch: computeAuthenticationSources,
+  // merge children components sinks representing actions :
+  // - route redirection
+  // - DOM updates
   merge: computeAuthenticationSinks
 }, [
-  Intents({
-    'button.google@click': LogInWithGoogleIntent('google$'),
-    'button.facebook@click': LogInWithFacebookIntent('facebook$'),
-    'form@submit': LogInWithEmailIntent('emailAndPasswordAuthenticationMethod$'),
-    'button.cancel@click': CancelIntent('cancel$'),
+  LogInIntents({
+    'google@click': LogInWithGoogleIntent('google$'),
+    'facebook@click': LogInWithFacebookIntent('facebook$'),
+    'form@submit': LogInWithEmailIntent('emailAndPasswordAuthenticationInput$'),
+    'cancel@click': CancelIntent('cancel$'),
     'a.forgot-password@click': ForgotPasswordIntent('forgotPassword$')
   }, [
     LogInView
   ])
 ])
 
-export default sources => isolate(LogIn)(sources);
+export default sources => isolate(LogInComponent)(sources);

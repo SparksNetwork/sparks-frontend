@@ -12,8 +12,11 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    // Modif for DEV environment :
+    // "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "preserveConstEnums": true,
     "pretty": true,
     "removeComments": false,

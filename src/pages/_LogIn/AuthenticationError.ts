@@ -1,3 +1,5 @@
-/**
- * Created by toshiba on 22-Oct-16.
- */
+export class AuthenticationError extends Error {
+  constructor(public code: string, message: string) {
+    super(message);
+  }
+}

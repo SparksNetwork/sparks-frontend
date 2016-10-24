@@ -16,6 +16,11 @@ const enUS = {
     'footer': 'Login to the Sparks.Network',
     'google': 'Login with Google',
     'facebook': 'Login with Facebook'
+  },
+  'forgotPassword' : {
+    'title' : 'Please enter the email with which you subscribed to Sparks',
+    'cancel': 'Cancel',
+    'send': 'Send',
   }
 };
 
