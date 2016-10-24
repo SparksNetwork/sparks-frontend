@@ -1,5 +1,5 @@
-import { UserCandidate } from './';
+import { UserCandidate, User } from './';
 
 export interface UserRepository {
-  add(userCandidate: UserCandidate);
+  add(userCandidate: UserCandidate): Promise<User>;
 }
