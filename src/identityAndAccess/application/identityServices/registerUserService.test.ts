@@ -1,61 +1,34 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { registerUserService } from './registerUserService';
-import { RegisterUserCommand } from '../commands/RegisterUserCommand';
-import { UserId } from '../../domain/model/identity/UserId';
-import { UserCandidate } from '../../domain/model/identity/UserCandidate';
-import { User } from '../../domain/model/identity/User';
-import { MissingUser } from '../../domain/model/identity/MissingUser'
-import { addToUserRepository } from '../../domain/model/identity/addToUserRepository'
+import { UserId, User, UserRepository, UserCandidate }
+  from '../../domain/model/identity/';
+import { RegisterUserCommand } from '../commands/';
+import { registerUserService } from './';
 
-const userRepositoryForTest: Map<UserId, User> =
-  new Map<UserId, User>();
+describe(`register user service`, () => {
+  const usersForTest: Map<UserId, User> = new Map<UserId, User>();
 
-const userIdForTest = new UserId(`T12345`);
+  class FakeUserRepository
+      implements UserRepository {
 
-const userForTest = new User();
+    add(candidate: UserCandidate): User {
+      const userId: UserId = new UserId(`T12345`);
+      const user: User = new User(userId, candidate.emailAddress());
 
-const missingUserForTest = new MissingUser();
+      usersForTest.set(userId, user);
 
-const addToUserRepositoryForTest: addToUserRepository =
-  function addToUserRepository(userCandidate: UserCandidate): User {
-    if (!!userRepositoryForTest.get(userIdForTest)) {
-      return missingUserForTest;
+      return user;
     }
+  }
 
-    userRepositoryForTest.set(userIdForTest, userForTest);
+  const userRepositoryForTest = new FakeUserRepository();
+  const commandForTest: RegisterUserCommand =
+    new RegisterUserCommand(`dummy@email.address`, `secret`);
 
-    return userIdForTest;
-  };
+  it(`adds user to repository`, () => {
+    const user: User = registerUserService(commandForTest, userRepositoryForTest);
+    const userId: UserId = user.userId();
 
-const commandForTest = new RegisterUserCommand(
-  `mailbox@email.address`,
-  `secret pass phrase`
-)
-
-describe(`identityAndAccess/application/identityServices/registerUserService`, () => {
-  beforeEach(() => {
-    userRepositoryForTest.clear();
-  });
-
-  it(`should be a function`, () => {
-    assert.strictEqual(typeof registerUserService, `function`);
-  });
-
-  it(`should return a User`, () => {
-    const user: User =
-      registerUserService(commandForTest, addToUserRepositoryForTest);
-
-    assert.ok(user);
-  });
-
-  it(`should throw error if User wasn’t registered`, () => {
-    assert.throws(
-      () => {
-        registerUserService(commandForTest, addToUserRepositoryForTest);
-        registerUserService(commandForTest, addToUserRepositoryForTest);
-      },
-      /User/
-    );
+    assert.strictEqual(user, usersForTest.get(userId));
   });
 });

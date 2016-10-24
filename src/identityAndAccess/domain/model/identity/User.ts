@@ -1,11 +1,20 @@
-import { Missing } from '../../../../common/Missing'
+import { UserId } from './UserId';
+import { EmailAddress } from './EmailAddress'
 
-export class User
-    implements Missing {
+export class User {
+  private _userId: UserId;
+  private _emailAddress: EmailAddress;
 
-  constructor() { }
+  constructor(userId: UserId, emailAddress: EmailAddress) {
+    this._userId = userId;
+    this._emailAddress = emailAddress;
+  }
 
-  isMissing(): boolean {
-    return false
+  userId(): UserId {
+    return this._userId;
+  }
+
+  emailAddress(): EmailAddress {
+    return this._emailAddress;
   }
 }

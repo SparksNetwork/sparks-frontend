@@ -2,14 +2,13 @@ export class EmailAddress {
   private _address: string;
 
   constructor(address: string) {
-    this.setAddress(address);
+    if (!address)
+      throw new Error(`\`address\` required.`);
+
+    this._address = address;
   }
 
   address(): string {
     return this._address;
-  }
-
-  private setAddress(address: string) {
-    this._address = address;
   }
 }
