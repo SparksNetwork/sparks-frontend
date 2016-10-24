@@ -21,7 +21,7 @@ export const LogInComponent = LogInActions({
     'facebook@click': LogInWithFacebookIntent('facebook$'),
     'form@submit': LogInWithEmailIntent('emailAndPasswordAuthenticationInput$'),
     'cancel@click': CancelIntent('cancel$'),
-    'a.forgot-password@click': ForgotPasswordIntent('forgotPassword$')
+//    'a.forgot-password@click': ForgotPasswordIntent('forgotPassword$')
   }, [
     LogInView
   ])

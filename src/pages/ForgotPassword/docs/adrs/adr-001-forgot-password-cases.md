@@ -1,4 +1,4 @@
-# ADR 4: `forgot password` feature : edge cases
+# ADR 1: `forgot password` feature : edge cases
 
 Bruno Olivier Couriol <bcouriol@sparks.network>,
 

@@ -44,7 +44,6 @@ function CancelIntent(sinkName) {
       const domSource = sources.DOM;
       console.warn('selector', selector)
 
-
       return {
         [sinkName]: domSource.select(classes.sel(cssSelector)).events(event)
           .tap(ev => ev.preventDefault())
@@ -77,7 +76,9 @@ function SendEmailIntent(sinkName) {
         ;
 
       const sendEmailAuthenticationInput$ = authCommand$
-        .sampleWith<PasswordResetAuthenticationInput>(submit$);
+          .sampleWith<PasswordResetAuthenticationInput>(submit$)
+          .tap(x => console.warn('sendEmailAuthenticationInput$ ', x))
+        ;
 
       return {
         [sinkName]: sendEmailAuthenticationInput$

@@ -34,9 +34,11 @@ function computeForgotPasswordSinks(sources, childSinks) {
   return {
     DOM : childSinks.DOM,
     authentication$: sendEmail$
+      .tap(function(x){console.warn('authentication', x)})
 //      .startWith({method: GET_REDIRECT_RESULT})
       .multicast(),
-    router: cancel$.tap(function(x){console.warn('intercepting route', x)}),
+    router: cancel$
+      .tap(function(x){console.warn('intercepting route', x)}),
   }
 }
 
@@ -50,7 +52,6 @@ function ForgotPasswordActions(specs, [childComponent]) {
     const childrenSinks = childComponent(extendedSources)
 
     // compute the final component sinks
-    // TODO : why merge the sources with the sinks??
     return specs.merge(sources, childrenSinks)
   }
 }

@@ -1,4 +1,4 @@
-# ADR 3: Page factoring
+# ADR 1: Page factoring
 
 Bruno Olivier Couriol <bcouriol@sparks.network>,
 

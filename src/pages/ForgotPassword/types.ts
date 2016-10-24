@@ -6,6 +6,6 @@ import {
 } from '../../drivers/firebase-authentication';
 
 export type AuthenticationState = {
-  isAuthenticated: Stream<boolean>
+  isAuthenticated: boolean,
   authenticationError: AuthenticationError
 }

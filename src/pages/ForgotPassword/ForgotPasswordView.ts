@@ -1,6 +1,3 @@
-// TODO : change to reflect the view on enter email
-// TODDO : add a phrase with polyglot instead of login.email
-// QUESTION : how does polyglot works?
 import {Sources, Sinks, Source} from '../../components/types';
 import {AuthenticationState} from './types'
 import {
@@ -14,6 +11,7 @@ import {
   p,
   input,
   h1,
+  h4,
   button,
   VNode
 } from '@motorcycle/dom';
@@ -24,7 +22,7 @@ const classes = cssClasses({});
 
 const backgroundImage = require('assets/images/login-background.jpg');
 
-export default function ForgotPasswordView(sources : Sources) : Sinks {
+export default function ForgotPasswordView(sources: Sources): Sinks {
   const {authenticationState$} = sources;
 
   return {
@@ -32,19 +30,52 @@ export default function ForgotPasswordView(sources : Sources) : Sinks {
   }
 }
 
+const authErrorFeedbackMap = {
+  'none': 'error.auth.none',
+  // Thrown if the email address is not valid.
+  'auth/invalid-email': 'error.auth.invalid-email',
+  // Thrown if there is no user corresponding to the email address.
+  'auth/user-not-found': 'error.auth.user-not-found'
+}
 
-// Error Codes
-//
-// auth/invalid-email
-// Thrown if the email address is not valid.
-//   auth/user-not-found
-// Thrown if there is no user corresponding to the email address.
+const authenticationFeedbackTypeMap = {
+  'none' : '',
+  'authenticated': 'warning',
+  'failedAuthentication': 'error',
+}
+
+function computeAuthFeedback(authenticationState) {
+  const errorCode =
+    authenticationState.authenticationError &&
+    authenticationState.authenticationError.code || 'none'
+
+  const authenticationFeedbackPhrase = authErrorFeedbackMap[errorCode]
+
+  const authenticationFeedbackType_ =
+    authenticationState.isAuthenticated
+      ? 'authenticated'
+      : authenticationState.authenticationError
+      ? 'failedAuthentication'
+      : 'none'
+  const authenticationFeedbackType =
+    authenticationFeedbackTypeMap[authenticationFeedbackType_]
+
+  return {
+    authenticationFeedbackPhrase,
+    authenticationFeedbackType
+  }
+}
 
 // TODO : set the behavior for authenticationState
 // - if authentication error : display error message
 // - if user already authenticated : display warning message
 // - if user is not autenticated : display no error/warning
-function forgotPasswordView(authenticationState: AuthenticationState): VNode {
+export function forgotPasswordView(authenticationState: AuthenticationState): VNode {
+  console.warn('authState', authenticationState);
+
+  const {authenticationFeedbackPhrase, authenticationFeedbackType} =
+    computeAuthFeedback(authenticationState)
+
   return section(classes.sel('photo-background'), {
     style: {
       // QUESTION: where does this url function comes from
@@ -72,10 +103,21 @@ function forgotPasswordView(authenticationState: AuthenticationState): VNode {
             ]),
             fieldset(classes.sel('actions'), [
               // add type="button" to avoid submit behavior
-              button(classes.sel('cancel'), {polyglot: {phrase: 'forgotPassword.cancel'}} as any),
-              button(classes.sel('submit'), {polyglot: {phrase: 'forgotPassword.send'}} as any)
+              button(classes.sel('cancel'), {
+                polyglot: {phrase: 'forgotPassword.cancel'},
+                attrs: {type: 'button'}
+              } as any),
+// button('cancel', {
+// polyglot: {phrase: 'forgotPassword.cancel'}, attrs:
+// {type:'button'}} as any),
+              button(classes.sel('submit'), {
+                polyglot: {phrase: 'forgotPassword.send'}
+              } as any)
             ])
-          ])
+          ]),
+          h4(classes.sel(authenticationFeedbackType), {
+            polyglot: {phrase: authenticationFeedbackPhrase}
+          } as any)
         ]),
       ]),
     ])

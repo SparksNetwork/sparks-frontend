@@ -41,7 +41,7 @@ function computeAuthenticationSinks(sources, childSinks) {
       .multicast(),
     router: mergeM(
       cancel$.map(redirectToHome),
-      forgotPassword$.map(redirectToForgotPassword)
+//      forgotPassword$.map(redirectToForgotPassword)
     ),
   }
 }
