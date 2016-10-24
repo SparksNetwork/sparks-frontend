@@ -2,7 +2,7 @@
 import * as assert from 'assert';
 import { UserId, User, EmailAddress } from './';
 
-describe(`user`, () => {
+describe.only(`user`, () => {
   it(`sets user id`, () => {
     let userId = new UserId(`T12345`);
     let user = new User(userId, new EmailAddress(`dummy@email.address`));
@@ -16,8 +16,13 @@ describe(`user`, () => {
   });
 
   it(`sets email address`, () => {
-    const emailAddress = new EmailAddress(`dummy@email.address`);
-    const user = new User(new UserId(`T12345`), emailAddress);
+    let emailAddress = new EmailAddress(`dummy@email.address`);
+    let user = new User(new UserId(`T12345`), emailAddress);
+
+    assert.strictEqual(user.emailAddress(), emailAddress);
+
+    emailAddress = new EmailAddress(`otherdummy@email.address`);
+    user = new User(new UserId(`T12345`), emailAddress);
 
     assert.strictEqual(user.emailAddress(), emailAddress);
   });
