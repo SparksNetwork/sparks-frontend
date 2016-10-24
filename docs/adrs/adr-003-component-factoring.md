@@ -19,6 +19,8 @@ The proposed factoring makes use of :
 - higher order components, which are functions whose signature includes (but is not restricted to) an array of components and returns a component
 - a View/Intent/Action breakdown of the component
 
+Note that the view-model is not apparent here. In the current version of the application, the view-model is fetched and computed reactively either from the GUI (DOM state) and/or the database. There is no local 'state' which would not be persisted.
+
 An example being better than many words, follows the source code from a working demo of factoring of the login page : 
 
 ```javascript
