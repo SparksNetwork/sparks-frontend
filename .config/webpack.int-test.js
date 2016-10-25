@@ -9,21 +9,21 @@ const toString = x => JSON.stringify(x);
 const Sparks = {
   buildEnv: toString(process.env.BUILD_ENV),
   firebase: {
-    apiKey: toString('AIzaSyAaDKYoY2-TPdqpjZ2y0-bnVUyVuaQQ7IQ'),
-    authDomain: toString('sparks-integration-test.firebaseapp.com'),
-    databaseURL: toString('https://sparks-integration-test.firebaseio.com'),
-    storageBucket: toString(''),
-    messagingSenderId: toString('828667506130')
+    databaseURL: toString(process.env.FIREBASE_INTEGRATION_DATABASE_URL),
+    apiKey: toString(process.env.FIREBASE_INTEGRATION_API_KEY),
+    authDomain: toString(process.env.FIREBASE_INTEGRATION_AUTH_DOMAIN),
+    storageBucket: toString(process.env.FIREBASE_INTEGRATION_STORAGE_BUCKET),
+    messagingSenderId: toString(process.env.FIREBASE_MESSAGING_SENDER_ID),
   }
 }
 
 const plugins = [
   new webpack.EnvironmentPlugin([
     'BUILD_ENV',
-    'FIREBASE_DATABASE_URL',
-    'FIREBASE_API_KEY',
-    'FIREBASE_AUTH_DOMAIN',
-    'FIREBASE_STORAGE_BUCKET',
+    'FIREBASE_INTEGRATION_DATABASE_URL',
+    'FIREBASE_INTEGRATION_API_KEY',
+    'FIREBASE_INTEGRATION_AUTH_DOMAIN',
+    'FIREBASE_INTEGRATION_STORAGE_BUCKET',
     'FIREBASE_MESSAGING_SENDER_ID'
   ]),
   new webpack.DefinePlugin({ Sparks }),
