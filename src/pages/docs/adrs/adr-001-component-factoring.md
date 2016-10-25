@@ -1,6 +1,10 @@
 # ADR 1: Page factoring
 
-Bruno Olivier Couriol <bcouriol@sparks.network>,
+## Participants
+- Bruno Olivier Couriol <bcouriol@sparks.network>
+- Frederik Krautwald <fkrautwald@sparks.network>
+- Tylor Steinberger <tsteinberger@sparks.network>
+- Stephen DeBaun <sdebaun@sparks.network>
 
 ## Status
 
@@ -8,16 +12,16 @@ Bruno Olivier Couriol <bcouriol@sparks.network>,
 
 ## Context
 
-A systematic factoring could go a long way in order to accelerate the production, documentation, reading, navigation and maintenance of pages.
+A systematic factoring could go a long way in order to accelerate the production, documentation, reading, navigation and maintenance of screens.
 
 Cycle made popular the so-called MVI factoring which distinguishes three entities (model, view, intent) and segregates each concern into dedicated functions. Some of these functions are pure, which facilitates testing, one is impure but is easily testable through DOM mocking.
 
-In the current state of the development of the application, pages are constructed in an ad-hoc manner, specific to each particular page. This allows for flexibility and greater adaptability to the logic enclosed in the page.
+On the other hand, in the current state of the development of the application, pages are constructed in an ad-hoc manner, specific to each particular page. This allows for flexibility and greater adaptability to the logic enclosed in the page.
 
-The proposed factoring makes use of :
+The proposed factoring is inspired from Cycle's MVI and makes use of :
 
 - higher order components, which are functions whose signature includes (but is not restricted to) an array of components and returns a component
-- a View/Intent/Action breakdown of the component
+- a View/Intent/Action breakdown
 
 Note that the view-model is not apparent here. In the current version of the application, the view-model is fetched and computed reactively either from the GUI (DOM state) and/or the database. There is no local 'state' which would not be persisted.
 
@@ -53,7 +57,12 @@ pages --- LogIn --- index.ts
                  |- LogInView.ts
                  |- LogInIntents.ts
                  |- LogInActions.ts
+                 |- LogInView.test.ts
+                 |- LogInIntents.test.ts
+                 |- LogInActions.test.ts
 ```
+
+(Feel free to review the source code on the branch `forgot-password-page`) for more details : `_Login` is the refactored version of the `Login` screen, `ForgotPassword` is the current version of the `forgotPassword` screen
 
 In summary, options are :
 
@@ -69,6 +78,8 @@ In summary, options are :
 
 ## Decision
 
+**PENDING**
 
 ## Consequences
 
+**PENDING**
