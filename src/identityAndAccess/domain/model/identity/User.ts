@@ -1,5 +1,5 @@
 import { UserId } from './UserId';
-import { EmailAddress } from './EmailAddress'
+import { EmailAddress, UserDescriptor } from './'
 
 export class User {
   private _userId: UserId;
@@ -16,5 +16,12 @@ export class User {
 
   emailAddress(): EmailAddress {
     return this._emailAddress;
+  }
+
+  userDescriptor(): UserDescriptor {
+    return new UserDescriptor(
+      this._userId,
+      this._emailAddress.address()
+    );
   }
 }
