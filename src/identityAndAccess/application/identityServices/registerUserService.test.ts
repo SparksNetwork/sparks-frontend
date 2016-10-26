@@ -8,12 +8,14 @@ import { registerUserService } from './';
 describe(`register user service`, () => {
   const usersForTest: Map<UserId, User> = new Map<UserId, User>();
 
-  class FakeUserRepository
-      implements UserRepository {
-
-    add(candidate: UserCandidate): Promise<User> {
+  class FakeUserRepository {
+    add(userCandidate: UserCandidate): Promise<User> {
       const userId: UserId = new UserId(`T12345`);
-      const user: User = new User(userId, candidate.emailAddress());
+      const user: User = new User(
+        userId,
+        userCandidate.emailAddress(),
+        userCandidate.password()
+      );
 
       usersForTest.set(userId, user);
 
@@ -26,7 +28,10 @@ describe(`register user service`, () => {
     new RegisterUserCommand(`dummy@email.address`, `secret`);
 
   it(`adds user to repository`, () => {
-    const userPromise: Promise<User> = registerUserService(commandForTest, userRepositoryForTest);
+    const userPromise: Promise<User> =
+      registerUserService(
+        commandForTest,
+        userRepositoryForTest as UserRepository);
 
     userPromise
       .then((user: User) => {

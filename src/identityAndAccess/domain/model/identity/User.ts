@@ -1,13 +1,15 @@
 import { UserId } from './UserId';
-import { EmailAddress } from './EmailAddress'
+import { EmailAddress, UserDescriptor } from './'
 
 export class User {
   private _userId: UserId;
   private _emailAddress: EmailAddress;
+  private _password: string;
 
-  constructor(userId: UserId, emailAddress: EmailAddress) {
+  constructor(userId: UserId, emailAddress: EmailAddress, password: string) {
     this._userId = userId;
     this._emailAddress = emailAddress;
+    this._password = password;
   }
 
   userId(): UserId {
@@ -16,5 +18,16 @@ export class User {
 
   emailAddress(): EmailAddress {
     return this._emailAddress;
+  }
+
+  password(): string {
+    return this._password;
+  }
+
+  userDescriptor(): UserDescriptor {
+    return new UserDescriptor(
+      this._userId,
+      this._emailAddress.address()
+    );
   }
 }
