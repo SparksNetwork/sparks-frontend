@@ -9,9 +9,13 @@ describe(`register user service`, () => {
   const usersForTest: Map<UserId, User> = new Map<UserId, User>();
 
   class FakeUserRepository {
-    add(candidate: UserCandidate): Promise<User> {
+    add(userCandidate: UserCandidate): Promise<User> {
       const userId: UserId = new UserId(`T12345`);
-      const user: User = new User(userId, candidate.emailAddress());
+      const user: User = new User(
+        userId,
+        userCandidate.emailAddress(),
+        userCandidate.password()
+      );
 
       usersForTest.set(userId, user);
 

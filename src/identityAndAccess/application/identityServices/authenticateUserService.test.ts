@@ -23,7 +23,8 @@ describe(`authenticate user service`, () => {
 
       const user: User = new User(
         new UserId(`${++this._nextId}`),
-        new EmailAddress(emailAddress)
+        new EmailAddress(emailAddress),
+        userCandidate.password()
       );
 
       this._users.set(emailAddress, user);
