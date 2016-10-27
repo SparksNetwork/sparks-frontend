@@ -52,7 +52,7 @@
     "sauce:safari7": "npm run sauce -- --env safari7",
     "sauce:safari8": "npm run sauce -- --env safari8",
     "sauce:safari9": "npm run sauce -- --env safari9",
-    "test-ci": "npm run test:lint && npm run test:unit && npm run sauce -- --env chrome51,ie11,android51,iphone5,safari9",
+    "test-ci": "npm run test:lint && npm run test:unit",
     "serve": "webpack-dev-server --config .config/webpack.config.js",
     "serve-static": "pushstate-server dist 8080",
     "build": "webpack --config .config/webpack.config.js"
