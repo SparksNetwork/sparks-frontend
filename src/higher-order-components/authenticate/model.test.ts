@@ -17,8 +17,8 @@ describe('authenticate', () => {
     });
 
     it('should output a state object', () => {
-      const authenticationInput: AuthenticationType = model({ method: GOOGLE });
-      assert(typeof authenticationInput === 'object');
+      const authenticationType: AuthenticationType = model({ method: GOOGLE });
+      assert(typeof authenticationType === 'object');
     });
 
     describe('state object', () => {

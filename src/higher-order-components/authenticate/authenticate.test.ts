@@ -61,8 +61,8 @@ describe('higher-order-components/authenticate', () => {
         it('should contain value of type AuthenticationInput', () => {
           const { authentication$ } = Component(defaultSources);
 
-          return authentication$.observe((authInput: AuthenticationType) => {
-            assert(typeof authInput === 'object');
+          return authentication$.observe((authenticationType: AuthenticationType) => {
+            assert(typeof authenticationType === 'object');
           });
         });
       });

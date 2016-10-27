@@ -10,8 +10,10 @@ import {
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 import { defaultUserCredential } from './defaultUserCredential';
 
-export function createUserCredential$(method: string, authenticationInput: AuthenticationType, firebaseInstance: any):
-    Stream<firebase.auth.UserCredential> {
+export function createUserCredential$(
+    method: string,
+    authenticationType: AuthenticationType,
+    firebaseInstance: any): Stream<firebase.auth.UserCredential> {
   // Ordered most common on top for optimisation.
   // We use if-statements instead of switch, because few conditionals
   // optimise better with if-statements.
@@ -21,16 +23,16 @@ export function createUserCredential$(method: string, authenticationInput: Authe
   }
 
   if (method === REDIRECT) {
-    return redirectSignIn(authenticationInput, firebaseInstance)
+    return redirectSignIn(authenticationType, firebaseInstance)
       .constant(defaultUserCredential);
   }
 
   if (method === EMAIL_AND_PASSWORD) {
-    return emailAndPasswordSignIn(authenticationInput, firebaseInstance);
+    return emailAndPasswordSignIn(authenticationType, firebaseInstance);
   }
 
   if (method === CREATE_USER) {
-    const { email, password } = authenticationInput as CreateUserAuthentication;
+    const { email, password } = authenticationType as CreateUserAuthentication;
 
     return fromFirebasePromise<firebase.User>(
       firebaseInstance.auth().createUserWithEmailAndPassword(email, password))
@@ -38,7 +40,7 @@ export function createUserCredential$(method: string, authenticationInput: Authe
   }
 
   if (method === POPUP) {
-    return popupSignIn(authenticationInput, firebaseInstance);
+    return popupSignIn(authenticationType, firebaseInstance);
   }
 
   if (method === ANONYMOUSLY) {
