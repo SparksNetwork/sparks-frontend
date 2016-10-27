@@ -1,14 +1,14 @@
 import firebase = require('firebase');
 import { AuthenticationMethod, GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './types';
 import {
-  AuthenticationInput,
-  RedirectAuthenticationInput,
-  EmailAndPasswordAuthenticationInput,
+  AuthenticationType,
+  RedirectAuthentication,
+  EmailAndPasswordAuthentication,
   REDIRECT,
   SIGN_OUT
 } from '../../drivers/firebase-authentication';
 
-export function model(authenticationMethod: AuthenticationMethod): AuthenticationInput {
+export function model(authenticationMethod: AuthenticationMethod): AuthenticationType {
   const authenticationMethods = {};
   authenticationMethods[GOOGLE] = createGoogleAuthenticationInput;
   authenticationMethods[FACEBOOK] = createFacebookAuthenticationInput;
@@ -19,14 +19,14 @@ export function model(authenticationMethod: AuthenticationMethod): Authenticatio
   return authenticationMethods[method](email, password) || { method: SIGN_OUT };
 }
 
-function createGoogleAuthenticationInput(): RedirectAuthenticationInput {
+function createGoogleAuthenticationInput(): RedirectAuthentication {
   return {
     method: REDIRECT,
     provider: new firebase.auth.GoogleAuthProvider()
   };
 }
 
-function createFacebookAuthenticationInput(): RedirectAuthenticationInput {
+function createFacebookAuthenticationInput(): RedirectAuthentication {
   return {
     method: REDIRECT,
     provider: new firebase.auth.FacebookAuthProvider()
@@ -34,7 +34,7 @@ function createFacebookAuthenticationInput(): RedirectAuthenticationInput {
 }
 
 function createEmailAndPasswordAuthenticationInput(email: string, password: string):
-    EmailAndPasswordAuthenticationInput {
+    EmailAndPasswordAuthentication {
   return {
     method: EMAIL_AND_PASSWORD,
     email,

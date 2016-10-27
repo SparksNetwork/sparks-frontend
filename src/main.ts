@@ -1,5 +1,5 @@
 import { FirebaseSource, QueueSink, QueueSource } from './drivers/cyclic-fire';
-import { AuthenticationInput, AuthenticationOutput } from './drivers/firebase-authentication';
+import { AuthenticationType, Authentication } from './drivers/firebase-authentication';
 import { Stream, just } from 'most';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
@@ -19,14 +19,14 @@ const routes = {
 export interface MainSinks extends Sinks {
   DOM: Stream<VNode>;
   router: Stream<string>;
-  authentication$: Stream<AuthenticationInput>;
+  authentication$: Stream<AuthenticationType>;
   queue$: QueueSink;
 }
 
 export interface MainSources extends Sources {
   DOM: DOMSource;
   router: RouterSource;
-  authentication$: Stream<AuthenticationOutput>;
+  authentication$: Stream<Authentication>;
   firebase: FirebaseSource;
   queue$: QueueSource;
 }

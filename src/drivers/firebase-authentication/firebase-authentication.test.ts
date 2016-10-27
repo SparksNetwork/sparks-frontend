@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { CREATE_USER, AuthenticationInput,
+import { CREATE_USER, AuthenticationType,
   ANONYMOUSLY, EMAIL_AND_PASSWORD, POPUP, REDIRECT, SIGN_OUT, GET_REDIRECT_RESULT
 } from './types';
 import {
@@ -85,7 +85,7 @@ describe('firebase authentication', () => {
     });
 
     it('should already have a listener', (done) => {
-      const { stream, callCount } = mockStream<AuthenticationInput>();
+      const { stream, callCount } = mockStream<AuthenticationType>();
 
       firebaseAuthenticationDriver(stream);
 

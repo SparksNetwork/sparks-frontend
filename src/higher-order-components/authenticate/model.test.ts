@@ -2,9 +2,9 @@
 import firebase = require('firebase');
 import * as assert from 'assert';
 import {
-  AuthenticationInput,
-  EmailAndPasswordAuthenticationInput,
-  RedirectAuthenticationInput,
+  AuthenticationType,
+  EmailAndPasswordAuthentication,
+  RedirectAuthentication,
   REDIRECT,
 } from '../../drivers/firebase-authentication';
 import { GOOGLE, FACEBOOK, EMAIL_AND_PASSWORD } from './types';
@@ -17,7 +17,7 @@ describe('authenticate', () => {
     });
 
     it('should output a state object', () => {
-      const authenticationInput: AuthenticationInput = model({ method: GOOGLE });
+      const authenticationInput: AuthenticationType = model({ method: GOOGLE });
       assert(typeof authenticationInput === 'object');
     });
 
@@ -45,7 +45,7 @@ describe('authenticate', () => {
       });
 
       it('should return object with property `provider` that is an instance of firebaseh.auth.FacebookAuthProvider', () => {
-        const authenticationInput = model({ method: FACEBOOK }) as RedirectAuthenticationInput;
+        const authenticationInput = model({ method: FACEBOOK }) as RedirectAuthentication;
 
         assert(authenticationInput.provider instanceof firebase.auth.FacebookAuthProvider);
       });
@@ -60,14 +60,14 @@ describe('authenticate', () => {
       });
 
       it('should return object with property `email` of given value', () => {
-        const authenticationInput = <EmailAndPasswordAuthenticationInput>
+        const authenticationInput = <EmailAndPasswordAuthentication>
           model({ method: EMAIL_AND_PASSWORD, email: 'email', password: '' });
 
         assert(authenticationInput.email === 'email');
       });
 
       it('should return object with property `password` of given value', () => {
-        const authenticationInput = <EmailAndPasswordAuthenticationInput>
+        const authenticationInput = <EmailAndPasswordAuthentication>
           model({ method: EMAIL_AND_PASSWORD, email: '', password: 'password' });
 
         assert(authenticationInput.password === 'password');

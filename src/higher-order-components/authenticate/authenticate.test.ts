@@ -4,8 +4,8 @@ import { just, periodic } from 'most';
 import firebase = require('firebase');
 import { } from 'sparks-schemas';
 import {
-  AuthenticationInput,
-  AuthenticationOutput,
+  AuthenticationType,
+  Authentication,
   GET_REDIRECT_RESULT,
   AuthenticationError
 } from '../../drivers/firebase-authentication';
@@ -18,7 +18,7 @@ const dummyComponent = function () {
   };
 };
 
-const defaultAuthenticationOuptut$ = just<AuthenticationOutput>({
+const defaultAuthenticationOuptut$ = just<Authentication>({
   error: null,
   userCredential: {
     user: null,
@@ -61,7 +61,7 @@ describe('higher-order-components/authenticate', () => {
         it('should contain value of type AuthenticationInput', () => {
           const { authentication$ } = Component(defaultSources);
 
-          return authentication$.observe((authInput: AuthenticationInput) => {
+          return authentication$.observe((authInput: AuthenticationType) => {
             assert(typeof authInput === 'object');
           });
         });
@@ -155,7 +155,7 @@ describe('higher-order-components/authenticate', () => {
 
             it('should be true if signed in', (done) => {
               const sources = {
-                authentication$: just<AuthenticationOutput>({
+                authentication$: just<Authentication>({
                   error: null,
                   userCredential: {
                     user: {} as any as firebase.User,
@@ -182,7 +182,7 @@ describe('higher-order-components/authenticate', () => {
               const code = 'Error';
               const message = 'Error';
               const sources = {
-                authentication$: just<AuthenticationOutput>({
+                authentication$: just<Authentication>({
                   error: new AuthenticationError(code, message),
                   userCredential: {
                     user: null,

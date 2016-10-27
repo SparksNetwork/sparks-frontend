@@ -1,10 +1,11 @@
 import {
-  Component as IComponent,
+  Component,
   Sources,
   Sinks
 } from '../../components/types';
 import {
-  AuthenticationOutput,
+  AuthenticationType,
+  Authentication,
   GET_REDIRECT_RESULT,
   AuthenticationError
 } from '../../drivers/firebase-authentication';
@@ -22,42 +23,98 @@ import hold from '@most/hold';
 
 export * from './types';
 
+export type AuthenticationSources = AuthenticationComponentSources & {
+  isAuthenticated$: Stream<boolean>;
+  authenticationError$: AuthenticationError$;
+  user$: User$;
+}
+
+export type AuthenticationError$ = Stream<AuthenticationError>;
+
+export type User$ = Stream<User>;
+
 export type AuthenticationSinks = Sinks & {
   authenticationMethod$: Stream<AuthenticationMethod>
 };
 
+export type AuthenticationType$ = Stream<AuthenticationType>
+
+export type Authentication$ = Stream<Authentication>;
+
+export type AuthenticationComponentSources = Sources & {
+  authentication$: Authentication$
+};
+
+export type AuthenticationComponentSinks = AuthenticationSinks & {
+  authentication$: AuthenticationType$
+}
+
 export function authenticate(
-    Component: IComponent<any, AuthenticationSinks>) {
+    AuthenticatableComponent: Component<any, AuthenticationSinks>) {
+
   return function AuthenticationComponent(
-      sources: Sources & { authentication$: Stream<AuthenticationOutput> }) {
-    const isAuthenticated$ = sources.authentication$
-      .map((authenticationOutput) => !!authenticationOutput.userCredential.user)
-      .thru(hold);
+      sources: AuthenticationComponentSources): AuthenticationComponentSinks {
 
-    const authenticationError$ = sources.authentication$
-      .filter(authenticationOutput => !!authenticationOutput.error)
-      .map(authenticationOutput => authenticationOutput.error as AuthenticationError)
-      .thru(hold);
-
-    const user$ = sources.authentication$
-      .map(authenticationOutput => authenticationOutput.userCredential.user as firebase.User)
-      .filter(Boolean)
-      .map(makeUserFromFirebaseUser)
-      .thru(hold);
-
-    const authenticationSources = merge(sources, {
-      isAuthenticated$,
-      authenticationError$,
-      user$
-    });
-
-    const sinks = Component(authenticationSources);
-
-    const authentication$ = sinks.authenticationMethod$.map(model)
-      .startWith({ method: GET_REDIRECT_RESULT });
-
-    return merge(sinks, { authentication$ });
+    return authenticationComponentSinks(
+      AuthenticatableComponent(
+        authenticationSources(sources)));
   };
+}
+
+function authenticationComponentSinks(
+    sinks: AuthenticationSinks): AuthenticationComponentSinks {
+
+  return merge(sinks, { authentication$: authenticationType$(sinks) });
+}
+
+function authenticationType$(sinks: AuthenticationSinks): AuthenticationType$ {
+  return sinks.authenticationMethod$.map(model)
+    .startWith({ method: GET_REDIRECT_RESULT });
+}
+
+function authenticationSources(
+    sources: AuthenticationComponentSources): AuthenticationSources {
+
+  const { authentication$ } = sources;
+
+  return merge(sources, {
+    isAuthenticated$: isAuthenticatedStream(authentication$),
+    authenticationError$: authenticationErrorStream(authentication$),
+    user$: userStream(authentication$)
+  });
+}
+
+function isAuthenticatedStream(
+    authentication$: Authentication$): Stream<boolean> {
+
+  return authentication$.map(hasFirebaseUser).thru(hold);
+}
+
+function authenticationErrorStream(
+    authentication$: Authentication$): AuthenticationError$ {
+
+  return authentication$.filter(hasError).map(error).thru(hold);
+}
+
+function userStream(authentication$: Authentication$): User$ {
+  return authentication$
+    .map(firebaseUser).filter(Boolean).map(makeUserFromFirebaseUser).thru(hold);
+}
+
+function hasFirebaseUser(authentication: Authentication): boolean {
+  return !!firebaseUser(authentication);
+}
+
+function firebaseUser(authentication: Authentication): firebase.User {
+  return authentication.userCredential.user as firebase.User;
+}
+
+function hasError(authentication: Authentication): boolean {
+  return !!error(authentication);
+}
+
+function error(authentication: Authentication): AuthenticationError {
+  return authentication.error as AuthenticationError;
 }
 
 function makeUserFromFirebaseUser(firebaseUser: firebase.User): User {

@@ -1,15 +1,14 @@
 import { Stream, just } from 'most';
 import hold from '@most/hold';
 import firebase = require('firebase');
-
-import { AuthenticationInput, AuthenticationOutput } from './types';
+import { AuthenticationType, Authentication } from './types';
 import { createUserCredential$ } from './createUserCredential$';
 import { defaultUserCredential } from './defaultUserCredential';
 import { AuthenticationError } from './AuthenticationError';
 
 export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
-  return function firebaseAuthenticationDriver(sink$: Stream<AuthenticationInput>):
-      Stream<AuthenticationOutput> {
+  return function firebaseAuthenticationDriver(sink$: Stream<AuthenticationType>):
+      Stream<Authentication> {
     const authentication$ = sink$.map((authenticationInput) => {
       const method = authenticationInput.method;
 
@@ -28,7 +27,7 @@ export function makeFirebaseAuthenticationDriver(firebaseInstance: any) {
 }
 
 function convertUserCredentialToAuthenticationOutput(
-    userCredential: firebase.auth.UserCredential): AuthenticationOutput  {
+    userCredential: firebase.auth.UserCredential): Authentication  {
   return {
     error: null,
     userCredential
@@ -36,7 +35,7 @@ function convertUserCredentialToAuthenticationOutput(
 }
 
 function createDefaultAuthenticationOutput$(error: firebase.auth.Error) {
-  return just<AuthenticationOutput>({
+  return just<Authentication>({
     error: new AuthenticationError(error.code, error.message),
     userCredential: defaultUserCredential
   });

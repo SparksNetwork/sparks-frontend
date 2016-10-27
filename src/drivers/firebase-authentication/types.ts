@@ -9,50 +9,50 @@ export const SIGN_OUT: 'SIGN_OUT' = 'SIGN_OUT';
 export const CREATE_USER: 'CREATE_USER' = 'CREATE_USER';
 export const GET_REDIRECT_RESULT: 'GET_REDIRECT_RESULT' = 'GET_REDIRECT_RESULT';
 
-export interface AnonymousAuthenticationInput {
+export interface AnonymousAuthentication {
   method: 'ANONYMOUSLY';
 }
 
-export interface EmailAndPasswordAuthenticationInput {
+export interface EmailAndPasswordAuthentication {
   method: 'EMAIL_AND_PASSWORD';
   email: string;
   password: string;
 }
 
-export interface PopupAuthenticationInput {
+export interface PopupAuthentication {
   method: 'POPUP';
   provider: firebase.auth.AuthProvider;
 }
 
-export interface RedirectAuthenticationInput {
+export interface RedirectAuthentication {
   method: 'REDIRECT';
   provider: firebase.auth.AuthProvider;
 }
 
-export interface SignOutAuthenticationInput {
+export interface SignOutAuthentication {
   method: 'SIGN_OUT';
 }
 
-export interface CreateUserAuthenticationInput {
+export interface CreateUserAuthentication {
   method: 'CREATE_USER';
   email: string;
   password: string;
 }
 
-export interface GetRedirectResultAuthenticationInput {
+export interface GetRedirectResultAuthentication {
   method: 'GET_REDIRECT_RESULT';
 }
 
-export type AuthenticationInput =
-  AnonymousAuthenticationInput |
-  EmailAndPasswordAuthenticationInput |
-  PopupAuthenticationInput |
-  RedirectAuthenticationInput |
-  SignOutAuthenticationInput |
-  CreateUserAuthenticationInput |
-  GetRedirectResultAuthenticationInput;
+export type AuthenticationType =
+  AnonymousAuthentication |
+  EmailAndPasswordAuthentication |
+  PopupAuthentication |
+  RedirectAuthentication |
+  SignOutAuthentication |
+  CreateUserAuthentication |
+  GetRedirectResultAuthentication;
 
-export type AuthenticationOutput = {
+export type Authentication = {
   error: AuthenticationError | null;
   userCredential: firebase.auth.UserCredential;
 };
