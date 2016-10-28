@@ -45,7 +45,7 @@ describe.only(`user registration screen`, () => {
       });
 
       describe(`name FIELDSET element`, () => {
-        it(`has a LEGEND element of text 'Name'`, (done) => {
+        it(`has a LEGEND element with text 'Name'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -87,7 +87,7 @@ describe.only(`user registration screen`, () => {
             .catch(done);
           });
 
-          it(`has a first name INPUT element`, (done) => {
+          it(`has a first name INPUT element of type 'text'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -131,7 +131,7 @@ describe.only(`user registration screen`, () => {
             .catch(done);
           });
 
-          it(`has a last name INPUT element`, (done) => {
+          it(`has a last name INPUT element of type 'text'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -174,7 +174,7 @@ describe.only(`user registration screen`, () => {
           .catch(done);
         });
 
-        it(`has an email address INPUT element`, (done) => {
+        it(`has an email address INPUT element of type 'email'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -216,7 +216,7 @@ describe.only(`user registration screen`, () => {
           .catch(done);
         });
 
-        it(`has a password INPUT element`, (done) => {
+        it(`has a password INPUT element of type 'password'`, (done) => {
         const sinks: UserRegistrationSinks = userRegistrationFixture();
 
         sinks.DOM.observe((view: VNode) => {
@@ -244,7 +244,7 @@ describe.only(`user registration screen`, () => {
       });
 
       describe(`birthday FIELDSET element`, () => {
-        it(`has a LEGEND element of text 'Birthday'`, (done) => {
+        it(`has a LEGEND element with text 'Birthday'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -286,7 +286,7 @@ describe.only(`user registration screen`, () => {
             .catch(done);
           });
 
-          it(`has a birth month INPUT element`, (done) => {
+          it(`has a birth month INPUT element of type text`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
@@ -330,12 +330,12 @@ describe.only(`user registration screen`, () => {
             .catch(done);
           });
 
-          it(`has a birthday INPUT element`, (done) => {
+          it(`has a birthday INPUT element of type 'text' and a maxlength '2'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
             const matches = domSelect(
-              `input#BirthDay-input[type='text'][name='BirthDay']`,
+              `input#BirthDay-input[type='text'][name='BirthDay'][maxlength='2']`,
               view);
 
             assert.strictEqual(matches.length, 1);
@@ -374,12 +374,12 @@ describe.only(`user registration screen`, () => {
             .catch(done);
           });
 
-          it(`has a birth year INPUT element`, (done) => {
+          it(`has a birth year INPUT element of type 'text' and a maxlength '4'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
             const matches = domSelect(
-              `input#BirthYear-input[type='text'][name='BirthYear']`,
+              `input#BirthYear-input[type='text'][name='BirthYear'][maxlength='4']`,
               view);
 
             assert.strictEqual(matches.length, 1);
@@ -417,7 +417,7 @@ describe.only(`user registration screen`, () => {
           .catch(done);
         });
 
-        it(`has a telephone number INPUT element`, (done) => {
+        it(`has a telephone number INPUT element of type 'tel'`, (done) => {
         const sinks: UserRegistrationSinks = userRegistrationFixture();
 
         sinks.DOM.observe((view: VNode) => {
@@ -459,7 +459,7 @@ describe.only(`user registration screen`, () => {
           .catch(done);
         });
 
-        it(`has a postal code INPUT element`, (done) => {
+        it(`has a postal code INPUT element of type 'text'`, (done) => {
         const sinks: UserRegistrationSinks = userRegistrationFixture();
 
         sinks.DOM.observe((view: VNode) => {
@@ -474,14 +474,14 @@ describe.only(`user registration screen`, () => {
         });
       });
 
-      it(`has a submit BUTTON element`, (done) => {
+      it(`has a submit BUTTON element of type 'submit' with text 'Sign up'`, (done) => {
           const sinks: UserRegistrationSinks = userRegistrationFixture();
 
           sinks.DOM.observe((view: VNode) => {
             const matches = domSelect(`button#Submit-button[type='submit']`, view);
 
             assert.strictEqual(matches.length, 1);
-            assert.strictEqual(matches[0].text, `Sign Up`);
+            assert.strictEqual(matches[0].text, `Sign up`);
             done();
           })
             .catch(done);

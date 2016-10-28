@@ -1,4 +1,4 @@
-import { VNode, div, form, fieldset, legend, label, input, button }
+import { VNode, div, form, fieldset, legend, label, input, button, span }
   from '@motorcycle/dom';
 
 export function view(): VNode {
@@ -8,7 +8,9 @@ export function view(): VNode {
         fieldset(`#Name-fieldset`, [
           legend(`#Name-legend`, `Name`),
           label(`#FirstName-label`, [
-            div(`#FirstName-label-text`),
+            div(`#FirstName-label-text`, [
+              span(`First`)
+            ]),
             input(`#FirstName-input`,
               {
                 attrs: {
@@ -19,7 +21,9 @@ export function view(): VNode {
               })
           ]),
           label(`#LastName-label`, [
-            div(`#LastName-label-text`),
+            div(`#LastName-label-text`, [
+              span(`Last`)
+            ]),
             input(`#LastName-input`, {
               attrs: {
                 type: `text`,
@@ -32,7 +36,9 @@ export function view(): VNode {
       ]), // end: #Name-form-group
       div([
         label(`#EmailAddress-label`, [
-          div(`#EmailAddress-label-text`),
+          div(`#EmailAddress-label-text`, [
+            span(`Email address`)
+          ]),
           input(`#EmailAddress-input`, {
             attrs: {
               type: `email`,
@@ -43,7 +49,9 @@ export function view(): VNode {
       ]), // end: #EmailAddress-form-group
       div([
         label(`#Password-label`, [
-          div(`#Password-label-text`),
+          div(`#Password-label-text`, [
+              span(`Password`)
+            ]),
           input(`#Password-input`, {
             attrs: {
               type: `password`,
@@ -56,7 +64,9 @@ export function view(): VNode {
         fieldset(`#Birthday-fieldset`, [
           legend(`#Birthday-legend`, `Birthday`),
           label(`#BirthMonth-label`, [
-            div(`#BirthMonth-label-text`),
+            div(`#BirthMonth-label-text`, [
+              span(`Month`)
+            ]),
             input(`#BirthMonth-input`,
               {
                 attrs: {
@@ -66,22 +76,28 @@ export function view(): VNode {
               })
           ]),
           label(`#BirthDay-label`, [
-            div(`#BirthDay-label-text`),
+            div(`#BirthDay-label-text`, [
+              span(`Day`)
+            ]),
             input(`#BirthDay-input`,
               {
                 attrs: {
                   type: `text`,
-                  name: `BirthDay`
+                  name: `BirthDay`,
+                  maxlength: `2`
                 }
               })
           ]),
           label(`#BirthYear-label`, [
-            div(`#BirthYear-label-text`),
+            div(`#BirthYear-label-text`, [
+              span(`Year`)
+            ]),
             input(`#BirthYear-input`,
               {
                 attrs: {
                   type: `text`,
-                  name: `BirthYear`
+                  name: `BirthYear`,
+                  maxlength: '4'
                 }
               })
           ]),
@@ -89,7 +105,9 @@ export function view(): VNode {
       ]), // end: #Birthday-form-group
       div([
         label(`#TelephoneNumber-label`, [
-          div(`#TelephoneNumber-label-text`),
+          div(`#TelephoneNumber-label-text`, [
+            span(`Telephone number`)
+          ]),
           input(`#TelephoneNumber-input`, {
             attrs: {
               type: `tel`,
@@ -100,7 +118,9 @@ export function view(): VNode {
       ]), // end: #TelephoneNumber-form-group
       div([
         label(`#PostalCode-label`, [
-          div(`#PostalCode-label-text`),
+          div(`#PostalCode-label-text`, [
+            span(`ZIP code`)
+          ]),
           input(`#PostalCode-input`, {
             attrs: {
               type: `text`,
@@ -114,7 +134,7 @@ export function view(): VNode {
           attrs: {
             type: `submit`
           }
-        }, `Sign Up`)
+        }, `Sign up`)
       ]), // end: #Actions-form-group
     ])
   ]);
