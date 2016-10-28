@@ -8,12 +8,14 @@ import { merge } from 'ramda';
 
 import Landing from './ui/screens/Landing';
 import Login from './ui/screens/Login';
+import { UserRegistration } from './ui/screens/UserRegistration'
 
 import ComponentRouter from './components/ComponentRouter';
 
 const routes = {
   '/': Landing,
-  '/login': Login
+  '/login': Login,
+  '/join': UserRegistration
 };
 
 export interface MainSinks extends Sinks {
