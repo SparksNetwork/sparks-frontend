@@ -16,7 +16,7 @@ Two decisions to be taken :
 - The implementation of the `forgotPassword` feature implies some modification on the authentication driver to more accurately report authentication state. Go/No go
 - Do we bother managing authentication edge cases (that is, now, can always be done later)?
 
-Follows a description of the main and edge cases which trigger the necessity to take those decisions.
+Follows a description of the main and edge cases which trigger the necessity to take those decisions and the proposed API changes for the auth driver.
 
 ### Main cases
 #### reset password code is correct
@@ -26,7 +26,25 @@ Follows a description of the main and edge cases which trigger the necessity to 
 - Second option is to hide/show the modify password fields
   + this implies modifying the authentication driver which so far does not allow to track the result of operations other than logging in (`isAuthenticated` property). 
 
-In both options, it would be necessary in that scenario to extend the auth driver to include the executed method in its return value. This would allow, while staying on the same page, or when changing page, to precisely know the state in which we stand (LOGGED_IN - already discriminated, PASSWORD_SENT, CODE_ENTERED, etc.) and reactively display the correct view.
+In both options, it would be necessary in that scenario to extend the auth driver to include the executed method in its return value - that method should be the exact same method that is passed to the auth driver. This would allow, while staying on the same page, or when changing page, to precisely know the state in which we stand (LOGGED_IN - already discriminated, PASSWORD_SENT, CODE_ENTERED, etc.) and reactively display the correct view.
+
+##### Proposed modifications of auth driver : 
+- API call output
+```
+{
+  authMethod: String,
+  authResult: Any, // could be further refined though if necessary
+  authError: AuthenticationError
+}
+```
+
+- valid driver methods (services?)
+```
+- should include methods for :
+  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#verifyPasswordResetCode
+  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#confirmPasswordReset
+  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth#sendPasswordResetEmail
+```
 
 ### Edge cases
 Then there are some edge cases to think about. 

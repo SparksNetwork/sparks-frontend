@@ -5,17 +5,20 @@ import firebase = require('firebase');
 import {
   AuthenticationError
 } from '../../drivers/firebase-authentication';
-import {isSink} from '../../utils/testing/checks'
 
-//import { MockFirebase } from './MockFirebase';
-//import { mockStream } from './MockStream';
 import {AuthenticationState} from './types'
 import {
   div, span, section, form, fieldset, label, a, p, input, h1, h4, button, VNode
 } from '@motorcycle/dom';
-import {Stream, combine, merge as mergeM, empty} from 'most';
+import {Stream, combine, merge as mergeM, empty, never} from 'most';
 import {cssClasses} from '../../utils/classes';
-import {forgotPasswordView, ForgotPasswordView} from './ForgotPasswordView';
+import ForgotPasswordComponent from './index.ts';
+import {
+  isFunction, hasExpectedSinks,
+  analyzeTestResults as _analyzeTestResults, plan
+} from '../../utils/testing/checks';
+import {runTestScenario} from '../../utils/testing/runTestScenario'
+import {makeMockDOMSource} from '../../utils/testing/mockDOM'
 
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
@@ -67,6 +70,10 @@ const viewNoAuthError = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+const authenticationStateNoAuthError: AuthenticationState = {
+  isAuthenticated: false,
+  authenticationError: null
+}
 
 const viewAuthErrorInvalidEmail = section(classes.sel('photo-background'), {
   style: {
@@ -206,105 +213,102 @@ const viewAuthErrorUserLoggedIn = section(classes.sel('photo-background'), {
   ])
 ]);
 
-describe('On receiving the authentication state corresponding to a user not' +
-  ' logged-in, and who have not yet been attempted to be identified', () => {
-  const authenticationState: AuthenticationState = {
-    isAuthenticated: false,
-    authenticationError: null
-  }
-  const actual = forgotPasswordView(authenticationState);
-  const expected = viewNoAuthError;
+const dummySources = {DOM: never(), authenticationState$: never(),};
+const dummyIncompleteSources = {DOM: never()};
 
-  it('should not display any feedback message, should display a form' +
-    ' allowing to send an email, and a cancel and send button', () => {
-    const message = [
-      'should not display a feedback message',
-      'should display a form allowing to send an email',
-      'should display a cancel and send button'
-    ].join('\n')
-
-    assert.deepStrictEqual(actual, expected, message);
-  });
-});
-
-describe('On receiving a authentication error', () => {
-  const authenticationStateInvalidEmail: AuthenticationState = {
-    isAuthenticated: false,
-    authenticationError: {
-      code: 'auth/invalid-email',
-      message: 'dummy'
-    } as AuthenticationError
-  }
-
-  const actualInvalidEmail = forgotPasswordView(authenticationStateInvalidEmail);
-
-  it('should display an invalid email error in case of a' +
-    ' auth/invalid-email authentication error', () => {
-    const message = [
-      'should not display a feedback message',
-      'should display a form allowing to send an email',
-      'should display a cancel and send button'
-    ].join('\n')
-
-    assert.deepStrictEqual(actualInvalidEmail, viewAuthErrorInvalidEmail, message);
+describe('The ForgotPassword component', () => {
+  it('should be a function', () => {
+    assert.ok(isFunction(ForgotPasswordComponent));
   });
 
-  it('should display an user not found error in case of a' +
-    ' auth/user-not-found authentication error', () => {
-    const authenticationStateUserNotFound: AuthenticationState = {
-      isAuthenticated: false,
-      authenticationError: {
-        code: 'auth/user-not-found',
-        message: 'dummy'
-      } as AuthenticationError
-    }
-
-    const actualUserNoFound = forgotPasswordView(authenticationStateUserNotFound);
-
-    const message = [
-      'should not display a feedback message',
-      'should display a form allowing to send an email',
-      'should display a cancel and send button'
-    ].join('\n')
-
-    assert.deepStrictEqual(actualUserNoFound, viewAuthErrorUserNotFound, message);
+  it('should be called with a source list including authenticationState$', () => {
+    assert.throws(()=>ForgotPasswordComponent(dummyIncompleteSources), 'throws an error when at least one expected source is missing')
   });
 
-});
+  // TODO : this is already included in the output tests, add it somewhere
+//  //it('should return at least DOM, authentication, and route sinks', () => {
+//    assert.ok(
+//      hasExpectedSinks(ForgotPasswordComponent(dummySources), ['DOM',
+// 'authentication$', 'router']),
+//      'computes DOM, authentication, and route sinks'
+//    )
+//  });
 
-describe('On receiving a authentication message which indicates the user is' +
-  ' logged-in', () => {
-  const authenticationStateUserLoggedIn: AuthenticationState = {
-    isAuthenticated: true,
-    authenticationError: null
-  }
+  // TODO : change this or add transition scenario
+  // not logged-in -> logged in successfully
+  // NOTE : there are 4 starting scenariis, write the possibilities
+  describe('When the user is not already logged in AND' +
+    ' no authentication was attempted yet (authenticationState)', ()=> {
+    it('should display a screen allowing to enter a new email', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3)(done));
 
-  const actualUserLoggedIn = forgotPasswordView(authenticationStateUserLoggedIn);
+      const testInputsNotLoggedInNoAuthOpYet = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateNoAuthError}
+          }
+        }
+      ]
 
-  it('should display a warning message', () => {
-    const message = [
-      'should display a warning message',
-      'should display a form allowing to send an email',
-      'should display a cancel and send button'
-    ].join('\n')
+      const expected = {
+        DOM: {
+          outputs: [viewNoAuthError],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
 
-    assert.deepStrictEqual(actualUserLoggedIn, viewAuthErrorUserLoggedIn, message);
-  });
+      runTestScenario(testInputsNotLoggedInNoAuthOpYet, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
 
-});
 
-describe('ForgotPasswordView component', () => {
-  it('returns a DOM sink and only a DOM sink', (done) => {
-    const sources = {
-      authenticationState$ : empty()
-    }
-    const actualSinks = ForgotPasswordView(sources)
-    assert.ok(isSink(actualSinks.DOM), 'returns a DOM sink')
-    assert.equal(keys(actualSinks).length, 1, 'returns only a DOM sink')
-    done();
+    })
   })
 
- // TODO : spying on forgotPasswordView and checking that it is called
-  // with the values from authenticationState$
+  describe('When the user is already logged in (authenticationState)', ()=> {
+    it('should display a screen with a warning message (user already' +
+      ' logged-in) and allowing to enter an email', (done) => {
 
-});
+    })
+  })
+
+  describe('When the user is not already logged in AND' +
+    ' authentication was unsucessful due to an invalid' +
+    ' email (authenticationState)', ()=> {
+    it('should display a screen with an error message (invalid email' +
+      ' address) and allowing to enter a new email', (done) => {
+
+    })
+  })
+
+  describe('When the user is not already logged in AND' +
+    ' authentication was unsucessful because the email could not be matched' +
+    ' to a user (authenticationState)', ()=> {
+    it('should display a screen with an error message (user not found)' +
+      ' and allowing to enter a new email', (done) => {
+
+    })
+  })
+
+})

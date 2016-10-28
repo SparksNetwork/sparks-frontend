@@ -7,5 +7,5 @@ import {
 
 export type AuthenticationState = {
   isAuthenticated: boolean,
-  authenticationError: AuthenticationError
+  authenticationError: AuthenticationError | null
 }

@@ -1,6 +1,7 @@
 import {Sources, Sinks, Source} from '../../components/types';
 import {AuthenticationState} from './types'
 import {
+  DOMSource,
   div,
   span,
   section,
@@ -15,14 +16,13 @@ import {
   button,
   VNode
 } from '@motorcycle/dom';
-import {Stream, combine, merge as mergeM} from 'most';
 
 import {cssClasses} from '../../utils/classes';
 const classes = cssClasses({});
 
 const backgroundImage = require('assets/images/login-background.jpg');
 
-export default function ForgotPasswordView(sources: Sources): Sinks {
+function ForgotPasswordView(sources: Sources): Sinks & {DOM: DOMSource;} {
   const {authenticationState$} = sources;
 
   return {
@@ -39,7 +39,7 @@ const authErrorFeedbackMap = {
 }
 
 const authenticationFeedbackTypeMap = {
-  'none' : '',
+  'none': '',
   'authenticated': 'warning',
   'failedAuthentication': 'error',
 }
@@ -66,11 +66,15 @@ function computeAuthFeedback(authenticationState) {
   }
 }
 
-// TODO : set the behavior for authenticationState
-// - if authentication error : display error message
-// - if user already authenticated : display warning message
-// - if user is not autenticated : display no error/warning
-export function forgotPasswordView(authenticationState: AuthenticationState): VNode {
+/**
+ * Computes the view as a function of the authentication state
+ * - if authentication error : display error message
+ * - if user already authenticated : display warning message
+ * - if user is not autenticated : display no error/warning
+ * @param {AuthenticationState} authenticationState
+ * @returns {VNode}
+ */
+function forgotPasswordView(authenticationState: AuthenticationState): VNode {
   console.warn('authState', authenticationState);
 
   const {authenticationFeedbackPhrase, authenticationFeedbackType} =
@@ -122,4 +126,9 @@ export function forgotPasswordView(authenticationState: AuthenticationState): VN
       ]),
     ])
   ]);
+}
+
+export {
+  forgotPasswordView,
+  ForgotPasswordView
 }
