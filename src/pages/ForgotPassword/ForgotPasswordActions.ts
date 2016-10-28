@@ -59,7 +59,7 @@ function computeForgotPasswordSinks(sources, childSinks) {
       .tap(function (x) {
         console.warn('authentication', x)
       })
-      //      .startWith({method: GET_REDIRECT_RESULT})
+      // .startWith({method: GET_REDIRECT_RESULT})
       .multicast(),
     router: cancel$
       .tap(function (x) {

@@ -11,7 +11,7 @@ import {
 } from '../../drivers/firebase-authentication';
 import {Stream, merge, combine} from 'most';
 
-const classes = cssClasses({});
+const classes : any= cssClasses({});
 
 // TODO : edge cases. null string, empty string etc.
 // TODO : move to an util library
@@ -47,6 +47,7 @@ function CancelIntent(sinkName) {
       return {
         [sinkName]: domSource.select(classes.sel(cssSelector)).events(event)
           .tap(ev => ev.preventDefault())
+          .map(x => '/')
       }
     }
   }
@@ -90,5 +91,6 @@ function SendEmailIntent(sinkName) {
 export {
   ForgotPasswordIntents,
   CancelIntent,
-  SendEmailIntent
+  SendEmailIntent,
+  classes
 }

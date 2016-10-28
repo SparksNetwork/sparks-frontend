@@ -3,7 +3,8 @@ import {ForgotPasswordView} from './ForgotPasswordView';
 import {
   ForgotPasswordIntents,
   SendEmailIntent,
-  CancelIntent
+  CancelIntent,
+  classes as forgotPasswordClasses
 } from './ForgotPasswordIntents'
 import {
   ForgotPasswordActions,
@@ -13,7 +14,7 @@ import {
 
 // TODO add an interface that ForgotPasswordComponent satisfies
 
-const ForgotPasswordComponent = ForgotPasswordActions({
+const _ForgotPasswordComponent = ForgotPasswordActions({
   merge: computeForgotPasswordSinks,
   preConditions: assertHasExpectedSources(['authenticationState$'])
 }, [
@@ -23,6 +24,11 @@ const ForgotPasswordComponent = ForgotPasswordActions({
   }, [ForgotPasswordView])
 ])
 
-export default sources => isolate(ForgotPasswordComponent)(sources);
+const ForgotPasswordComponent = sources => isolate(_ForgotPasswordComponent)(sources);
+
+export {
+  forgotPasswordClasses,
+  ForgotPasswordComponent
+}
 
 

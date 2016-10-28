@@ -41,9 +41,19 @@ In both options, it would be necessary in that scenario to extend the auth drive
 - valid driver methods (services?)
 ```
 - should include methods for :
-  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#verifyPasswordResetCode
-  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#confirmPasswordReset
-  - https://firebase.google.com/docs/reference/js/firebase.auth.Auth#sendPasswordResetEmail
+  1. https://firebase.google.com/docs/reference/js/firebase.auth.Auth#sendPasswordResetEmail
+  2. https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#verifyPasswordResetCode
+  3. https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#confirmPasswordReset
+```
+
+At present, the following choice have been implemented :
+
+ 1. sendPasswordResetEmail driver command
+ ```
+ {
+ email: String,
+ method: "SEND_PASSWORD_RESET_EMAIL"
+ }
 ```
 
 ### Edge cases

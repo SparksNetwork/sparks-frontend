@@ -1,24 +1,25 @@
 /// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import {keys} from 'ramda'
+// import {Diff, NativeAdapter, CompactCodec} from 'modern-diff'
+// better use http://benjamine.github.io/jsondiffpatch/demo/index.html
 import firebase = require('firebase');
 import {
   AuthenticationError
 } from '../../drivers/firebase-authentication';
-
 import {AuthenticationState} from './types'
 import {
   div, span, section, form, fieldset, label, a, p, input, h1, h4, button, VNode
 } from '@motorcycle/dom';
 import {Stream, combine, merge as mergeM, empty, never} from 'most';
-import {cssClasses} from '../../utils/classes';
-import ForgotPasswordComponent from './index.ts';
 import {
-  isFunction, hasExpectedSinks,
+  isFunction,
+  decorateWithPreventDefault, stubClickEvent, stubSubmitEvent, stubInputEvent,
   analyzeTestResults as _analyzeTestResults, plan
 } from '../../utils/testing/checks';
 import {runTestScenario} from '../../utils/testing/runTestScenario'
 import {makeMockDOMSource} from '../../utils/testing/mockDOM'
+import {ForgotPasswordComponent, forgotPasswordClasses} from './index.ts';
+import {cssClasses} from '../../utils/classes';
 
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
@@ -70,6 +71,7 @@ const viewNoAuthError = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+
 const authenticationStateNoAuthError: AuthenticationState = {
   isAuthenticated: false,
   authenticationError: null
@@ -120,6 +122,13 @@ const viewAuthErrorInvalidEmail = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+const authenticationStateInvalidEmail: AuthenticationState = {
+  isAuthenticated: false,
+  authenticationError: {
+    code: 'auth/invalid-email',
+    message: 'dummy'
+  } as AuthenticationError
+}
 
 const viewAuthErrorUserNotFound = section(classes.sel('photo-background'), {
   style: {
@@ -166,8 +175,15 @@ const viewAuthErrorUserNotFound = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+const authenticationStateUserNotFound: AuthenticationState = {
+  isAuthenticated: false,
+  authenticationError: {
+    code: 'auth/user-not-found',
+    message: 'dummy'
+  } as AuthenticationError
+}
 
-const viewAuthErrorUserLoggedIn = section(classes.sel('photo-background'), {
+const viewAuthErrorUserAlreadyLoggedIn = section(classes.sel('photo-background'), {
   style: {
     // QUESTION: where does this url function comes from
     backgroundImage: `url(${backgroundImage})`
@@ -212,7 +228,12 @@ const viewAuthErrorUserLoggedIn = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+const authenticationStateUserAlreadyLoggedIn: AuthenticationState = {
+  isAuthenticated: true,
+  authenticationError: null
+}
 
+const dummyEmail = 'dummy@email.com';
 const dummySources = {DOM: never(), authenticationState$: never(),};
 const dummyIncompleteSources = {DOM: never()};
 
@@ -240,12 +261,36 @@ describe('The ForgotPassword component', () => {
   describe('When the user is not already logged in AND' +
     ' no authentication was attempted yet (authenticationState)', ()=> {
     it('should display a screen allowing to enter a new email', (done) => {
-      const analyzeTestResults = _analyzeTestResults(assert, plan(3)(done));
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
 
       const testInputsNotLoggedInNoAuthOpYet = [
         {
           authenticationState$: {
             diagram: 'a-', values: {a: authenticationStateNoAuthError}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
           }
         }
       ]
@@ -289,6 +334,72 @@ describe('The ForgotPassword component', () => {
   describe('When the user is already logged in (authenticationState)', ()=> {
     it('should display a screen with a warning message (user already' +
       ' logged-in) and allowing to enter an email', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
+
+      const testInputsUserAlreadyLoggedIn = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateUserAlreadyLoggedIn}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        }
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewAuthErrorUserAlreadyLoggedIn],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      runTestScenario(testInputsUserAlreadyLoggedIn, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+
 
     })
   })
@@ -299,6 +410,72 @@ describe('The ForgotPassword component', () => {
     it('should display a screen with an error message (invalid email' +
       ' address) and allowing to enter a new email', (done) => {
 
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
+
+      const testInputsUserInvalidEmail = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateInvalidEmail}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        }
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewAuthErrorInvalidEmail],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      runTestScenario(testInputsUserInvalidEmail, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+
     })
   })
 
@@ -307,6 +484,223 @@ describe('The ForgotPassword component', () => {
     ' to a user (authenticationState)', ()=> {
     it('should display a screen with an error message (user not found)' +
       ' and allowing to enter a new email', (done) => {
+
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
+
+      const testInputsUserInvalidEmail = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateUserNotFound}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        }
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewAuthErrorUserNotFound],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      runTestScenario(testInputsUserInvalidEmail, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+
+    })
+  })
+
+  describe('When the user is not already logged in AND' +
+    ' the user clicks on cancel button', ()=> {
+    it('should navigate to screen "/"', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
+
+      const testInputsUserInvalidEmail = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateNoAuthError}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: 'a-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        }
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewNoAuthError],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: ['/'],
+          successMessage: 'DOM router produces home route "/" as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      runTestScenario(testInputsUserInvalidEmail, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+
+    })
+  })
+
+  describe('When the user is not already logged in AND' +
+    ' the user clicks on submit button AND email format is (auto-)validated' +
+    ' by the DOM', ()=> {
+    it('should emit a sendPasswordResetEmail command to the' +
+      ' authentication driver ', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const cancelSelector = forgotPasswordClasses.sel('cancel');
+      const loginEmailSelector = forgotPasswordClasses.sel('login.email');
+      const formSelector = 'form';
+
+      const testInputsUserInvalidEmail = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateNoAuthError}
+          }
+        },
+        // NOTE : no value emitted in this case scenario, following code
+        // kept for copy paste reasons
+        {
+          [`DOM!${cancelSelector}@click`]: {
+            diagram: '-',
+            values: {a: decorateWithPreventDefault(stubClickEvent(undefined))}
+          }
+        },
+        // Note that as it is logical, the input must emit before the submit
+        {
+          [`DOM!${loginEmailSelector}@input`]: {
+            diagram: 'a-',
+            values: {a: decorateWithPreventDefault(stubInputEvent(dummyEmail))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: 'a-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewNoAuthError],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [{
+            email: dummyEmail,
+            method: "SEND_PASSWORD_RESET_EMAIL"
+          }],
+          successMessage: 'DOM authentication$ produces' +
+          ' SEND_PASSWORD_RESET_EMAIL command as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      runTestScenario(testInputsUserInvalidEmail, expected, ForgotPasswordComponent, {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
 
     })
   })

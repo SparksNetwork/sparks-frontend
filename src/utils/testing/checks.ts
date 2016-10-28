@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 import {
-  mapObjIndexed, flatten, keys, always, reject, isNil, uniq, addIndex,
+  mapObjIndexed, flatten, keys, always, reject, isNil, uniq, addIndex, merge as mergeR,
   reduce, all, either, map, values, equals, map as mapR, contains, identity
 } from 'ramda'
 import * as $ from 'most'
@@ -188,12 +188,13 @@ function hasExpectedSinks(sinks, expectedSinkNames) {
 function analyzeTestResults(assert, done) {
   return function analyzeTestResults(actual, expected, message) {
     assert.deepEqual(actual, expected, message)
+    // TODO : find a library to display the diff between the two
     done();
   }
 }
 
-function plan(n) {
-  return function _done(done) {
+function plan(n, done) {
+  return function _done() {
     if (--n === 0) {
       done()
     }
@@ -532,6 +533,37 @@ function makeDivVNode(x) {
   }
 }
 
+function decorateWithPreventDefault(stubbedEvent, preventDefaultFn?) {
+  return mergeR({
+      preventDefault: preventDefaultFn || always(undefined)
+    },
+    stubbedEvent);
+}
+
+function stubClickEvent(targetValue){
+  return {
+    type : 'click',
+    target : {
+      value : targetValue
+    }
+  }
+}
+
+function stubSubmitEvent(){
+  return {
+    type : 'submit',
+  }
+}
+
+function stubInputEvent(targetValue){
+  return {
+    type : 'input',
+    target : {
+      value : targetValue
+    }
+  }
+}
+
 export {
   makeDivVNode,
   assertSignature,
@@ -568,4 +600,8 @@ export {
   isMergeSinkFn,
   trace,
   emitNullIfEmpty,
+  decorateWithPreventDefault,
+  stubClickEvent,
+  stubSubmitEvent,
+  stubInputEvent
 }
