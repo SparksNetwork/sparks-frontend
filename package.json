@@ -117,6 +117,7 @@
     "node-polyglot": "^2.0.0",
     "ramda": "^0.22.1",
     "sparks-styleguide": "git+https://github.com/SparksNetwork/styleguide.git",
-    "switch-path": "^1.1.8"
+    "switch-path": "^1.1.8",
+    "typestyle": "^0.5.6"
   }
 }
