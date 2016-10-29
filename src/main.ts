@@ -7,8 +7,10 @@ import { Sources, Sinks } from './components/types';
 import { merge } from 'ramda';
 
 import Landing from './ui/screens/Landing';
-import Login from './ui/screens/Login';
-import { UserRegistration } from './ui/screens/UserRegistration'
+import {
+  Login,
+  UserRegistration
+} from './ui/screens';
 
 import ComponentRouter from './components/ComponentRouter';
 
