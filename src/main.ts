@@ -15,7 +15,7 @@ import ComponentRouter from './components/ComponentRouter';
 const routes = {
   '/': Landing,
   '/login': Login,
-  '/join': UserRegistration
+  '/signup': UserRegistration
 };
 
 export interface MainSinks extends Sinks {
