@@ -32,10 +32,20 @@ In both options, it would be necessary in that scenario to extend the auth drive
 - API call output
 ```
 {
-  authMethod: String,
-  authResult: Any, // could be further refined though if necessary
-  authError: AuthenticationError
+  method: String,
+  result: Any, // could be further refined though if necessary
+  error: AuthenticationError,
 }
+// Note that user credentials leave the signature as API calls returns different types of object, among which :
+// - void
+// - firebase.auth.ActionCodeInfo
+// - firebase.User 
+// - Array of string 
+// - firebase.auth.UserCredential 
+// - non-null function()
+// - string
+// The `isAuthenticated` and other properties could be derived from listening on `onAuthStateChanged` and combining with results from subsequent API calls
+// Note the initial value must be null in all relevant fields
 ```
 
 - valid driver methods (services?)
@@ -44,6 +54,15 @@ In both options, it would be necessary in that scenario to extend the auth drive
   1. https://firebase.google.com/docs/reference/js/firebase.auth.Auth#sendPasswordResetEmail
   2. https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#verifyPasswordResetCode
   3. https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#confirmPasswordReset
+```
+
+- method should be an enum instead of strings, which can be defined in one place and shared
+```
+export const enum AuthMethods {
+  VERIFY_PASSWORD_RESET_CODE,
+  CONFIRM_PASSWORD_RESET,
+  SIGN_IN_WITH_EMAIL_AND_PASSWORD
+}
 ```
 
 At present, the following choice have been implemented :

@@ -6,13 +6,14 @@ import firebase = require('firebase');
 import {
   AuthenticationError
 } from '../../drivers/firebase-authentication';
-import {AuthenticationState} from './types'
+import {AuthenticationState} from '../types/authentication/types'
 import {
   div, span, section, form, fieldset, label, a, p, input, h1, h4, button, VNode
 } from '@motorcycle/dom';
-import {Stream, combine, merge as mergeM, empty, never} from 'most';
+import {Stream, combine, merge as mergeM, empty, never, just} from 'most';
+import {always} from 'ramda';
 import {
-  isFunction,
+  isFunction, hasExpectedSinks,
   decorateWithPreventDefault, stubClickEvent, stubSubmitEvent, stubInputEvent,
   analyzeTestResults as _analyzeTestResults, plan
 } from '../../utils/testing/checks';
@@ -234,7 +235,14 @@ const authenticationStateUserAlreadyLoggedIn: AuthenticationState = {
 }
 
 const dummyEmail = 'dummy@email.com';
-const dummySources = {DOM: never(), authenticationState$: never(),};
+const stubbedDOMSource = {
+  select : function () {
+    return {
+      events : always(just(null))
+    }
+  }
+};
+const dummySources = {DOM: stubbedDOMSource, authenticationState$: never(),};
 const dummyIncompleteSources = {DOM: never()};
 
 describe('The ForgotPassword component', () => {
@@ -246,18 +254,16 @@ describe('The ForgotPassword component', () => {
     assert.throws(()=>ForgotPasswordComponent(dummyIncompleteSources), 'throws an error when at least one expected source is missing')
   });
 
-  // TODO : this is already included in the output tests, add it somewhere
-//  //it('should return at least DOM, authentication, and route sinks', () => {
-//    assert.ok(
-//      hasExpectedSinks(ForgotPasswordComponent(dummySources), ['DOM',
-// 'authentication$', 'router']),
-//      'computes DOM, authentication, and route sinks'
-//    )
-//  });
+  it('should return at least DOM, authentication, and route sinks', () => {
 
-  // TODO : change this or add transition scenario
-  // not logged-in -> logged in successfully
-  // NOTE : there are 4 starting scenariis, write the possibilities
+    assert.ok(
+      hasExpectedSinks(ForgotPasswordComponent(dummySources), [
+        'DOM', 'authentication$', 'router'
+      ]),
+      'computes DOM, authentication, and route sinks'
+    )
+  });
+
   describe('When the user is not already logged in AND' +
     ' no authentication was attempted yet (authenticationState)', ()=> {
     it('should display a screen allowing to enter a new email', (done) => {
@@ -704,5 +710,10 @@ describe('The ForgotPassword component', () => {
 
     })
   })
+
+  // TODO : add transition scenario? not logged in -> submit -> logged in?
+  // TODO : add transition scenario? not logged in -> submit -> invalid email?
+  // Not necessary if we make hypothesis about the code (whitebox), but
+  // could be necessary in a TDD context
 
 })

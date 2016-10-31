@@ -98,6 +98,7 @@ module.exports = {
 
     entry: {
         forgotPassword: [path.join(srcPath, 'pages/ForgotPassword/unit-tests.ts')],
+        resetPassword : [path.join(srcPath, 'pages/ResetPassword/unit-tests.ts')],
         testing : [path.join(srcPath, 'utils/testing/unit-tests.ts')],
     },
 

@@ -14,14 +14,18 @@ import hold from '@most/hold';
 import Landing from './Landing';
 // import Login from './Login';
 import LogIn from './_LogIn';
-import ForgotPassword from './ForgotPassword';
+import {ForgotPasswordComponent} from './ForgotPassword';
+import {ResetPasswordComponent, ResetPasswordRouteAdapter} from './ResetPassword';
 import ComponentRouter from '../components/ComponentRouter';
 
 const routes = {
   '/': Landing,
-//  '/login': Login
+  //  '/login': Login
   '/login': LogIn,
-  '/forgotPassword': ForgotPassword
+  // NOTE : would like /auth/resetPassword, but current router does not read
+  // params in `?atr=value&atr=value` form
+  '/auth/reset/:id': ResetPasswordRouteAdapter(ResetPasswordComponent),
+  '/auth/forgotPassword': ForgotPasswordComponent,
 };
 
 export interface MainSinks extends Sinks {
@@ -44,6 +48,7 @@ export interface MainSources extends Sources {
 // TODO : TS typings Sources, [Component] -> Sinks
 function computeAuhenticationState(sources) {
   return sources.authentication$
+  // TODO : update that after ADRs decision on the format of driver output
     .map(authenticationOutput => {
       return {
         isAuthenticated: !!authenticationOutput.userCredential.user,

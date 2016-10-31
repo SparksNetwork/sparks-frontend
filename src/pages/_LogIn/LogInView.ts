@@ -54,7 +54,7 @@ function logInView(randomNumber): VNode {
                 span({polyglot: {phrase: 'login.password'}} as any),
                 span(classes.sel('help'), [
                   a(classes.sel('forgot-password'), {
-                    attrs: {href: 'forgotPassword'},
+                    attrs: {href: 'auth/forgotPassword'},
                     polyglot: {phrase: 'login.forgotPassword'}
                   } as any)
                 ])

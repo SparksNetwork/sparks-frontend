@@ -59,6 +59,9 @@ export type AuthenticationInput =
     PasswordResetAuthenticationInput;
 
 export type AuthenticationOutput = {
+  // TODO : optional properties for now, pending adr decision
+  method? : string;
+  result? : any;
   error: AuthenticationError | null;
   userCredential: firebase.auth.UserCredential;
 };

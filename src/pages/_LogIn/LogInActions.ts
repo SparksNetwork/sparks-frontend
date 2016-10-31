@@ -26,7 +26,7 @@ function redirectToHome() {
 function redirectToForgotPassword() {
   // TODO : for now I pass a string, but when the router is done and
   // mosterized, adjust here
-  return '/forgotPassword'
+  return '/auth/forgotPassword'
 }
 
 function computeAuthenticationSinks(sources, childSinks) {
