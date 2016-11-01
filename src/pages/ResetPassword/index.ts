@@ -1,13 +1,26 @@
 import isolate from '@cycle/isolate';
-import {Stream, combine, merge as mergeM, empty, never, just} from 'most';
-import {cond, complement} from 'ramda';
 import {
-  AuthenticationState,
-  AuthResetState,
-  AuthResetStateE,
-  AuthMethods
+  Stream,
+  combine,
+  merge as mergeM,
+  mergeArray,
+  empty,
+  never,
+  just
+} from 'most';
+import {
+  DOMSource, div, span, section, form, fieldset, label, a, p, input, h1,
+  h4, button, VNode
+} from '@motorcycle/dom';
+import {cond, always} from 'ramda';
+import {Sources, Sinks, Source} from '../../components/types';
+import {
+  AuthenticationState, AuthResetState, AuthResetStateE, AuthMethods
 } from '../types/authentication/types';
 import {Switch, Case} from '../../higher-order-components/combinators/Switch';
+import {cssClasses} from '../../utils/classes';
+import {computeIntents} from './ResetPasswordIntents'
+import {computeView} from './ResetPasswordView'
 
 interface PasswordResetEmailParams {
   mode: string,
@@ -28,6 +41,15 @@ function readRouteParams(_str): Object & any {
   );
 
   return vars;
+}
+
+const classes = cssClasses({});
+const backgroundImage = require('assets/images/login-background.jpg');
+const orElse = always(true);
+const resetPasswordFeedbackTypeMap = {
+  'none': '',
+  'authenticated': 'warning',
+  'failedAuthentication': 'error',
 }
 
 // TODO
@@ -177,6 +199,14 @@ function readRouteParams(_str): Object & any {
 
 // TODO : move that function in utils??
 // TODO : look at https://github.com/unshiftio/url-parse as a replacement
+
+// TODO : move to some utilities repertory
+function setLabel(label) {
+  return function (obj) {
+    return {[label]: obj}
+  }
+}
+
 function computeAuthenticationStateEnum(authenticationState: AuthenticationState) {
   const {method, result, authenticationError} = authenticationState;
   let authStateEnum: AuthResetState = null;
@@ -227,7 +257,7 @@ function computeAuthenticationStateEnum(authenticationState: AuthenticationState
   return authStateEnum;
 }
 
-function checkVerifyPasswordResetSourcesContracts(sources, settings) {
+function checkSourcesContracts(sources, settings) {
   return !!sources.authenticationState$
 }
 
@@ -244,18 +274,46 @@ const ResetPasswordComponentCore = Switch({
 }, [
   // AUTH_INIT is the auth state where no API calls were made yet to the
   // auth driver
-// TODO : do it this time with simple functions
   Case({caseWhen: AuthResetStateE.RESET_PWD_INIT}, [VerifyPasswordResetCode])
 ]);
 
 const ResetPasswordComponent = cond([
-  [checkVerifyPasswordResetSourcesContracts, ResetPasswordComponentCore],
-  [complement(checkVerifyPasswordResetSourcesContracts), throwContractError]
+  [checkSourcesContracts, ResetPasswordComponentCore],
+  [orElse, throwContractError]
 ]);
 
 function VerifyPasswordResetCode(sources, settings) {
+  const {mode, oobCode} = settings;
   console.warn('VerifyPasswordResetCode: settings', settings);
 
+  const state$ = sources.authenticationState$.map(authenticationState => ({
+    authenticationState: authenticationState,
+    authResetState: computeAuthenticationStateEnum(authenticationState)
+  }));
+
+  const viewSinks = state$.map(computeView);
+  const intentsSinks = computeIntents(sources);
+  // TODO : have a look at the switch combinator and see if there is a
+  // passing in settings of the matched on value (would be authStateEnum)
+  // I then would have to get the error from the auth directly or have more
+  // enums... or have an object with two fields, and a custom eq function...
+  // probably the best in fact not to reuse the matched source and avoid
+  // problems
+  const actionSinks = computeActionsSinks(state$, [viewSinks, intentsSinks]);
+
+  return actionSinks;
+
+  function computeActions({mode, oobCode, authenticationState, authResetState}, {view, intents}) {
+    // TODO : REMOVE, the switch/case already does the job of selection the
+    // state for us
+    return {
+      DOM: void 0,
+      authentication$: void 0,
+      router: void 0
+    }
+  }
+
+// TODO : do it this time with simple functions?
   return {
     DOM: never(),
     authentication$: never(),
@@ -272,10 +330,6 @@ function ResetPasswordRouteAdapter(ResetPasswordComponent) {
 
     // return parameterized component
     return function ResetPasswordComponentCurried(sources) {
-      if (!sources.authenticationState$) {
-        throw 'Missing authenticationState$ source!!'
-      }
-
       return isolate(ResetPasswordComponent)(sources, settings);
     }
 

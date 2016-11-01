@@ -37,20 +37,17 @@ const dummySources = {DOM: stubbedDOMSource, authenticationState$: never(),};
 const dummyAuthParams = {mode: 'dummy', oobCode: 'dummy'};
 
 describe('The ResetPassword component', () => {
-  it.skip('should be a function', () => {
-    // TODO
+  it('should be a function', () => {
     assert.ok(isFunction(ResetPasswordComponent));
   });
 
   it('should be called with a source list including' +
     ' authenticationState$', () => {
-    // TODO
     assert.throws(()=>ResetPasswordComponent(dummyIncompleteSources, dummyAuthParams),
       'throws an error when at least one expected source is missing')
   });
 
-  it.skip('should return at least DOM, authentication, and route sinks', () => {
-    // TODO
+  it('should return at least DOM, authentication, and route sinks', () => {
     const sinks = ResetPasswordComponent(dummySources, dummyAuthParams);
 
     const actual = hasExpectedSinks(sinks, ['DOM', 'authentication$', 'router']);
