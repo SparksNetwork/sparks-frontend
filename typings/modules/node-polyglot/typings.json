@@ -1,8 +1,8 @@
 {
   "resolution": "main",
   "tree": {
-    "src": "/home/tylor/code/sparks/sparks-frontend/custom-typings/node-polyglot.d.ts",
+    "src": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/custom-typings/node-polyglot.d.ts",
     "raw": "file:custom-typings/node-polyglot.d.ts",
-    "typings": "/home/tylor/code/sparks/sparks-frontend/custom-typings/node-polyglot.d.ts"
+    "typings": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/custom-typings/node-polyglot.d.ts"
   }
 }
