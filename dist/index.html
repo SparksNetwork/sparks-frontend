@@ -20,6 +20,21 @@
         font-size: 14px;
         font-family: 'Open Sans', sans-serif; }
 
+      /**
+       * 1. Disable iPhone OS, Safari callout information display.
+       * 2. Disable user selection.
+       * 3. Transparent tapped link highlight color.
+       */
+      * {
+        -webkit-touch-callout: none; /* 1 */
+        -ms-user-select: none; /* 2 */
+        -webkit-user-select: none; /* 2 */
+        user-select: none; /* 2 */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important; } /* 3 */
+
+      *, *::after, *::before {
+        box-sizing: inherit; }
+
       body {
         margin: 0; }
 
@@ -27,14 +42,22 @@
         margin: 0;
         font-size: 1.25rem; }
 
+      /**
+       * 1. Prevent iOS zoom on input. See https://goo.gl/kbGyvh
+       * 2. Enable user selection.
+       */
+      input,
+      textarea {
+        font-size: 1.142857143rem; /* 1 */
+        -ms-user-select: auto; /* 2 */
+        -webkit-user-select: auto; /* 2 */
+        user-select: auto; /* 2 */
+      }
+
       img {
         max-width: 100%;
         vertical-align: middle;
         font-style: italic; }
-
-      *, *::after, *::before {
-        box-sizing: inherit;
-      }
 
       #app {
         color: #4A4A4A;
@@ -44,8 +67,7 @@
         flex-direction: column;
         line-height: 1.42857;
         letter-spacing: normal;
-        text-size-adjust: 100%;
-      }
+        text-size-adjust: 100%; }
 
       @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 768px) and (device-height: 1024px) and (orientation: portrait) {
         #app {
@@ -81,7 +103,7 @@
       .c-logo {
         color: #FFF;
         font-family: 'Open Sans', sans-serif;
-        font-size: 1.71429rem;
+        font-size: 24px; /* Use px to avoid scaling */
         font-weight: 700; }
 
         .c-logo__tld {
