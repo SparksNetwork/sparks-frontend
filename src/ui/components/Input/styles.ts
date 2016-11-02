@@ -41,18 +41,20 @@ export const textInputUnderbar: string = style(
   }
 );
 
+export const uniqueRoot = `sn-input`;
+
 export const textInputWebkitPlaceholder = {
-  selector: `${textInputUnderbar}::-webkit-input-placeholder`,
+  selector: `${uniqueRoot} input.${textInputUnderbar}::-webkit-input-placeholder`,
   object: { color: `transparent` }
 };
 
 export const textInputMozPlaceholder = {
-  selector: `${textInputUnderbar}::-moz-placeholder`,
+  selector: `${uniqueRoot} input.${textInputUnderbar}::-moz-placeholder`,
   object: { color: `transparent` }
 };
 
 export const textInputMSPlaceholder = {
-  selector: `${textInputUnderbar}::-ms-placeholder`,
+  selector: `${uniqueRoot} input.${textInputUnderbar}::-ms-placeholder`,
   object: { color: `transparent` }
 };
 

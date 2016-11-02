@@ -21,7 +21,10 @@ function rootVNode(specs: ViewSpecs): VNode {
   const rootVNode: VNode =
     div(
       asSelector(
-        classes(styles.root, specs.props.disabled && styles.disabled)),
+        classes(
+          styles.uniqueRoot,
+          styles.root,
+          specs.props.disabled && styles.disabled)),
       [ containerVNode(specs) ]
     );
 
