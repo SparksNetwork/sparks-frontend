@@ -15,7 +15,7 @@ function mockAsDomSource(mockConfig): DOMSource {
 
 let defaultSources: InputSources;
 
-describe.only(`Input component`, () => {
+describe(`Input component`, () => {
 
   beforeEach(() => {
     defaultSources = { DOM: mockAsDomSource({}) };
