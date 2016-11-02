@@ -55,7 +55,7 @@ function computeAuthFeedback(authenticationState) {
     authenticationState.isAuthenticated
       ? 'authenticated'
       : authenticationState.authenticationError
-      ? 'failedAuthentication'
+      ? 'failed'
       : 'none'
   const authenticationFeedbackType =
     authenticationFeedbackTypeMap[authenticationFeedbackType_]

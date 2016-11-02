@@ -1,3 +1,5 @@
+// TODO BRC : update the rxjs version with the modifications here (eqFn,
+// matched etc.)
 // TODO BRC: remove if we cant run in the browser, or add a switch with env. variable
 console.group = console.group || console.log
 console.groupCollapsed = console.groupCollapsed || console.log
@@ -106,14 +108,14 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
   eqFn = defaultsTo(eqFn, cfg.defaultEqFn)
 
   const shouldSwitch$ = switchSource
-    .map(x => eqFn(caseWhen, x))
+    .map(x => ({isEqual : eqFn(caseWhen, x), value: x}))
 
   const cachedSinks$ = shouldSwitch$
-    .filter(x => x)
+    .filter(x => x.isEqual)
     .map(function (_) {
       const mergedChildrenComponentsSinks = m(
         {},
-        {matched: caseWhen},
+        {matched: _.value},
         childrenComponents)
       return mergedChildrenComponentsSinks(sources, settings)
     })
@@ -315,7 +317,7 @@ function Switch(settings, childComponents) {
 }
 
 function Case(settings, childComponents) {
-  return m(Case, settings, childComponents)
+  return m(caseWhen, settings, childComponents)
 }
 
 export {

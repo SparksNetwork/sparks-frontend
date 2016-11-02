@@ -1,0 +1,8 @@
+- router
+  - get the query string
+  - LOW PRIORITY : make the m-based router component work
+- auth driver
+  - fix the API and types
+- main
+  - move the authentication sources up to the main
+  - separate auth state from auth response from user data

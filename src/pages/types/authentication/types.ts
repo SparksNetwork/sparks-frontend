@@ -6,10 +6,10 @@ import {
 } from '../../../drivers/firebase-authentication';
 
 export type AuthenticationState = {
-  method?: string,
+  method?: string | number | null,
   result?: any,
-  authenticationError: AuthenticationError | null
   isAuthenticated: boolean,
+  authenticationError: AuthenticationError | string | null
 }
 
 // export type AuthResetState =
@@ -29,7 +29,7 @@ export type AuthenticationState = {
 //     | "SIGN_IN_WITH_EMAIL_AND_PASSWORD"
 //     | null;
 
-export const enum AuthResetStateE {
+export const enum AuthResetStateEnum {
   RESET_PWD_INIT,
   VERIFY_PASSWORD_RESET_CODE_OK,
   VERIFY_PASSWORD_RESET_CODE_NOK,
@@ -40,7 +40,7 @@ export const enum AuthResetStateE {
   INVALID_STATE
 }
 
-export type AuthResetState = AuthResetStateE | null
+export type AuthResetState = AuthResetStateEnum | null
 
 export const enum AuthMethods {
   VERIFY_PASSWORD_RESET_CODE,

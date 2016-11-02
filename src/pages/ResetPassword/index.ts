@@ -8,49 +8,23 @@ import {
   never,
   just
 } from 'most';
-import {
-  DOMSource, div, span, section, form, fieldset, label, a, p, input, h1,
-  h4, button, VNode
-} from '@motorcycle/dom';
-import {cond, always} from 'ramda';
+import {equals, cond, always, merge as mergeR, mergeAll} from 'ramda';
 import {Sources, Sinks, Source} from '../../components/types';
 import {
-  AuthenticationState, AuthResetState, AuthResetStateE, AuthMethods
+  AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
 } from '../types/authentication/types';
+import {readRouteParams} from '../../utils';
 import {Switch, Case} from '../../higher-order-components/combinators/Switch';
-import {cssClasses} from '../../utils/classes';
 import {computeIntents} from './ResetPasswordIntents'
-import {computeView} from './ResetPasswordView'
+import {computeView, classes as resetPasswordClasses} from './ResetPasswordView'
+import {computeActions} from './ResetPasswordActions'
 
 interface PasswordResetEmailParams {
   mode: string,
   oobCode: string
 }
 
-function readRouteParams(_str): Object & any {
-  let vars = {};
-  // copy that string to not modify it
-  const str = (' ' + _str).slice(1);
-
-  str.replace(
-    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-    function (m, key, value) { // callback
-      vars[key] = value !== undefined ? value : '';
-      return ""
-    }
-  );
-
-  return vars;
-}
-
-const classes = cssClasses({});
-const backgroundImage = require('assets/images/login-background.jpg');
 const orElse = always(true);
-const resetPasswordFeedbackTypeMap = {
-  'none': '',
-  'authenticated': 'warning',
-  'failedAuthentication': 'error',
-}
 
 // TODO
 // authState {authenticationMethod, authenticationResult, authenticationError}:
@@ -193,19 +167,8 @@ const resetPasswordFeedbackTypeMap = {
 // - Actions :
 //   - none
 
-// TODO : structure this with switchCase combinator, and CaseWhen combinators
 // TODO : write higher level components which incorporate slots mechanism
 // TODO : specifiy the view slot mechanism
-
-// TODO : move that function in utils??
-// TODO : look at https://github.com/unshiftio/url-parse as a replacement
-
-// TODO : move to some utilities repertory
-function setLabel(label) {
-  return function (obj) {
-    return {[label]: obj}
-  }
-}
 
 function computeAuthenticationStateEnum(authenticationState: AuthenticationState) {
   const {method, result, authenticationError} = authenticationState;
@@ -217,40 +180,40 @@ function computeAuthenticationStateEnum(authenticationState: AuthenticationState
     // User clicked on the link and the linked opened in a new browser tab
     // (this is initial value of driver output)
     case null :
-      authStateEnum = AuthResetStateE.RESET_PWD_INIT;
+      authStateEnum = AuthResetStateEnum.RESET_PWD_INIT;
       break;
     case AuthMethods.VERIFY_PASSWORD_RESET_CODE :
       switch (authenticationError) {
         case null :
-          authStateEnum = AuthResetStateE.VERIFY_PASSWORD_RESET_CODE_OK;
+          authStateEnum = AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK;
           break;
         default :
-          authStateEnum = AuthResetStateE.VERIFY_PASSWORD_RESET_CODE_NOK;
+          authStateEnum = AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK;
           break;
       }
       break;
     case AuthMethods.CONFIRM_PASSWORD_RESET :
       switch (authenticationError) {
         case null :
-          authStateEnum = AuthResetStateE.CONFIRM_PASSWORD_RESET_OK;
+          authStateEnum = AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK;
           break;
         default :
-          authStateEnum = AuthResetStateE.CONFIRM_PASSWORD_RESET_NOK;
+          authStateEnum = AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK;
           break;
       }
       break;
     case AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD :
       switch (authenticationError) {
         case null :
-          authStateEnum = AuthResetStateE.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK;
+          authStateEnum = AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK;
           break;
         default :
-          authStateEnum = AuthResetStateE.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK;
+          authStateEnum = AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK;
           break;
       }
       break;
     default :
-      authStateEnum = AuthResetStateE.INVALID_STATE;
+      authStateEnum = AuthResetStateEnum.INVALID_STATE;
       break;
   }
 
@@ -266,15 +229,19 @@ function throwContractError() {
 }
 
 const ResetPasswordComponentCore = Switch({
-  on: (sources, settings) => {
-    return sources.authenticationState$
-      .map(computeAuthenticationStateEnum)
-  },
-  sinkNames: ['DOM', 'authentication$', 'router']
+  on: 'authenticationState$',
+  sinkNames: ['DOM', 'authentication$', 'router'],
+  eqFn : (a, b) => {
+    const isEqual = equals(computeAuthenticationStateEnum(b), a)
+    return isEqual
+  }
 }, [
   // AUTH_INIT is the auth state where no API calls were made yet to the
   // auth driver
-  Case({caseWhen: AuthResetStateE.RESET_PWD_INIT}, [VerifyPasswordResetCode])
+  Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
+  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
+  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
+  // TODO
 ]);
 
 const ResetPasswordComponent = cond([
@@ -283,42 +250,65 @@ const ResetPasswordComponent = cond([
 ]);
 
 function VerifyPasswordResetCode(sources, settings) {
-  const {mode, oobCode} = settings;
+  // NOTE : `matched` is added by the Case higher-order component
+  // and is the value streamed by the source on which the `Switch` acts
+  // It is important to have it available here as it cannot be retrieved
+  // from the source anymore, as it has already been emitted
+  const {mode, oobCode, matched} = settings;
   console.warn('VerifyPasswordResetCode: settings', settings);
 
-  const state$ = sources.authenticationState$.map(authenticationState => ({
-    authenticationState: authenticationState,
-    authResetState: computeAuthenticationStateEnum(authenticationState)
-  }));
+  const state = {
+    authenticationState: matched,
+    authResetState: computeAuthenticationStateEnum(matched)
+  };
 
-  const viewSinks = state$.map(computeView);
+  const viewSinks = computeView(state);
   const intentsSinks = computeIntents(sources);
-  // TODO : have a look at the switch combinator and see if there is a
-  // passing in settings of the matched on value (would be authStateEnum)
-  // I then would have to get the error from the auth directly or have more
-  // enums... or have an object with two fields, and a custom eq function...
-  // probably the best in fact not to reuse the matched source and avoid
-  // problems
-  const actionSinks = computeActionsSinks(state$, [viewSinks, intentsSinks]);
+  const actionSinks = computeActions(mergeR(settings, state), [
+    viewSinks,
+    intentsSinks
+  ]);
 
   return actionSinks;
+}
 
-  function computeActions({mode, oobCode, authenticationState, authResetState}, {view, intents}) {
-    // TODO : REMOVE, the switch/case already does the job of selection the
-    // state for us
-    return {
-      DOM: void 0,
-      authentication$: void 0,
-      router: void 0
-    }
-  }
+function ResetPassword(sources, settings){
+  const {mode, oobCode, matched} = settings;
+  console.warn('VerifyPasswordResetCode: settings', settings);
 
-// TODO : do it this time with simple functions?
-  return {
-    DOM: never(),
-    authentication$: never(),
-    router: '/'
-  }
+  const state = {
+    authenticationState: matched,
+    authResetState: computeAuthenticationStateEnum(matched)
+  };
+
+  const viewSinks = computeView(state);
+  const intentsSinks = computeIntents(sources);
+  const actionSinks = computeActions(mergeR(settings, state), [
+    viewSinks,
+    intentsSinks
+  ]);
+
+  return actionSinks;
+}
+
+function WarnFailedCodeVerification(sources, settings) {
+  const {mode, oobCode, matched} = settings;
+  console.warn('WarnFailedCodeVerification: settings', settings);
+
+  const state = {
+    authenticationState: matched,
+    authResetState: computeAuthenticationStateEnum(matched)
+  };
+
+  // TODO : I am here
+  const viewSinks = computeView(state);
+  const intentsSinks = computeIntents(sources);
+  const actionSinks = computeActions(mergeR(settings, state), [
+    viewSinks,
+    intentsSinks
+  ]);
+
+  return actionSinks;
 }
 
 function ResetPasswordRouteAdapter(ResetPasswordComponent) {
@@ -335,9 +325,6 @@ function ResetPasswordRouteAdapter(ResetPasswordComponent) {
 
   }
 }
-
-// TODO
-const resetPasswordClasses: any = undefined
 
 export {
   ResetPasswordComponent,
