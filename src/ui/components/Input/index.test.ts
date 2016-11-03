@@ -31,7 +31,7 @@ describe(`Input component`, () => {
       const sinks: InputSinks = Input(defaultSources);
 
       sinks.DOM.observe((view: VNode) => {
-        const matches = domSelect(`div.${styles.uniqueRoot}`, view);
+        const matches = domSelect(`div.${styles.root}`, view);
 
         assert.strictEqual(matches.length, 1);
         done();

@@ -21,10 +21,9 @@ function rootVNode(specs: ViewSpecs): VNode {
   const rootVNode: VNode =
     div(
       asSelector(
-        classes(
           styles.uniqueRoot,
           styles.root,
-          specs.props.disabled && styles.disabled)),
+          specs.props.disabled && styles.disabled),
       [ containerVNode(specs) ]
     );
 
@@ -58,7 +57,7 @@ function labelVNode(specs: ViewSpecs): VNode {
   const { float, placeholder } = attrs;
 
   const labelVNode: VNode =
-    span(asSelector(styles.label),
+    span(
       {
         props: {
           className: classes(
