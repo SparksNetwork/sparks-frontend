@@ -2,7 +2,7 @@ import { Stream, just } from 'most';
 import { combineObj } from '../../../helpers';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { Sources } from '../../../components/types';
-import { Input, InputAttrs } from '../../widgets';
+import { Input, InputAttrs, Button, ButtonAttrs, ButtonChildren } from '../../widgets';
 import isolate from '@cycle/isolate';
 import { view } from './view';
 
@@ -17,6 +17,7 @@ export type UserRegistrationSources = Sources & {
 export type UserRegistrationChildViews = {
   emailAddressInput: VNode;
   passwordInput: VNode;
+  signUpButton: VNode;
 }
 
 export function UserRegistration(
@@ -25,11 +26,12 @@ export function UserRegistration(
   const childDOMs =
     {
       emailAddressInput$: emailAddressInputDOM(sources),
-      passwordInput$: passwordInputDOM(sources)
+      passwordInput$: passwordInputDOM(sources),
+      signUpButton$: signUpButtonDOM(sources)
     };
 
   const childViews$: Stream<UserRegistrationChildViews> =
-    combineObj(childDOMs) as Stream<UserRegistrationChildViews>;
+    combineObj<UserRegistrationChildViews>(childDOMs);
 
   return {
     DOM: childViews$.map(view)
@@ -59,4 +61,19 @@ function passwordInputDOM(sources: UserRegistrationSources): Stream<VNode> {
     };
 
   return isolate(Input)({ DOM, attrs$: just(attrs) }).DOM;
+}
+
+function signUpButtonDOM(sources: UserRegistrationSources): Stream<VNode> {
+  const { DOM } = sources;
+  const attrs: ButtonAttrs =
+    {
+      id: `UserRegistrationSignUpButton`
+    }
+  const children: ButtonChildren = [ `Sign up` ];
+
+  return isolate(Button)({
+    DOM,
+    attrs$: just(attrs),
+    children$: just(children)
+  }).DOM;
 }

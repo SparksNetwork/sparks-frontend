@@ -16,7 +16,7 @@ let defaultSources: UserRegistrationSources = {
   DOM: mockAsDomSource({})
 };
 
-describe(`UserRegistration`, () => {
+describe(`UserRegistration component`, () => {
   it(`has a DOM stream in its sinks`, () => {
     const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
     Function.prototype(sinks);
@@ -77,13 +77,14 @@ describe(`UserRegistration`, () => {
       done();
     });
 
-    it.skip(`has a sign-up Button component`, (done) => {
+    it(`has a sign-up Button component`, (done) => {
       const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
 
       sinks.DOM.observe((view: VNode) => {
-        const matches = domSelect(`#UserRegistrationSignUpButton`, view);
+        const matches = domSelect(`.sn-button#UserRegistrationSignUpButton`, view);
 
         assert.strictEqual(matches.length, 1);
+        assert.strictEqual(matches[0].children[0].text, `Sign up`);
       })
         .catch(done);
 

@@ -15,6 +15,9 @@ export function view(childViews: UserRegistrationChildViews): VNode {
           ]),
           p([
             childViews.passwordInput
+          ]),
+          p([
+            childViews.signUpButton
           ])
         ])
       ]);
