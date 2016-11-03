@@ -49,25 +49,11 @@ describe(`UserRegistration`, () => {
       done();
     });
 
-    it(`has a full name Input component`, (done) => {
-      const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
-
-      sinks.DOM.observe((view: VNode) => {
-        const matches = domSelect(`.sn-input #UserRegistrationFullNameInput`, view);
-
-        assert.strictEqual(matches.length, 1);
-        assert.strictEqual(matches[0].data.attrs.type, `text`);
-      })
-        .catch(done);
-
-      done();
-    });
-
     it(`has an email address Input component`, (done) => {
       const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
 
       sinks.DOM.observe((view: VNode) => {
-        const matches = domSelect(`#UserRegistrationEmailAddressInput`, view);
+        const matches = domSelect(`.sn-input #UserRegistrationEmailAddressInput`, view);
 
         assert.strictEqual(matches.length, 1);
         assert.strictEqual(matches[0].data.attrs.type, `email`);
@@ -81,7 +67,7 @@ describe(`UserRegistration`, () => {
       const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
 
       sinks.DOM.observe((view: VNode) => {
-        const matches = domSelect(`#UserRegistrationPasswordInput`, view);
+        const matches = domSelect(`.sn-input #UserRegistrationPasswordInput`, view);
 
         assert.strictEqual(matches.length, 1);
         assert.strictEqual(matches[0].data.attrs.type, `password`);

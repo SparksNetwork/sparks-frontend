@@ -11,9 +11,6 @@ export function view(childViews: UserRegistrationChildViews): VNode {
       { attrs: { style: `text-align: center` } }, [
         form([
           p([
-            childViews.fullNameInput
-          ]),
-          p([
             childViews.emailAddressInput
           ]),
           p([
