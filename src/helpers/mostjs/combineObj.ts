@@ -1,6 +1,6 @@
 import { Stream, combineArray } from 'most'
 
-export function combineObj(obj: any): Stream<{}> {
+export function combineObj<T>(obj: any): Stream<T> {
   const keys: string[] = Object.keys(obj)
   const keysCount: number = keys.length
 
@@ -21,5 +21,5 @@ export function combineObj(obj: any): Stream<{}> {
     }
 
     return combination;
-  }, sources);
+  }, sources) as Stream<T>;
 }
