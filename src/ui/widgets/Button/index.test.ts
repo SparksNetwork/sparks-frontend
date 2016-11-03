@@ -17,7 +17,7 @@ let defaultSources: ButtonSources = {
   DOM: mockAsDomSource({})
 };
 
-describe.only(`Button widget`, () => {
+describe(`Button widget`, () => {
   it(`has a DOM stream in its sinks`, () => {
     const sinks: ButtonSinks = Button(defaultSources);
 
