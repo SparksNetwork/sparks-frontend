@@ -2,7 +2,7 @@ import { Stream, just } from 'most';
 import { combineObj } from '../../../helpers';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { Sources } from '../../../components/types';
-import { Input, InputAttrs, PASSWORD, EMAIL } from '../../components/basics/Input';
+import { Input, InputAttrs } from '../../widgets';
 import isolate from '@cycle/isolate';
 import { view } from './view';
 
@@ -40,7 +40,7 @@ function emailAddressInputDOM(sources: UserRegistrationSources): Stream<VNode> {
   const { DOM } = sources;
   const attrs: InputAttrs = {
     id: `UserRegistrationEmailAddressInput`,
-    type: EMAIL,
+    type: 'email',
     placeholder: `Email address`,
     float: true
   };
@@ -53,7 +53,7 @@ function passwordInputDOM(sources: UserRegistrationSources): Stream<VNode> {
   const attrs: InputAttrs =
     {
       id: `UserRegistrationPasswordInput`,
-      type: PASSWORD,
+      type: 'password',
       placeholder: `Password`,
       float: true
     };

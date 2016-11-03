@@ -1,4 +1,4 @@
-import { Component, Sinks } from '../../../../components/types';
+import { Component, Sinks } from '../../../components/types';
 import { Stream } from 'most';
 import { VNode } from '@motorcycle/dom';
 import { merge } from 'ramda';

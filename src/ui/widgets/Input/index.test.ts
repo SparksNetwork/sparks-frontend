@@ -1,8 +1,10 @@
-/// <reference path="../../../../../typings/index.d.ts" />
+/// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { just } from 'most';
-import { Input, InputSources, InputSinks, InputAttrs, InputProps, TEXT, EMAIL }
+import {
+  Input, InputSources, InputSinks, InputAttrs, InputProps
+}
   from './';
 import * as styles from './styles';
 const domSelect = require(`snabbdom-selector`).default;
@@ -96,7 +98,7 @@ describe(`Input component`, () => {
         readonly: true,
         size: 10,
         step: 2,
-        type: TEXT,
+        type: 'text',
         value: `initial value`
       }
     let sinks: InputSinks =
@@ -165,7 +167,7 @@ describe(`Input component`, () => {
         readonly: false,
         size: 9,
         step: 3,
-        type: EMAIL,
+        type: 'email',
         value: `other initial value`
       }
     sinks =

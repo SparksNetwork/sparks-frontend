@@ -1,12 +1,8 @@
 import { Stream, just } from 'most';
-import { combineObj } from '../../../../helpers';
+import { combineObj } from '../../../helpers';
 import { DOMSource, VNode } from '@motorcycle/dom';
 import { intent } from './intent';
 import { view, ViewSpecs } from './view';
-
-export const TEXT: 'text' = 'text';
-export const PASSWORD: 'password' = 'password';
-export const EMAIL: 'email' = 'email';
 
 type InputElementAttrs = {
   autocapitalize?: 'none' | 'sentences' | 'words' | 'characters';
@@ -74,7 +70,7 @@ function sourcesWithAppliedDefaults(sources: InputSources): InputSources {
 function attrsWithDefaults$(sources: InputSources): Stream<InputAttrs> {
   const { attrs$ = just({}) } = sources;
   const defaultAttrs: InputAttrs =
-    { float: false, id: ``, placeholder: ``, type: TEXT, value: `` };
+    { float: false, id: ``, placeholder: ``, type: 'text', value: `` };
 
   return attrs$.map(attrs => Object.assign(defaultAttrs, attrs));
 }

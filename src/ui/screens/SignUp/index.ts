@@ -1,8 +1,8 @@
 
 import { Sources } from '../../../components/types';
 import { DOMSource } from '@motorcycle/dom';
-import { UserRegistration } from '../../components/UserRegistration';
-import { screen, ScreenSinks } from '../../components/wrappers/screen';
+import { UserRegistration } from '../../components';
+import { screen, ScreenSinks } from '../../wrappers';
 import isolate from '@cycle/isolate';
 
 type SignUpSinks = ScreenSinks;

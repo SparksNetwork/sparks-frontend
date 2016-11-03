@@ -1,7 +1,7 @@
 import { VNode, div } from '@motorcycle/dom';
 import * as styles from './styles';
 import { cssClassesAsSelector as asSelector }
-  from '../../../helpers/cssClassesAsSelector';
+  from '../../helpers/cssClassesAsSelector';
 
 export function view(childView: VNode): VNode {
 
