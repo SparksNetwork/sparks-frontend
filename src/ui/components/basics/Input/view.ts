@@ -3,7 +3,7 @@ import { InputAttrs, InputProps } from './';
 import * as styles from './styles';
 import { classes, cssRule } from 'typestyle';
 import { cssClassesAsSelector as asSelector }
-  from '../../helpers/cssClassesAsSelector';
+  from '../../../helpers/cssClassesAsSelector';
 
 export type ViewSpecs = {
   attrs: InputAttrs;

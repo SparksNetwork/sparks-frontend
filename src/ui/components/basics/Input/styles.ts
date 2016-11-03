@@ -1,6 +1,6 @@
-import * as theme from '../style/theme';
-import * as vars from '../style/vars';
-import { resetInputCss, resetFontCss } from '../style/helpers'
+import * as theme from '../../style/theme';
+import * as vars from '../../style/vars';
+import { resetInputCss, resetFontCss } from '../../style/helpers'
 import { style, extend } from 'typestyle';
 
 // internal variables

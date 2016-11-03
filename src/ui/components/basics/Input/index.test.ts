@@ -1,4 +1,4 @@
-/// <reference path="../../../../typings/index.d.ts" />
+/// <reference path="../../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { just } from 'most';

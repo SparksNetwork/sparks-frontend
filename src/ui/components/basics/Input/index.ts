@@ -1,5 +1,5 @@
 import { Stream, just } from 'most';
-import { combineObj } from '../../../helpers';
+import { combineObj } from '../../../../helpers';
 import { DOMSource, VNode } from '@motorcycle/dom';
 import { intent } from './intent';
 import { view, ViewSpecs } from './view';
