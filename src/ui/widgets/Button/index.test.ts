@@ -2,7 +2,9 @@
 import * as assert from 'assert';
 import { DOMSource, mockDOMSource, VNode, div } from '@motorcycle/dom';
 import { just } from 'most';
-import { ButtonSources, ButtonSinks, Button, ButtonAttrs, ButtonChildren }
+import {
+  ButtonSources, ButtonSinks, Button, ButtonAttrs, ButtonProps, ButtonChildren
+}
   from './';
 import * as styles from './styles';
 const select = require('snabbdom-selector').default;
@@ -52,6 +54,25 @@ describe(`Button widget`, () => {
       const matches = select(`button.${styles.uniqueRoot}`, view);
 
       assert.strictEqual(matches[0].data.attrs.id, attrs.id);
+    })
+      .catch(done);
+
+    done();
+  });
+
+  it(`sets properties on BUTTON element`, (done) => {
+    const props: ButtonProps =
+      {
+        disabled: true
+      };
+
+    const sinks: ButtonSinks =
+      Button({ DOM: mockAsDomSource({}), props$: just(props) });
+
+    sinks.DOM.observe((view: VNode) => {
+      const matches = select(`button.${styles.uniqueRoot}`, view);
+
+      assert.strictEqual(matches[0].data.props.disabled, props.disabled);
     })
       .catch(done);
 
