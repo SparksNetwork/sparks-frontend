@@ -108,7 +108,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
   eqFn = defaultsTo(eqFn, cfg.defaultEqFn)
 
   const shouldSwitch$ = switchSource
-    .map(x => ({isEqual : eqFn(caseWhen, x), value: x}))
+    .map(x => ({isEqual: eqFn(caseWhen, x), value: x}))
 
   const cachedSinks$ = shouldSwitch$
     .filter(x => x.isEqual)
@@ -125,43 +125,38 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
     return function makeSwitchedSinkFromCache(isMatchingCase, cachedSinks) {
       var cached$, preCached$, prefix$
       if (isMatchingCase.isEqual) {
-        // caseWhen : the switch source emits a value corresponding to the
-        // configured case in the component
-
         // caseWhen : matches configured value
+        //
+        // Parent can have children nested at arbitrary levels, with either :
+        // 1. sinks which will not be retained (not in `sinkNames`
+        // settings)
+        // 2. or no sinks matching a particular `sinkNames`
+        // 3. or sinks which match with the configured `sinkNames`
+        // Casuistic 1. is taken care of automatically as we only
+        // construct the sinks in `sinkNames` settings
+        // Casuistic 2. is taken care in the `else` branch
+        // Casuistic 3. is taken care in the following `if` branch
         if (cachedSinks[sinkName] != null) {
           // caseWhen : the component produces a sink with that name
-          // This is an important case, as parent can have children
-          // nested at arbitrary levels, with either :
-          // 1. sinks which will not be retained (not in `sinkNames`
-          // settings)
-          // 2. or no sinks matching a particular `sinkNames`
-          // Casuistic 1. is taken care of automatically as we only
-          // construct the sinks in `sinkNames`
-          // Casuistic 2. is taken care of thereafter
-
-          prefix$ = sinkName === 'DOM' ?
-            // caseWhen : DOM sink
-            // Here DOM sinks are merged with a simple 'merge' so same
-            // behaviour as other sinks
-            $.empty() :
-            // caseWhen : Non-DOM sink
-            // Non-DOM sinks are merged with a simple `merge`, there
-            // is no conflict here, so we just return nothing
-            $.empty()
 
           preCached$ = cachedSinks[sinkName]
-            .tap(console.log.bind(console, 'sink ' + sinkName + ':'))
+            .tap(console.log.bind(console, `sink ${sinkName} :`))
           // TODO BRC : MOAT -> add the finally operator
 //            .finally(_ => {
 //              console.log(`sink ${sinkName} terminating due to route change`)
 //            })
 
-          cached$ = $.concat(prefix$, preCached$)
+          // Rxjs version
+          // cached$ = $.concat(prefix$, preCached$)
+          // Holy cow, this does not work well with most, even if prefix is
+          // empty, because it will delay `preCached` data emission to a
+          // tick later.
+          // In some cases, that delay makes it difficult to reason about
+          // the program behaviour
+          cached$ = preCached$
         }
         else {
-          // caseWhen : the component does not have any sinks with the
-          // corresponding sinkName
+          // caseWhen : the component did not produce a sink with that name
           cached$ = $.empty()
         }
       }
