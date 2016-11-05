@@ -13,6 +13,7 @@ import {
   div, span, section, form, fieldset, label, a, p, input, h1, h4, button, VNode
 } from '@motorcycle/dom';
 import {Stream, combine, merge as mergeM, empty, never, just} from 'most';
+import {holdSubject} from 'most-subject'
 import {always} from 'ramda';
 import {
   isFunction, hasExpectedSinks,
@@ -36,6 +37,8 @@ const stubbedDOMSource = {
 };
 const dummyIncompleteSources = {DOM: never()};
 const dummySources = {DOM: stubbedDOMSource, authenticationState$: never(),};
+const dummyEmail = 'dummy@email.com';
+const dummyPassword = 'dummyPassword';
 const dummyAuthParams = {mode: 'dummy', oobCode: 'dummy'};
 const authenticationStateNoAuthError: AuthenticationState = {
   method: null,
@@ -45,7 +48,7 @@ const authenticationStateNoAuthError: AuthenticationState = {
 }
 const authenticationStateVerifyCodeOK: AuthenticationState = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
-  result: null,
+  result: dummyEmail,
   authenticationError: null,
   isAuthenticated: false
 }
@@ -77,6 +80,13 @@ const authenticationStateWeakPasswordError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/weak-password'},
+  isAuthenticated: false
+}
+const authenticationStatePasswordResetOK = {
+  method: AuthMethods.CONFIRM_PASSWORD_RESET,
+  result: null,
+  email : dummyEmail,
+  authenticationError: null,
   isAuthenticated: false
 }
 
@@ -407,6 +417,60 @@ const viewVerifyCodeExpiredError= section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+
+const viewLoggingIn = section(classes.sel('photo-background'), {
+   style: {
+     // QUESTION: where does this url function comes from
+     backgroundImage: `url(${backgroundImage})`
+   }
+ }, [
+   h1('sparks.network'),
+   div([
+     div(classes.sel('login', 'box'), [
+       h1({polyglot: {phrase: 'resetPassword.title'}} as any),
+       // TODO : define a style for reset?? or reuse those?
+       div(classes.sel('login', 'form'), [
+         form([
+           fieldset({attrs: {disabled: true}}, [
+             // Enter password
+             label({
+               props: {for: 'email'},
+               polyglot: {phrase: 'resetPassword.enterPassword'}
+             } as any),
+             // TODO : create a style for password fields
+             input(classes.sel('resetPassword.enterPassword'), {
+               props: {
+                 type: 'password',
+                 name: 'enterPassword'
+               }
+             } as any),
+             // Confirm password
+             label({
+               props: {for: 'email'},
+               polyglot: {phrase: 'resetPassword.confirmPassword'}
+             } as any),
+             // TODO : create a style for password fields
+             input(classes.sel('resetPassword.confirmPassword'), {
+               props: {
+                 type: 'password',
+                 name: 'confirmPassword'
+               }
+             } as any),
+           ]),
+           fieldset(classes.sel('actions'), {attrs: {disabled: true}}, [
+             button(classes.sel('submit'), {
+               polyglot: {phrase: 'resetPassword.resetPassword'}
+             } as any)
+           ])
+         ]),
+         // feedback message area
+         h4(classes.sel('feedback'), {
+           polyglot: {phrase: 'resetPassword.loggingIn'}
+         } as any)
+       ]),
+     ]),
+   ])
+ ]);
 
 // const viewTODO= section(classes.sel('photo-background'), {
 //   style: {
@@ -894,7 +958,7 @@ describe('The ResetPassword component', () => {
     });
   });
 
-  describe('When the password reset code has failed verification AND' +
+  describe.skip('When the password reset code has failed verification AND' +
     ' error code corresponds to user disabled' +
     ' (authenticationState)', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
@@ -975,5 +1039,96 @@ describe('The ResetPassword component', () => {
     });
   });
 
+  describe('When the password has been successfully reset' +
+    ' (authenticationState)', ()=> {
+    it('should display a view with 1 DISABLED "enter new password" fields, 1' +
+      ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
+      ' feedback message area which informs of the password reset. It should' +
+      ' immediately try to log in the user', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+      const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+      const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+      const formSelector = 'form';
+
+      const testInputsNotLoggedInNoAuthOpYet = [
+        // TODO : update note
+        // NOTE : form input data must go first before the streams it depends on
+        // Must be after the DOM inputs simulation, as it happens on return
+        // from a submit, so when the password fields are already filled in
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStatePasswordResetOK}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '--',
+            //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+        {
+          [`DOM!${enterPasswordSelector}@input`]: {
+            diagram: 'a-',
+            values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+          }
+        },
+        {
+          [`DOM!${confirmPasswordSelector}@input`]: {
+            diagram: 'a-',
+            values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+          }
+        },
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewLoggingIn],
+          successMessage: 'DOM sink produces the expected screen',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [{
+            method: AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD,
+            email: dummyEmail,
+            password: dummyPassword
+          }],
+          successMessage: 'DOM authentication$ receives a' +
+          ' SIGN_IN_WITH_EMAIL_AND_PASSWORD command',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'DOM router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      function ResetPasswordComponentCurried(settings) {
+        return function (sources) {
+          return ResetPasswordComponent(sources, settings);
+        }
+      }
+
+      runTestScenario(testInputsNotLoggedInNoAuthOpYet, expected,
+        ResetPasswordComponentCurried(dummyAuthParams), {
+          tickDuration: 5,
+          waitForFinishDelay: 20,
+          mocks: {
+            DOM: makeMockDOMSource
+          },
+          sourceFactory :{
+            DOM : () => holdSubject(1)
+          },
+          errorHandler: function (err) {
+            done(err)
+          }
+        })
+
+    });
+  });
 
 });

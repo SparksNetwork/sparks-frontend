@@ -124,7 +124,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
   function makeSwitchedSinkFromCache(sinkName) {
     return function makeSwitchedSinkFromCache(isMatchingCase, cachedSinks) {
       var cached$, preCached$, prefix$
-      if (isMatchingCase) {
+      if (isMatchingCase.isEqual) {
         // caseWhen : the switch source emits a value corresponding to the
         // configured case in the component
 

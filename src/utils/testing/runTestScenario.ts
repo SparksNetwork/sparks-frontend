@@ -174,7 +174,7 @@ function getMock(mockedSourcesHandlers, sourceName) {
   return mockedSourcesHandlers[sourceName]
 }
 
-function computeSources(inputs, mockedSourcesHandlers) {
+function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
   function makeSources(accSources, input) {
     const inputKey = keysR(input)[0];
 
@@ -207,7 +207,7 @@ function computeSources(inputs, mockedSourcesHandlers) {
       // for instance: DOM!sel1@click, DOM!sel2@click
       // So the mock function should receive the current mocked object
       // and return another one
-      let stream = subject()
+      let stream = sourceFactory[inputKey] || subject();
       accSources.streams[inputKey] = stream
       accSources.sources[sourceName] = mock(accSources.sources[sourceName], sourceSpecs, stream)
     }
@@ -262,6 +262,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
 
   settings = settings || {}
   const mockedSourcesHandlers = settings.mocks || {}
+  const sourceFactory = settings.sourceFactory || {}
   const errorHandler = settings.errorHandler || defaultErrorHandler;
   const tickDuration = settings.tickDuration
     ? settings.tickDuration
@@ -269,7 +270,7 @@ function runTestScenario(inputs, expected, testFn, settings) {
 
   // @type {{sources: Object.<string, *>, streams: Object.<string, Stream>}}
 
-  let sourcesStruct = computeSources(inputs, mockedSourcesHandlers);
+  let sourcesStruct = computeSources(inputs, mockedSourcesHandlers, sourceFactory);
 
   // Maximum length of input diagram strings
   // Ex:

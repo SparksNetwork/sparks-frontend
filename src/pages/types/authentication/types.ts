@@ -8,6 +8,7 @@ import {
 export type AuthenticationState = {
   method?: string | number | null,
   result?: any,
+  email? : string,
   isAuthenticated: boolean,
   authenticationError: AuthenticationError | string | null
 }

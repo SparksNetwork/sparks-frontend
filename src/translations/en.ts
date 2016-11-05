@@ -46,7 +46,8 @@ const enUS = {
     ' password reset code has been disabled',
     'verifyCodeUserNotFoundError': 'Thrown if there is no user corresponding to' +
     ' the password reset code. This may have happened if the user was deleted ' +
-    'between when the code was issued and when this method was called.'
+    'between when the code was issued and when this method was called.',
+    'loggingIn': 'Logging you in with the new credentials'
   },
 };
 

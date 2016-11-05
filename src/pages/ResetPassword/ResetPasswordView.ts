@@ -39,8 +39,8 @@ const resetPasswordFeedbackPhraseMap = {
 // TODO : css styles
 function computeResetPasswordView(params) {
   const {
-    isDisabled, resetPasswordFeedbackType, resetPasswordFeedbackPhrase
-  } = params;
+          isDisabled, resetPasswordFeedbackType, resetPasswordFeedbackPhrase
+        } = params;
 
   return section(classes.sel('photo-background'), {
     style: {
@@ -103,7 +103,8 @@ function computeResetPasswordView(params) {
 
 function computeView({authenticationState, authResetState}) {
   let view;
-  const error = authenticationState.authenticationError.code;
+  const error = authenticationState.authenticationError &&
+    authenticationState.authenticationError.code;
 
   switch (authResetState as AuthResetState) {
     case AuthResetStateEnum.RESET_PWD_INIT :
@@ -132,6 +133,13 @@ function computeView({authenticationState, authResetState}) {
       });
       break;
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK:
+      view = computeResetPasswordView({
+        // view is disabled while logging the user in
+        isDisabled: true,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+        resetPasswordFeedbackPhrase: 'resetPassword.loggingIn'
+      });
+      break;
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK:
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK:
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK:

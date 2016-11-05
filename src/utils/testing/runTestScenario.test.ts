@@ -3,6 +3,7 @@ import * as assert from 'assert'
 import {runTestScenario} from './runTestScenario'
 import {makeMockDOMSource} from './mockDOM'
 import * as $ from 'most'
+import {holdSubject} from 'most-subject'
 
 function plan(n) {
   return function _done(done) {
@@ -125,7 +126,7 @@ describe("When inputs are simulating an object", () => {
     /** @type TestResults */
     const expected = {
       m: {
-        outputs: ['m-a-0','m-a-1'],
+        outputs: ['m-a-0', 'm-a-1'],
         successMessage: 'sink m produces the expected values',
         analyzeTestResults: analyzeTestResults,
         transformFn: undefined,
@@ -150,11 +151,115 @@ describe("When inputs are simulating an object", () => {
       mocks: {
         DOM: makeMockDOMSource
       },
-      errorHandler : function (err) {
+      sourceFactory: {
+        DOM: () => holdSubject(1)
+      },
+      errorHandler: function (err) {
         done(err)
       }
     })
   })
+})
+
+describe("When inputs are simulating an object, AND there is a factory" +
+  " defined for the source", () => {
+  it('constructs the object according to the mock handler, constructs the' +
+    ' source with the source factory and emits the input values through that',
+    (done) => {
+      const assertAsync = plan(3)
+
+      function analyzeTestResults(actual, expected, message) {
+        assert.deepEqual(actual, expected, message)
+        assertAsync(done)
+      }
+
+      function noop() {
+      }
+
+      function makeDummyClickEvent(value) {
+        return {
+          preventDefault: noop,
+          tap: x => console.log(x),
+          target: {
+            value: value
+          }
+        }
+      }
+
+      function makeDummyHoverEvent(value) {
+        return {
+          value: value
+        }
+      }
+
+      const inputs = [
+        {
+          'DOM!input@click': {
+            diagram: 'xy|', values: {
+              x: makeDummyClickEvent('a-0'), y: makeDummyClickEvent('a-1')
+            }
+          }
+        },
+        {
+          'DOM!a@hover': {
+            diagram: '-xyz|', values: {
+              x: makeDummyHoverEvent('a-0'),
+              y: makeDummyHoverEvent('a-1'),
+              z: makeDummyHoverEvent('a-2'),
+            }
+          }
+        },
+        {b: {diagram: 'xyz|', values: {x: 'b-0', y: 'b-1', z: 'b-2'}}},
+      ]
+
+      const testFn = function testFn(sources) {
+        const DOMclick = sources.DOM.select('input').events('click');
+        const DOMhover = sources.DOM.select('a').events('hover');
+        return {
+          m: DOMclick
+            .tap(ev => ev.preventDefault())
+            .map(x => 'm-' + x.target.value),
+          n: DOMhover.map(x => 'n-' + x.value),
+          o: DOMhover.combine((a,b)=> ({x: a.value,y:b.target.value}), DOMclick)
+        }
+      }
+
+      /** @type TestResults */
+      const expected = {
+        m: {
+          outputs: ['m-a-0', 'm-a-1'],
+          successMessage: 'sink m produces the expected values',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        n: {
+          outputs: ['t-n-a-0', 't-n-a-1', 't-n-a-2'],
+          successMessage: 'sink n produces the expected values',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: x => 't-' + x,
+        },
+        o: {
+          outputs: [{"x":"a-0","y":"a-1"},{"x":"a-1","y":"a-1"},{"x":"a-2","y":"a-1"}],
+          successMessage: 'sink o produces the expected values',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        }
+      }
+
+      runTestScenario(inputs, expected, testFn, {
+        tickDuration: 10,
+        waitForFinishDelay: 30,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        sourceFactory: {
+          DOM: () => holdSubject(1)
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+    })
 })
 
 // TODO : test errorHandler settings

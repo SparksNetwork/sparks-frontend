@@ -230,17 +230,18 @@ function throwContractError() {
 
 const ResetPasswordComponentCore = Switch({
   on: 'authenticationState$',
-  sinkNames: ['DOM', 'authentication$', 'router'],
   eqFn : (a, b) => {
     const isEqual = equals(computeAuthenticationStateEnum(b), a)
     return isEqual
-  }
+  },
+  sinkNames: ['DOM', 'authentication$', 'router'],
 }, [
   // AUTH_INIT is the auth state where no API calls were made yet to the
   // auth driver
   Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
+  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK}, [SignInWithEmailPassword]),
   // TODO
 ]);
 
@@ -300,9 +301,28 @@ function WarnFailedCodeVerification(sources, settings) {
     authResetState: computeAuthenticationStateEnum(matched)
   };
 
-  // TODO : I am here
   const viewSinks = computeView(state);
   const intentsSinks = computeIntents(sources);
+  const actionSinks = computeActions(mergeR(settings, state), [
+    viewSinks,
+    intentsSinks
+  ]);
+
+  return actionSinks;
+}
+
+function SignInWithEmailPassword(sources, settings) {
+  const {mode, oobCode, matched} = settings;
+  console.warn('SignInWithEmailPassword: settings', settings);
+
+  const state = {
+    authenticationState: matched,
+    authResetState: computeAuthenticationStateEnum(matched)
+  };
+
+  const viewSinks = computeView(state);
+  const intentsSinks = computeIntents(sources);
+  // TODO : I am here
   const actionSinks = computeActions(mergeR(settings, state), [
     viewSinks,
     intentsSinks
@@ -320,6 +340,7 @@ function ResetPasswordRouteAdapter(ResetPasswordComponent) {
 
     // return parameterized component
     return function ResetPasswordComponentCurried(sources) {
+      // TODO : might have to change isolate so it also uses settings
       return isolate(ResetPasswordComponent)(sources, settings);
     }
 
