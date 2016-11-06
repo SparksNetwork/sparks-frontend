@@ -2,9 +2,7 @@
 import * as assert from 'assert';
 import { DOMSource, mockDOMSource, VNode, div } from '@motorcycle/dom';
 import { just } from 'most';
-import {
-  ButtonSources, ButtonSinks, Button, ButtonAttrs, ButtonProps, ButtonChildren
-}
+import { ButtonSources, ButtonSinks, Button, ButtonProps }
   from './';
 import * as styles from './styles';
 const select = require('snabbdom-selector').default;
@@ -41,29 +39,11 @@ describe(`Button widget`, () => {
     });
   });
 
-  it(`sets attributes on BUTTON element`, (done) => {
-    const attrs: ButtonAttrs =
-      {
-        id: `anId`
-      };
-
-    const sinks: ButtonSinks =
-      Button({ DOM: mockAsDomSource({}), attrs$: just(attrs) });
-
-    sinks.DOM.observe((view: VNode) => {
-      const matches = select(`button.${styles.uniqueRoot}`, view);
-
-      assert.strictEqual(matches[0].data.attrs.id, attrs.id);
-    })
-      .catch(done);
-
-    done();
-  });
-
   it(`sets properties on BUTTON element`, (done) => {
     const props: ButtonProps =
       {
-        disabled: true
+        disabled: true,
+        id: `anId`
       };
 
     const sinks: ButtonSinks =
@@ -73,38 +53,62 @@ describe(`Button widget`, () => {
       const matches = select(`button.${styles.uniqueRoot}`, view);
 
       assert.strictEqual(matches[0].data.props.disabled, props.disabled);
+      assert.strictEqual(matches[0].data.props.id, props.id);
     })
       .catch(done);
 
     done();
   });
 
-  it(`sets children`, (done) => {
-    const children: ButtonChildren = [`button`];
+  it(`sets children of the BUTTON element`, (done) => {
+    const children: Array<string> = [`a button`];
+    const props: ButtonProps =
+      {
+        children
+      };
 
     let sinks: ButtonSinks =
-      Button({ DOM: mockAsDomSource({}), children$: just(children) });
+      Button({ DOM: mockAsDomSource({}), props$: just(props) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = select(`button.${styles.uniqueRoot}`, view);
 
-      assert.strictEqual(matches[0].children[0].text, children[0]);
+      const vNode: VNode = matches[0];
+      const vNodeChildren: Array<VNode> = vNode.children as Array<VNode>;
+      assert.ok(vNodeChildren);
+      const childVNode: VNode = vNodeChildren[0];
+      assert.ok(childVNode);
+      assert.strictEqual(childVNode.text, children[0]);
     })
       .catch(done);
 
-    const otherChildren: ButtonChildren = [div(`button`)];
+    const otherChildren: Array<VNode> = [ div(`a button`) ];
+    const otherProps: ButtonProps =
+      {
+        children: otherChildren
+      };
 
-    sinks =
-      Button({ DOM: mockAsDomSource({}), children$: just(otherChildren) });
+    sinks = Button({ DOM: mockAsDomSource({}), props$: just(otherProps) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = select(`button.${styles.uniqueRoot}`, view);
 
-      assert.strictEqual(matches[0].children[0].sel, otherChildren[0][`sel`]);
-      assert.strictEqual(matches[0].children[0].text, otherChildren[0][`text`]);
+      const vNode: VNode = matches[0];
+      const vNodeChildren: Array<VNode> = vNode.children as Array<VNode>;
+      assert.ok(vNodeChildren);
+      const childVNode: VNode = vNodeChildren[0];
+      assert.ok(childVNode);
+      assert.strictEqual(childVNode.sel, otherChildren[0].sel);
+      assert.strictEqual(childVNode.text, otherChildren[0].text);
     })
       .catch(done);
 
     done();
+  });
+
+  it(`has a model stream in its sinks`, () => {
+    const sinks: ButtonSinks = Button(defaultSources);
+
+    assert.ok(sinks.hasOwnProperty(`model$`));
   });
 });
