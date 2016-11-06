@@ -2,10 +2,7 @@
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { just } from 'most';
-import {
-  Input, InputSources, InputSinks, InputAttrs, InputProps
-}
-  from './';
+import { Input, InputSources, InputSinks, InputProps } from './';
 import * as styles from './styles';
 const domSelect = require(`snabbdom-selector`).default;
 
@@ -78,8 +75,8 @@ describe(`Input component`, () => {
     });
   });
 
-  it(`sets attributes on INPUT element`, (done) => {
-    let attrs: InputAttrs =
+  it(`sets properties on INPUT element`, (done) => {
+    let props: InputProps =
       {
         autocapitalize: 'words',
         autocomplete: `maybe`,
@@ -102,53 +99,53 @@ describe(`Input component`, () => {
         value: `initial value`
       }
     let sinks: InputSinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(attrs) });
+      Input({ DOM: mockAsDomSource({}), props$: just(props) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`input.${styles.textInputUnderbar}`, view);
 
       assert.strictEqual(
-        matches[0].data.attrs.autocapitalize, attrs.autocapitalize);
+        matches[0].data.props.autocapitalize, props.autocapitalize);
       assert.strictEqual(
-        matches[0].data.attrs.autocomplete, attrs.autocomplete);
+        matches[0].data.props.autocomplete, props.autocomplete);
       assert.strictEqual(
-        matches[0].data.attrs.autocorrect, attrs.autocorrect);
+        matches[0].data.props.autocorrect, props.autocorrect);
       assert.strictEqual(
-        matches[0].data.attrs.autofocus, attrs.autofocus);
+        matches[0].data.props.autofocus, props.autofocus);
       assert.strictEqual(
-        matches[0].data.attrs.disabled, attrs.disabled);
+        matches[0].data.props.disabled, props.disabled);
       assert.strictEqual(
-        matches[0].data.attrs.inputmode, attrs.inputmode);
+        matches[0].data.props.inputmode, props.inputmode);
       assert.strictEqual(
-        matches[0].data.attrs.id, attrs.id);
+        matches[0].data.props.id, props.id);
       assert.strictEqual(
-        matches[0].data.attrs.max, attrs.max);
+        matches[0].data.props.max, props.max);
       assert.strictEqual(
-        matches[0].data.attrs.maxlength, attrs.maxlength);
+        matches[0].data.props.maxlength, props.maxlength);
       assert.strictEqual(
-        matches[0].data.attrs.min, attrs.min);
+        matches[0].data.props.min, props.min);
       assert.strictEqual(
-        matches[0].data.attrs.minlength, attrs.minlength);
+        matches[0].data.props.minlength, props.minlength);
       assert.strictEqual(
-        matches[0].data.attrs.name, attrs.name);
+        matches[0].data.props.name, props.name);
       assert.strictEqual(
-        matches[0].data.attrs.pattern, attrs.pattern);
+        matches[0].data.props.pattern, props.pattern);
       assert.strictEqual(
-        matches[0].data.attrs.placeholder, attrs.placeholder);
+        matches[0].data.props.placeholder, props.placeholder);
       assert.strictEqual(
-        matches[0].data.attrs.readonly, attrs.readonly);
+        matches[0].data.props.readonly, props.readonly);
       assert.strictEqual(
-        matches[0].data.attrs.size, attrs.size);
+        matches[0].data.props.size, props.size);
       assert.strictEqual(
-        matches[0].data.attrs.step, attrs.step);
+        matches[0].data.props.step, props.step);
       assert.strictEqual(
-        matches[0].data.attrs.type, attrs.type);
+        matches[0].data.props.type, props.type);
       assert.strictEqual(
-        matches[0].data.attrs.value, attrs.value);
+        matches[0].data.props.value, props.value);
     })
       .catch(done);
 
-    let otherAttrs: InputAttrs =
+    let otherProps: InputProps =
       {
         autocapitalize: 'none',
         autocomplete: `no`,
@@ -171,99 +168,74 @@ describe(`Input component`, () => {
         value: `other initial value`
       }
     sinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(otherAttrs) });
+      Input({ DOM: mockAsDomSource({}), props$: just(otherProps) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`input.${styles.textInputUnderbar}`, view);
 
       assert.strictEqual(
-        matches[0].data.attrs.autocapitalize, otherAttrs.autocapitalize);
+        matches[0].data.props.autocapitalize, otherProps.autocapitalize);
       assert.strictEqual(
-        matches[0].data.attrs.autocomplete, otherAttrs.autocomplete);
+        matches[0].data.props.autocomplete, otherProps.autocomplete);
       assert.strictEqual(
-        matches[0].data.attrs.autocorrect, otherAttrs.autocorrect);
+        matches[0].data.props.autocorrect, otherProps.autocorrect);
       assert.strictEqual(
-        matches[0].data.attrs.autofocus, otherAttrs.autofocus);
+        matches[0].data.props.autofocus, otherProps.autofocus);
       assert.strictEqual(
-        matches[0].data.attrs.disabled, otherAttrs.disabled);
+        matches[0].data.props.disabled, otherProps.disabled);
       assert.strictEqual(
-        matches[0].data.attrs.inputmode, otherAttrs.inputmode);
+        matches[0].data.props.inputmode, otherProps.inputmode);
       assert.strictEqual(
-        matches[0].data.attrs.id, otherAttrs.id);
+        matches[0].data.props.id, otherProps.id);
       assert.strictEqual(
-        matches[0].data.attrs.max, otherAttrs.max);
+        matches[0].data.props.max, otherProps.max);
       assert.strictEqual(
-        matches[0].data.attrs.maxlength, otherAttrs.maxlength);
+        matches[0].data.props.maxlength, otherProps.maxlength);
       assert.strictEqual(
-        matches[0].data.attrs.min, otherAttrs.min);
+        matches[0].data.props.min, otherProps.min);
       assert.strictEqual(
-        matches[0].data.attrs.minlength, otherAttrs.minlength);
+        matches[0].data.props.minlength, otherProps.minlength);
       assert.strictEqual(
-        matches[0].data.attrs.name, otherAttrs.name);
+        matches[0].data.props.name, otherProps.name);
       assert.strictEqual(
-        matches[0].data.attrs.pattern, otherAttrs.pattern);
+        matches[0].data.props.pattern, otherProps.pattern);
       assert.strictEqual(
-        matches[0].data.attrs.placeholder, otherAttrs.placeholder);
+        matches[0].data.props.placeholder, otherProps.placeholder);
       assert.strictEqual(
-        matches[0].data.attrs.readonly, otherAttrs.readonly);
+        matches[0].data.props.readonly, otherProps.readonly);
       assert.strictEqual(
-        matches[0].data.attrs.size, otherAttrs.size);
+        matches[0].data.props.size, otherProps.size);
       assert.strictEqual(
-        matches[0].data.attrs.step, otherAttrs.step);
+        matches[0].data.props.step, otherProps.step);
       assert.strictEqual(
-        matches[0].data.attrs.type, otherAttrs.type);
+        matches[0].data.props.type, otherProps.type);
       assert.strictEqual(
-        matches[0].data.attrs.value, otherAttrs.value);
+        matches[0].data.props.value, otherProps.value);
       done();
     })
       .catch(done);
   });
 
-  it(`sets properties on INPUT element`, (done) => {
-    let props: InputProps = { disabled: true };
+  it(`sets placeholder property value as label text`, (done) => {
+    let props: InputProps = { placeholder: `My label` };
     let sinks: InputSinks =
       Input({ DOM: mockAsDomSource({}), props$: just(props) });
 
     sinks.DOM.observe((view: VNode) => {
-      const matches = domSelect(`input.${styles.textInputUnderbar}`, view);
-
-      assert.strictEqual(matches[0].data.props.disabled, props.disabled);
-    })
-      .catch(done);
-
-    let otherProps: InputProps = { disabled: false };
-    sinks = Input({ DOM: mockAsDomSource({}), props$: just(otherProps) });
-
-    sinks.DOM.observe((view: VNode) => {
-      const matches = domSelect(`input.${styles.textInputUnderbar}`, view);
-
-      assert.strictEqual(matches[0].data.props.disabled, otherProps.disabled);
-    })
-      .catch(done);
-
-    done();
-  });
-
-  it(`sets placeholder attribute value as label text`, (done) => {
-    let attrs: InputAttrs = { placeholder: `My label` };
-    let sinks: InputSinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(attrs) });
-
-    sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`span.${styles.label}`, view);
 
-      assert.strictEqual(matches[0].text, attrs.placeholder);
+      assert.strictEqual(matches[0].text, props.placeholder);
     })
       .catch(done);
 
-    let otherAttrs: InputAttrs = { placeholder: `My other label` };
+    let otherProps: InputProps = { placeholder: `My other label` };
     sinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(otherAttrs) });
+      Input({ DOM: mockAsDomSource({}), props$: just(otherProps) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`span.${styles.label}`, view);
 
-      assert.strictEqual(matches[0].text, otherAttrs.placeholder);
+      assert.strictEqual(matches[0].text, otherProps.placeholder);
     })
       .catch(done);
 
@@ -271,9 +243,9 @@ describe(`Input component`, () => {
   });
 
   it(`sets active style on label`, (done) => {
-    let attrs: InputAttrs = { value: `some content`, float: true };
+    let props: InputProps = { value: `some content`, float: true };
     let sinks: InputSinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(attrs) });
+      Input({ DOM: mockAsDomSource({}), props$: just(props) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`span.${styles.labelActive}`, view);
@@ -282,9 +254,9 @@ describe(`Input component`, () => {
     })
       .catch(done);
 
-    let otherAttrs: InputAttrs = { value: `some content`, float: false };
+    let otherProps: InputProps = { value: `some content`, float: false };
     sinks =
-      Input({ DOM: mockAsDomSource({}), attrs$: just(otherAttrs) });
+      Input({ DOM: mockAsDomSource({}), props$: just(otherProps) });
 
     sinks.DOM.observe((view: VNode) => {
       const matches = domSelect(`span.${styles.notFloatLabelActive}`, view);
@@ -294,5 +266,11 @@ describe(`Input component`, () => {
       .catch(done);
 
     done();
+  });
+
+  it(`has a model stream in its sinks`, () => {
+    const sinks: InputSinks = Input(defaultSources);
+
+    assert.ok(sinks.hasOwnProperty(`model$`));
   });
 });

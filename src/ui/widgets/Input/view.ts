@@ -1,60 +1,53 @@
 import { VNode, div, input, label, span } from '@motorcycle/dom';
-import { InputAttrs, InputProps } from './';
+import { merge } from 'ramda';
+import { InputModel } from './';
 import * as styles from './styles';
 import { classes, cssRule } from 'typestyle';
 import { cssClassesAsSelector as asSelector }
   from '../../helpers/cssClassesAsSelector';
 
-export type ViewSpecs = {
-  attrs: InputAttrs;
-  props: InputProps;
-  value: string;
-}
-
-export function view(specs: ViewSpecs): VNode {
+export function view(model: InputModel): VNode {
   pseudoPlaceholderHack();
 
-  return rootVNode(specs);
+  return rootVNode(model);
 }
 
-function rootVNode(specs: ViewSpecs): VNode {
+function rootVNode(model: InputModel): VNode {
   const rootVNode: VNode =
     div(
       asSelector(
           styles.uniqueRoot,
           styles.root,
-          specs.props.disabled && styles.disabled),
-      [ containerVNode(specs) ]
+          model.disabled && styles.disabled),
+      [ containerVNode(model) ]
     );
 
   return rootVNode;
 }
 
-function containerVNode(specs: ViewSpecs): VNode {
+function containerVNode(model: InputModel): VNode {
   const containerVNode: VNode =
     label(asSelector(styles.container), [
-      inputVNode(specs),
-      labelVNode(specs),
+      inputVNode(model),
+      labelVNode(model),
     ]);
 
   return containerVNode;
 }
 
-function inputVNode(specs: ViewSpecs): VNode {
-  const { attrs, props } = specs;
-  const inputAttrs = Object.assign({}, attrs);
-  delete inputAttrs[`float`];
+function inputVNode(model: InputModel): VNode {
+  const props: InputModel = merge({}, model);
+  delete props[`float`];
 
   const inputVNode: VNode =
     input(asSelector(styles.textInputUnderbar),
-      { attrs: inputAttrs, props });
+      { props });
 
   return inputVNode;
 }
 
-function labelVNode(specs: ViewSpecs): VNode {
-  const { attrs, value } = specs;
-  const { float, placeholder } = attrs;
+function labelVNode(model: InputModel): VNode {
+  const { float, placeholder, value } = model;
 
   const labelVNode: VNode =
     span(
