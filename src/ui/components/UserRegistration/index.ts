@@ -1,13 +1,24 @@
 import { Stream, just } from 'most';
 import { combineObj } from '../../../helpers';
 import { VNode, DOMSource } from '@motorcycle/dom';
-import { Sources } from '../../../components/types';
-import { Input, InputAttrs, Button, ButtonAttrs, ButtonChildren } from '../../widgets';
+import { Sources, Sinks } from '../../../components/types';
+import {
+  InputSources, InputSinks, Input, InputProps, InputModel,
+  ButtonSources, Button, ButtonAttrs, ButtonProps, ButtonChildren
+}
+  from '../../widgets';
 import isolate from '@cycle/isolate';
 import { view } from './view';
 
-export type UserRegistrationSinks = {
+export type UserRegistrationModel =
+  {
+    emailAddressInput: InputModel;
+    passwordInput: InputModel;
+  };
+
+export type UserRegistrationSinks = Sinks & {
   DOM: Stream<VNode>;
+  model$: Stream<UserRegistrationModel>;
 }
 
 export type UserRegistrationSources = Sources & {
@@ -21,38 +32,49 @@ export type UserRegistrationChildViews = {
 }
 
 export function UserRegistration(
-    sources: UserRegistrationSources): UserRegistrationSinks {
+  sources: UserRegistrationSources): UserRegistrationSinks {
+
+  const emailAddressInput: InputSinks = EmailAddressInput(sources);
+  const passwordInput: InputSinks = PasswordInput(sources);
 
   const childDOMs =
     {
-      emailAddressInput$: emailAddressInputDOM(sources),
-      passwordInput$: passwordInputDOM(sources),
+      emailAddressInput$: emailAddressInput.DOM,
+      passwordInput$: passwordInput.DOM,
       signUpButton$: signUpButtonDOM(sources)
     };
 
   const childViews$: Stream<UserRegistrationChildViews> =
     combineObj<UserRegistrationChildViews>(childDOMs);
 
+  const model$: Stream<UserRegistrationModel> =
+    combineObj<UserRegistrationModel>({
+      emailAddressInput$: emailAddressInput.model$,
+      passwordInput$: passwordInput.model$
+    });
+
   return {
-    DOM: childViews$.map(view)
-  }
-}
-
-function emailAddressInputDOM(sources: UserRegistrationSources): Stream<VNode> {
-  const { DOM } = sources;
-  const attrs: InputAttrs = {
-    id: `UserRegistrationEmailAddressInput`,
-    type: 'email',
-    placeholder: `Email address`,
-    float: true
+    DOM: childViews$.map(view),
+    model$
   };
-
-  return isolate(Input)({ DOM, attrs$: just(attrs) }).DOM;
 }
 
-function passwordInputDOM(sources: UserRegistrationSources): Stream<VNode> {
+function EmailAddressInput(sources: InputSources): InputSinks {
   const { DOM } = sources;
-  const attrs: InputAttrs =
+  const props: InputProps =
+    {
+      id: `UserRegistrationEmailAddressInput`,
+      type: 'email',
+      placeholder: `Email address`,
+      float: true
+    };
+
+  return isolate(Input)({ DOM, props$: just(props) });
+}
+
+function PasswordInput(sources: InputSources): InputSinks {
+  const { DOM } = sources;
+  const props: InputProps =
     {
       id: `UserRegistrationPasswordInput`,
       type: 'password',
@@ -60,20 +82,22 @@ function passwordInputDOM(sources: UserRegistrationSources): Stream<VNode> {
       float: true
     };
 
-  return isolate(Input)({ DOM, attrs$: just(attrs) }).DOM;
+  return isolate(Input)({ DOM, props$: just(props) });
 }
 
-function signUpButtonDOM(sources: UserRegistrationSources): Stream<VNode> {
+function signUpButtonDOM(sources: ButtonSources): Stream<VNode> {
   const { DOM } = sources;
   const attrs: ButtonAttrs =
     {
       id: `UserRegistrationSignUpButton`
-    }
-  const children: ButtonChildren = [ `Sign up` ];
+    };
+  const props: ButtonProps = {};
+  const children: ButtonChildren = [`Sign up`];
 
   return isolate(Button)({
     DOM,
     attrs$: just(attrs),
+    props$: just(props),
     children$: just(children)
   }).DOM;
 }

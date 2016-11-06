@@ -1,8 +1,12 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
-import { UserRegistration, UserRegistrationSinks, UserRegistrationSources }
+import {
+  UserRegistration, UserRegistrationSinks, UserRegistrationSources,
+  UserRegistrationModel
+}
   from './';
+import { InputModel } from '../../widgets/Input';
 import * as styles from './styles';
 const domSelect = require('snabbdom-selector').default;
 
@@ -56,7 +60,7 @@ describe(`UserRegistration component`, () => {
         const matches = domSelect(`.sn-input #UserRegistrationEmailAddressInput`, view);
 
         assert.strictEqual(matches.length, 1);
-        assert.strictEqual(matches[0].data.attrs.type, `email`);
+        assert.strictEqual(matches[0].data.props.type, `email`);
       })
         .catch(done);
 
@@ -70,7 +74,7 @@ describe(`UserRegistration component`, () => {
         const matches = domSelect(`.sn-input #UserRegistrationPasswordInput`, view);
 
         assert.strictEqual(matches.length, 1);
-        assert.strictEqual(matches[0].data.attrs.type, `password`);
+        assert.strictEqual(matches[0].data.props.type, `password`);
       })
         .catch(done);
 
@@ -89,6 +93,65 @@ describe(`UserRegistration component`, () => {
         .catch(done);
 
       done();
+    });
+  });
+
+  it(`has a model stream in its sinks`, () => {
+    const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+    assert.ok(sinks.hasOwnProperty(`model$`));
+  });
+
+  describe(`model stream`, () => {
+    it(`emits model objects`, (done) => {
+      const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+      sinks.model$.observe((model: UserRegistrationModel) => {
+        assert.strictEqual(typeof model, `object`);
+      })
+        .catch(done);
+
+      done();
+    });
+
+    describe(`model object`, () => {
+      it(`has an email address input model`, (done) => {
+        const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+        sinks.model$.observe((model: UserRegistrationModel) => {
+          const emailAddressInputModel: InputModel = model.emailAddressInput;
+          const { disabled, float, id, placeholder, type, value } =
+            emailAddressInputModel;
+          assert.ok(!disabled);
+          assert.ok(float);
+          assert.strictEqual(id, `UserRegistrationEmailAddressInput`);
+          assert.strictEqual(placeholder, `Email address`);
+          assert.strictEqual(type, `email`);
+          assert.strictEqual(value, ``);
+        })
+          .catch(done);
+
+        done();
+      });
+
+      it(`has a password input model`, (done) => {
+        const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+        sinks.model$.observe((model: UserRegistrationModel) => {
+          const passwordInputModel: InputModel = model.passwordInput;
+          const { disabled, float, id, placeholder, type, value } =
+            passwordInputModel;
+          assert.ok(!disabled);
+          assert.ok(float);
+          assert.strictEqual(id, `UserRegistrationPasswordInput`);
+          assert.strictEqual(placeholder, `Password`);
+          assert.strictEqual(type, `password`);
+          assert.strictEqual(value, ``);
+        })
+          .catch(done);
+
+        done();
+      });
     });
   });
 });
