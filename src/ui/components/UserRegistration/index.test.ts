@@ -6,7 +6,7 @@ import {
   UserRegistrationModel
 }
   from './';
-import { InputModel } from '../../widgets/Input';
+import { InputModel, ButtonModel } from '../../widgets';
 import * as styles from './styles';
 const domSelect = require('snabbdom-selector').default;
 
@@ -147,6 +147,21 @@ describe(`UserRegistration component`, () => {
           assert.strictEqual(placeholder, `Password`);
           assert.strictEqual(type, `password`);
           assert.strictEqual(value, ``);
+        })
+          .catch(done);
+
+        done();
+      });
+
+      it(`has a sign-up button model`, (done) => {
+        const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+        sinks.model$.observe((model: UserRegistrationModel) => {
+          const signUpButtonModel: ButtonModel = model.signUpButton;
+          const { children, disabled, id } = signUpButtonModel;
+          assert.deepEqual(children, [`Sign up`]);
+          assert.ok(!disabled);
+          assert.strictEqual(id, `UserRegistrationSignUpButton`);
         })
           .catch(done);
 

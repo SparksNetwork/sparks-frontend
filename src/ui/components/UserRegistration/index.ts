@@ -4,7 +4,7 @@ import { VNode, DOMSource } from '@motorcycle/dom';
 import { Sources, Sinks } from '../../../components/types';
 import {
   InputSources, InputSinks, Input, InputProps, InputModel,
-  ButtonSources, Button, ButtonAttrs, ButtonProps, ButtonChildren
+  ButtonSources, ButtonSinks, Button, ButtonProps, ButtonModel
 }
   from '../../widgets';
 import isolate from '@cycle/isolate';
@@ -14,6 +14,7 @@ export type UserRegistrationModel =
   {
     emailAddressInput: InputModel;
     passwordInput: InputModel;
+    signUpButton: ButtonModel;
   };
 
 export type UserRegistrationSinks = Sinks & {
@@ -36,12 +37,13 @@ export function UserRegistration(
 
   const emailAddressInput: InputSinks = EmailAddressInput(sources);
   const passwordInput: InputSinks = PasswordInput(sources);
+  const signUpButton: ButtonSinks = SignUpButton(sources)
 
   const childDOMs =
     {
       emailAddressInput$: emailAddressInput.DOM,
       passwordInput$: passwordInput.DOM,
-      signUpButton$: signUpButtonDOM(sources)
+      signUpButton$: signUpButton.DOM
     };
 
   const childViews$: Stream<UserRegistrationChildViews> =
@@ -50,7 +52,8 @@ export function UserRegistration(
   const model$: Stream<UserRegistrationModel> =
     combineObj<UserRegistrationModel>({
       emailAddressInput$: emailAddressInput.model$,
-      passwordInput$: passwordInput.model$
+      passwordInput$: passwordInput.model$,
+      signUpButton$: signUpButton.model$
     });
 
   return {
@@ -85,19 +88,13 @@ function PasswordInput(sources: InputSources): InputSinks {
   return isolate(Input)({ DOM, props$: just(props) });
 }
 
-function signUpButtonDOM(sources: ButtonSources): Stream<VNode> {
+function SignUpButton(sources: ButtonSources): ButtonSinks {
   const { DOM } = sources;
-  const attrs: ButtonAttrs =
+  const props: ButtonProps =
     {
+      children: [`Sign up`],
       id: `UserRegistrationSignUpButton`
     };
-  const props: ButtonProps = {};
-  const children: ButtonChildren = [`Sign up`];
 
-  return isolate(Button)({
-    DOM,
-    attrs$: just(attrs),
-    props$: just(props),
-    children$: just(children)
-  }).DOM;
+  return isolate(Button)({ DOM, props$: just(props) });
 }
