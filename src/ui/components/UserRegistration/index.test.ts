@@ -1,9 +1,11 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
+import { merge } from 'ramda';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
+import { just } from 'most';
 import {
   UserRegistration, UserRegistrationSinks, UserRegistrationSources,
-  UserRegistrationModel
+  UserRegistrationModel, UserRegistrationProps, UserRegistrationDefaultProps
 }
   from './';
 import { InputModel, ButtonModel } from '../../widgets';
@@ -167,6 +169,98 @@ describe(`UserRegistration component`, () => {
 
         done();
       });
+
+      it(`has a \`error\` property`, (done) => {
+        const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
+
+        sinks.model$.observe((model: UserRegistrationModel) => {
+          assert.ok(!model.error);
+        })
+          .catch(done);
+
+        done();
+      });
     });
+  });
+
+  it(`sets email address input value`, (done) => {
+    const props: UserRegistrationProps =
+      {
+        emailAddressInput: { value: `dummy@email.address` }
+      };
+    let sinks: UserRegistrationSinks =
+      UserRegistration(merge(defaultSources, { props$: just(props) }));
+
+    sinks.model$.observe((model: UserRegistrationModel) => {
+      assert.strictEqual(
+        model.emailAddressInput.value,
+        (props as UserRegistrationDefaultProps).emailAddressInput.value
+      );
+    })
+      .catch(done);
+
+    const otherProps: UserRegistrationProps =
+      {
+        emailAddressInput: { value: `dummy@email.address` }
+      };
+    sinks = UserRegistration(merge(defaultSources, { props$: just(otherProps) }));
+
+    sinks.model$.observe((model: UserRegistrationModel) => {
+      assert.strictEqual(
+        model.emailAddressInput.value,
+        (otherProps as UserRegistrationDefaultProps).emailAddressInput.value
+      );
+    })
+      .catch(done);
+
+    done();
+  });
+
+  it(`sets password input value`, (done) => {
+    const props: UserRegistrationProps =
+      {
+        passwordInput: { value: `secret` }
+      };
+    let sinks: UserRegistrationSinks =
+      UserRegistration(merge(defaultSources, { props$: just(props) }));
+
+    sinks.model$.observe((model: UserRegistrationModel) => {
+      assert.strictEqual(
+        model.passwordInput.value,
+        (props as UserRegistrationDefaultProps).passwordInput.value
+      );
+    })
+      .catch(done);
+
+    const otherProps: UserRegistrationProps =
+      {
+        passwordInput: { value: `other secret` }
+      };
+    sinks = UserRegistration(merge(defaultSources, { props$: just(otherProps) }));
+
+    sinks.model$.observe((model: UserRegistrationModel) => {
+      assert.strictEqual(
+        model.passwordInput.value,
+        (otherProps as UserRegistrationDefaultProps).passwordInput.value
+      );
+    })
+      .catch(done);
+
+    done();
+  });
+
+  it.skip(`sets model error`, (done) => {
+    const props: UserRegistrationProps =
+      {
+        emailAddressInput: { value: `invalid` }
+      };
+    let sinks: UserRegistrationSinks =
+      UserRegistration(merge(defaultSources, { props$: just(props) }));
+
+    sinks.model$.observe((model: UserRegistrationModel) => {
+      //
+    })
+      .catch(done);
+    done();
   });
 });

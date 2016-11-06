@@ -1,9 +1,10 @@
 import { Stream, just } from 'most';
+import { merge } from 'ramda';
 import { combineObj } from '../../../helpers';
 import { VNode, DOMSource } from '@motorcycle/dom';
 import { Sources, Sinks } from '../../../components/types';
 import {
-  InputSources, InputSinks, Input, InputProps, InputModel,
+  InputSinks, Input, InputProps, InputModel,
   ButtonSources, ButtonSinks, Button, ButtonProps, ButtonModel
 }
   from '../../widgets';
@@ -15,6 +16,7 @@ export type UserRegistrationModel =
     emailAddressInput: InputModel;
     passwordInput: InputModel;
     signUpButton: ButtonModel;
+    error?: any;
   };
 
 export type UserRegistrationSinks = Sinks & {
@@ -22,9 +24,24 @@ export type UserRegistrationSinks = Sinks & {
   model$: Stream<UserRegistrationModel>;
 }
 
-export type UserRegistrationSources = Sources & {
-  DOM: DOMSource
+export type UserRegistrationProps = {
+  emailAddressInput?: { value: string };
+  passwordInput?: { value: string }
 };
+
+export type UserRegistrationDefaultProps = UserRegistrationProps & {
+  emailAddressInput: { value: string };
+  passwordInput: { value: string }
+};
+
+export type UserRegistrationSources = Sources & {
+  DOM: DOMSource;
+  props$?: Stream<UserRegistrationProps>;
+};
+
+export type UserRegistrationDefaultSources = UserRegistrationSources & {
+  props$: Stream<UserRegistrationDefaultProps>;
+}
 
 export type UserRegistrationChildViews = {
   emailAddressInput: VNode;
@@ -35,9 +52,12 @@ export type UserRegistrationChildViews = {
 export function UserRegistration(
   sources: UserRegistrationSources): UserRegistrationSinks {
 
-  const emailAddressInput: InputSinks = EmailAddressInput(sources);
-  const passwordInput: InputSinks = PasswordInput(sources);
-  const signUpButton: ButtonSinks = SignUpButton(sources)
+  const sourcesWithDefaults: UserRegistrationDefaultSources =
+    sourcesWithAppliedDefaults(sources);
+
+  const emailAddressInput: InputSinks = EmailAddressInput(sourcesWithDefaults);
+  const passwordInput: InputSinks = PasswordInput(sourcesWithDefaults);
+  const signUpButton: ButtonSinks = SignUpButton(sourcesWithDefaults)
 
   const childDOMs =
     {
@@ -62,30 +82,57 @@ export function UserRegistration(
   };
 }
 
-function EmailAddressInput(sources: InputSources): InputSinks {
-  const { DOM } = sources;
-  const props: InputProps =
-    {
-      id: `UserRegistrationEmailAddressInput`,
-      type: 'email',
-      placeholder: `Email address`,
-      float: true
-    };
-
-  return isolate(Input)({ DOM, props$: just(props) });
+function sourcesWithAppliedDefaults(
+  sources: UserRegistrationSources
+): UserRegistrationDefaultSources {
+  return merge(sources, { props$: propsWithDefaults$(sources) });
 }
 
-function PasswordInput(sources: InputSources): InputSinks {
-  const { DOM } = sources;
-  const props: InputProps =
+function propsWithDefaults$(
+  sources: UserRegistrationSources
+): Stream<UserRegistrationDefaultProps> {
+  const { props$ = just({}) } = sources;
+  const defaultProps: UserRegistrationDefaultProps =
     {
-      id: `UserRegistrationPasswordInput`,
-      type: 'password',
-      placeholder: `Password`,
-      float: true
+      emailAddressInput: { value: `` },
+      passwordInput: { value: `` }
     };
 
-  return isolate(Input)({ DOM, props$: just(props) });
+  return props$.map(props => merge(defaultProps, props));
+}
+
+function EmailAddressInput(sources: UserRegistrationDefaultSources): InputSinks {
+  const { DOM } = sources;
+  const props$: Stream<InputProps> =
+    sources.props$
+      .map(props => {
+        return {
+          float: true,
+          id: `UserRegistrationEmailAddressInput`,
+          placeholder: `Email address`,
+          type: 'email',
+          value: props.emailAddressInput.value
+        } as InputProps;
+      });
+
+  return isolate(Input)({ DOM, props$ });
+}
+
+function PasswordInput(sources: UserRegistrationDefaultSources): InputSinks {
+  const { DOM } = sources;
+  const props$: Stream<InputProps> =
+    sources.props$
+      .map(props => {
+        return {
+          float: true,
+          id: `UserRegistrationPasswordInput`,
+          placeholder: `Password`,
+          type: 'password',
+          value: props.passwordInput.value
+        } as InputProps;
+      });
+
+  return isolate(Input)({ DOM, props$ });
 }
 
 function SignUpButton(sources: ButtonSources): ButtonSinks {
