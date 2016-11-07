@@ -2,6 +2,7 @@
 import * as assert from 'assert';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
 import { just } from 'most';
+import { merge } from 'ramda';
 import { Input, InputSources, InputSinks, InputProps } from './';
 import * as styles from './styles';
 const domSelect = require(`snabbdom-selector`).default;
@@ -272,5 +273,40 @@ describe(`Input component`, () => {
     const sinks: InputSinks = Input(defaultSources);
 
     assert.ok(sinks.hasOwnProperty(`model$`));
+  });
+
+  it(`sets valid property on model`, (done) => {
+    let sinks: InputSinks = Input(defaultSources);
+
+    sinks.model$.observe(model => {
+      assert.ok(model.valid)
+    })
+      .catch(done);
+
+    const props: InputProps =
+      {
+        value: `invalid`,
+        validator: (value) => value !== `invalid`
+      };
+    sinks = Input(merge(defaultSources, { props$: just(props) }))
+
+    sinks.model$.observe(model => {
+      assert.ok(!model.valid)
+    })
+      .catch(done);
+
+    const otherProps: InputProps =
+      {
+        value: `valid`,
+        validator: (value) => value !== `invalid`
+      };
+    sinks = Input(merge(defaultSources, { props$: just(otherProps) }))
+
+    sinks.model$.observe(model => {
+      assert.ok(model.valid)
+    })
+      .catch(done);
+
+    done();
   });
 });
