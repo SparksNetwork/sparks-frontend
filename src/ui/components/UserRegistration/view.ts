@@ -8,13 +8,16 @@ export function view(childViews: UserRegistrationChildViews): VNode {
   const rootVNode: VNode =
     div(
       asSelector(styles.uniqueRoot),
-      { attrs: { style: `text-align: center` } }, [
+      [
         form([
           p([
             childViews.emailAddressInput
           ]),
           p([
             childViews.passwordInput
+          ]),
+          p([
+            childViews.passwordStrength
           ]),
           p([
             childViews.signUpButton

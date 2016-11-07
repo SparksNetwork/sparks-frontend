@@ -6,17 +6,18 @@ import { Sources, Sinks } from '../../../components/types';
 import {
   InputSinks, Input, InputProps, InputModel,
   ButtonSources, ButtonSinks, Button, ButtonProps, ButtonModel
-}
-  from '../../widgets';
-import isolate from '@cycle/isolate';
+} from '../../widgets';
+import {
+  PasswordStrengthSinks, PasswordStrength, PasswordStrengthProps
+} from '../';
 import { view } from './view';
+import isolate from '@cycle/isolate';
 
 export type UserRegistrationModel =
   {
     emailAddressInput: InputModel;
     passwordInput: InputModel;
     signUpButton: ButtonModel;
-    error?: any;
   };
 
 export type UserRegistrationSinks = Sinks & {
@@ -46,6 +47,7 @@ export type UserRegistrationDefaultSources = UserRegistrationSources & {
 export type UserRegistrationChildViews = {
   emailAddressInput: VNode;
   passwordInput: VNode;
+  passwordStrength: VNode;
   signUpButton: VNode;
 }
 
@@ -55,14 +57,20 @@ export function UserRegistration(
   const sourcesWithDefaults: UserRegistrationDefaultSources =
     sourcesWithAppliedDefaults(sources);
 
-  const emailAddressInput: InputSinks = EmailAddressInput(sourcesWithDefaults);
-  const passwordInput: InputSinks = PasswordInput(sourcesWithDefaults);
-  const signUpButton: ButtonSinks = SignUpButton(sourcesWithDefaults)
+  const emailAddressInput: InputSinks =
+    EmailAddressInput(sourcesWithDefaults);
+  const passwordInput: InputSinks =
+    PasswordInput(sourcesWithDefaults);
+  const passwordStrength: PasswordStrengthSinks =
+    makePasswordStrength(sourcesWithDefaults, passwordInput.model$);
+  const signUpButton: ButtonSinks =
+    SignUpButton(sourcesWithDefaults)
 
   const childDOMs =
     {
       emailAddressInput$: emailAddressInput.DOM,
       passwordInput$: passwordInput.DOM,
+      passwordStrength$: passwordStrength.DOM,
       signUpButton$: signUpButton.DOM
     };
 
@@ -133,6 +141,21 @@ function PasswordInput(sources: UserRegistrationDefaultSources): InputSinks {
       });
 
   return isolate(Input)({ DOM, props$ });
+}
+
+function makePasswordStrength(
+  sources: UserRegistrationDefaultSources,
+  inputModel$: Stream<InputModel>): PasswordStrengthSinks {
+
+  const props$: Stream<PasswordStrengthProps> =
+    inputModel$
+      .map(model => {
+        return {
+          password: model.value
+        };
+      });
+
+  return PasswordStrength({ DOM: sources.DOM, props$ });
 }
 
 function SignUpButton(sources: ButtonSources): ButtonSinks {
