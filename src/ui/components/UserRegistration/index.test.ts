@@ -1,14 +1,10 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { merge } from 'ramda';
 import { VNode, DOMSource, mockDOMSource } from '@motorcycle/dom';
-import { just } from 'most';
 import {
     UserRegistration, UserRegistrationSinks, UserRegistrationSources,
-    UserRegistrationModel, UserRegistrationProps, UserRegistrationDefaultProps
-}
-    from './';
-import { InputModel, ButtonModel } from '../../widgets';
+    UserRegistrationModel
+} from './';
 import * as styles from './styles';
 const domSelect = require('snabbdom-selector').default;
 
@@ -128,126 +124,5 @@ describe(`UserRegistration component`, () => {
 
             done();
         });
-
-        describe(`model object`, () => {
-            it(`has an email address input model`, (done) => {
-                const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
-
-                sinks.model$.observe((model: UserRegistrationModel) => {
-                    const emailAddressInputModel: InputModel = model.emailAddressInput;
-                    const { disabled, float, id, placeholder, type, value } =
-                        emailAddressInputModel;
-                    assert.ok(!disabled);
-                    assert.ok(float);
-                    assert.strictEqual(id, `UserRegistrationEmailAddressInput`);
-                    assert.strictEqual(placeholder, `Email address`);
-                    assert.strictEqual(type, `email`);
-                    assert.strictEqual(value, ``);
-                })
-                    .catch(done);
-
-                done();
-            });
-
-            it(`has a password input model`, (done) => {
-                const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
-
-                sinks.model$.observe((model: UserRegistrationModel) => {
-                    const passwordInputModel: InputModel = model.passwordInput;
-                    const { disabled, float, id, placeholder, type, value } =
-                        passwordInputModel;
-                    assert.ok(!disabled);
-                    assert.ok(float);
-                    assert.strictEqual(id, `UserRegistrationPasswordInput`);
-                    assert.strictEqual(placeholder, `Password`);
-                    assert.strictEqual(type, `password`);
-                    assert.strictEqual(value, ``);
-                })
-                    .catch(done);
-
-                done();
-            });
-
-            it(`has a sign-up button model`, (done) => {
-                const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
-
-                sinks.model$.observe((model: UserRegistrationModel) => {
-                    const signUpButtonModel: ButtonModel = model.signUpButton;
-                    const { children, disabled, id } = signUpButtonModel;
-                    assert.deepEqual(children, [`Sign up`]);
-                    assert.ok(!disabled);
-                    assert.strictEqual(id, `UserRegistrationSignUpButton`);
-                })
-                    .catch(done);
-
-                done();
-            });
-        });
-    });
-
-    it(`sets email address input value`, (done) => {
-        const props: UserRegistrationProps =
-            {
-                emailAddressInput: { value: `dummy@email.address` }
-            };
-        let sinks: UserRegistrationSinks =
-            UserRegistration(merge(defaultSources, { props$: just(props) }));
-
-        sinks.model$.observe((model: UserRegistrationModel) => {
-            assert.strictEqual(
-                model.emailAddressInput.value,
-                (props as UserRegistrationDefaultProps).emailAddressInput.value
-            );
-        })
-            .catch(done);
-
-        const otherProps: UserRegistrationProps =
-            {
-                emailAddressInput: { value: `dummy@email.address` }
-            };
-        sinks = UserRegistration(merge(defaultSources, { props$: just(otherProps) }));
-
-        sinks.model$.observe((model: UserRegistrationModel) => {
-            assert.strictEqual(
-                model.emailAddressInput.value,
-                (otherProps as UserRegistrationDefaultProps).emailAddressInput.value
-            );
-        })
-            .catch(done);
-
-        done();
-    });
-
-    it(`sets password input value`, (done) => {
-        const props: UserRegistrationProps =
-            {
-                passwordInput: { value: `secret` }
-            };
-        let sinks: UserRegistrationSinks =
-            UserRegistration(merge(defaultSources, { props$: just(props) }));
-
-        sinks.model$.observe((model: UserRegistrationModel) => {
-            assert.strictEqual(
-                model.passwordInput.value,
-                (props as UserRegistrationDefaultProps).passwordInput.value
-            );
-        })
-            .catch(done);
-
-        const otherProps: UserRegistrationProps =
-            {
-                passwordInput: { value: `other secret` }
-            };
-        sinks = UserRegistration(merge(defaultSources, { props$: just(otherProps) }));
-
-        sinks.model$.observe((model: UserRegistrationModel) => {
-            assert.strictEqual(
-                model.passwordInput.value,
-                (otherProps as UserRegistrationDefaultProps).passwordInput.value
-            );
-        })
-            .catch(done);
-
-        done();
     });
 });
