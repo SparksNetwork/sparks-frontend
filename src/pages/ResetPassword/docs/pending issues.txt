@@ -6,3 +6,6 @@
 - main
   - move the authentication sources up to the main
   - separate auth state from auth response from user data
+
+- adrs
+  - properties/constant file for each screen

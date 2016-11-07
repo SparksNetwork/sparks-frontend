@@ -25,30 +25,28 @@ import {Sources, Sinks, Source} from '../../components/types';
 import {
   AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
 } from '../types/authentication/types';
+import {MIN_PASSWORD_LENGTH, REDIRECT_DELAY} from './config.properties'
+import {computeView} from './ResetPasswordView'
 
 // Properties
 // TODO : move in some properties file
-const MIN_PASSWORD_LENGTH = 6;
 
 // Helper functions
 function comparePasswordToRepeatedPassword({enterPassword, confirmPassword}) {
   return equals(enterPassword, confirmPassword);
 }
 
-function checkMinPasswordLenth({enterPassword, confirmPassword}) {
+function checkMinPasswordLength({enterPassword, confirmPassword}) {
   return enterPassword.length > MIN_PASSWORD_LENGTH;
 }
-
-const validatePassword = allPass([
-  checkMinPasswordLenth,
-  comparePasswordToRepeatedPassword
-])
 
 function computeActions({mode, oobCode, authenticationState, authResetState}, childrenSinks): any {
   const verifyCodeCommand = {
     method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
     code: oobCode
   };
+  // TODO : set the following two as typescript types and make a authCommand
+  // type
   const confirmPasswordResetCommand = {
     method: AuthMethods.CONFIRM_PASSWORD_RESET,
     code: oobCode,
@@ -59,29 +57,34 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
     email: undefined,
     password: undefined
   };
+  const DASHBOARD_ROUTE = '/';
+  const LOGIN_ROUTE = '/login';
+
   let mergedChildrenSinks: any = mergeAll(childrenSinks)
   let {DOM, resetPassword$, confirmPassword$} = mergedChildrenSinks;
 
   switch (authResetState as AuthResetState) {
     case AuthResetStateEnum.RESET_PWD_INIT :
       return {
-        DOM: mergedChildrenSinks.DOM,
+        DOM: DOM,
         router: empty(),
         authentication$: just(verifyCodeCommand)
       }
     case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK :
       return {
-        // TODO : update the DOM in the right place if fails validation
+        // Update the DOM if password fails client-side validation rules
         DOM: mergeArray([
           DOM,
-          DOM.sampleWith(
-            resetPassword$.filter(complement(validatePassword))
-          )
-            .map(x => x) // TODO : addErrorMessageToDOM
+          checkValidationRule(DOM, resetPassword$, checkMinPasswordLength,
+            'validation/too-short', AuthResetStateEnum.INVALID_PASSWORD),
+          // checkValidationRule(DOM, resetPassword$, comparePasswordToRepeatedPassword,
+          // 'validation/wrong-repeated-password', AuthResetStateEnum.INVALID_PASSWORD),
         ]),
         router: empty(),
-        authentication$: mergedChildrenSinks.resetPassword$
-          .filter(validatePassword)
+        // If password pass client-side validation rules, emit the reset
+        // password command
+        authentication$: resetPassword$
+          .filter(allPass([checkMinPasswordLength, comparePasswordToRepeatedPassword]))
           .map(resetPassword => ({
             method: AuthMethods.CONFIRM_PASSWORD_RESET,
             code: oobCode,
@@ -90,14 +93,13 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
       }
     case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK:
       return {
-        DOM: mergedChildrenSinks.DOM,
+        DOM: DOM,
         router: empty(),
         authentication$: empty()
       }
-    // TODO
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK:
       return {
-        DOM: mergedChildrenSinks.DOM,
+        DOM: DOM,
         router: empty(),
         authentication$: confirmPassword$.map(confirmPassword => {
           return {
@@ -111,17 +113,58 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
             password: confirmPassword
           }
         })
-
       }
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK:
+      return {
+        DOM: DOM,
+        router: empty(),
+        authentication$: empty()
+      }
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK:
+      return {
+        DOM: DOM,
+        router: just(DASHBOARD_ROUTE),
+        authentication$: empty()
+      }
+    // TODO
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK:
+      return {
+        DOM: DOM,
+        router: just(LOGIN_ROUTE),
+        authentication$: empty()
+      }
     case AuthResetStateEnum.INVALID_STATE :
     default :
+      return {
+        DOM: DOM,
+        router: just(LOGIN_ROUTE).delay(REDIRECT_DELAY),
+        authentication$: empty()
+      }
       break;
   }
 
   throw 'should never reach that place'
+}
+
+function checkValidationRule(DOM, resetPassword$, ruleFn, errorCode, authState) {
+  return DOM.sampleWith(
+    resetPassword$.filter(complement(ruleFn))
+      .tap(function(x) {
+        console.warn(`fails ${ruleFn.name}`)
+      })
+  )
+    .tap(function(x) {
+      console.warn(`checkValidationRule`, x)
+    })
+.constant(
+    computeView({
+      authenticationState: {
+        authenticationError: {
+          code: errorCode
+        }
+      },
+      authResetState: authState
+    }).DOM)
 }
 
 export {

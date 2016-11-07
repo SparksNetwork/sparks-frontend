@@ -20,24 +20,28 @@ function computeIntents(sources) {
   const domSource = sources.DOM;
 
   const enterPassword$ = domSource
-          .select(classes.sel('resetPassword.enterPassword')).events('input')
-          .map(function (ev) {
-            return ev.target.value as HTMLInputElement})
-          .thru(hold)
-          .tap(x => console.warn('enterPassword$', x));
+    .select(classes.sel('resetPassword.enterPassword')).events('input')
+    .map(function (ev) {
+      return ev.target.value as HTMLInputElement
+    })
+    // `hold` used because we need this to be a behaviour not an event
+    .thru(hold)
+    .tap(x => console.warn('enterPassword$', x));
 
   const confirmPassword$ = domSource
-          .select(classes.sel('resetPassword.confirmPassword')).events('input')
-          .map(function (ev) {
-            return ev.target.value as HTMLInputElement})
-          .thru(hold)
-          .tap(x => console.warn('confirmPassword$', x));
+    .select(classes.sel('resetPassword.confirmPassword')).events('input')
+    .map(function (ev) {
+      return ev.target.value as HTMLInputElement
+    })
+    // `hold` used because we need this to be a behaviour not an event
+    // (fetched at a later point for logging in the user with that password)
+    .thru(hold)
+    .tap(x => console.warn('confirmPassword$', x));
 
   const submit$ = domSource.select('form').events('submit')
-          .tap(ev => ev.preventDefault())
-          .tap(x => console.warn('submit$', x));
+    .tap(ev => ev.preventDefault())
+    .tap(x => console.warn('submit$', x));
 
-  // TODO : change that, I want to combine them not merge them
   const inputPasswords$ =
           combine<string, string, any>(
             (enterPassword, confirmPassword) => ({
@@ -50,6 +54,7 @@ function computeIntents(sources) {
   const resetPassword$ = inputPasswords$
         // TODO : put some serious type instead of any
           .sampleWith<any>(submit$)
+          .multicast()
           .tap(x => console.warn('resetPassword$ ', x))
     ;
 

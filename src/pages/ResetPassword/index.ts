@@ -230,19 +230,26 @@ function throwContractError() {
 
 const ResetPasswordComponentCore = Switch({
   on: 'authenticationState$',
-  eqFn : (a, b) => {
-    const isEqual = equals(computeAuthenticationStateEnum(b), a)
-    return isEqual
-  },
+  // TODO : investigate why the dissymetry, maybe the first a has the wrong type
+  eqFn: (a, b) => equals(computeAuthenticationStateEnum(b), a),
   sinkNames: ['DOM', 'authentication$', 'router'],
 }, [
-  // AUTH_INIT is the auth state where no API calls were made yet to the
-  // auth driver
+  // no API calls were made yet to the auth driver
   Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
+  // the request to verify the reset code successfully executed
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
+  // the request to verify the reset code failed and returned an error code
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
+  // the request to set the new password succeeded
   Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK}, [SignInWithEmailPassword]),
-  // TODO
+  // the request to set the new password failed
+  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK}, [ReportResetPasswordError]),
+  // the request to sign-in with the new password and the user email succeeded
+  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK}, [RedirectToDashboard]),
+  // the request to sign-in with the new password and the user email failed
+  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK}, [ReportLoggedInError]),
+  // unexpected authentication state
+  Case({caseWhen: AuthResetStateEnum.INVALID_STATE}, [ReportInvalidStateError]),
 ]);
 
 const ResetPasswordComponent = cond([
@@ -250,7 +257,7 @@ const ResetPasswordComponent = cond([
   [orElse, throwContractError]
 ]);
 
-function VerifyPasswordResetCode(sources, settings) {
+function ProcessAuthenticationState(sources, settings) {
   // NOTE : `matched` is added by the Case higher-order component
   // and is the value streamed by the source on which the `Switch` acts
   // It is important to have it available here as it cannot be retrieved
@@ -273,62 +280,36 @@ function VerifyPasswordResetCode(sources, settings) {
   return actionSinks;
 }
 
-function ResetPassword(sources, settings){
-  const {mode, oobCode, matched} = settings;
-  console.warn('VerifyPasswordResetCode: settings', settings);
+function VerifyPasswordResetCode(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
+}
 
-  const state = {
-    authenticationState: matched,
-    authResetState: computeAuthenticationStateEnum(matched)
-  };
-
-  const viewSinks = computeView(state);
-  const intentsSinks = computeIntents(sources);
-  const actionSinks = computeActions(mergeR(settings, state), [
-    viewSinks,
-    intentsSinks
-  ]);
-
-  return actionSinks;
+function ResetPassword(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
 }
 
 function WarnFailedCodeVerification(sources, settings) {
-  const {mode, oobCode, matched} = settings;
-  console.warn('WarnFailedCodeVerification: settings', settings);
-
-  const state = {
-    authenticationState: matched,
-    authResetState: computeAuthenticationStateEnum(matched)
-  };
-
-  const viewSinks = computeView(state);
-  const intentsSinks = computeIntents(sources);
-  const actionSinks = computeActions(mergeR(settings, state), [
-    viewSinks,
-    intentsSinks
-  ]);
-
-  return actionSinks;
+  return ProcessAuthenticationState(sources, settings)
 }
 
 function SignInWithEmailPassword(sources, settings) {
-  const {mode, oobCode, matched} = settings;
-  console.warn('SignInWithEmailPassword: settings', settings);
+  return ProcessAuthenticationState(sources, settings)
+}
 
-  const state = {
-    authenticationState: matched,
-    authResetState: computeAuthenticationStateEnum(matched)
-  };
+function ReportResetPasswordError(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
+}
 
-  const viewSinks = computeView(state);
-  const intentsSinks = computeIntents(sources);
-  // TODO : I am here
-  const actionSinks = computeActions(mergeR(settings, state), [
-    viewSinks,
-    intentsSinks
-  ]);
+function RedirectToDashboard(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
+}
 
-  return actionSinks;
+function ReportLoggedInError(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
+}
+
+function ReportInvalidStateError(sources, settings) {
+  return ProcessAuthenticationState(sources, settings)
 }
 
 function ResetPasswordRouteAdapter(ResetPasswordComponent) {

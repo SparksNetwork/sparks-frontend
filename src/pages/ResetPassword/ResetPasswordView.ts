@@ -12,6 +12,7 @@ import {
   DOMSource, div, span, section, form, fieldset, label, a, p, input, h1,
   h4, button, VNode
 } from '@motorcycle/dom';
+import hold from '@most/hold';
 import {cond, always, merge as mergeR, mergeAll} from 'ramda';
 import {Sources, Sinks, Source} from '../../components/types';
 import {
@@ -32,11 +33,18 @@ const resetPasswordFeedbackPhraseMap = {
   'auth/invalid-action-code': 'resetPassword.verifyCodeInvalidError',
   'auth/user-disabled': 'resetPassword.verifyCodeDisabledUserError',
   'auth/user-not-found': 'resetPassword.verifyCodeUserNotFoundError',
-  'auth/weak-password': 'Thrown if the new password is not strong enough.'
+  'auth/weak-password': 'resetPassword.weakPasswordError',
+  'LoggedIn|auth/invalid-email': 'resetPassword.invalidEmailError',
+  'LoggedIn|auth/user-disabled': 'resetPassword.userDisabledError',
+  'LoggedIn|auth/user-not-found': 'resetPassword.userNotFoundError',
+  'LoggedIn|auth/wrong-password': 'resetPassword.wrongPasswordError',
+  'internal/invalid-state' : 'resetPassword.invalidState',
+  'validation/too-short' : 'resetPassword.tooShortPassword',
+  'validation/wrong-repeated-password' : 'resetPassword.wrongRepeatedPassword'
 }
 
 // TODO : polyglot sentences
-// TODO : css styles
+// TODO : form design and css styling
 function computeResetPasswordView(params) {
   const {
           isDisabled, resetPasswordFeedbackType, resetPasswordFeedbackPhrase
@@ -103,7 +111,7 @@ function computeResetPasswordView(params) {
 
 function computeView({authenticationState, authResetState}) {
   let view;
-  const error = authenticationState.authenticationError &&
+  const error = authenticationState && authenticationState.authenticationError &&
     authenticationState.authenticationError.code;
 
   switch (authResetState as AuthResetState) {
@@ -123,7 +131,6 @@ function computeView({authenticationState, authResetState}) {
         resetPasswordFeedbackPhrase: 'resetPassword.verifyCodeSuccessful'
       });
       break;
-    // TODO
     case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK:
       view = computeResetPasswordView({
         // view is disabled <- code failed verification ; display error message
@@ -141,15 +148,50 @@ function computeView({authenticationState, authResetState}) {
       });
       break;
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK:
+      view = computeResetPasswordView({
+        // view is enabled so the user can try another password
+        isDisabled: false,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
+      });
+      break;
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK:
+      view = computeResetPasswordView({
+        // view is disabled while the application changes screen
+        isDisabled: true,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+        resetPasswordFeedbackPhrase: 'resetPassword.loggedIn'
+      });
+      break;
     case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK:
+      view = computeResetPasswordView({
+        // view is disabled while the application changes screen
+        isDisabled: true,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['LoggedIn|'+error]
+      });
+      break;
+    case AuthResetStateEnum.INVALID_PASSWORD :
+      view = computeResetPasswordView({
+        // view is enabled so the user can try another password
+        isDisabled: false,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
+      });
+      break;
     case AuthResetStateEnum.INVALID_STATE :
     default :
+      view = computeResetPasswordView({
+        // view is disabled while the application changes screen
+        isDisabled: true,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['internal/invalid-state']
+      });
       break;
   }
 
   return {
-    DOM: just(view)
+    DOM: just(view).tap(x=>console.info('DOM orig', x))
   }
 }
 

@@ -153,6 +153,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
           // tick later.
           // In some cases, that delay makes it difficult to reason about
           // the program behaviour
+          // TODO : document that elsewhere, and remove those comments
           cached$ = preCached$
         }
         else {
@@ -253,7 +254,6 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
  *
  */
 const switchCase = {
-  // https://jsfiddle.net/tk6ec5th/ mergeArray obviously works
   mergeSinks: {
     DOM: function mergeDomSwitchedSinks(ownSink, childrenDOMSink, settings) {
       const allSinks = flatten([ownSink, childrenDOMSink])
@@ -298,6 +298,7 @@ const switchCase = {
       // essentially the same without modifying the source code
       // Dont know if there is any side-effects though of having two
       // subscriptions for the source...
+      // Also doing `drain` here is a side-effect...
       mergedSinks.drain();
 
       return mergedSinks

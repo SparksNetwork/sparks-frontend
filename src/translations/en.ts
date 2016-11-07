@@ -1,3 +1,5 @@
+import {MIN_PASSWORD_LENGTH, REDIRECT_DELAY} from '../pages/ResetPassword/config.properties'
+
 const enUS = {
   'error': {
     'auth': {
@@ -47,7 +49,27 @@ const enUS = {
     'verifyCodeUserNotFoundError': 'Thrown if there is no user corresponding to' +
     ' the password reset code. This may have happened if the user was deleted ' +
     'between when the code was issued and when this method was called.',
-    'loggingIn': 'Logging you in with the new credentials'
+    'loggingIn': 'Logging you in with the new credentials',
+    'resetPasswordError' : 'An error occurred while resetting your password',
+    'weakPasswordError': 'Password is too weak',
+    'loggedIn' : 'You have been successfully logged in',
+    'invalidEmailError': 'Your password was successfully reset. Could not' +
+    ' however log you in, your email seem to be invalid. Please log in' +
+    ' directly through the login page',
+    'wrongPasswordError' : 'Your password was successfully reset. Could not' +
+    ' however log you in however (wrong password error??). Please log in' +
+    ' directly through the login page',
+    'userDisabledError' : 'Your password was successfully reset. Could not' +
+    ' however log you in however (user disabled ??). Please log in' +
+    ' directly through the login page',
+    'userNotFoundError' : 'Your password was successfully reset. Could not' +
+    ' however log you in however (user not found ??). Please log in' +
+    ' directly through the login page',
+    'invalidState': 'Application reached an invalid state while trying to' +
+    ' verify the reset password code. Please return to the home page',
+    'tooShortPassword': `Password is too short! Must be more than ${MIN_PASSWORD_LENGTH} characters`,
+    'wrongRepeatedPassword' : 'The confirmed password does not match the' +
+    ' entered password'
   },
 };
 
