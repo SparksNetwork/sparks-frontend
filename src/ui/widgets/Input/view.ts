@@ -30,6 +30,7 @@ function containerVNode(model: InputModel): VNode {
     label(asSelector(styles.container), [
       inputVNode(model),
       labelVNode(model),
+      helperVNode(model),
     ]);
 
   return containerVNode;
@@ -62,6 +63,17 @@ function labelVNode(model: InputModel): VNode {
       placeholder as string);
 
   return labelVNode;
+}
+
+function helperVNode(model: InputModel): VNode {
+  const { helper } = model;
+
+  const helperVNode: VNode =
+    span(
+      asSelector(styles.helper),
+      helper as string);
+
+  return helperVNode;
 }
 
 // @TODO update when https://github.com/typestyle/typestyle/issues/26

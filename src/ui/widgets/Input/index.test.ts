@@ -74,6 +74,18 @@ describe(`Input component`, () => {
       })
         .catch(done);
     });
+
+    it(`has a styled SPAN element as helper`, (done) => {
+      const sinks: InputSinks = Input(defaultSources);
+
+      sinks.DOM.observe((view: VNode) => {
+        const matches = domSelect(`span.${styles.helper}`, view);
+
+        assert.strictEqual(matches.length, 1);
+        done();
+      })
+        .catch(done);
+    });
   });
 
   it(`sets properties on INPUT element`, (done) => {
@@ -269,6 +281,33 @@ describe(`Input component`, () => {
     done();
   });
 
+  it(`sets helper property value as helper text`, (done) => {
+    const props: InputProps = { helper: `some helper text` };
+
+    let sinks: InputSinks =
+      Input(merge(defaultSources, { props$: just(props) }));
+
+    sinks.DOM.observe((view: VNode) => {
+      const matches = domSelect(`span.${styles.helper}`, view);
+
+      assert.strictEqual(matches[0].text, props.helper);
+    })
+      .catch(done);
+
+    const otherProps: InputProps = { helper: `other helper text` };
+
+    sinks = Input(merge(defaultSources, { props$: just(otherProps) }));
+
+    sinks.DOM.observe((view: VNode) => {
+      const matches = domSelect(`span.${styles.helper}`, view);
+
+      assert.strictEqual(matches[0].text, otherProps.helper);
+    })
+      .catch(done);
+
+    done()
+  });
+
   it(`has a model stream in its sinks`, () => {
     const sinks: InputSinks = Input(defaultSources);
 
@@ -277,30 +316,6 @@ describe(`Input component`, () => {
 
   it(`sets valid property on model`, (done) => {
     let sinks: InputSinks = Input(defaultSources);
-
-    sinks.model$.observe(model => {
-      assert.ok(model.valid)
-    })
-      .catch(done);
-
-    const props: InputProps =
-      {
-        value: `invalid`,
-        validator: (value) => value !== `invalid`
-      };
-    sinks = Input(merge(defaultSources, { props$: just(props) }))
-
-    sinks.model$.observe(model => {
-      assert.ok(!model.valid)
-    })
-      .catch(done);
-
-    const otherProps: InputProps =
-      {
-        value: `valid`,
-        validator: (value) => value !== `invalid`
-      };
-    sinks = Input(merge(defaultSources, { props$: just(otherProps) }))
 
     sinks.model$.observe(model => {
       assert.ok(model.valid)

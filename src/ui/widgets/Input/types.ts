@@ -12,6 +12,7 @@ export type InputProps = {
   autofocus?: boolean;
   disabled?: boolean;
   float?: boolean;
+  helper?: string;
   id?: string;
   inputmode?: 'verbatim' | 'latin' | 'latin-name' | 'latin-prose' | 'full-width-latin' | 'kana' | 'katakana' | 'numeric' | 'tel' | 'email' | 'url';
   max?: string;

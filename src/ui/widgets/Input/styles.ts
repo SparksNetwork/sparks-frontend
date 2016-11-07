@@ -11,6 +11,8 @@ const textInputBorderColor = vars.inputBorderColor;
 const textInputActiveColor = theme.textInputActiveColor;
 const textInputInactiveColor = theme.textInputInactiveColor;
 
+export const uniqueRoot = `sn-input`;
+
 export const root: string = style({
   display: `inline-block`,
   position: `relative`
@@ -40,8 +42,6 @@ export const textInputUnderbar: string = style(
     borderRadius: 0
   }
 );
-
-export const uniqueRoot = `sn-input`;
 
 export const textInputWebkitPlaceholder = {
   selector: `${uniqueRoot} input.${textInputUnderbar}::-webkit-input-placeholder`,
@@ -75,6 +75,24 @@ export const labelActive: string = style(
     transform: `translate(0, -75%) scale(0.75)`,
     transformOrigin: `top left`,
     transition: `transform 0.1s ease-in, color 0.1s ease-in`
+  }
+);
+
+export const helper: string = style(
+  {
+    color: textInputInactiveColor,
+    position: `absolute`,
+    left: 0,
+    bottom: 0,
+    fontSize: textInputFontSize,
+    transform: `scale(0.75)`,
+    transformOrigin: `bottom left`,
+  }
+);
+
+export const helperError: string = style(
+  {
+    color: `red`
   }
 );
 
