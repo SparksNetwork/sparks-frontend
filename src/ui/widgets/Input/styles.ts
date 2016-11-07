@@ -14,7 +14,7 @@ const textInputInactiveColor = theme.textInputInactiveColor;
 export const uniqueRoot = `sn-input`;
 
 export const root: string = style({
-  display: `inline-block`,
+  // display: `inline-block`,
   position: `relative`
 });
 
