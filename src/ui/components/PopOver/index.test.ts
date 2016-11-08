@@ -19,7 +19,7 @@ let defaultSources: PopOverSources =
     props$: just({})
   };
 
-describe.only(`PopOver widget`, () => {
+describe(`PopOver widget`, () => {
   describe(`view`, () => {
     it(`has a styled DIV element as root`, (done) => {
       const sinks: PopOverSinks = PopOver(defaultSources);

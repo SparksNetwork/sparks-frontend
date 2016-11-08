@@ -1,4 +1,4 @@
-import { VNode, div, form, p } from '@motorcycle/dom';
+import { VNode, div, p } from '@motorcycle/dom';
 import { UserRegistrationModel } from './';
 import * as styles from './styles';
 import { cssClassesAsSelector as asSelector }
@@ -11,27 +11,44 @@ export type ViewModel = {
 
 export type Views = {
   emailAddressInput: VNode;
+  emailAddressPopOver: VNode;
   passwordInput: VNode;
   passwordStrength: VNode;
   signUpButton: VNode;
 };
 
 export function view(viewModel: ViewModel): VNode {
+  const { model, views } =
+    viewModel;
+
+  const { showPasswordStrength } =
+    model;
+
+  const {
+    emailAddressInput,
+    emailAddressPopOver,
+    passwordInput,
+    passwordStrength,
+    signUpButton
+  } =
+    views;
+
   const rootVNode: VNode =
     div(
       asSelector(styles.uniqueRoot),
       [
-        form([
-          p([ viewModel.views.emailAddressInput ]),
-          p([ viewModel.views.passwordInput ]),
-          p(
-            asSelector(
-              !viewModel.model.showPasswordStrength &&
-              styles.hidePasswordStrength),
-            [ viewModel.views.passwordStrength ]
-          ),
-          p([ viewModel.views.signUpButton ])
-        ])
+        p([
+          emailAddressInput,
+          emailAddressPopOver
+        ]),
+        p([ passwordInput ]),
+        p(
+          asSelector(
+            !showPasswordStrength &&
+            styles.hidePasswordStrength),
+          [ passwordStrength ]
+        ),
+        p([ signUpButton ])
       ]);
 
   return rootVNode;

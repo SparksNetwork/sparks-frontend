@@ -52,6 +52,21 @@ describe(`UserRegistration component`, () => {
       done();
     });
 
+    it(`has an email address PopOver component`, (done) => {
+      const sinks: UserRegistrationSinks =
+        UserRegistration(defaultSources);
+
+      sinks.DOM.observe(view => {
+        const matches: Array<VNode> =
+          domSelect(`.sn-pop-over#UserRegistrationEmailAddressInfo`, view);
+
+        assert.strictEqual(matches.length, 1);
+      })
+        .catch(done);
+
+      done();
+    });
+
     it(`has a password Input component`, (done) => {
       const sinks: UserRegistrationSinks = UserRegistration(defaultSources);
 
