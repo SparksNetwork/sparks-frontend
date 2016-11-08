@@ -9,7 +9,8 @@ export function PopOver(sources: PopOverSources): PopOverSinks {
     sources.props$
       .map(props => {
         return {
-          id: props.id as string
+          id: props.id as string,
+          message: props.message
         };
       });
 

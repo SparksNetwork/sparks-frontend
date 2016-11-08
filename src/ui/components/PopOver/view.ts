@@ -12,14 +12,13 @@ export type ViewModel =
 
 export function view(viewModel: ViewModel): VNode {
   const { model } = viewModel;
-  const { id } = model;
+  const { id, message } = model;
 
   const rootVNode: VNode =
-    div(asSelector(styles.uniqueRoot), {
-      attrs: { id }
-    }, [
-      div(asSelector(styles.message))
-    ]);
+    div(asSelector(styles.uniqueRoot),
+      { attrs: { id } }, [
+        div(asSelector(styles.message), message)
+      ]);
 
   return rootVNode;
 }

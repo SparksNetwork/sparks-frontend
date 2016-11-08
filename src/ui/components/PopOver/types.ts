@@ -18,9 +18,11 @@ export type PopOverSources =
 export type PopOverProps =
   {
     id?: string;
+    message: string
   };
 
 export type PopOverModel =
   {
     id: string;
+    message: string;
   };

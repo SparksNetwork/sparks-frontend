@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { DOMSource, mockDOMSource } from '@motorcycle/dom';
+import { DOMSource, mockDOMSource, VNode } from '@motorcycle/dom';
 import { PopOverSinks, PopOverSources, PopOver, PopOverProps } from './';
 import * as styles from './styles';
 import { merge } from 'ramda';
@@ -13,10 +13,15 @@ function mockAsDomSource(mockConfig): DOMSource {
   return mockDOMSource(mockConfig) as any as DOMSource;
 }
 
-let defaultSources: PopOverSources =
+const defaultProps: PopOverProps =
+  {
+    message: ``
+  };
+
+const defaultSources: PopOverSources =
   {
     DOM: mockAsDomSource({}),
-    props$: just({})
+    props$: just(defaultProps)
   };
 
 describe(`PopOver widget`, () => {
@@ -48,17 +53,19 @@ describe(`PopOver widget`, () => {
     });
   });
 
-  it(`sets an id property on root DIV element`, (done) => {
+  it(`sets an optional id property on root DIV element`, (done) => {
     const props: PopOverProps =
-      {
-        id: `anId`
-      };
+      mergedProps(
+        {
+          id: `anId`
+        }
+      );
 
     let sinks: PopOverSinks =
-      PopOver(merge(defaultSources, { props$: just(props) }));
+      PopOver(sourcesWithProps(props));
 
     sinks.DOM.observe(view => {
-      const matches: Array<string> =
+      const matches: Array<VNode> =
         domSelect(`div.${styles.uniqueRoot}#${props.id}`, view);
 
       assert.strictEqual(matches.length, 1);
@@ -67,4 +74,48 @@ describe(`PopOver widget`, () => {
 
     done();
   });
+
+  it.only(`sets a message in message DIV element`, (done) => {
+    const props: PopOverProps =
+      {
+        message: `a message`
+      };
+
+    let sinks: PopOverSinks =
+      PopOver(sourcesWithProps(props));
+
+    sinks.DOM.observe(view => {
+      const matches: Array<VNode> =
+        domSelect(`div.${styles.message}`, view);
+
+      assert.strictEqual(matches[0].text, props.message);
+    })
+      .catch(done);
+
+    const otherProps: PopOverProps =
+      {
+        message: `other message`
+      };
+
+    sinks =
+      PopOver(sourcesWithProps(otherProps));
+
+    sinks.DOM.observe(view => {
+      const matches: Array<VNode> =
+        domSelect(`div.${styles.message}`, view);
+
+      assert.strictEqual(matches[0].text, otherProps.message);
+    })
+      .catch(done);
+
+    done();
+  });
 });
+
+function mergedProps(props: any): PopOverProps {
+  return merge(defaultProps, props);
+}
+
+function sourcesWithProps(props: PopOverProps): PopOverSources {
+  return merge(defaultSources, { props$: just(props) });
+}
