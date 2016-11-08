@@ -12,4 +12,15 @@ export type PopOverSources =
   Sources &
   {
     DOM: DOMSource;
+    props$: Stream<PopOverProps>
+  };
+
+export type PopOverProps =
+  {
+    id?: string;
+  };
+
+export type PopOverModel =
+  {
+    id: string;
   };

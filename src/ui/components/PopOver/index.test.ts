@@ -1,8 +1,10 @@
 /// <reference path="../../../../typings/index.d.ts" />
 import * as assert from 'assert';
 import { DOMSource, mockDOMSource } from '@motorcycle/dom';
-import { PopOverSinks, PopOverSources, PopOver } from './';
+import { PopOverSinks, PopOverSources, PopOver, PopOverProps } from './';
 import * as styles from './styles';
+import { merge } from 'ramda';
+import { just } from 'most';
 const domSelect = require('snabbdom-selector').default;
 
 // This function exists because @motorcycle/dom v3.0.0 does not yet
@@ -13,13 +15,14 @@ function mockAsDomSource(mockConfig): DOMSource {
 
 let defaultSources: PopOverSources =
   {
-    DOM: mockAsDomSource({})
+    DOM: mockAsDomSource({}),
+    props$: just({})
   };
 
-describe(`PopOver widget`, () => {
+describe.only(`PopOver widget`, () => {
   describe(`view`, () => {
     it(`has a styled DIV element as root`, (done) => {
-      const sinks: PopOverSinks = PopOver();
+      const sinks: PopOverSinks = PopOver(defaultSources);
 
       sinks.DOM.observe(view => {
         const matches = domSelect(`div.${styles.uniqueRoot}`, view);
@@ -32,7 +35,7 @@ describe(`PopOver widget`, () => {
     });
 
     it(`has a styled DIV element as message`, (done) => {
-      const sinks: PopOverSinks = PopOver();
+      const sinks: PopOverSinks = PopOver(defaultSources);
 
       sinks.DOM.observe(view => {
         const matches = domSelect(`div.${styles.message}`, view);
@@ -43,5 +46,25 @@ describe(`PopOver widget`, () => {
 
       done();
     });
+  });
+
+  it(`sets an id property on root DIV element`, (done) => {
+    const props: PopOverProps =
+      {
+        id: `anId`
+      };
+
+    let sinks: PopOverSinks =
+      PopOver(merge(defaultSources, { props$: just(props) }));
+
+    sinks.DOM.observe(view => {
+      const matches: Array<string> =
+        domSelect(`div.${styles.uniqueRoot}#${props.id}`, view);
+
+      assert.strictEqual(matches.length, 1);
+    })
+      .catch(done);
+
+    done();
   });
 });

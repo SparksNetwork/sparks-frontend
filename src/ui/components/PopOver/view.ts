@@ -3,10 +3,21 @@ import {
   cssClassesAsSelector as asSelector
 } from '../../helpers/cssClassesAsSelector';
 import * as styles from './styles';
+import { PopOverModel } from './';
 
-export function view(): VNode {
+export type ViewModel =
+  {
+    model: PopOverModel;
+  };
+
+export function view(viewModel: ViewModel): VNode {
+  const { model } = viewModel;
+  const { id } = model;
+
   const rootVNode: VNode =
-    div(asSelector(styles.uniqueRoot), [
+    div(asSelector(styles.uniqueRoot), {
+      attrs: { id }
+    }, [
       div(asSelector(styles.message))
     ]);
 
