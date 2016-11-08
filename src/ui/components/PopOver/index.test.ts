@@ -72,10 +72,28 @@ describe(`PopOver widget`, () => {
     })
       .catch(done);
 
+    const otherProps: PopOverProps =
+      mergedProps(
+        {
+          id: `anId`
+        }
+      );
+
+    sinks =
+      PopOver(sourcesWithProps(otherProps));
+
+    sinks.DOM.observe(view => {
+      const matches: Array<VNode> =
+        domSelect(`div.${styles.uniqueRoot}#${otherProps.id}`, view);
+
+      assert.strictEqual(matches.length, 1);
+    })
+      .catch(done);
+
     done();
   });
 
-  it.only(`sets a message in message DIV element`, (done) => {
+  it(`sets a message in message DIV element`, (done) => {
     const props: PopOverProps =
       {
         message: `a message`
