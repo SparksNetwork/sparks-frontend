@@ -38,9 +38,10 @@ const resetPasswordFeedbackPhraseMap = {
   'LoggedIn|auth/user-disabled': 'resetPassword.userDisabledError',
   'LoggedIn|auth/user-not-found': 'resetPassword.userNotFoundError',
   'LoggedIn|auth/wrong-password': 'resetPassword.wrongPasswordError',
-  'internal/invalid-state' : 'resetPassword.invalidState',
-  'validation/too-short' : 'resetPassword.tooShortPassword',
-  'validation/wrong-repeated-password' : 'resetPassword.wrongRepeatedPassword'
+  'internal/invalid-state': 'resetPassword.invalidState',
+  'validation/too-short': 'resetPassword.tooShortPassword',
+  'validation/wrong-repeated-password': 'resetPassword.wrongRepeatedPassword',
+  'validation/valid-password': 'resetPassword.validPassword',
 }
 
 // TODO : polyglot sentences
@@ -168,7 +169,7 @@ function computeView({authenticationState, authResetState}) {
         // view is disabled while the application changes screen
         isDisabled: true,
         resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['LoggedIn|'+error]
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['LoggedIn|' + error]
       });
       break;
     case AuthResetStateEnum.INVALID_PASSWORD :
@@ -188,11 +189,19 @@ function computeView({authenticationState, authResetState}) {
         resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['internal/invalid-state']
       });
       break;
+    case AuthResetStateEnum.VALID_PASSWORD :
+      view = computeResetPasswordView({
+        // view is disabled while the password is being reset
+        isDisabled: true,
+        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['validation/valid-password']
+      });
+      break;
   }
 
-  return {
-    DOM: just(view).tap(x=>console.info('DOM orig', x))
-  }
+  return view;
+//    DOM: just(view).tap(x=>console.info('DOM orig', x))
+
 }
 
 export {

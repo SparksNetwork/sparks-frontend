@@ -69,7 +69,8 @@ const enUS = {
     ' verify the reset password code. Please return to the home page',
     'tooShortPassword': `Password is too short! Must be more than ${MIN_PASSWORD_LENGTH} characters`,
     'wrongRepeatedPassword' : 'The confirmed password does not match the' +
-    ' entered password'
+    ' entered password',
+    'validPassword': 'Please wait while we are resetting your password'
   },
 };
 

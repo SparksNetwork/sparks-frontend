@@ -316,7 +316,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -389,7 +389,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -465,7 +465,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -540,7 +540,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -612,7 +612,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: ['/'],
-          successMessage: 'DOM router produces home route "/" as expected',
+          successMessage: 'sink router produces home route "/" as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -691,7 +691,7 @@ describe('The ForgotPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },

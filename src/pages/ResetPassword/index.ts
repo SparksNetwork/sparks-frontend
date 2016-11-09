@@ -8,6 +8,7 @@ import {
   never,
   just
 } from 'most';
+import hold from '@most/hold'
 import {equals, cond, always, merge as mergeR, mergeAll} from 'ramda';
 import {Sources, Sinks, Source} from '../../components/types';
 import {
@@ -228,29 +229,50 @@ function throwContractError() {
   throw 'Missing authenticationState$ source!!'
 }
 
-const ResetPasswordComponentCore = Switch({
-  on: 'authenticationState$',
-  // TODO : investigate why the dissymetry, maybe the first a has the wrong type
-  eqFn: (a, b) => equals(computeAuthenticationStateEnum(b), a),
-  sinkNames: ['DOM', 'authentication$', 'router'],
-}, [
-  // no API calls were made yet to the auth driver
-  Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
-  // the request to verify the reset code successfully executed
-  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
-  // the request to verify the reset code failed and returned an error code
-  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
-  // the request to set the new password succeeded
-  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK}, [SignInWithEmailPassword]),
-  // the request to set the new password failed
-  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK}, [ReportResetPasswordError]),
-  // the request to sign-in with the new password and the user email succeeded
-  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK}, [RedirectToDashboard]),
-  // the request to sign-in with the new password and the user email failed
-  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK}, [ReportLoggedInError]),
-  // unexpected authentication state
-  Case({caseWhen: AuthResetStateEnum.INVALID_STATE}, [ReportInvalidStateError]),
-]);
+function ResetPasswordComponentCore(sources, settings) {
+  const {authenticationState$} = sources;
+
+  let sinks$ = authenticationState$.map(function (authenticationState) {
+    const stateEnum = computeAuthenticationStateEnum(authenticationState);
+    const _settings = mergeR(settings, {matched: authenticationState});
+
+    switch (stateEnum) {
+      // no API calls were made yet to the auth driver
+      case AuthResetStateEnum.RESET_PWD_INIT :
+        return VerifyPasswordResetCode(sources, _settings)
+      // the request to verify the reset code successfully executed
+      case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK :
+        return ResetPassword(sources, _settings)
+      // the request to verify the reset code failed and returned an error code
+      case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK :
+        return WarnFailedCodeVerification(sources, _settings)
+      // the request to set the new password succeeded
+      case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK :
+        return SignInWithEmailPassword(sources, _settings)
+      // the request to set the new password failed
+      case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK :
+        return ReportResetPasswordError(sources, _settings)
+      // the request to sign-in with the new password and the user email succeeded
+      case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK :
+        return RedirectToDashboard(sources, _settings)
+      // the request to sign-in with the new password and the user email failed
+      case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK :
+        return ReportLoggedInError(sources, _settings)
+      // unexpected authentication state
+      case AuthResetStateEnum.INVALID_STATE :
+        return ReportInvalidStateError(sources, _settings)
+    }
+  }).thru(hold);
+
+  const projectSinksOn = (k, s$) =>
+    s$.map(c => c[k] || empty()).switch()
+
+  return {
+    DOM: projectSinksOn('DOM', sinks$),
+    authentication$: projectSinksOn('authentication$', sinks$),
+    router: projectSinksOn('router', sinks$),
+  }
+}
 
 const ResetPasswordComponent = cond([
   [checkSourcesContracts, ResetPasswordComponentCore],
@@ -270,7 +292,7 @@ function ProcessAuthenticationState(sources, settings) {
     authResetState: computeAuthenticationStateEnum(matched)
   };
 
-  const viewSinks = computeView(state);
+  const viewSinks = {DOM: just(computeView(state))};
   const intentsSinks = computeIntents(sources);
   const actionSinks = computeActions(mergeR(settings, state), [
     viewSinks,

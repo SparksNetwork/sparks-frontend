@@ -40,6 +40,7 @@ export const enum AuthResetStateEnum {
   SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK,
   INVALID_STATE,
   INVALID_PASSWORD,
+  VALID_PASSWORD
 }
 
 export type AuthResetState = AuthResetStateEnum | null

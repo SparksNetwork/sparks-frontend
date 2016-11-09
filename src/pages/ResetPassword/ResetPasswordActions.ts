@@ -27,6 +27,7 @@ import {
 } from '../types/authentication/types';
 import {MIN_PASSWORD_LENGTH, REDIRECT_DELAY} from './config.properties'
 import {computeView} from './ResetPasswordView'
+import { DASHBOARD_ROUTE , LOGIN_ROUTE } from '../config.properties'
 
 // Properties
 // TODO : move in some properties file
@@ -57,8 +58,6 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
     email: undefined,
     password: undefined
   };
-  const DASHBOARD_ROUTE = '/';
-  const LOGIN_ROUTE = '/login';
 
   let mergedChildrenSinks: any = mergeAll(childrenSinks)
   let {DOM, resetPassword$, confirmPassword$} = mergedChildrenSinks;
@@ -75,10 +74,15 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
         // Update the DOM if password fails client-side validation rules
         DOM: mergeArray([
           DOM,
-          checkValidationRule(DOM, resetPassword$, checkMinPasswordLength,
+          checkValidationRule(resetPassword$, checkMinPasswordLength,
             'validation/too-short', AuthResetStateEnum.INVALID_PASSWORD),
-          // checkValidationRule(DOM, resetPassword$, comparePasswordToRepeatedPassword,
-          // 'validation/wrong-repeated-password', AuthResetStateEnum.INVALID_PASSWORD),
+          checkValidationRule(resetPassword$, comparePasswordToRepeatedPassword,
+            'validation/wrong-repeated-password', AuthResetStateEnum.INVALID_PASSWORD),
+          // Will trigger iff all validation rules are satisfied
+          checkValidationRule(resetPassword$, complement(
+            allPass([checkMinPasswordLength, comparePasswordToRepeatedPassword])
+            ), 'validation/valid-password', AuthResetStateEnum.VALID_PASSWORD
+          ),
         ]),
         router: empty(),
         // If password pass client-side validation rules, emit the reset
@@ -140,31 +144,20 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
         router: just(LOGIN_ROUTE).delay(REDIRECT_DELAY),
         authentication$: empty()
       }
-      break;
   }
-
-  throw 'should never reach that place'
 }
 
-function checkValidationRule(DOM, resetPassword$, ruleFn, errorCode, authState) {
-  return DOM.sampleWith(
-    resetPassword$.filter(complement(ruleFn))
-      .tap(function(x) {
-        console.warn(`fails ${ruleFn.name}`)
-      })
-  )
-    .tap(function(x) {
-      console.warn(`checkValidationRule`, x)
-    })
-.constant(
-    computeView({
-      authenticationState: {
-        authenticationError: {
-          code: errorCode
-        }
-      },
-      authResetState: authState
-    }).DOM)
+function checkValidationRule(resetPassword$, ruleFn, errorCode, authState) {
+  return resetPassword$.filter(complement(ruleFn))
+    .constant(
+      computeView({
+        authenticationState: {
+          authenticationError: {
+            code: errorCode
+          }
+        },
+        authResetState: authState
+      }))
 }
 
 export {

@@ -261,8 +261,7 @@ const switchCase = {
 
       const mergedSinks = $.mergeArray(allDOMSinks)
       // TODO : the array could be empty, check behaviour of most in that case
-        .tap(console.warn.bind(console, 'Switch.specs' +
-          ' > mergeDomSwitchedSinks > merge'))
+        .tap(console.warn.bind(console, 'Switch.specs > mergeDomSwitchedSinks > merge'))
         // Most values will be null
         // All non-null values correspond to a match
         // In the degenerated case, all values will be null (no match

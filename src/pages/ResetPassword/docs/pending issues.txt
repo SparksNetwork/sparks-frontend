@@ -8,4 +8,7 @@
   - separate auth state from auth response from user data
 
 - adrs
-  - properties/constant file for each screen
+  - properties/constant file for each screen : config.properties set at the
+  appropriate level
+  - necessity to customize firebase, hence changes in deployment
+    Cf.https://support.google.com/firebase/answer/7000714

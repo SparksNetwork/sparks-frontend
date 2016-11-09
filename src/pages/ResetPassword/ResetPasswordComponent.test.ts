@@ -4,9 +4,6 @@ import * as assert from 'assert';
 // better use http://benjamine.github.io/jsondiffpatch/demo/index.html
 import firebase = require('firebase');
 import {
-  AuthenticationError
-} from '../../drivers/firebase-authentication';
-import {
   AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
 } from '../types/authentication/types';
 import {
@@ -24,6 +21,7 @@ import {runTestScenario} from '../../utils/testing/runTestScenario'
 import {makeMockDOMSource} from '../../utils/testing/mockDOM'
 import {ResetPasswordComponent, resetPasswordClasses} from './index.ts';
 import {cssClasses} from '../../utils/classes';
+import {DASHBOARD_ROUTE, LOGIN_ROUTE} from '../config.properties'
 
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
@@ -39,7 +37,9 @@ const dummyIncompleteSources = {DOM: never()};
 const dummySources = {DOM: stubbedDOMSource, authenticationState$: never(),};
 const dummyEmail = 'dummy@email.com';
 const dummyPassword = 'dummyPassword';
+const dummyTooShortPassword = 'dummy';
 const dummyAuthParams = {mode: 'dummy', oobCode: 'dummy'};
+
 const authenticationStateNoAuthError: AuthenticationState = {
   method: null,
   result: null,
@@ -74,12 +74,6 @@ const authenticationStateVerifyCodeUserNotFoundError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/user-not-found'},
-  isAuthenticated: false
-}
-const authenticationStateWeakPasswordError = {
-  method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
-  result: null,
-  authenticationError: {message: 'dummy', code: 'auth/weak-password'},
   isAuthenticated: false
 }
 const authenticationStatePasswordResetOK = {
@@ -601,6 +595,7 @@ const viewPasswordResetExpiredCode = section(classes.sel('photo-background'), {
     ]),
   ])
 ]);
+
 const viewPasswordResetInvalidCode = section(classes.sel('photo-background'), {
   style: {
     // QUESTION: where does this url function comes from
@@ -1137,6 +1132,168 @@ const viewPasswordResetInvalidState = section(classes.sel('photo-background'), {
   ])
 ]);
 
+const viewPasswordTooShortError = section(classes.sel('photo-background'), {
+  style: {
+    // QUESTION: where does this url function comes from
+    backgroundImage: `url(${backgroundImage})`
+  }
+}, [
+  h1('sparks.network'),
+  div([
+    div(classes.sel('login', 'box'), [
+      h1({polyglot: {phrase: 'resetPassword.title'}} as any),
+      // TODO : define a style for reset?? or reuse those?
+      div(classes.sel('login', 'form'), [
+        form([
+          fieldset({attrs: {disabled: false}}, [
+            // Enter password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.enterPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.enterPassword'), {
+              props: {
+                type: 'password',
+                name: 'enterPassword'
+              }
+            } as any),
+            // Confirm password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.confirmPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.confirmPassword'), {
+              props: {
+                type: 'password',
+                name: 'confirmPassword'
+              }
+            } as any),
+          ]),
+          fieldset(classes.sel('actions'), {attrs: {disabled: false}}, [
+            button(classes.sel('submit'), {
+              polyglot: {phrase: 'resetPassword.resetPassword'}
+            } as any)
+          ])
+        ]),
+        // feedback message area
+        h4(classes.sel('error'), {
+          polyglot: {phrase: 'resetPassword.tooShortPassword'}
+        } as any)
+      ]),
+    ]),
+  ])
+]);
+
+const viewWrongRepeatedPasswordError = section(classes.sel('photo-background'), {
+  style: {
+    // QUESTION: where does this url function comes from
+    backgroundImage: `url(${backgroundImage})`
+  }
+}, [
+  h1('sparks.network'),
+  div([
+    div(classes.sel('login', 'box'), [
+      h1({polyglot: {phrase: 'resetPassword.title'}} as any),
+      // TODO : define a style for reset?? or reuse those?
+      div(classes.sel('login', 'form'), [
+        form([
+          fieldset({attrs: {disabled: false}}, [
+            // Enter password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.enterPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.enterPassword'), {
+              props: {
+                type: 'password',
+                name: 'enterPassword'
+              }
+            } as any),
+            // Confirm password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.confirmPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.confirmPassword'), {
+              props: {
+                type: 'password',
+                name: 'confirmPassword'
+              }
+            } as any),
+          ]),
+          fieldset(classes.sel('actions'), {attrs: {disabled: false}}, [
+            button(classes.sel('submit'), {
+              polyglot: {phrase: 'resetPassword.resetPassword'}
+            } as any)
+          ])
+        ]),
+        // feedback message area
+        h4(classes.sel('error'), {
+          polyglot: {phrase: 'resetPassword.wrongRepeatedPassword'}
+        } as any)
+      ]),
+    ]),
+  ])
+]);
+
+const viewValidPasswordProcessingReset = section(classes.sel('photo-background'), {
+  style: {
+    // QUESTION: where does this url function comes from
+    backgroundImage: `url(${backgroundImage})`
+  }
+}, [
+  h1('sparks.network'),
+  div([
+    div(classes.sel('login', 'box'), [
+      h1({polyglot: {phrase: 'resetPassword.title'}} as any),
+      // TODO : define a style for reset?? or reuse those?
+      div(classes.sel('login', 'form'), [
+        form([
+          fieldset({attrs: {disabled: true}}, [
+            // Enter password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.enterPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.enterPassword'), {
+              props: {
+                type: 'password',
+                name: 'enterPassword'
+              }
+            } as any),
+            // Confirm password
+            label({
+              props: {for: 'email'},
+              polyglot: {phrase: 'resetPassword.confirmPassword'}
+            } as any),
+            // TODO : create a style for password fields
+            input(classes.sel('resetPassword.confirmPassword'), {
+              props: {
+                type: 'password',
+                name: 'confirmPassword'
+              }
+            } as any),
+          ]),
+          fieldset(classes.sel('actions'), {attrs: {disabled: true}}, [
+            button(classes.sel('submit'), {
+              polyglot: {phrase: 'resetPassword.resetPassword'}
+            } as any)
+          ])
+        ]),
+        // feedback message area
+        h4(classes.sel('feedback'), {
+          polyglot: {phrase: 'resetPassword.validPassword'}
+        } as any)
+      ]),
+    ]),
+  ])
+]);
+
 // VIEW TEMPLATE FOR COPY PASTING
 // const viewTODO= section(classes.sel('photo-background'), {
 //   style: {
@@ -1224,7 +1381,6 @@ describe.skip('The ResetPassword component', () => {
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button  and 1 ENABLED' +
       ' feedback message area which indicates that the reset code is being' +
       ' verified', (done) => {
-      // TODO
       const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
 
       const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
@@ -1237,7 +1393,7 @@ describe.skip('The ResetPassword component', () => {
             diagram: 'a-', values: {a: authenticationStateNoAuthError}
           }
         },
-        // NOTE : form input data must go first before the streams it depends on
+        // NOTE : even if no values is sent, sources must exist
         {
           [`DOM!${formSelector}@submit`]: {
             diagram: '--',
@@ -1276,7 +1432,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1303,8 +1459,7 @@ describe.skip('The ResetPassword component', () => {
     });
   });
 
-  describe('When the password reset code has been successfully verified' +
-    ' (authenticationState)', ()=> {
+  describe('When the password reset code has been successfully verified', ()=> {
     it('should display a view with 1 ENABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 ENABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which indicates that the reset code was' +
@@ -1357,7 +1512,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1385,8 +1540,7 @@ describe.skip('The ResetPassword component', () => {
   });
 
   describe('When the password reset code has failed verification AND' +
-    ' error code correspond to an expired code' +
-    ' (authenticationState)', ()=> {
+    ' error code correspond to an expired code', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which gives account of the error', (done) => {
@@ -1439,7 +1593,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1467,8 +1621,7 @@ describe.skip('The ResetPassword component', () => {
   });
 
   describe('When the password reset code has failed verification AND' +
-    ' error code corresponds to an invalid code' +
-    ' (authenticationState)', ()=> {
+    ' error code corresponds to an invalid code', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which gives account of the error', (done) => {
@@ -1521,7 +1674,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1549,8 +1702,7 @@ describe.skip('The ResetPassword component', () => {
   });
 
   describe('When the password reset code has failed verification AND' +
-    ' error code corresponds to user not found' +
-    ' (authenticationState)', ()=> {
+    ' error code corresponds to user not found', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which gives account of the error', (done) => {
@@ -1603,7 +1755,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1631,8 +1783,7 @@ describe.skip('The ResetPassword component', () => {
   });
 
   describe('When the password reset code has failed verification AND' +
-    ' error code corresponds to user disabled' +
-    ' (authenticationState)', ()=> {
+    ' error code corresponds to user disabled', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which gives account of the error', (done) => {
@@ -1685,7 +1836,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1776,7 +1927,7 @@ describe.skip('The ResetPassword component', () => {
         },
         router: {
           outputs: [],
-          successMessage: 'DOM router produces no values as expected',
+          successMessage: 'sink router produces no values as expected',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1868,7 +2019,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: [],
-            successMessage: 'DOM router produces no values as expected',
+            successMessage: 'sink router produces no values as expected',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -1960,7 +2111,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: [],
-            successMessage: 'DOM router produces no values as expected',
+            successMessage: 'sink router produces no values as expected',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -2052,7 +2203,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: [],
-            successMessage: 'DOM router produces no values as expected',
+            successMessage: 'sink router produces no values as expected',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -2144,7 +2295,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: [],
-            successMessage: 'DOM router produces no values as expected',
+            successMessage: 'sink router produces no values as expected',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -2175,8 +2326,7 @@ describe.skip('The ResetPassword component', () => {
   });
 
   describe('When the password could not be successfully reset because' +
-    ' the' +
-    ' proposed password is weak', ()=> {
+    ' the proposed password is weak', ()=> {
     it('should display a view with 1 ENABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 ENABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which informs of failure of the password' +
@@ -2237,7 +2387,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: [],
-            successMessage: 'DOM router produces no values as expected',
+            successMessage: 'sink router produces no values as expected',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -2267,7 +2417,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user is successfully logged in (after a successful' +
+  describe('When the user is successfully logged in (after a successful' +
     ' password reset)', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -2324,7 +2474,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/'],
-            successMessage: 'DOM router produces redirection route value',
+            successMessage: 'sink router produces redirection route value',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
           },
@@ -2354,7 +2504,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user fails log-in after a successful' +
+  describe('When the user fails log-in after a successful' +
     ' password reset (invalid email error))', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -2410,7 +2560,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/login'],
-            successMessage: 'DOM router produces redirection route' +
+            successMessage: 'sink router produces redirection route' +
             ' to login screen',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
@@ -2441,7 +2591,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user fails log-in after a successful password' +
+  describe('When the user fails log-in after a successful password' +
     ' reset (user disabled error)', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -2497,7 +2647,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/login'],
-            successMessage: 'DOM router produces redirection route' +
+            successMessage: 'sink router produces redirection route' +
             ' to login screen',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
@@ -2528,7 +2678,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user fails log-in after a successful password' +
+  describe('When the user fails log-in after a successful password' +
     ' reset (user not found error)', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -2584,7 +2734,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/login'],
-            successMessage: 'DOM router produces redirection route' +
+            successMessage: 'sink router produces redirection route' +
             ' to login screen',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
@@ -2615,7 +2765,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user fails log-in after a successful password' +
+  describe('When the user fails log-in after a successful password' +
     ' reset (wrong password error)', ()=> {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -2671,7 +2821,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/login'],
-            successMessage: 'DOM router produces redirection route' +
+            successMessage: 'sink router produces redirection route' +
             ' to login screen',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
@@ -2702,7 +2852,7 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  describe.skip('When the user navigates to the reset password route AND the' +
+  describe('When the user navigates to the reset password route AND the' +
     ' authentication data reflects an unexpected state', ()=> {
 
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
@@ -2759,7 +2909,7 @@ describe.skip('The ResetPassword component', () => {
           },
           router: {
             outputs: ['/login'],
-            successMessage: 'DOM router produces redirection route' +
+            successMessage: 'sink router produces redirection route' +
             ' to login screen',
             analyzeTestResults: analyzeTestResults,
             transformFn: undefined,
@@ -2792,17 +2942,861 @@ describe.skip('The ResetPassword component', () => {
       });
   });
 
-  // TODO : add 3 tests :
-  // - failed validation rule 1
-  // - failed validation rule 2
-  // - successful submit -> API call to resetPassword
+  describe('When the password reset code has been successfully verified' +
+    ' AND' +
+    ' the user enters a password with less than the minimum length AND' +
+    ' confirms correctly the password AND submit the form', ()=> {
+    it('should display a view with 1 ENABLED "enter new password" fields, 1' +
+      ' ENABLED "confirm password", 1 ENABLED SUBMIT button and 1 ENABLED' +
+      ' feedback message area which indicates that the password is too short', (done) => {
+      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
 
-  // TODO: tests with a sequence of actions
-  // 1. INIT -> check code NOK (expired)
-  // 2. INIT -> check code OK -> set password < 6 + submit -> Error -> set good
-  // password + submit -> reset pwd OK -> log in OK -> redirection to dashboard
-  // 2. INIT -> check code OK -> set password > 6 + submit -> reset pwd OK
-  //  -> log in OK -> redirection to dashboard
+      const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+      const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+      const formSelector = 'form';
+
+      const testInputs = [
+        {
+          authenticationState$: {
+            diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
+          }
+        },
+        // NOTE : form input data must go after (on another tick) authenticationState
+        // Really hard to explain why with words, will have to carefully e2e
+        // test to check behavior in actual non-simulated environment
+        {
+          [`DOM!${enterPasswordSelector}@input`]: {
+            diagram: '-a-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        },
+        {
+          [`DOM!${confirmPasswordSelector}@input`]: {
+            diagram: '-a-',
+            values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+          }
+        },
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-a-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
+      ]
+
+      const expected = {
+        DOM: {
+          outputs: [viewVerifyCodeOK, viewPasswordTooShortError],
+          successMessage: 'DOM sink produces the expected sequence of screens',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        authentication$: {
+          outputs: [],
+          successMessage: 'DOM authentication$ produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+        router: {
+          outputs: [],
+          successMessage: 'sink router produces no values as expected',
+          analyzeTestResults: analyzeTestResults,
+          transformFn: undefined,
+        },
+      }
+
+      function ResetPasswordComponentCurried(settings) {
+        return function (sources) {
+          return ResetPasswordComponent(sources, settings);
+        }
+      }
+
+      runTestScenario(testInputs, expected,
+        ResetPasswordComponentCurried(dummyAuthParams), {
+          tickDuration: 5,
+          waitForFinishDelay: 20,
+          mocks: {
+            DOM: makeMockDOMSource
+          },
+          errorHandler: function (err) {
+            done(err)
+          }
+        })
+
+    });
+  });
+
+  describe(
+    `When the password reset code has been successfully verified
+     AND the user enters an initial password and a confirmation password
+      which are different AND submit the form`, ()=> {
+      it('should display a view with 1 ENABLED "enter new password" fields, 1' +
+        ' ENABLED "confirm password", 1 ENABLED SUBMIT button and 1 ENABLED' +
+        ' feedback message area which indicates that the passwords do not' +
+        ' coincide', (done) => {
+        const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+        const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+        const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+        const formSelector = 'form';
+
+        const testInputs = [
+          {
+            authenticationState$: {
+              diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
+            }
+          },
+          // NOTE : form input data must go after (on another tick) authenticationState
+          // Really hard to explain why with words, will have to carefully e2e
+          // test to check behavior in actual non-simulated environment
+          {
+            [`DOM!${enterPasswordSelector}@input`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+            }
+          },
+          {
+            [`DOM!${confirmPasswordSelector}@input`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword + '$'))}
+            }
+          },
+          {
+            [`DOM!${formSelector}@submit`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+            }
+          },
+        ]
+
+        const expected = {
+          DOM: {
+            outputs: [viewVerifyCodeOK, viewWrongRepeatedPasswordError],
+            successMessage: 'DOM sink produces the expected sequence of screens',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+          authentication$: {
+            outputs: [],
+            successMessage: 'DOM authentication$ produces no values as expected',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+          router: {
+            outputs: [],
+            successMessage: 'sink router produces no values as expected',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+        }
+
+        function ResetPasswordComponentCurried(settings) {
+          return function (sources) {
+            return ResetPasswordComponent(sources, settings);
+          }
+        }
+
+        runTestScenario(testInputs, expected,
+          ResetPasswordComponentCurried(dummyAuthParams), {
+            tickDuration: 5,
+            waitForFinishDelay: 20,
+            mocks: {
+              DOM: makeMockDOMSource
+            },
+            errorHandler: function (err) {
+              done(err)
+            }
+          })
+
+      });
+    });
+
+  describe('When the password reset code has been successfully verified AND' +
+    ' the user enters an initial password and a confirmation password which' +
+    ' are the same AND password is long enough AND user submits the form', ()=> {
+    it('should display a view with 1 DISABLED "enter new password" fields, 1' +
+      ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
+      ' feedback message area which indicates that the password is being reset',
+      (done) => {
+        const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+        const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+        const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+        const formSelector = 'form';
+
+        const testInputs = [
+          {
+            authenticationState$: {
+              diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
+            }
+          },
+          // NOTE : form input data must go after (on another tick) authenticationState
+          // Really hard to explain why with words, will have to carefully e2e
+          // test to check behavior in actual non-simulated environment
+          {
+            [`DOM!${enterPasswordSelector}@input`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+            }
+          },
+          {
+            [`DOM!${confirmPasswordSelector}@input`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+            }
+          },
+          {
+            [`DOM!${formSelector}@submit`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+            }
+          },
+        ]
+
+        const expected = {
+          DOM: {
+            outputs: [viewVerifyCodeOK, viewValidPasswordProcessingReset],
+            successMessage: 'DOM sink produces the expected sequence of screens',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+          authentication$: {
+            outputs: [{
+              method: AuthMethods.CONFIRM_PASSWORD_RESET,
+              code: dummyAuthParams.oobCode,
+              newPassword: dummyPassword
+            }],
+            successMessage: 'DOM authentication$ produces no values as expected',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+          router: {
+            outputs: [],
+            successMessage: 'sink router produces no values as expected',
+            analyzeTestResults: analyzeTestResults,
+            transformFn: undefined,
+          },
+        }
+
+        function ResetPasswordComponentCurried(settings) {
+          return function (sources) {
+            return ResetPasswordComponent(sources, settings);
+          }
+        }
+
+        runTestScenario(testInputs, expected,
+          ResetPasswordComponentCurried(dummyAuthParams), {
+            tickDuration: 5,
+            waitForFinishDelay: 20,
+            mocks: {
+              DOM: makeMockDOMSource
+            },
+            errorHandler: function (err) {
+              done(err)
+            }
+          })
+
+      });
+  });
+
+  describe(
+    `When no authentication was attempted yet 
+  AND the password reset code failed verification due to an expired reset code 
+  `, ()=> {
+      it(
+        `should display a view with 1 DISABLED "enter new password" fields, 
+      1 DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED 
+      feedback message area which reports about the error`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
+
+          const testInputs = [
+            {
+              authenticationState$: {
+                diagram: 'ab----', values: {
+                  a: authenticationStateNoAuthError,
+                  b: authenticationStateVerifyCodeExpiredError,
+                }
+              }
+            },
+            // NOTE : form input data must go after (on another tick) authenticationState
+            // Really hard to explain why with words, will have to carefully e2e
+            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '-------',
+                values: {}
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '-------',
+                values: {
+                }
+              }
+            },
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '-------',
+                values: {}
+              }
+            },
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [
+                viewNoAuthError,
+                viewVerifyCodeExpiredError,
+              ],
+              successMessage: 'DOM sink produces the expected sequence of screens',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
+                code: dummyAuthParams.oobCode,
+              }
+              ],
+              successMessage: `
+            authentication$ produces 
+            VERIFY_PASSWORD_RESET_CODE command`,
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [],
+              successMessage: 'sink router produces nothing as expected',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+          }
+
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
+          }
+
+          runTestScenario(testInputs, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              },
+              sourceFactory: {
+                DOM: () => holdSubject(1)
+              },
+            })
+
+        });
+    });
+
+  describe(
+    `When no authentication was attempted yet 
+  AND the password reset code has been successfully verified 
+  AND the user enters an initial password and a confirmation password which
+  are the same 
+  AND password is long enough 
+  AND user submits the form
+  AND password is successfully reset
+  `, ()=> {
+      it(
+        `should display a view with 1 DISABLED "enter new password" fields, 
+      1 DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED 
+      feedback message area which indicates that the user is being logged in 
+      AND emit a log-in command with newly reset password`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
+
+          const testInputs = [
+            {
+              authenticationState$: {
+                diagram: 'ab-c--', values: {
+                  a: authenticationStateNoAuthError,
+                  b: authenticationStateVerifyCodeOK,
+                  c: authenticationStatePasswordResetOK,
+                }
+              }
+            },
+            // NOTE : form input data must go after (on another tick) authenticationState
+            // Really hard to explain why with words, will have to carefully e2e
+            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              }
+            },
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [viewNoAuthError, viewVerifyCodeOK, viewValidPasswordProcessingReset, viewLoggingIn],
+              successMessage: 'DOM sink produces the expected sequence of screens',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
+                code: dummyAuthParams.oobCode,
+              }, {
+                method: AuthMethods.CONFIRM_PASSWORD_RESET,
+                code: dummyAuthParams.oobCode,
+                newPassword: dummyPassword
+              }, {
+                method: AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD,
+                email: dummyEmail,
+                password: dummyPassword
+              }
+              ],
+              successMessage: `
+            authentication$ produces 
+            VERIFY_PASSWORD_RESET_CODE
+            THEN CONFIRM_PASSWORD_RESET
+            THEN SIGN_IN_WITH_EMAIL_AND_PASSWORD commands`,
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [],
+              successMessage: 'sink router produces no values as expected',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+          }
+
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
+          }
+
+          runTestScenario(testInputs, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              },
+              sourceFactory: {
+                DOM: () => holdSubject(1)
+              },
+            })
+
+        });
+    });
+
+  describe(
+    `When no authentication was attempted yet 
+  AND the password reset code has been successfully verified 
+  AND the user enters an initial password and a confirmation password which
+  are the same 
+  AND password is long enough 
+  AND user submits the form
+  AND password is successfully reset
+  AND user is successfully logged in with the new password`, ()=> {
+      it(
+        `should display a view with 1 DISABLED "enter new password" fields, 
+      1 DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED 
+      feedback message area which indicates that the user is being logged in 
+      AND emit a redirect command to the dashboard`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
+
+          const testInputs = [
+            {
+              authenticationState$: {
+                diagram: 'ab-c-d', values: {
+                  a: authenticationStateNoAuthError,
+                  b: authenticationStateVerifyCodeOK,
+                  c: authenticationStatePasswordResetOK,
+                  d: authenticationStateLoggedInOK
+                }
+              }
+            },
+            // NOTE : form input data must go after (on another tick) authenticationState
+            // Really hard to explain why with words, will have to carefully e2e
+            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              }
+            },
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--a-a',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [viewNoAuthError, viewVerifyCodeOK, viewValidPasswordProcessingReset, viewLoggingIn, viewPasswordResetLoggedIn],
+              successMessage: 'DOM sink produces the expected sequence of screens',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
+                code: dummyAuthParams.oobCode,
+              }, {
+                method: AuthMethods.CONFIRM_PASSWORD_RESET,
+                code: dummyAuthParams.oobCode,
+                newPassword: dummyPassword
+              }, {
+                method: AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD,
+                email: dummyEmail,
+                password: dummyPassword
+              }
+              ],
+              successMessage: `
+            authentication$ produces 
+            VERIFY_PASSWORD_RESET_CODE
+            THEN CONFIRM_PASSWORD_RESET
+            THEN SIGN_IN_WITH_EMAIL_AND_PASSWORD commands`,
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [DASHBOARD_ROUTE],
+              successMessage: 'sink router streams out the dashboard route',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+          }
+
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
+          }
+
+          runTestScenario(testInputs, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              },
+              sourceFactory: {
+                DOM: () => holdSubject(1)
+              },
+            })
+
+        });
+    });
+
+  describe(
+    `When no authentication was attempted yet 
+  AND the password reset code has been successfully verified 
+  AND the user enters an initial password and a confirmation password which
+  are the same 
+  AND password is too short 
+  AND the user enters another initial password and a confirmation password which
+  are the same 
+  AND password is long enough 
+  AND user submits the form
+  AND password is successfully reset
+  AND user is successfully logged in with the new password`, ()=> {
+      it(
+        `should display a view with 1 DISABLED "enter new password" fields, 
+      1 DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED 
+      feedback message area which indicates that the user is being logged in 
+      AND emit a redirect command to the dashboard`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
+
+          const testInputs = [
+            {
+              authenticationState$: {
+                diagram: 'ab--cd', values: {
+                  a: authenticationStateNoAuthError,
+                  b: authenticationStateVerifyCodeOK,
+                  c: authenticationStatePasswordResetOK,
+                  d: authenticationStateLoggedInOK,
+                }
+              }
+            },
+            // NOTE : form input data must go after (on another tick) authenticationState
+            // Really hard to explain why with words, will have to carefully e2e
+            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '--ab---',
+                values: {
+                  a: decorateWithPreventDefault(stubInputEvent(dummyTooShortPassword)),
+                  b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
+                }
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '--abb--',
+                values: {
+                  a: decorateWithPreventDefault(stubInputEvent(dummyTooShortPassword)),
+                  b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
+                }
+              }
+            },
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--aa---',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [
+                viewNoAuthError,
+                viewVerifyCodeOK,
+                viewPasswordTooShortError,
+                viewValidPasswordProcessingReset,
+                viewLoggingIn,
+                viewPasswordResetLoggedIn
+              ],
+              successMessage: 'DOM sink produces the expected sequence of screens',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
+                code: dummyAuthParams.oobCode,
+              }, {
+                method: AuthMethods.CONFIRM_PASSWORD_RESET,
+                code: dummyAuthParams.oobCode,
+                newPassword: dummyPassword
+              }, {
+                method: AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD,
+                email: dummyEmail,
+                password: dummyPassword
+              }
+              ],
+              successMessage: `
+            authentication$ produces 
+            VERIFY_PASSWORD_RESET_CODE
+            THEN CONFIRM_PASSWORD_RESET
+            THEN SIGN_IN_WITH_EMAIL_AND_PASSWORD commands`,
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [DASHBOARD_ROUTE],
+              successMessage: 'sink router streams out the dashboard route',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+          }
+
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
+          }
+
+          runTestScenario(testInputs, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              },
+              sourceFactory: {
+                DOM: () => holdSubject(1)
+              },
+            })
+
+        });
+    });
+
+  describe(
+    `When no authentication was attempted yet 
+  AND the password reset code has been successfully verified 
+  AND the user enters an initial password and a confirmation password which
+  are different
+  AND the user enters another initial password and a confirmation password which
+  are the same 
+  AND password is long enough 
+  AND user submits the form
+  AND password is successfully reset
+  AND user is successfully logged in with the new password`, ()=> {
+      it(
+        `should display a view with 1 DISABLED "enter new password" fields, 
+      1 DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED 
+      feedback message area which indicates that the user is being logged in 
+      AND emit a redirect command to the dashboard`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
+
+          const testInputs = [
+            {
+              authenticationState$: {
+                diagram: 'ab--cd', values: {
+                  a: authenticationStateNoAuthError,
+                  b: authenticationStateVerifyCodeOK,
+                  c: authenticationStatePasswordResetOK,
+                  d: authenticationStateLoggedInOK,
+                }
+              }
+            },
+            // NOTE : form input data must go after (on another tick) authenticationState
+            // Really hard to explain why with words, will have to carefully e2e
+            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '--ab---',
+                values: {
+                  a: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
+                  b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
+                }
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '--abb--',
+                values: {
+                  a: decorateWithPreventDefault(stubInputEvent(dummyPassword + '$')),
+                  b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
+                }
+              }
+            },
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--aa---',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [
+                viewNoAuthError,
+                viewVerifyCodeOK,
+                viewWrongRepeatedPasswordError,
+                viewValidPasswordProcessingReset,
+                viewLoggingIn,
+                viewPasswordResetLoggedIn
+              ],
+              successMessage: 'DOM sink produces the expected sequence of screens',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
+                code: dummyAuthParams.oobCode,
+              }, {
+                method: AuthMethods.CONFIRM_PASSWORD_RESET,
+                code: dummyAuthParams.oobCode,
+                newPassword: dummyPassword
+              }, {
+                method: AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD,
+                email: dummyEmail,
+                password: dummyPassword
+              }
+              ],
+              successMessage: `
+            authentication$ produces 
+            VERIFY_PASSWORD_RESET_CODE
+            THEN CONFIRM_PASSWORD_RESET
+            THEN SIGN_IN_WITH_EMAIL_AND_PASSWORD commands`,
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [DASHBOARD_ROUTE],
+              successMessage: 'sink router streams out the dashboard route',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+          }
+
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
+          }
+
+          runTestScenario(testInputs, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              },
+              sourceFactory: {
+                DOM: () => holdSubject(1)
+              },
+            })
+
+        });
+    });
+
+  // TODO: remove the is not logged in first test, we don't discriminate on
+  // login anymore, and remove it from the API call driver's response
 
   // TODO : make properties too for forgotPassword screen, all should load
   // in `en.ts `
@@ -2815,88 +3809,7 @@ describe.skip('The ResetPassword component', () => {
   // - delay etc.
   // - en.ts strings
   // TODO : write specs of current design
-  // - the state machine somehow for documenation purposes
+  // - the state machine somehow for documentation purposes
   // - forms : style, error reporting
 });
 
-describe('When the password reset code has been successfully verified AND' +
-  ' the user enters a password with less than the minimum length AND' +
-  ' confirms correctly the password AND submit the form', ()=> {
-  it('should display a view with 1 ENABLED "enter new password" fields, 1' +
-    ' ENABLED "confirm password", 1 ENABLED SUBMIT button and 1 ENABLED' +
-    ' feedback message area which indicates that the password is too short', (done) => {
-    const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
-
-    const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
-    const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
-    const formSelector = 'form';
-
-    const testInputs = [
-      {
-        authenticationState$: {
-          diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
-        }
-      },
-      // NOTE : form input data must go first before the streams it depends on
-      // TODO : solve the order problem and the replay subject issue
-      {
-        [`DOM!${enterPasswordSelector}@input`]: {
-          diagram: 'a-',
-          values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
-        }
-      },
-      {
-        [`DOM!${confirmPasswordSelector}@input`]: {
-          diagram: 'a-',
-          values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
-        }
-      },
-      {
-        [`DOM!${formSelector}@submit`]: {
-          diagram: 'a-',
-          values: {a: decorateWithPreventDefault(stubSubmitEvent())}
-        }
-      },
-    ]
-
-    const expected = {
-      DOM: {
-        outputs: [viewVerifyCodeOK],
-        successMessage: 'DOM sink produces the expected screen',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-      authentication$: {
-        outputs: [],
-        successMessage: 'DOM authentication$ produces no values as expected',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-      router: {
-        outputs: [],
-        successMessage: 'DOM router produces no values as expected',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-    }
-
-    function ResetPasswordComponentCurried(settings) {
-      return function (sources) {
-        return ResetPasswordComponent(sources, settings);
-      }
-    }
-
-    runTestScenario(testInputs, expected,
-      ResetPasswordComponentCurried(dummyAuthParams), {
-        tickDuration: 5,
-        waitForFinishDelay: 20,
-        mocks: {
-          DOM: makeMockDOMSource
-        },
-        errorHandler: function (err) {
-          done(err)
-        }
-      })
-
-  });
-});
