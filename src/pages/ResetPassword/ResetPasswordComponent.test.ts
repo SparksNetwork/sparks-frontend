@@ -44,11 +44,13 @@ const authenticationStateNoAuthError: AuthenticationState = {
   method: null,
   result: null,
   authenticationError: null,
-  isAuthenticated: false
+  isAuthenticated: false,
+  email: null,
 }
 const authenticationStateVerifyCodeOK: AuthenticationState = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: dummyEmail,
+  email: dummyEmail,
   authenticationError: null,
   isAuthenticated: false
 }
@@ -56,25 +58,29 @@ const authenticationStateVerifyCodeExpiredError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/expired-action-code'},
+  email: null,
   isAuthenticated: false
 }
 const authenticationStateVerifyCodeInvalidCodeError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/invalid-action-code'},
+  email: null,
   isAuthenticated: false
 }
 const authenticationStateVerifyCodeUserDisabledError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/user-disabled'},
-  isAuthenticated: false
+  isAuthenticated: false,
+  email: null,
 }
 const authenticationStateVerifyCodeUserNotFoundError = {
   method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
   result: null,
   authenticationError: {message: 'dummy', code: 'auth/user-not-found'},
-  isAuthenticated: false
+  isAuthenticated: false,
+  email: null,
 }
 const authenticationStatePasswordResetOK = {
   method: AuthMethods.CONFIRM_PASSWORD_RESET,
@@ -1360,11 +1366,11 @@ describe.skip('The ResetPassword component', () => {
     assert.ok(isFunction(ResetPasswordComponent));
   });
 
-  it('should be called with a source list including' +
-    ' authenticationState$', () => {
-    assert.throws(()=>ResetPasswordComponent(dummyIncompleteSources, dummyAuthParams),
-      'throws an error when at least one expected source is missing')
-  });
+  it('should be called with a source list including authenticationState$',
+    () => {
+      assert.throws(()=>ResetPasswordComponent(dummyIncompleteSources, dummyAuthParams),
+        'throws an error when at least one expected source is missing')
+    });
 
   it('should return at least DOM, authentication, and route sinks', () => {
     const sinks = ResetPasswordComponent(dummySources, dummyAuthParams);
@@ -1374,90 +1380,93 @@ describe.skip('The ResetPassword component', () => {
     assert.ok(actual, 'computes DOM, authentication, and route sinks');
   });
 
-  describe('When the user is not already logged in AND' +
-    ' no authentication was attempted yet (authenticationState)', ()=> {
-    it('should emit a `verifyPasswordResetCode` command to firebase auth API' +
-      ' AND display a view with 1 DISABLED "enter new password" fields, 1' +
-      ' DISABLED "confirm password", 1 DISABLED SUBMIT button  and 1 ENABLED' +
-      ' feedback message area which indicates that the reset code is being' +
-      ' verified', (done) => {
-      const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+  describe(
+    `When the user navigates to the reset password link 
+    AND no authentication was attempted yet (initial state)`, ()=> {
+      it(
+        `should emit a verifyPasswordResetCode command to firebase auth API
+         AND display a view with 1 DISABLED "enter new password" fields, 
+             1 DISABLED "confirm password", 1 DISABLED SUBMIT button, and  
+             1 ENABLED feedback message area which indicates that the reset code 
+             is being verified`,
+        (done) => {
+          const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
 
-      const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
-      const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
-      const formSelector = 'form';
+          const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+          const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+          const formSelector = 'form';
 
-      const testInputsNotLoggedInNoAuthOpYet = [
-        {
-          authenticationState$: {
-            diagram: 'a-', values: {a: authenticationStateNoAuthError}
+          const testInputsNotLoggedInNoAuthOpYet = [
+            {
+              authenticationState$: {
+                diagram: 'a-', values: {a: authenticationStateNoAuthError}
+              }
+            },
+            // NOTE : even if no values is sent, sources must exist
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--',
+                //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
+            {
+              [`DOM!${enterPasswordSelector}@input`]: {
+                diagram: '--',
+                //values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+              }
+            },
+            {
+              [`DOM!${confirmPasswordSelector}@input`]: {
+                diagram: '--',
+                //values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
+              }
+            }
+          ]
+
+          const expected = {
+            DOM: {
+              outputs: [viewNoAuthError],
+              successMessage: 'DOM sink produces the expected screen',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            authentication$: {
+              outputs: [{
+                code: dummyAuthParams.oobCode,
+                method: AuthMethods.VERIFY_PASSWORD_RESET_CODE
+              }],
+              successMessage: 'DOM authentication$ produces no values as expected',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
+            router: {
+              outputs: [],
+              successMessage: 'sink router produces no values as expected',
+              analyzeTestResults: analyzeTestResults,
+              transformFn: undefined,
+            },
           }
-        },
-        // NOTE : even if no values is sent, sources must exist
-        {
-          [`DOM!${formSelector}@submit`]: {
-            diagram: '--',
-            //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
-          }
-        },
-        {
-          [`DOM!${enterPasswordSelector}@input`]: {
-            diagram: '--',
-            //values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
-          }
-        },
-        {
-          [`DOM!${confirmPasswordSelector}@input`]: {
-            diagram: '--',
-            //values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
-          }
-        }
-      ]
 
-      const expected = {
-        DOM: {
-          outputs: [viewNoAuthError],
-          successMessage: 'DOM sink produces the expected screen',
-          analyzeTestResults: analyzeTestResults,
-          transformFn: undefined,
-        },
-        authentication$: {
-          outputs: [{
-            code: dummyAuthParams.oobCode,
-            method: AuthMethods.VERIFY_PASSWORD_RESET_CODE
-          }],
-          successMessage: 'DOM authentication$ produces no values as expected',
-          analyzeTestResults: analyzeTestResults,
-          transformFn: undefined,
-        },
-        router: {
-          outputs: [],
-          successMessage: 'sink router produces no values as expected',
-          analyzeTestResults: analyzeTestResults,
-          transformFn: undefined,
-        },
-      }
-
-      function ResetPasswordComponentCurried(settings) {
-        return function (sources) {
-          return ResetPasswordComponent(sources, settings);
-        }
-      }
-
-      runTestScenario(testInputsNotLoggedInNoAuthOpYet, expected,
-        ResetPasswordComponentCurried(dummyAuthParams), {
-          tickDuration: 5,
-          waitForFinishDelay: 20,
-          mocks: {
-            DOM: makeMockDOMSource
-          },
-          errorHandler: function (err) {
-            done(err)
+          function ResetPasswordComponentCurried(settings) {
+            return function (sources) {
+              return ResetPasswordComponent(sources, settings);
+            }
           }
-        })
 
+          runTestScenario(testInputsNotLoggedInNoAuthOpYet, expected,
+            ResetPasswordComponentCurried(dummyAuthParams), {
+              tickDuration: 5,
+              waitForFinishDelay: 20,
+              mocks: {
+                DOM: makeMockDOMSource
+              },
+              errorHandler: function (err) {
+                done(err)
+              }
+            })
+
+        });
     });
-  });
 
   describe('When the password reset code has been successfully verified', ()=> {
     it('should display a view with 1 ENABLED "enter new password" fields, 1' +
@@ -3235,8 +3244,7 @@ describe.skip('The ResetPassword component', () => {
             {
               [`DOM!${confirmPasswordSelector}@input`]: {
                 diagram: '-------',
-                values: {
-                }
+                values: {}
               }
             },
             {
@@ -3794,22 +3802,5 @@ describe.skip('The ResetPassword component', () => {
 
         });
     });
-
-  // TODO: remove the is not logged in first test, we don't discriminate on
-  // login anymore, and remove it from the API call driver's response
-
-  // TODO : make properties too for forgotPassword screen, all should load
-  // in `en.ts `
-  // TODO : specify driver commands
-  // TODO : specify driver responses
-  // TODO : specify authenticationState from driver responses and
-  // onAuthStateChanged, separated from the user profile data
-
-  // TODO : write the properties to be specified
-  // - delay etc.
-  // - en.ts strings
-  // TODO : write specs of current design
-  // - the state machine somehow for documentation purposes
-  // - forms : style, error reporting
 });
 

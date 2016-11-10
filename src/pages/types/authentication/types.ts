@@ -8,9 +8,9 @@ import {
 export type AuthenticationState = {
   method?: string | number | null,
   result?: any,
-  email? : string,
+  email? : string | null,
   isAuthenticated: boolean,
-  authenticationError: AuthenticationError | string | null
+  authenticationError: AuthenticationError  | null
 }
 
 // export type AuthResetState =

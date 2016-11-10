@@ -13,7 +13,8 @@ import {
 } from './ForgotPasswordActions'
 
 // TODO add an interface that ForgotPasswordComponent satisfies
-
+// TODO : refactoring, intent does not depend on view, so could be written as
+// FPA({merge, preConditions}, [FPI, FPV]
 const _ForgotPasswordComponent = ForgotPasswordActions({
   merge: computeForgotPasswordSinks,
   preConditions: assertHasExpectedSources(['authenticationState$'])
@@ -30,5 +31,3 @@ export {
   forgotPasswordClasses,
   ForgotPasswordComponent
 }
-
-
