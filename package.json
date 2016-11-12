@@ -54,7 +54,7 @@
     "sauce:safari9": "npm run sauce -- --env safari9",
     "test-ci": "npm run test:lint && npm run test:unit",
     "serve": "webpack-dev-server --config .config/webpack.config.js",
-    "serve-static": "pushstate-server dist 8080",
+    "serve-static": "pushstate-server dist ${PORT}",
     "build": "webpack --config .config/webpack.config.js",
     "heroku-postbuild": "npm run build"
   },
