@@ -7,7 +7,8 @@ import isolate from '@cycle/isolate';
 import { createAuthenticationMethod$ } from './createAuthenticationMethod$';
 import { view } from './view';
 
-export type LoginSinks = { DOM: Stream<VNode> } & AuthenticationSinks
+export type LoginSinks =
+  { DOM: Stream<VNode>, route$: Stream<string> } & AuthenticationSinks
 
 export type LoginSources = Sources & {
   DOM: DOMSource;
@@ -18,9 +19,13 @@ export type LoginSources = Sources & {
 export function Login(sources: LoginSources): LoginSinks {
   const authenticationMethod$ = createAuthenticationMethod$(sources.DOM);
 
+  const redirectToDashboard$: Stream<string> =
+    sources.isAuthenticated$.filter(Boolean).constant('/dash');
+
   return {
     DOM: sources.random.map(view),
     authenticationMethod$,
+    route$: redirectToDashboard$,
   };
 }
 

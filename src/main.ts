@@ -5,15 +5,18 @@ import { VNode, DOMSource } from '@motorcycle/dom';
 import { RouterSource } from 'cyclic-router/lib/RouterSource';
 import { Sources, Sinks } from './components/types';
 import { merge } from 'ramda';
+import isolate from '@cycle/isolate';
 
 import Landing from './ui/screens/Landing';
 import Login from './ui/screens/Login';
+import { Dash } from './ui/screens/Dash';
 
 import ComponentRouter from './components/ComponentRouter';
 
 const routes = {
   '/': Landing,
-  '/login': Login
+  '/login': Login,
+  '/dash': isolate(Dash),
 };
 
 export interface MainSinks extends Sinks {
