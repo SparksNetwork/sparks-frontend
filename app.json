@@ -1,0 +1,44 @@
+{
+  "name": "sparks-frontend",
+  "scripts": {},
+  "env": {
+    "BUGSNAG_API_KEY": {
+      "required": true
+    },
+    "BUILD_ENV": {
+      "required": true
+    },
+    "BUILD_FIREBASE_HOST": {
+      "required": true
+    },
+    "FIREBASE_API_KEY": {
+      "required": true
+    },
+    "FIREBASE_AUTH_DOMAIN": {
+      "required": true
+    },
+    "FIREBASE_DATABASE_URL": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    },
+    "PRERENDER_TOKEN": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
