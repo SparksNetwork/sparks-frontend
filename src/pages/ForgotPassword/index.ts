@@ -15,9 +15,11 @@ import {
 // TODO add an interface that ForgotPasswordComponent satisfies
 // TODO : refactoring, intent does not depend on view, so could be written as
 // FPA({merge, preConditions}, [FPI, FPV]
+// TODO : refactor as Switch with forgotState$ if works fine with Reset
+// TODO : adjust tests !
 const _ForgotPasswordComponent = ForgotPasswordActions({
   merge: computeForgotPasswordSinks,
-  preConditions: assertHasExpectedSources(['authenticationState$'])
+  preConditions: assertHasExpectedSources(['authentication$'])
 }, [
   ForgotPasswordIntents({
     'cancel@click': CancelIntent('cancel$'),
@@ -31,3 +33,7 @@ export {
   forgotPasswordClasses,
   ForgotPasswordComponent
 }
+
+
+// TODO : remove is authenticated
+// update name of sources

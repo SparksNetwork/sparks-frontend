@@ -12,7 +12,7 @@ import hold from '@most/hold'
 import {equals, cond, always, merge as mergeR, mergeAll} from 'ramda';
 import {Sources, Sinks, Source} from '../../components/types';
 import {
-  AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
+  AuthResetState, AuthResetStateEnum, AuthMethods, ResetPasswordState
 } from '../types/authentication/types';
 import {
   AuthenticationOutput,
@@ -183,6 +183,8 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
 
   // TODO : put all auth methods enum values in a separate file in
   // TODO : method is a string right now, will have to change to an enum
+  // so sync. with \src\drivers\firebase-authentication\types.ts
+  // and remove any
   switch (method as any) {
     // User clicked on the link and the linked opened in a new browser tab
     // (this is initial value of driver output)
@@ -190,7 +192,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
       authStateEnum = AuthResetStateEnum.RESET_PWD_INIT;
       break;
     case AuthMethods.VERIFY_PASSWORD_RESET_CODE :
-      switch (authenticationError) {
+      switch (error) {
         case null :
           authStateEnum = AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK;
           break;
@@ -200,7 +202,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
       }
       break;
     case AuthMethods.CONFIRM_PASSWORD_RESET :
-      switch (authenticationError) {
+      switch (error) {
         case null :
           authStateEnum = AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK;
           break;
@@ -210,7 +212,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
       }
       break;
     case AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD :
-      switch (authenticationError) {
+      switch (error) {
         case null :
           authStateEnum = AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK;
           break;
@@ -235,105 +237,47 @@ function throwContractError() {
   throw 'Missing authenticationState$ source!!'
 }
 
-const ResetPasswordComponentCore =InjectSources({
-  resetPasswordState$ : function computeResetPasswordState$(sources){
+const ResetPasswordComponentCore = InjectSources({
+  resetPasswordState$: function computeResetPasswordState$(sources): ResetPasswordState {
     const {authentication$} = sources;
 
-    return authentication$.scan()
+    return authentication$.scan(function computeResetPasswordState(resetPasswordState, authenticationOutput) {
+      const {method, result, error} = authenticationOutput;
+      resetPasswordState.stateEnum = computeAuthenticationStateEnum(authenticationOutput);
+
+      if (method === AuthMethods.VERIFY_PASSWORD_RESET_CODE) {
+        resetPasswordState.email = error ? null : result
+      }
+
+      resetPasswordState.error = error;
+
+      return resetPasswordState;
+    }, {stateEnum: AuthResetStateEnum.RESET_PWD_INIT, error: null, email: null})
   }
 }, Switch({
   on: 'resetPasswordState$',
+  eqFn: (stateEnum, resetPasswordState) => {
+    return equals(resetPasswordState.stateEnum, stateEnum)
+  },
   sinkNames: ['DOM', 'authentication$', 'router'],
-  eqFn : (stateEnum, authenticationOutput) => {
-    return equals(computeAuthenticationStateEnum(authenticationOutput), stateEnum)
-  }
 }, [
-  // AUTH_INIT is the auth state where no API calls were made yet to the
-  // auth driver
+  // no API calls were made yet to the auth driver
   Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
+  // the request to verify the reset code successfully executed
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
+  // the request to verify the reset code failed and returned an error code
   Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
-  // TODO
+  // the request to set the new password succeeded
+  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK}, [SignInWithEmailPassword]),
+  // the request to set the new password failed
+  Case({caseWhen: AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK}, [ReportResetPasswordError]),
+  // the request to sign-in with the new password and the user email succeeded
+  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK}, [RedirectToDashboard]),
+  // the request to sign-in with the new password and the user email failed
+  Case({caseWhen: AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK}, [ReportLoggedInError]),
+  // unexpected authentication state
+  Case({caseWhen: AuthResetStateEnum.INVALID_STATE}, [ReportInvalidStateError]),
 ]));
-
-
-function oldResetPasswordComponentCore(sources, settings) {
-// TODO : compute authenticationState$
-  // TODO : to move in a separate directory
-// TODO : TS typings Sources, [Component] -> Sinks
-  let authenticationState$ = computeAuthenticationState(sources);
-
-  function computeAuthenticationState(sources) {
-    const {authentication$, authStateChangedEvent$} = sources;
-
-    // TODO : change that to a bi-labeled merge and scan, and include the enum
-    // authStateChangedEvent is firebase.user or null
-    return combine(function (authenticationOutput, authStateChangedEvent) {
-
-
-        let res = {
-        method: authenticationOutput.method,
-        result: authenticationOutput.result,
-        authenticationError: authenticationOutput.authenticationError,
-        isAuthenticated: authStateChangedEvent,
-        email: isVerifyResetCodeCommandResult(authenticationOutput) ?
-      }
-
-      // no it is more complicated
-      // the email should be set when command is verifyResetCode
-      // only unset when log out, // and login with password(only used for that)
-      // TODO : so I need a scan here to keep the email unchanged
-      if (authenticationOutput.method === AuthMethods.VERIFY_PASSWORD_RESET_CODE
-        && authenticationOutput.authenticationError == null) {
-        res.email = authenticationOutput.result
-      }
-
-      return res;
-    }, authentication$, authStateChangedEvent$)
-      .thru(hold);
-  }
-
-  let sinks$ = authenticationState$.map(function (authenticationState) {
-    const stateEnum = computeAuthenticationStateEnum(authenticationState);
-    const _settings = mergeR(settings, {matched: authenticationState});
-
-    switch (stateEnum) {
-      // no API calls were made yet to the auth driver
-      case AuthResetStateEnum.RESET_PWD_INIT :
-        return VerifyPasswordResetCode(sources, _settings)
-      // the request to verify the reset code successfully executed
-      case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK :
-        return ResetPassword(sources, _settings)
-      // the request to verify the reset code failed and returned an error code
-      case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK :
-        return WarnFailedCodeVerification(sources, _settings)
-      // the request to set the new password succeeded
-      case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK :
-        return SignInWithEmailPassword(sources, _settings)
-      // the request to set the new password failed
-      case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK :
-        return ReportResetPasswordError(sources, _settings)
-      // the request to sign-in with the new password and the user email succeeded
-      case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK :
-        return RedirectToDashboard(sources, _settings)
-      // the request to sign-in with the new password and the user email failed
-      case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK :
-        return ReportLoggedInError(sources, _settings)
-      // unexpected authentication state
-      case AuthResetStateEnum.INVALID_STATE :
-        return ReportInvalidStateError(sources, _settings)
-    }
-  }).thru(hold);
-
-  const projectSinksOn = (k, s$) =>
-    s$.map(c => c[k] || empty()).switch()
-
-  return {
-    DOM: projectSinksOn('DOM', sinks$),
-    authentication$: projectSinksOn('authentication$', sinks$),
-    router: projectSinksOn('router', sinks$),
-  }
-}
 
 const ResetPasswordComponent = cond([
   [checkSourcesContracts, ResetPasswordComponentCore],
@@ -345,17 +289,13 @@ function ProcessAuthenticationState(sources, settings) {
   // and is the value streamed by the source on which the `Switch` acts
   // It is important to have it available here as it cannot be retrieved
   // from the source anymore, as it has already been emitted
-  const {mode, oobCode, matched} = settings;
-  console.warn('VerifyPasswordResetCode: settings', settings);
+  const {mode, oobCode, matched } = settings;
+  const resetPasswordState = matched;
+  console.warn('ProcessAuthenticationState: settings', settings);
 
-  const state = {
-    authenticationState: matched,
-    authResetState: computeAuthenticationStateEnum(matched)
-  };
-
-  const viewSinks = {DOM: just(computeView(state))};
+  const viewSinks = {DOM: just(computeView(resetPasswordState))};
   const intentsSinks = computeIntents(sources);
-  const actionSinks = computeActions(mergeR(settings, state), [
+  const actionSinks = computeActions(settings, [
     viewSinks,
     intentsSinks
   ]);

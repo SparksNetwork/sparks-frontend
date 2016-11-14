@@ -41,13 +41,13 @@ function checkMinPasswordLength({enterPassword, confirmPassword}) {
   return enterPassword.length > MIN_PASSWORD_LENGTH;
 }
 
-function computeActions({mode, oobCode, authenticationState, authResetState}, childrenSinks): any {
+function computeActions({mode, oobCode, resetPasswordState}, childrenSinks): any {
   const verifyCodeCommand = {
     method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
     code: oobCode
   };
   // TODO : set the following two as typescript types and make a authCommand
-  // type
+  // type, andu se .map<T> to propagate the type
   const confirmPasswordResetCommand = {
     method: AuthMethods.CONFIRM_PASSWORD_RESET,
     code: oobCode,
@@ -62,7 +62,7 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
   let mergedChildrenSinks: any = mergeAll(childrenSinks)
   let {DOM, resetPassword$, confirmPassword$} = mergedChildrenSinks;
 
-  switch (authResetState as AuthResetState) {
+  switch (resetPasswordState as AuthResetState) {
     case AuthResetStateEnum.RESET_PWD_INIT :
       return {
         DOM: DOM,
@@ -113,7 +113,7 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
             // supposing the auth driver is a dumb API call driver. Or the
             // auth driver could hold that state logic, choice to make
             // Note that neither email nor password are kept at this point
-            email: authenticationState.email,
+            email: resetPasswordState.email,
             password: confirmPassword
           }
         })
@@ -147,16 +147,16 @@ function computeActions({mode, oobCode, authenticationState, authResetState}, ch
   }
 }
 
-function checkValidationRule(resetPassword$, ruleFn, errorCode, authState) {
+function checkValidationRule(resetPassword$, ruleFn, errorCode, stateEnum) {
   return resetPassword$.filter(complement(ruleFn))
     .constant(
       computeView({
-        authenticationState: {
-          authenticationError: {
-            code: errorCode
-          }
-        },
-        authResetState: authState
+        stateEnum: stateEnum,
+        // email : string | null, not relevant to the view, only to the action
+        email : null,
+        error : {
+          code: errorCode
+        } as any, // in fact {code, message}
       }))
 }
 

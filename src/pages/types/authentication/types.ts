@@ -14,6 +14,12 @@ export type AuthenticationState = {
   authenticationError: AuthenticationError  | null
 }
 
+export type ResetPasswordState = {
+  stateEnum: AuthResetStateEnum,
+  error : AuthenticationError, // in fact {code, message}
+  email : string | null
+}
+
 // export type AuthResetState =
 //   "RESET_PWD_INIT"
 //     | "VERIFY_PASSWORD_RESET_CODE_OK"

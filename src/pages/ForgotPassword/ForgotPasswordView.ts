@@ -23,10 +23,10 @@ const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
 
 function ForgotPasswordView(sources: Sources): Sinks & {DOM: DOMSource;} {
-  const {authenticationState$} = sources;
+  const {authentication$} = sources;
 
   return {
-    DOM: authenticationState$.map(forgotPasswordView)
+    DOM: authentication$.map(forgotPasswordView)
   }
 }
 
@@ -44,6 +44,9 @@ const authenticationFeedbackTypeMap = {
   'failedAuthentication': 'error',
 }
 
+// TODO : not here bt index? copy Switch combinator and forgotState$
+// will only be {stateEnum: INIT|NOK, error}
+// TODO : then modify computeView
 function computeAuthFeedback(authenticationState) {
   const errorCode =
     authenticationState.authenticationError &&

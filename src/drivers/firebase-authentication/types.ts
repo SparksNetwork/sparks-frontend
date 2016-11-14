@@ -59,8 +59,9 @@ export type AuthenticationInput =
     PasswordResetAuthenticationInput;
 
 export type AuthenticationOutput = {
-  // TODO : optional properties for now, pending adr decision
-  method? : string;
+  // TODO : optional properties for now, pending adr decision, string is
+  // now, number what we want
+  method? : number | string;
   result? : any;
   error: AuthenticationError | null;
   // TODO : kept now but should remove when adrs accepted

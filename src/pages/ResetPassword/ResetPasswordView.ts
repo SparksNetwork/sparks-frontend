@@ -16,7 +16,8 @@ import hold from '@most/hold';
 import {cond, always, merge as mergeR, mergeAll} from 'ramda';
 import {Sources, Sinks, Source} from '../../components/types';
 import {
-  AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
+  AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods,
+  ResetPasswordState
 } from '../types/authentication/types';
 import {cssClasses} from '../../utils/classes';
 import {AuthenticationError} from "../../drivers/firebase-authentication/AuthenticationError"
@@ -110,12 +111,13 @@ function computeResetPasswordView(params) {
   ]);
 }
 
-function computeView({authenticationState, authResetState}) {
+function computeView(resetPasswordState : ResetPasswordState) {
   let view;
-  const error = authenticationState && authenticationState.authenticationError &&
-    authenticationState.authenticationError.code;
+  const error = resetPasswordState && resetPasswordState.error &&
+    resetPasswordState.error.code;
+  const stateEnum = resetPasswordState.stateEnum;
 
-  switch (authResetState as AuthResetState) {
+  switch (stateEnum as AuthResetState) {
     case AuthResetStateEnum.RESET_PWD_INIT :
       view = computeResetPasswordView({
         // view is disabled till code is verified
@@ -200,8 +202,6 @@ function computeView({authenticationState, authResetState}) {
   }
 
   return view;
-//    DOM: just(view).tap(x=>console.info('DOM orig', x))
-
 }
 
 export {

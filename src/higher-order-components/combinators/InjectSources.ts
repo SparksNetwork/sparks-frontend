@@ -4,10 +4,10 @@ import {
 import {Sources, Sinks} from '../../components/types';
 
 export function InjectSources(injectedSources : Sources, childComponent) {
-  return function (sources) {
+  return function (sources, settings) {
     const mergedSources = merge(sources, injectedSources)
 
-    return childComponent(mergedSources)
+    return childComponent(mergedSources, settings)
   }
 }
 

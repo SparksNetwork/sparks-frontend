@@ -226,6 +226,8 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
  * - settings.eqFn :: * -> * -> Boolean
  * A predicate which returns true if both parameters are considered equal.
  * This parameter defaults to `===`
+ * The first parameter is the `caseWhen` value, the second parameter is the
+ * value passed by switched-on source.
  *
  * Signature 2: SwitchOnSource -> [Component] -> Component
  * - settings.on :: SourceName
