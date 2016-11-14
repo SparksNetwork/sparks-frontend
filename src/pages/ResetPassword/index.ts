@@ -14,11 +14,17 @@ import {Sources, Sinks, Source} from '../../components/types';
 import {
   AuthenticationState, AuthResetState, AuthResetStateEnum, AuthMethods
 } from '../types/authentication/types';
+import {
+  AuthenticationOutput,
+  GET_REDIRECT_RESULT,
+  AuthenticationError
+} from '../../drivers/firebase-authentication';
 import {readRouteParams} from '../../utils';
 import {Switch, Case} from '../../higher-order-components/combinators/Switch';
 import {computeIntents} from './ResetPasswordIntents'
 import {computeView, classes as resetPasswordClasses} from './ResetPasswordView'
 import {computeActions} from './ResetPasswordActions'
+import {InjectSources} from "../../higher-order-components/combinators/InjectSources"
 
 interface PasswordResetEmailParams {
   mode: string,
@@ -171,8 +177,8 @@ const orElse = always(true);
 // TODO : write higher level components which incorporate slots mechanism
 // TODO : specifiy the view slot mechanism
 
-function computeAuthenticationStateEnum(authenticationState: AuthenticationState) {
-  const {method, result, authenticationError} = authenticationState;
+function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutput) {
+  const {method, result, error} = authenticationOutput;
   let authStateEnum: AuthResetState = null;
 
   // TODO : put all auth methods enum values in a separate file in
@@ -222,15 +228,70 @@ function computeAuthenticationStateEnum(authenticationState: AuthenticationState
 }
 
 function checkSourcesContracts(sources, settings) {
-  return !!sources.authenticationState$
+  return !!sources.authentication$
 }
 
 function throwContractError() {
   throw 'Missing authenticationState$ source!!'
 }
 
-function ResetPasswordComponentCore(sources, settings) {
-  const {authenticationState$} = sources;
+const ResetPasswordComponentCore =InjectSources({
+  resetPasswordState$ : function computeResetPasswordState$(sources){
+    const {authentication$} = sources;
+
+    return authentication$.scan()
+  }
+}, Switch({
+  on: 'resetPasswordState$',
+  sinkNames: ['DOM', 'authentication$', 'router'],
+  eqFn : (stateEnum, authenticationOutput) => {
+    return equals(computeAuthenticationStateEnum(authenticationOutput), stateEnum)
+  }
+}, [
+  // AUTH_INIT is the auth state where no API calls were made yet to the
+  // auth driver
+  Case({caseWhen: AuthResetStateEnum.RESET_PWD_INIT}, [VerifyPasswordResetCode]),
+  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK}, [ResetPassword]),
+  Case({caseWhen: AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK}, [WarnFailedCodeVerification]),
+  // TODO
+]));
+
+
+function oldResetPasswordComponentCore(sources, settings) {
+// TODO : compute authenticationState$
+  // TODO : to move in a separate directory
+// TODO : TS typings Sources, [Component] -> Sinks
+  let authenticationState$ = computeAuthenticationState(sources);
+
+  function computeAuthenticationState(sources) {
+    const {authentication$, authStateChangedEvent$} = sources;
+
+    // TODO : change that to a bi-labeled merge and scan, and include the enum
+    // authStateChangedEvent is firebase.user or null
+    return combine(function (authenticationOutput, authStateChangedEvent) {
+
+
+        let res = {
+        method: authenticationOutput.method,
+        result: authenticationOutput.result,
+        authenticationError: authenticationOutput.authenticationError,
+        isAuthenticated: authStateChangedEvent,
+        email: isVerifyResetCodeCommandResult(authenticationOutput) ?
+      }
+
+      // no it is more complicated
+      // the email should be set when command is verifyResetCode
+      // only unset when log out, // and login with password(only used for that)
+      // TODO : so I need a scan here to keep the email unchanged
+      if (authenticationOutput.method === AuthMethods.VERIFY_PASSWORD_RESET_CODE
+        && authenticationOutput.authenticationError == null) {
+        res.email = authenticationOutput.result
+      }
+
+      return res;
+    }, authentication$, authStateChangedEvent$)
+      .thru(hold);
+  }
 
   let sinks$ = authenticationState$.map(function (authenticationState) {
     const stateEnum = computeAuthenticationStateEnum(authenticationState);
@@ -334,7 +395,7 @@ function ReportInvalidStateError(sources, settings) {
   return ProcessAuthenticationState(sources, settings)
 }
 
-function ResetPasswordRouteAdapter(ResetPasswordComponent) {
+function InjectRouteParams(ResetPasswordComponent) {
   return function ResetPasswordRouteAdapter(urlSegment) {
     // read the params from the string
     // @type {{mode: string, oobCode: string}} PasswordResetEmailParams
@@ -353,7 +414,7 @@ function ResetPasswordRouteAdapter(ResetPasswordComponent) {
 export {
   ResetPasswordComponent,
   resetPasswordClasses,
-  ResetPasswordRouteAdapter,
+  InjectRouteParams,
   readRouteParams
 }
 

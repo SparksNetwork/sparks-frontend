@@ -4,19 +4,24 @@ import {
   AuthenticationOutput,
   AuthenticationError,
 } from '../drivers/firebase-authentication';
-import {Stream, just} from 'most';
+import {Stream, just, combine} from 'most';
 import {VNode, DOMSource} from '@motorcycle/dom';
 import {RouterSource} from 'cyclic-router/lib/RouterSource';
 import {Sources, Sinks} from '../components/types';
 import {merge} from 'ramda';
+import {InjectSources} from '../higher-order-components/combinators/InjectSources';
 import hold from '@most/hold';
 
 import Landing from './Landing';
 // import Login from './Login';
 import LogIn from './_LogIn';
 import {ForgotPasswordComponent} from './ForgotPassword';
-import {ResetPasswordComponent, ResetPasswordRouteAdapter} from './ResetPassword';
+import {
+  ResetPasswordComponent,
+  InjectRouteParams
+} from './ResetPassword';
 import ComponentRouter from '../components/ComponentRouter';
+import {AuthMethods} from "./types/authentication/types"
 
 const routes = {
   '/': Landing,
@@ -24,7 +29,7 @@ const routes = {
   '/login': LogIn,
   // NOTE : would like /auth/resetPassword, but current router does not read
   // params in `?atr=value&atr=value` form
-  '/auth/reset/:id': ResetPasswordRouteAdapter(ResetPasswordComponent),
+  '/auth/reset/:id': InjectRouteParams(ResetPasswordComponent),
   '/auth/forgotPassword': ForgotPasswordComponent,
 };
 
@@ -39,40 +44,19 @@ export interface MainSources extends Sources {
   DOM: DOMSource;
   router: RouterSource;
   authentication$: Stream<AuthenticationOutput>;
+  // TODO : Type here is nullable firebase.user
+  // cf. https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onAuthStateChanged
+  authStateChangedEvent$: Stream<firebase.user>;
   firebase: FirebaseSource;
   queue$: QueueSource;
   random: Stream<any>;
 }
 
-// TODO : to move in a separate directory
-// TODO : TS typings Sources, [Component] -> Sinks
-function computeAuhenticationState(sources) {
-  return sources.authentication$
-  // TODO : update that after ADRs decision on the format of driver output
-    .map(authenticationOutput => {
-      return {
-        isAuthenticated: !!authenticationOutput.userCredential.user,
-        authenticationError: authenticationOutput.error as AuthenticationError
-      }
-    })
-    .thru(hold);
-}
-
-function InjectSources(injectedSources, [childComponent]) {
-  return function (sources) {
-    const mergedSources = merge(sources, injectedSources)
-
-    return childComponent(mergedSources)
-  }
-}
-
 export function main(sources: MainSources): MainSinks {
   const page = InjectSources({
-    authenticationState$: computeAuhenticationState(sources),
     routes$: just(routes)
-  }, [
-    ComponentRouter
-  ])(sources);
+  }, ComponentRouter
+  )(sources);
 
   return {
     DOM: page.DOM,

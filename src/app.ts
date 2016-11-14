@@ -33,6 +33,8 @@ const drivers = {
   // TODO : update router driver to most and also typings to do
   router: makeRouterDriver(createHistory() as any, switchPath),
   authentication$: makeFirebaseAuthenticationDriver(firebase),
+  // TODO
+  authStateChangedEvent$: makeAuthStateChangedEventDriver(),
   firebase: makeFirebaseDriver(firebaseRef),
   queue$: makeQueueDriver(firebaseRef.child('!queue')),
   preventDefault,

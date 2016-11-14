@@ -5,6 +5,7 @@ import {
   AuthenticationError
 } from '../../../drivers/firebase-authentication';
 
+// TODO : remove ? when this is
 export type AuthenticationState = {
   method?: string | number | null,
   result?: any,

@@ -63,5 +63,6 @@ export type AuthenticationOutput = {
   method? : string;
   result? : any;
   error: AuthenticationError | null;
+  // TODO : kept now but should remove when adrs accepted
   userCredential: firebase.auth.UserCredential;
 };

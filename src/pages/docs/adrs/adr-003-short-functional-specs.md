@@ -18,7 +18,7 @@ This document in addition doubles as a base for test writing, as the tests shoul
 
 This document should be short, to the point, updated and versioned.
  
-The proposed features described in the document can be prioritized against  their value added (MUST/MAY/NICE TO HAVE etc.). This allows arbitraging features implementation during unavoidable time-crunches. (cf. http://www.joelonsoftware.com/items/2007/10/26.html)
+The proposed features described in the document can be prioritized against  their value added (MUST/MAY/NICE TO HAVE etc.). This allows arbitraging features implementation during unavoidable time-crunches.
 
 Lastly this document can serve as an entry to any programmer in the development team to quickly enter the code base related to the feature at hand.
 
@@ -28,3 +28,6 @@ PENDING
 ## Consequences
 PENDING
 
+## Relevant resources
+- [On writing product specs](https://goberoi.com/on-writing-product-specs-5ca697b992fd#.4pe9e4hkk)
+- [Evidence Based Scheduling](http://www.joelonsoftware.com/items/2007/10/26.html)
