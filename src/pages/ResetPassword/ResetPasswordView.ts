@@ -113,7 +113,7 @@ function computeResetPasswordView(params) {
 
 function computeView(resetPasswordState : ResetPasswordState) {
   let view;
-  const error = resetPasswordState && resetPasswordState.error &&
+  const error : any = resetPasswordState && resetPasswordState.error &&
     resetPasswordState.error.code;
   const stateEnum = resetPasswordState.stateEnum;
 

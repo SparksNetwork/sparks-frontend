@@ -41,7 +41,9 @@ function checkMinPasswordLength({enterPassword, confirmPassword}) {
   return enterPassword.length > MIN_PASSWORD_LENGTH;
 }
 
-function computeActions({mode, oobCode, resetPasswordState}, childrenSinks): any {
+function computeActions({mode, oobCode, matched}, childrenSinks): any {
+  const resetPasswordState = matched;
+  const stateEnum = resetPasswordState.stateEnum;
   const verifyCodeCommand = {
     method: AuthMethods.VERIFY_PASSWORD_RESET_CODE,
     code: oobCode
@@ -62,7 +64,7 @@ function computeActions({mode, oobCode, resetPasswordState}, childrenSinks): any
   let mergedChildrenSinks: any = mergeAll(childrenSinks)
   let {DOM, resetPassword$, confirmPassword$} = mergedChildrenSinks;
 
-  switch (resetPasswordState as AuthResetState) {
+  switch (stateEnum as AuthResetState) {
     case AuthResetStateEnum.RESET_PWD_INIT :
       return {
         DOM: DOM,

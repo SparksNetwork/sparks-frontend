@@ -16,7 +16,7 @@ export type AuthenticationState = {
 
 export type ResetPasswordState = {
   stateEnum: AuthResetStateEnum,
-  error : AuthenticationError, // in fact {code, message}
+  error : AuthenticationError | null, // in fact {code, message}
   email : string | null
 }
 

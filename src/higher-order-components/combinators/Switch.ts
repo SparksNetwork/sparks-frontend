@@ -109,6 +109,8 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
   const shouldSwitch$ = switchSource
     .map(x => ({isEqual: eqFn(caseWhen, x), value: x}))
+    // multicast as it is subscribed twice
+    .multicast()
 
   const cachedSinks$ = shouldSwitch$
     .filter(x => x.isEqual)

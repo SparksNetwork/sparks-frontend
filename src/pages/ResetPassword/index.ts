@@ -194,6 +194,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
     case AuthMethods.VERIFY_PASSWORD_RESET_CODE :
       switch (error) {
         case null :
+        case undefined :
           authStateEnum = AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK;
           break;
         default :
@@ -204,6 +205,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
     case AuthMethods.CONFIRM_PASSWORD_RESET :
       switch (error) {
         case null :
+        case undefined :
           authStateEnum = AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK;
           break;
         default :
@@ -214,6 +216,7 @@ function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutp
     case AuthMethods.SIGN_IN_WITH_EMAIL_AND_PASSWORD :
       switch (error) {
         case null :
+        case undefined :
           authStateEnum = AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK;
           break;
         default :
@@ -237,23 +240,25 @@ function throwContractError() {
   throw 'Missing authenticationState$ source!!'
 }
 
+function computeResetPasswordState$(sources): ResetPasswordState {
+  const {authentication$} = sources;
+
+  return authentication$.scan(function computeResetPasswordState(resetPasswordState, authenticationOutput) {
+    const {method, result, error} = authenticationOutput;
+    resetPasswordState.stateEnum = computeAuthenticationStateEnum(authenticationOutput);
+
+    if (method === AuthMethods.VERIFY_PASSWORD_RESET_CODE) {
+      resetPasswordState.email = error ? null : result
+    }
+
+    resetPasswordState.error = error;
+
+    return resetPasswordState;
+  }, {stateEnum: AuthResetStateEnum.RESET_PWD_INIT, error: null, email: null})
+}
+
 const ResetPasswordComponentCore = InjectSources({
-  resetPasswordState$: function computeResetPasswordState$(sources): ResetPasswordState {
-    const {authentication$} = sources;
-
-    return authentication$.scan(function computeResetPasswordState(resetPasswordState, authenticationOutput) {
-      const {method, result, error} = authenticationOutput;
-      resetPasswordState.stateEnum = computeAuthenticationStateEnum(authenticationOutput);
-
-      if (method === AuthMethods.VERIFY_PASSWORD_RESET_CODE) {
-        resetPasswordState.email = error ? null : result
-      }
-
-      resetPasswordState.error = error;
-
-      return resetPasswordState;
-    }, {stateEnum: AuthResetStateEnum.RESET_PWD_INIT, error: null, email: null})
-  }
+  resetPasswordState$: computeResetPasswordState$
 }, Switch({
   on: 'resetPasswordState$',
   eqFn: (stateEnum, resetPasswordState) => {
