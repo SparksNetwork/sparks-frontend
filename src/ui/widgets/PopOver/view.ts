@@ -12,12 +12,29 @@ export type ViewModel =
 
 export function view(viewModel: ViewModel): VNode {
   const { model } = viewModel;
-  const { id, message } = model;
+  const { id, message, wrapperStyle } = model;
 
   const rootVNode: VNode =
-    div(asSelector(styles.uniqueRoot),
-      { attrs: { id } }, [
-        div(asSelector(styles.message), message)
+    div(
+      asSelector(
+        styles.uniqueRoot,
+        styles.container
+      ),
+      { attrs: { id }, style: { display: `none` } }, [
+        div(
+          asSelector(
+            styles.wrapper,
+          ),
+          { style: wrapperStyle },
+          [
+            div(
+              asSelector(
+                styles.popOverContent,
+                styles.typeInfo,
+              ), [
+                div(asSelector(styles.message), message)
+              ])
+          ])
       ]);
 
   return rootVNode;

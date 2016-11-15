@@ -24,13 +24,40 @@ const defaultSources: PopOverSources =
     props$: just(defaultProps)
   };
 
-describe(`PopOver widget`, () => {
+describe.only(`PopOver widget`, () => {
   describe(`view`, () => {
-    it(`has a styled DIV element as root`, (done) => {
+    it(`has a styled DIV element as root container`, (done) => {
       const sinks: PopOverSinks = PopOver(defaultSources);
 
       sinks.DOM.observe(view => {
-        const matches = domSelect(`div.${styles.uniqueRoot}`, view);
+        const matches: Array<VNode> =
+          domSelect(`div.${styles.uniqueRoot}.${styles.container}`, view);
+
+        assert.strictEqual(matches.length, 1);
+      })
+        .catch(done);
+
+      done();
+    });
+
+    it(`has a styled DIV element as wrapper`, (done) => {
+      const sinks: PopOverSinks = PopOver(defaultSources);
+
+      sinks.DOM.observe(view => {
+        const matches = domSelect(`div.${styles.wrapper}`, view);
+
+        assert.strictEqual(matches.length, 1);
+      })
+        .catch(done);
+
+      done();
+    });
+
+    it(`has a styled DIV element as pop over content`, (done) => {
+      const sinks: PopOverSinks = PopOver(defaultSources);
+
+      sinks.DOM.observe(view => {
+        const matches = domSelect(`div.${styles.popOverContent}`, view);
 
         assert.strictEqual(matches.length, 1);
       })
