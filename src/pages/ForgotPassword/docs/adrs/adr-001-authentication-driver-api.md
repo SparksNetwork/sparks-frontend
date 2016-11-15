@@ -67,21 +67,6 @@ The `result` property could left unspecified (`any`) or be a union types of the 
 // - string
 ```
 
-From the auth driver output, a 'state' object is computed to 
-address the forgot and reset password screens concerns :
-
-```
-type AuthState = {
-  method: string | number | null,
-  result: any,
-  authenticationError: AuthenticationError  | null
-  email : string | null,
-  isAuthenticated: boolean,
-}
-```
-
-NOTE : it is necessary to hold track of the email here which is returned by the code verification API call, as it will be a necessary input to the login at a later point.
-
 ## Pros/Cons
 ### Pros
 - Auth drivers have only one concern which is executing authentication 
