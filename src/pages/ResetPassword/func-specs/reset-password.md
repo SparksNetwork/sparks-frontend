@@ -16,6 +16,9 @@ A user received an email with a link which allows him to reset its password. Tha
 
 - Each stage can be comprised of one or several operations which might fail or succeed. The `resetPasswordFeedback` area should informed the user of the latest information of relevance on the operations in process.
 
+- If the password reset code could not be verified, the applications 
+navigates to the `forgotPassword` screen
+
 - The corresponding state machine is described in [here](./reset-password-fsm-detailed.pdf)
 
 - The visual design details are left unspecified and should follow the general design rules in vigor for the project :
@@ -24,3 +27,5 @@ A user received an email with a link which allows him to reset its password. Tha
 # Pending issues
 - english version of feedback messages for the `resetPasswordFeedback`.
 - visual design
+- design : when navigating to another page (in case of unrecoverable error), 
+ok to do message + delay + navigation?

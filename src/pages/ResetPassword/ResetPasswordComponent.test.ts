@@ -27,7 +27,10 @@ import {runTestScenario} from '../../utils/testing/runTestScenario'
 import {makeMockDOMSource} from '../../utils/testing/mockDOM'
 import {ResetPasswordComponent, resetPasswordClasses} from './index.ts';
 import {cssClasses} from '../../utils/classes';
-import {DASHBOARD_ROUTE, LOGIN_ROUTE} from '../config.properties'
+import {
+  DASHBOARD_ROUTE, LOGIN_ROUTE,
+  FORGOT_PASSWORD_ROUTE
+} from '../config.properties'
 
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
@@ -1446,8 +1449,9 @@ describe('The ResetPassword component', () => {
     });
   });
 
+  // I AM HERE add route to forgotPassword
   describe('When the password reset code has failed verification AND' +
-    ' error code correspond to an expired code', () => {
+    ' error code corresponds to an expired code', () => {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' ENABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
       ' feedback message area which gives account of the error', (done) => {
@@ -1500,8 +1504,8 @@ describe('The ResetPassword component', () => {
           transformFn: undefined,
         },
         router: {
-          outputs: [],
-          successMessage: 'sink router produces no values as expected',
+          outputs: [FORGOT_PASSWORD_ROUTE],
+          successMessage: 'sink router produces the FORGOT_PASSWORD_ROUTE',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1581,8 +1585,8 @@ describe('The ResetPassword component', () => {
           transformFn: undefined,
         },
         router: {
-          outputs: [],
-          successMessage: 'sink router produces no values as expected',
+          outputs: [FORGOT_PASSWORD_ROUTE],
+          successMessage: 'sink router produces the FORGOT_PASSWORD_ROUTE',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1662,8 +1666,8 @@ describe('The ResetPassword component', () => {
           transformFn: undefined,
         },
         router: {
-          outputs: [],
-          successMessage: 'sink router produces no values as expected',
+          outputs: [FORGOT_PASSWORD_ROUTE],
+          successMessage: 'sink router produces the FORGOT_PASSWORD_ROUTE',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },
@@ -1743,8 +1747,8 @@ describe('The ResetPassword component', () => {
           transformFn: undefined,
         },
         router: {
-          outputs: [],
-          successMessage: 'sink router produces no values as expected',
+          outputs: [FORGOT_PASSWORD_ROUTE],
+          successMessage: 'sink router produces the FORGOT_PASSWORD_ROUTE',
           analyzeTestResults: analyzeTestResults,
           transformFn: undefined,
         },

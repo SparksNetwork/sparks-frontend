@@ -22,6 +22,7 @@ import {
 } from './ResetPassword';
 import ComponentRouter from '../components/ComponentRouter';
 import {AuthMethods} from "./types/authentication/types"
+import { DASHBOARD_ROUTE , LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../pages/config.properties'
 
 const routes = {
   '/': Landing,
@@ -30,7 +31,7 @@ const routes = {
   // NOTE : would like /auth/resetPassword, but current router does not read
   // params in `?atr=value&atr=value` form
   '/auth/reset/:id': InjectRouteParams(ResetPasswordComponent),
-  '/auth/forgotPassword': ForgotPasswordComponent,
+  [FORGOT_PASSWORD_ROUTE]: ForgotPasswordComponent,
 };
 
 export interface MainSinks extends Sinks {

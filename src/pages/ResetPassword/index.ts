@@ -174,9 +174,6 @@ const orElse = always(true);
 // - Actions :
 //   - none
 
-// TODO : write higher level components which incorporate slots mechanism
-// TODO : specifiy the view slot mechanism
-
 function computeAuthenticationStateEnum(authenticationOutput: AuthenticationOutput) {
   const {method, result, error} = authenticationOutput;
   let authStateEnum: AuthResetState = null;

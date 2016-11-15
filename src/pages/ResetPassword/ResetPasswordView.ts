@@ -1,13 +1,3 @@
-import isolate from '@cycle/isolate';
-import {
-  Stream,
-  combine,
-  merge as mergeM,
-  mergeArray,
-  empty,
-  never,
-  just
-} from 'most';
 import {
   DOMSource, div, span, section, form, fieldset, label, a, p, input, h1,
   h4, button, VNode
@@ -111,97 +101,92 @@ function computeResetPasswordView(params) {
   ]);
 }
 
-function computeView(resetPasswordState : ResetPasswordState) {
-  let view;
-  const error : any = resetPasswordState && resetPasswordState.error &&
+const paramsResetPwdInit = {
+  // view is disabled till code is verified
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+  resetPasswordFeedbackPhrase: 'resetPassword.verifying'
+};
+const paramsVerifyPasswordResetCodeOK = {
+  // view is enabled <- code is verified
+  isDisabled: false,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+  resetPasswordFeedbackPhrase: 'resetPassword.verifyCodeSuccessful'
+};
+const paramsVerifyPasswordResetCodeNOK = error => ({
+  // view is disabled <- code failed verification ; display error message
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
+});
+const paramsConfirmPasswordResetOk = ({
+  // view is disabled while logging the user in
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+  resetPasswordFeedbackPhrase: 'resetPassword.loggingIn'
+});
+const paramsConfirmPasswordResetNOk = error => ({
+  // view is enabled so the user can try another password
+  isDisabled: false,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
+});
+const paramsSignInWithEmailAndPasswordOK = {
+  // view is disabled while the application changes screen
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+  resetPasswordFeedbackPhrase: 'resetPassword.loggedIn'
+};
+const paramsSignInWithEmailAndPasswordNOK = error => ({
+// view is disabled while the application changes screen
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['LoggedIn|' + error]
+});
+const paramsInvalidPassword = error => ({
+  // view is enabled so the user can try another password
+  isDisabled: false,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
+});
+const paramsInvalidState = {
+  // view is disabled while the application changes screen
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['internal/invalid-state']
+};
+const paramsValidPassword = {
+  // view is disabled while the password is being reset
+  isDisabled: true,
+  resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
+  resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['validation/valid-password']
+};
+
+function computeView(resetPasswordState: ResetPasswordState) {
+  const error: any = resetPasswordState && resetPasswordState.error &&
     resetPasswordState.error.code;
   const stateEnum = resetPasswordState.stateEnum;
 
-  switch (stateEnum as AuthResetState) {
-    case AuthResetStateEnum.RESET_PWD_INIT :
-      view = computeResetPasswordView({
-        // view is disabled till code is verified
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
-        resetPasswordFeedbackPhrase: 'resetPassword.verifying'
-      });
-      break;
-    case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK :
-      view = computeResetPasswordView({
-        // view is enabled <- code is verified
-        isDisabled: false,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
-        resetPasswordFeedbackPhrase: 'resetPassword.verifyCodeSuccessful'
-      });
-      break;
-    case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK:
-      view = computeResetPasswordView({
-        // view is disabled <- code failed verification ; display error message
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
-      });
-      break;
-    case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK:
-      view = computeResetPasswordView({
-        // view is disabled while logging the user in
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
-        resetPasswordFeedbackPhrase: 'resetPassword.loggingIn'
-      });
-      break;
-    case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK:
-      view = computeResetPasswordView({
-        // view is enabled so the user can try another password
-        isDisabled: false,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
-      });
-      break;
-    case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK:
-      view = computeResetPasswordView({
-        // view is disabled while the application changes screen
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
-        resetPasswordFeedbackPhrase: 'resetPassword.loggedIn'
-      });
-      break;
-    case AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK:
-      view = computeResetPasswordView({
-        // view is disabled while the application changes screen
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['LoggedIn|' + error]
-      });
-      break;
-    case AuthResetStateEnum.INVALID_PASSWORD :
-      view = computeResetPasswordView({
-        // view is enabled so the user can try another password
-        isDisabled: false,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap[error]
-      });
-      break;
-    case AuthResetStateEnum.INVALID_STATE :
-    default :
-      view = computeResetPasswordView({
-        // view is disabled while the application changes screen
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.failed,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['internal/invalid-state']
-      });
-      break;
-    case AuthResetStateEnum.VALID_PASSWORD :
-      view = computeResetPasswordView({
-        // view is disabled while the password is being reset
-        isDisabled: true,
-        resetPasswordFeedbackType: resetPasswordFeedbackTypeMap.none,
-        resetPasswordFeedbackPhrase: resetPasswordFeedbackPhraseMap['validation/valid-password']
-      });
-      break;
-  }
+  const switchTable = {
+    [AuthResetStateEnum.RESET_PWD_INIT]: paramsResetPwdInit,
+    [AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_OK]: paramsVerifyPasswordResetCodeOK,
+    [AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK]: paramsVerifyPasswordResetCodeNOK,
+    [AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK]: paramsConfirmPasswordResetOk,
+    [AuthResetStateEnum.CONFIRM_PASSWORD_RESET_NOK]: paramsConfirmPasswordResetNOk,
+    [AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_OK]: paramsSignInWithEmailAndPasswordOK,
+    [AuthResetStateEnum.SIGN_IN_WITH_EMAIL_AND_PASSWORD_NOK]: paramsSignInWithEmailAndPasswordNOK,
+    [AuthResetStateEnum.INVALID_PASSWORD]: paramsInvalidPassword,
+    [AuthResetStateEnum.INVALID_STATE]: paramsInvalidState,
+    [AuthResetStateEnum.VALID_PASSWORD]: paramsValidPassword,
+  };
+  const viewParams : Object | (any) = switchTable[stateEnum];
 
-  return view;
+  switch (typeof viewParams) {
+    case 'function' : return computeResetPasswordView(viewParams(error))
+    case 'object' : return computeResetPasswordView(viewParams)
+    default :
+      throw 'ResetPasswordView.computeView : Internal error'
+  }
 }
 
 export {

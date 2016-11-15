@@ -27,7 +27,7 @@ import {
 } from '../types/authentication/types';
 import {MIN_PASSWORD_LENGTH, REDIRECT_DELAY} from './config.properties'
 import {computeView} from './ResetPasswordView'
-import { DASHBOARD_ROUTE , LOGIN_ROUTE } from '../config.properties'
+import { DASHBOARD_ROUTE , LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../config.properties'
 
 // Properties
 // TODO : move in some properties file
@@ -100,7 +100,8 @@ function computeActions({mode, oobCode, matched}, childrenSinks): any {
     case AuthResetStateEnum.VERIFY_PASSWORD_RESET_CODE_NOK:
       return {
         DOM: DOM,
-        router: empty(),
+        // TODO : add a delay maybe, dont do it now, wait for designer comment
+        router: just(FORGOT_PASSWORD_ROUTE),
         authentication$: empty()
       }
     case AuthResetStateEnum.CONFIRM_PASSWORD_RESET_OK:
