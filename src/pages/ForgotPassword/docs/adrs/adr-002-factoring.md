@@ -38,3 +38,7 @@ const enum AuthResetStateEnum {
 
 NOTE : it is necessary to hold track of the email here which is returned by the code verification API call, as it will be a necessary input to the login at a later point.
 
+The proposition is to adopt that factoring in other cases. The factoring is the following :
+
+- events/behaviours coming from the drivers
+- on each screen, the 'local' state, i.e. the data derived from those drivers is computed after applying the router, and as a behavior

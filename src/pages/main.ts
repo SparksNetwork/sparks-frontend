@@ -8,7 +8,7 @@ import {Stream, just, combine} from 'most';
 import {VNode, DOMSource} from '@motorcycle/dom';
 import {RouterSource} from 'cyclic-router/lib/RouterSource';
 import {Sources, Sinks} from '../components/types';
-import {merge} from 'ramda';
+import {merge, always} from 'ramda';
 import {InjectSources} from '../higher-order-components/combinators/InjectSources';
 import hold from '@most/hold';
 
@@ -22,7 +22,11 @@ import {
 } from './ResetPassword';
 import ComponentRouter from '../components/ComponentRouter';
 import {AuthMethods} from "./types/authentication/types"
-import { DASHBOARD_ROUTE , LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../pages/config.properties'
+import {
+  DASHBOARD_ROUTE,
+  LOGIN_ROUTE,
+  FORGOT_PASSWORD_ROUTE
+} from '../pages/config.properties'
 
 const routes = {
   '/': Landing,
@@ -55,9 +59,9 @@ export interface MainSources extends Sources {
 
 export function main(sources: MainSources): MainSinks {
   const page = InjectSources({
-    routes$: just(routes)
-  }, ComponentRouter
-  )(sources);
+      routes$: always(just(routes))
+    }, ComponentRouter
+  )(sources,{});
 
   return {
     DOM: page.DOM,
