@@ -1,182 +1,50 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Sparks.Network</title>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="Content-Langauge" content="en" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
-    <style>
-      :root {
-        box-sizing: border-box;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: 400;
-        font-size: 14px;
-        font-family: 'Open Sans', sans-serif; }
+<!doctype html>
+<html lang="en">
 
-      /**
-       * 1. Disable iPhone OS, Safari callout information display.
-       * 2. Disable user selection.
-       * 3. Transparent tapped link highlight color.
-       */
-      * {
-        -webkit-touch-callout: none; /* 1 */
-        -ms-user-select: none; /* 2 */
-        -webkit-user-select: none; /* 2 */
-        user-select: none; /* 2 */
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important; } /* 3 */
+<head>
+  <title>Sparks.Network</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    /* styling for render while resources are loading */
 
-      *, *::after, *::before {
-        box-sizing: inherit; }
+    #sparks-app {
+      min-height: 101vh;
+      line-height: 68px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #202020;
+      overflow: visible;
+    }
 
-      body {
-        margin: 0; }
+    #unresolved {
+      background-color: rgba(42, 18, 45, 0.8);
+      color: #f6eef4;
+    }
 
-      h1, h2, h3, h4, h5, h6 {
-        margin: 0;
-        font-size: 1.25rem; }
+    #unresolved > span {
+      color: #cd95c0;
+    }
+  </style>
+</head>
 
-      /**
-       * 1. Prevent iOS zoom on input. See https://goo.gl/kbGyvh
-       * 2. Enable user selection.
-       */
-      input,
-      textarea {
-        font-size: 1.142857143rem; /* 1 */
-        -ms-user-select: auto; /* 2 */
-        -webkit-user-select: auto; /* 2 */
-        user-select: auto; /* 2 */
-      }
+<body>
 
-      img {
-        max-width: 100%;
-        vertical-align: middle;
-        font-style: italic; }
+  <div id="sparks-app">
+    <div id="unresolved">sparks<span>.network<span></div>
+  </div>
 
-      #app {
-        color: #4A4A4A;
-        background: #ECE8ED;
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-        line-height: 1.42857;
-        letter-spacing: normal;
-        text-size-adjust: 100%; }
-
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 768px) and (device-height: 1024px) and (orientation: portrait) {
-        #app {
-          min-height: 1024px; } }
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 768px) and (device-height: 1024px) and (orientation: landscape) {
-        #app {
-          min-height: 768px; } }
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 320px) and (device-height: 480px) and (orientation: portrait) {
-        #app {
-          min-height: 480px; } }
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 320px) and (device-height: 480px) and (orientation: landscape) {
-        #app {
-          min-height: 320px; } }
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 320px) and (device-height: 568px) and (orientation: portrait) {
-        #app {
-          min-height: 568px; } }
-      @media only screen and (-webkit-min-device-pixel-ratio: 1) and (device-width: 320px) and (device-height: 568px) and (orientation: landscape) {
-        #app {
-          min-height: 320px; } }
-
-      #splash-wrapper {
-        color: #ECE8ED;
-        background: #4A1F50;
-        display: flex;
-        min-height: 100vh;
-        flex-direction: column;
-      }
-
-      #splash {
-        margin: 30vh auto 0;
-      }
-
-      .c-logo {
-        color: #FFF;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 24px; /* Use px to avoid scaling */
-        font-weight: 700; }
-
-        .c-logo__tld {
-          color: #A48FA7; }
-
-      .c-progress {
-        position: relative;
-        height: 2px;
-        width: 152px;
-        margin: -4px 0 0 20px;
-        background-color: #A48FA7;
-        overflow: hidden; }
-
-        .c-progress__indeterminate {
-          background-color: #FFF; }
-
-          .c-progress__indeterminate::before {
-            content: '';
-            position: absolute;
-            background-color: inherit;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            will-change: left, right;
-            animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite; }
-
-          .c-progress__indeterminate::after {
-            content: '';
-            position: absolute;
-            background-color: inherit;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            will-change: left, right;
-            animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-            animation-delay: 1.15s; }
-
-      @keyframes indeterminate {
-        0% {
-          left: -35%;
-          right: 100%; }
-        50% {
-          left: 100%;
-          right: -80%; }
-        75% {
-          left: 100%;
-          right: -90%; }
-        100% {
-          left: 100%;
-          right: -90%; } }
-      @keyframes indeterminate-short {
-        0% {
-          left: -200%;
-          right: 100%; }
-        30% {
-          left: 107%;
-          right: -8%; }
-        100% {
-          left: 107%;
-          right: -8%; } }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <div id="splash-wrapper">
-        <div id="splash">
-          <div class="c-logo">sparks<span class="c-logo__tld">.network</span></div>
-          <div class="c-progress">
-            <div class="c-progress__indeterminate"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="/bundle.js"></script>
-    <!--
+  <script>window.performance && performance.mark && performance.mark('index.html')</script>
+  <script src="/bundle.js"></script>
+  <!--
     <script>
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -188,5 +56,6 @@
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1660062114278795&ev=PageView&noscript=1"/></noscript>
     -->
-  </body>
+
+</body>
 </html>
