@@ -114,6 +114,7 @@
     "most": "^1.0.4",
     "most-last": "^1.0.0",
     "most-proxy": "^3.1.1",
+    "most-subject": "^5.2.0",
     "node-polyglot": "^2.0.0",
     "ramda": "^0.22.1",
     "sparks-styleguide": "git+https://github.com/SparksNetwork/styleguide.git",

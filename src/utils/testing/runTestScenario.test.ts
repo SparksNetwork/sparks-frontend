@@ -3,7 +3,7 @@ import * as assert from 'assert'
 import {runTestScenario} from './runTestScenario'
 import {makeMockDOMSource} from './mockDOM'
 import * as $ from 'most'
-import {holdSubject} from 'most-subject'
+import {hold, sync, async} from 'most-subject'
 
 function plan(n) {
   return function _done(done) {
@@ -152,7 +152,7 @@ describe("When inputs are simulating an object", () => {
         DOM: makeMockDOMSource
       },
       sourceFactory: {
-        DOM: () => holdSubject(1)
+        DOM: () => hold(1, sync())
       },
       errorHandler: function (err) {
         done(err)
@@ -253,7 +253,7 @@ describe("When inputs are simulating an object, AND there is a factory" +
           DOM: makeMockDOMSource
         },
         sourceFactory: {
-          DOM: () => holdSubject(1)
+          DOM: () => hold(1, sync())
         },
         errorHandler: function (err) {
           done(err)

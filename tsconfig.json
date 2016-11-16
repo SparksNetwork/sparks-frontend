@@ -15,6 +15,8 @@
     // Modif for DEV environment :
     // "noUnusedParameters": true,
     // "noUnusedLocals": true,
+    // Added to avoid Cannot find type definition file for 'node'. errors
+    //    "types" : [ "node" ],
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "preserveConstEnums": true,
@@ -29,8 +31,8 @@
     "indentSize": 2,
     "tabSize": 2
   },
-   "files": [
-     "typings/index.d.ts",
-     "src/app.ts"
-   ]
+  "files": [
+    "typings/index.d.ts",
+    "src/app.ts"
+  ]
 }

@@ -16,7 +16,7 @@ import {
   div, span, section, form, fieldset, label, a, p, input, h1, h4, button, VNode
 } from '@motorcycle/dom';
 import {Stream, combine, merge as mergeM, empty, never, just} from 'most';
-import {holdSubject} from 'most-subject'
+import {hold, sync, async} from 'most-subject'
 import {always} from 'ramda';
 import {
   isFunction, hasExpectedSinks,
@@ -1858,7 +1858,7 @@ describe('The ResetPassword component', () => {
             DOM: makeMockDOMSource
           },
           sourceFactory: {
-            DOM: () => holdSubject(1)
+            DOM: () => hold(1, sync())
           },
           errorHandler: function (err) {
             done(err)
@@ -1953,7 +1953,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2048,7 +2048,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2143,7 +2143,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2238,7 +2238,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2333,7 +2333,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2424,7 +2424,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2514,7 +2514,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2604,7 +2604,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2694,7 +2694,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2784,7 +2784,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2876,7 +2876,7 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => holdSubject(1)
+              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -3238,7 +3238,7 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => holdSubject(1)
+                DOM: () => hold(1, sync())
               },
             })
 
@@ -3346,7 +3346,7 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => holdSubject(1)
+                DOM: () => hold(1, sync())
               },
             })
 
@@ -3469,7 +3469,7 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => holdSubject(1)
+                DOM: () => hold(1, sync())
               },
             })
 
@@ -3591,7 +3591,7 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => holdSubject(1)
+                DOM: () => hold(1, sync())
               },
             })
 
