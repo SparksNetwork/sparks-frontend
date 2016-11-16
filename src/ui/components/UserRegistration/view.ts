@@ -11,7 +11,6 @@ export type ViewModel = {
 
 export type Views = {
   emailAddressInput: VNode;
-  emailAddressPopOver: VNode;
   passwordInput: VNode;
   passwordStrength: VNode;
   signUpButton: VNode;
@@ -26,7 +25,6 @@ export function view(viewModel: ViewModel): VNode {
 
   const {
     emailAddressInput,
-    emailAddressPopOver,
     passwordInput,
     passwordStrength,
     signUpButton
@@ -37,10 +35,7 @@ export function view(viewModel: ViewModel): VNode {
     div(
       asSelector(styles.uniqueRoot),
       [
-        p([
-          emailAddressInput,
-          emailAddressPopOver
-        ]),
+        p([ emailAddressInput ]),
         p([ passwordInput ]),
         p(
           asSelector(

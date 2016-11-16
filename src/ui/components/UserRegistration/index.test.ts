@@ -52,20 +52,35 @@ describe(`UserRegistration component`, () => {
       done();
     });
 
-    it(`has an email address PopOver component`, (done) => {
-      const sinks: UserRegistrationSinks =
-        UserRegistration(defaultSources);
+    // it(`has an email address info button`, (done) => {
+    //   const sinks: UserRegistrationSinks =
+    //     UserRegistration(defaultSources);
 
-      sinks.DOM.observe(view => {
-        const matches: Array<VNode> =
-          domSelect(`.sn-pop-over#UserRegistrationEmailAddressInfo`, view);
+    //   sinks.DOM.observe(view => {
+    //     const matches: Array<VNode> =
+    //       domSelect(`button#UserRegistrationEmailAddressInfoButton`, view);
 
-        assert.strictEqual(matches.length, 1);
-      })
-        .catch(done);
+    //     assert.strictEqual(matches.length, 1);
+    //   })
+    //     .catch(done);
 
-      done();
-    });
+    //   done();
+    // });
+
+    // it(`has an email address PopOver component`, (done) => {
+    //   const sinks: UserRegistrationSinks =
+    //     UserRegistration(defaultSources);
+
+    //   sinks.DOM.observe(view => {
+    //     const matches: Array<VNode> =
+    //       domSelect(`.sn-pop-over#UserRegistrationEmailAddressInfoPopOver`, view);
+
+    //     assert.strictEqual(matches.length, 1);
+    //   })
+    //     .catch(done);
+
+    //   done();
+    // });
 
     it(`has a password Input component`, (done) => {
       const sinks: UserRegistrationSinks = UserRegistration(defaultSources);

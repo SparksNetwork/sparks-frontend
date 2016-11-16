@@ -11,8 +11,7 @@ import {
   ButtonSources, ButtonSinks, Button, ButtonProps
 } from '../../widgets';
 import {
-  PasswordStrengthSinks, PasswordStrength, PasswordStrengthProps,
-  PopOverSinks, PopOver, PopOverProps
+  PasswordStrengthSinks, PasswordStrength, PasswordStrengthProps
 } from '../';
 import { message$ } from './message$';
 import { update } from './update';
@@ -33,9 +32,6 @@ export function UserRegistration(
   const emailAddressInput: InputSinks =
     EmailAddressInput(sourcesWithDefaults);
 
-  const emailAddressPopOver: PopOverSinks =
-    EmailAddressPopOver(sourcesWithDefaults);
-
   const passwordInput: InputSinks =
     PasswordInput(sourcesWithDefaults);
 
@@ -48,7 +44,6 @@ export function UserRegistration(
   const views$: Stream<Views> =
     combineObj<Views>({
       emailAddressInput$: emailAddressInput.DOM,
-      emailAddressPopOver$: emailAddressPopOver.DOM,
       passwordInput$: passwordInput.DOM,
       passwordStrength$: passwordStrength.DOM,
       signUpButton$: signUpButton.DOM
@@ -100,22 +95,6 @@ function EmailAddressInput(sources: UserRegistrationDefaultSources): InputSinks 
       });
 
   return isolate(Input)({ DOM, props$ });
-}
-
-function EmailAddressPopOver(
-  sources: UserRegistrationDefaultSources): PopOverSinks {
-  const { DOM } =
-    sources;
-
-  const props$: Stream<PopOverProps> =
-    sources.props$
-      .map(() => {
-        return {
-          id: `UserRegistrationEmailAddressInfo`
-        };
-      });
-
-  return isolate(PopOver)({ DOM, props$ });
 }
 
 function PasswordInput(sources: UserRegistrationDefaultSources): InputSinks {
