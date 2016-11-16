@@ -28,7 +28,7 @@ firebase.initializeApp(Sparks.firebase);
 const firebaseRef = firebase.database().ref();
 
 const drivers = {
-  DOM: makeDOMDriver('#app', { transposition: false, modules }),
+  dom: makeDOMDriver('#sparks-app', { transposition: false, modules }),
   router: makeRouterDriver(createHistory() as any, switchPath),
   authentication$: makeFirebaseAuthenticationDriver(firebase),
   firebase: makeFirebaseDriver(firebaseRef),

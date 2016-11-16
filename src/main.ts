@@ -6,29 +6,25 @@ import { RouterSource } from 'cyclic-router/lib/RouterSource';
 import { Sources, Sinks } from './components/types';
 import { merge } from 'ramda';
 
-import Landing from './ui/screens/Landing';
 import {
-  Login,
-  SignUpScreen
-} from './ui/screens';
+  HomeRoute
+} from './ui/routes';
 
 import ComponentRouter from './components/ComponentRouter';
 
 const routes = {
-  '/': Landing,
-  '/login': Login,
-  '/signup': SignUpScreen
+  '/': HomeRoute,
 };
 
 export interface MainSinks extends Sinks {
-  DOM: Stream<VNode>;
+  dom: Stream<VNode>;
   router: Stream<string>;
   authentication$: Stream<AuthenticationType>;
   queue$: QueueSink;
 }
 
 export interface MainSources extends Sources {
-  DOM: DOMSource;
+  dom: DOMSource;
   router: RouterSource;
   authentication$: Stream<Authentication>;
   firebase: FirebaseSource;
@@ -41,7 +37,7 @@ export function main(sources: MainSources): MainSinks {
   }));
 
   return {
-    DOM: page.DOM,
+    dom: page.dom,
     router: page.route$,
     authentication$: page.pluck('authentication$'),
     queue$: page.pluck('queue$'),

@@ -15,13 +15,13 @@ const equalPaths = eqProps('path');
 const loading = div('.loading', {}, 'Loading....');
 
 export type  ComponentRouterSources = {
-  DOM: DOMSource;
+  dom: DOMSource;
   router: RouterSource;
   routes$: Stream<RouteDefinitions>;
 }
 
 export type ComponentRouterSinks = {
-  DOM: Stream<VNode>;
+  dom: Stream<VNode>;
   route$: Stream<Pathname>;
   pluck: (sink: string) => any;
 }
@@ -32,9 +32,9 @@ function callComponent(sources: ComponentRouterSources) {
       router: sources.router.path(path)
     }));
 
-    const DOM = component.DOM.startWith(loading);
+    const dom = component.dom.startWith(loading);
 
-    return merge(component, { DOM });
+    return merge(component, { dom });
   };
 }
 
@@ -47,7 +47,7 @@ function ComponentRouter(sources: ComponentRouterSources): ComponentRouterSinks 
     .thru(hold);
 
   return {
-    DOM: component$.map(prop('DOM')).switch().multicast(),
+    dom: component$.map(prop('dom')).switch().multicast(),
     route$: component$.map(propOrNever('route$')).switch().multicast(),
     pluck: (key: string) => component$.map(propOrNever(key)).switch().multicast()
   };
