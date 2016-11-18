@@ -6,12 +6,10 @@ addons:
   sauce_connect: true
 
 before_script:
-  - npm run serve &
+  - npm run build
+  - npm run serve-static &
   - sleep 5
   - curl --retry 10 --retry-delay 2 -v http://localhost:8080
-
-script:
-  - npm run test-ci
 
 
 
