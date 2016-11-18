@@ -3,11 +3,11 @@ import { run, DriverFn } from '@motorcycle/core';
 import { makeDOMDriver, DOMSource, VNode, div, h2, button } from '@motorcycle/dom';
 
 export interface MainSources {
-  DOM: DOMSource;
+  dom: DOMSource;
 }
 
 export interface MainSinks {
-  DOM: Stream<VNode>;
+  dom: Stream<VNode>;
 }
 
 export type CounterMessage = number;
@@ -18,10 +18,10 @@ const sum = (x: number, y: number) => x + y;
 
 function main(sources: MainSources): MainSinks {
   const increment$: Stream<number> =
-    constant(+1, sources.DOM.select('#increment').events('click'));
+    constant(+1, sources.dom.select('#increment').events('click'));
 
   const decrement$: Stream<number> =
-    constant(-1, sources.DOM.select('#decrement').events('click'));
+    constant(-1, sources.dom.select('#decrement').events('click'));
 
   const message$: Stream<CounterMessage> =
     merge(increment$, decrement$);
@@ -33,7 +33,7 @@ function main(sources: MainSources): MainSinks {
     map(view, model$);
 
   return {
-    DOM: view$,
+    dom: view$,
   };
 }
 
@@ -46,5 +46,5 @@ function view(count: number): VNode {
 }
 
 run<MainSources, MainSinks>(main, {
-  DOM: makeDOMDriver('#app') as DriverFn,
+  dom: makeDOMDriver('#app') as DriverFn,
 });
