@@ -1,12 +1,11 @@
-/// <reference path="../../../typings/index.d.ts" />
 import * as assert from 'assert';
-import { CREATE_USER, AuthenticationType,
-  ANONYMOUSLY, EMAIL_AND_PASSWORD, POPUP, REDIRECT, SIGN_OUT, GET_REDIRECT_RESULT
+import {
+  CREATE_USER, AuthenticationType,
+  ANONYMOUSLY, EMAIL_AND_PASSWORD, POPUP, REDIRECT, SIGN_OUT, GET_REDIRECT_RESULT,
 } from './types';
 import {
-  makeFirebaseAuthenticationDriver
+  makeFirebaseAuthenticationDriver,
 } from './makeFirebaseAuthenticationDriver';
-import { AuthenticationError } from './AuthenticationError';
 import firebase = require('firebase');
 import { just, periodic } from 'most';
 
@@ -24,37 +23,37 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const anonymouslyAuthenticationInput = {
-  method: ANONYMOUSLY
+  method: ANONYMOUSLY,
 };
 
 const emailAndPasswordAuthenticationInput = {
   method: EMAIL_AND_PASSWORD,
   email: 'sparkstestuser@sparks.network',
-  password: 'testpassword'
+  password: 'testpassword',
 };
 
 const popupAuthenticationInput = {
   method: POPUP,
-  provider: new firebase.auth.GoogleAuthProvider() as firebase.auth.AuthProvider
+  provider: new firebase.auth.GoogleAuthProvider() as firebase.auth.AuthProvider,
 };
 
 const redirectAuthenticationInput = {
   method: REDIRECT,
-  provider: new firebase.auth.GoogleAuthProvider() as firebase.auth.AuthProvider
+  provider: new firebase.auth.GoogleAuthProvider() as firebase.auth.AuthProvider,
 };
 
 const getRedirectResultAuthenticationInput = {
-  method: GET_REDIRECT_RESULT
+  method: GET_REDIRECT_RESULT,
 };
 
 const signOutAuthenticationInput = {
-  method: SIGN_OUT
+  method: SIGN_OUT,
 };
 
 const createUserAuthenticationInput = {
   method: CREATE_USER,
   email: 'newuser@sparks.network',
-  password: '1234'
+  password: '1234',
 };
 
 describe('firebase authentication', () => {
@@ -97,7 +96,8 @@ describe('firebase authentication', () => {
 
     describe('source', () => {
       it('should start with an intitial AuthenticationOutput', (done) => {
-        const source = firebaseAuthenticationDriver(just(emailAndPasswordAuthenticationInput)).take(1);
+        const source =
+          firebaseAuthenticationDriver(just(emailAndPasswordAuthenticationInput)).take(1);
 
         source.observe((authenticationOutput) => {
           assert(authenticationOutput.error === null);
@@ -126,7 +126,7 @@ describe('firebase authentication', () => {
           });
 
           it('should have property credential equal to `null`', (done) => {
-             firebaseAuthenticationDriver(just(anonymouslyAuthenticationInput)).take(1)
+            firebaseAuthenticationDriver(just(anonymouslyAuthenticationInput)).take(1)
               .observe(authenticationOutput => {
                 assert(authenticationOutput.userCredential.credential === null);
                 done();
@@ -199,123 +199,122 @@ describe('firebase authentication', () => {
 
         it('should throw Authentication Errors',
           assertFirebaseAuthenticationError(redirectAuthenticationInput));
-        });
-      });
-
-      describe('Anonymously', () => {
-        it('should return a non-null firebase UserCredential', (done) => {
-          firebaseAuthenticationDriver(just(anonymouslyAuthenticationInput)).skip(1)
-            .observe(authenticationOutput => {
-              const user: firebase.User | null = authenticationOutput.userCredential.user;
-
-              if (user === null) {
-                return done(new Error('User can not be null'));
-              }
-
-              assert(user.isAnonymous);
-              done();
-            });
-        });
-
-        it('should throw Authentication Errors',
-          assertFirebaseAuthenticationError(anonymouslyAuthenticationInput));
       });
     });
 
-    describe('Sign Out', () => {
-      it('should return a null firebase UserCredential', (done) => {
-        const input = [
-          anonymouslyAuthenticationInput,
-          signOutAuthenticationInput
+    describe('Anonymously', () => {
+      it('should return a non-null firebase UserCredential', (done) => {
+        firebaseAuthenticationDriver(just(anonymouslyAuthenticationInput)).skip(1)
+          .observe(authenticationOutput => {
+            const user: firebase.User | null = authenticationOutput.userCredential.user;
+
+            if (user === null) {
+              return done(new Error('User can not be null'));
+            }
+
+            assert(user.isAnonymous);
+            done();
+          });
+      });
+
+      it('should throw Authentication Errors',
+        assertFirebaseAuthenticationError(anonymouslyAuthenticationInput));
+    });
+  });
+
+  describe('Sign Out', () => {
+    it('should return a null firebase UserCredential', (done) => {
+      const input = [
+        anonymouslyAuthenticationInput,
+        signOutAuthenticationInput,
+      ];
+
+      const authenticationInput$ = periodic(100, 1)
+        .skip(1)
+        .scan(x => x + 1, 0)
+        .map(x => input[x])
+        .take(2);
+
+      firebaseAuthenticationDriver(authenticationInput$).skip(2)
+        .observe(authenticationOutput => {
+          const user: firebase.User | null = authenticationOutput.userCredential.user;
+
+          assert(user === null);
+          done();
+        });
+    });
+
+    it('should throw Authentication Errors',
+      assertFirebaseAuthenticationError(signOutAuthenticationInput));
+  });
+
+  describe('Create Email And Password Account', () => {
+    it('should return a non-null firebase UserCredential', (done) => {
+      firebaseAuthenticationDriver(just(createUserAuthenticationInput)).skip(1)
+        .observe(authenticationOutput => {
+          const user: firebase.User | null = authenticationOutput.userCredential.user;
+
+          assert(user !== null);
+          done();
+        });
+    });
+
+    it('should throw Authentication Errors',
+      assertFirebaseAuthenticationError(createUserAuthenticationInput));
+  });
+
+  describe('Get Redirect Result', () => {
+    describe('No redirect operation called', () => {
+      it('should return a null UserCredential', (done) => {
+        firebaseAuthenticationDriver(just(getRedirectResultAuthenticationInput)).skip(1)
+          .observe(authenticationOutput => {
+            const user: firebase.User | null = authenticationOutput.userCredential.user;
+            assert(user === null);
+            done();
+          });
+      });
+    });
+
+    describe('Signed In', () => {
+      it('should return non-null UserCredential', (done) => {
+        const authenticationInputs = [
+          redirectAuthenticationInput,
+          getRedirectResultAuthenticationInput,
         ];
 
         const authenticationInput$ = periodic(100, 1)
           .skip(1)
           .scan(x => x + 1, 0)
-          .map(x => input[x])
+          .map(x => authenticationInputs[x])
           .take(2);
 
         firebaseAuthenticationDriver(authenticationInput$).skip(2)
-          .observe(authenticationOutput => {
+          .observe((authenticationOutput) => {
             const user: firebase.User | null = authenticationOutput.userCredential.user;
 
-            assert(user === null);
+            if (user === null) {
+              return done(new Error('User must not be null'));
+            }
+
+            assert(user.email === emailAndPasswordAuthenticationInput.email);
             done();
           });
       });
 
-      it('should throw Authentication Errors',
-        assertFirebaseAuthenticationError(signOutAuthenticationInput));
+      it('should handle errors',
+        assertFirebaseAuthenticationError(getRedirectResultAuthenticationInput));
     });
-
-    describe('Create Email And Password Account', () => {
-      it('should return a non-null firebase UserCredential', (done) => {
-        firebaseAuthenticationDriver(just(createUserAuthenticationInput)).skip(1)
-          .observe(authenticationOutput => {
-            const user: firebase.User | null = authenticationOutput.userCredential.user;
-
-            assert(user !== null);
-            done();
-          });
-      });
-
-      it('should throw Authentication Errors',
-        assertFirebaseAuthenticationError(createUserAuthenticationInput));
-    });
-
-    describe('Get Redirect Result', () => {
-      describe('No redirect operation called', () => {
-        it('should return a null UserCredential', (done) => {
-          firebaseAuthenticationDriver(just(getRedirectResultAuthenticationInput)).skip(1)
-            .observe(authenticationOutput => {
-              const user: firebase.User | null = authenticationOutput.userCredential.user;
-              assert(user === null);
-              done();
-            });
-        });
-      });
-
-      describe('Signed In', () => {
-        it('should return non-null UserCredential', (done) => {
-          const authenticationInputs = [
-            redirectAuthenticationInput,
-            getRedirectResultAuthenticationInput
-          ];
-
-          const authenticationInput$ = periodic(100, 1)
-            .skip(1)
-            .scan(x => x + 1, 0)
-            .map(x => authenticationInputs[x])
-            .take(2);
-
-          firebaseAuthenticationDriver(authenticationInput$).skip(2)
-            .observe((authenticationOutput) => {
-              const user: firebase.User | null = authenticationOutput.userCredential.user;
-
-              if (user === null) {
-                return done(new Error('User must not be null'));
-              }
-
-              assert(user.email === emailAndPasswordAuthenticationInput.email);
-              done();
-            });
-        });
-
-        it('should handle errors',
-          assertFirebaseAuthenticationError(getRedirectResultAuthenticationInput));
-      });
-    });
+  });
 });
 
-function assertFirebaseAuthenticationError(authenticationInput) {
+function assertFirebaseAuthenticationError(authenticationInput: AuthenticationType) {
   const code = 'SomeError';
   const driver = makeAuthenticationDriverWithError(code);
 
-  return function (done) {
+  return function (done: any) {
     driver(just(authenticationInput)).skip(1)
       .observe(({ error }) => {
-        assert(error instanceof AuthenticationError);
-        assert(error !== null && error.code === code);
+        assert.strictEqual((error as any).code, code);
         done();
       }).catch(done);
   };
@@ -324,6 +323,6 @@ function assertFirebaseAuthenticationError(authenticationInput) {
 function makeAuthenticationDriverWithError(error: string) {
   return makeFirebaseAuthenticationDriver(new MockFirebase(
     'test@sparks.network',
-    error
+    error,
   ));
 }

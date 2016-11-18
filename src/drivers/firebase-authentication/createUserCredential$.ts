@@ -1,11 +1,11 @@
 import { Stream, just } from 'most';
-import create = require('@most/create');
 import firebase = require('firebase');
+import { create } from '@most/create';
 import {
   AuthenticationType, CreateUserAuthentication,
   EmailAndPasswordAuthentication, PopupAuthentication,
   REDIRECT, EMAIL_AND_PASSWORD, CREATE_USER, POPUP, ANONYMOUSLY, SIGN_OUT,
-  GET_REDIRECT_RESULT
+  GET_REDIRECT_RESULT,
 } from './types';
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 import { defaultUserCredential } from './defaultUserCredential';
@@ -81,7 +81,7 @@ function redirectSignIn(authenticationInput: AuthenticationType, firebaseInstanc
 
 function getRedirectResult(firebaseInstance: any) {
   return fromFirebasePromise<firebase.auth.UserCredential>(
-    firebaseInstance.auth().getRedirectResult()
+    firebaseInstance.auth().getRedirectResult(),
   );
 }
 

@@ -1,40 +1,50 @@
-import 'es6-shim';
+import { Stream, merge, constant, scan, map } from 'most';
+import { run, DriverFn } from '@motorcycle/core';
+import { makeDOMDriver, DOMSource, VNode, div, h2, button } from '@motorcycle/dom';
 
-import Cycle from '@cycle/most-run';
-import { makeDOMDriver, AttrsModule, ClassModule, StyleModule, PropsModule } from '@motorcycle/dom';
-import { makeRouterDriver } from 'cyclic-router';
-import { createHistory } from 'history';
-import firebase = require('firebase');
-import { makeFirebaseDriver, makeQueueDriver } from './drivers/cyclic-fire';
-import { makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication';
-import { preventDefault } from './drivers/prevent-default';
-import switchPath from 'switch-path';
-import { just } from 'most';
+export interface MainSources {
+  dom: DOMSource;
+}
 
-import { makePolyglotModule } from './ui/modules/polyglot';
-import { main } from './main';
+export interface MainSinks {
+  dom: Stream<VNode>;
+}
 
-const modules = [
-  makePolyglotModule(require('./translations')),
-  PropsModule,
-  StyleModule,
-  ClassModule,
-  AttrsModule
-];
+export type CounterMessage = number;
 
-declare const Sparks;
-firebase.initializeApp(Sparks.firebase);
+export type CounterModel = number;
 
-const firebaseRef = firebase.database().ref();
+const sum = (x: number, y: number) => x + y;
 
-const drivers = {
-  DOM: makeDOMDriver('#app', { transposition: false, modules }),
-  router: makeRouterDriver(createHistory() as any, switchPath),
-  authentication$: makeFirebaseAuthenticationDriver(firebase),
-  firebase: makeFirebaseDriver(firebaseRef),
-  queue$: makeQueueDriver(firebaseRef.child('!queue')),
-  preventDefault,
-  random: () => just(Math.random())
-};
+function main(sources: MainSources): MainSinks {
+  const increment$: Stream<number> =
+    constant(+1, sources.dom.select('#increment').events('click'));
 
-Cycle.run(main, drivers);
+  const decrement$: Stream<number> =
+    constant(-1, sources.dom.select('#decrement').events('click'));
+
+  const message$: Stream<CounterMessage> =
+    merge(increment$, decrement$);
+
+  const model$: Stream<CounterModel> =
+    scan(sum, 0, message$);
+
+  const view$: Stream<VNode> =
+    map(view, model$);
+
+  return {
+    dom: view$,
+  };
+}
+
+function view(count: number): VNode {
+  return div(`#counter`, {}, [
+    h2(`#count`, {}, `Current count: ${count}`),
+    button(`#increment`, {}, [`Increment`]),
+    button(`#decrement`, {}, [`Decrement`]),
+  ]);
+}
+
+run<MainSources, MainSinks>(main, {
+  dom: makeDOMDriver('#app') as DriverFn,
+});
