@@ -21,14 +21,15 @@
       "ramda",
       "webpack",
       "webpack-dev-server"
-    ]
+    ],
+    "outDir": "./.tmp"
   },
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
   },
-  "files": [
-    "custom-typings/nightwatch.d.ts",
-    "src/app.ts"
+  "include": [
+    "../custom-typings/nightwatch.d.ts",
+    "./e2e/*.ts"
   ]
 }

@@ -30,13 +30,13 @@ function convertUserCredentialToAuthenticationOutput(
     userCredential: firebase.auth.UserCredential): Authentication  {
   return {
     error: null,
-    userCredential
+    userCredential,
   };
 }
 
 function createDefaultAuthenticationOutput$(error: firebase.auth.Error) {
   return just<Authentication>({
     error: new AuthenticationError(error.code, error.message),
-    userCredential: defaultUserCredential
+    userCredential: defaultUserCredential,
   });
 }

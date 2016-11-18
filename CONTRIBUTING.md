@@ -10,6 +10,3 @@ First of all, thank you so much, we need your help.
 4. Use `npm run commit` instead of `git commit` PLEASE!
 5. Submit a pull request for review
 
-## Releasing a new version
-
-Run `npm run release`! Thats all thanks to Redhot :)
