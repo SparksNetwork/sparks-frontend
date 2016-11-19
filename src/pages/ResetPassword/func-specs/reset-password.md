@@ -29,3 +29,4 @@ navigates to the `forgotPassword` screen
 - visual design
 - design : when navigating to another page (in case of unrecoverable error), 
 ok to do message + delay + navigation?
+- TECHNICAL : firebase repository has to be configured (email template and email link format)

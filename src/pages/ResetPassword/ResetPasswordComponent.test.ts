@@ -1263,6 +1263,99 @@ const viewValidPasswordProcessingReset = section(classes.sel('photo-background')
   ])
 ]);
 
+describe.skip('When the password has been successfully reset', () => {
+  it('should display a view with 1 DISABLED "enter new password" fields, 1' +
+    ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
+    ' feedback message area which informs of the password reset. It should' +
+    ' immediately try to log in the user', (done) => {
+    const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
+
+    const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
+    const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
+    const formSelector = 'form';
+
+    const testInputs = [
+      // NOTE : auth state must emit first to kick-off the intent sinks
+      // (switch combinator is used on auth state stream)
+      // Theoretically password inputs could go at any point as they are
+      // modelled with replaySubjects (i.e. as behaviours) but for some
+      // reasons, putting `authentication$` last fails the test...
+      // Could be yet again some `most` subject/stream undocumented behaviour
+      {
+        authentication$: {
+          diagram: 'a-b-',
+          values: {
+            a: authenticationStateVerifyCodeOK,
+            b: authenticationStatePasswordResetOK
+          }
+        }
+      },
+      {
+        [`DOM!${formSelector}@submit`]: {
+          diagram: '--',
+          //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+        }
+      },
+      {
+        [`DOM!${enterPasswordSelector}@input`]: {
+          diagram: '-a-',
+          values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+        }
+      },
+      {
+        [`DOM!${confirmPasswordSelector}@input`]: {
+          diagram: '-a-',
+          values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+        }
+      },
+    ]
+
+    const expected = {
+      DOM: {
+        outputs: [viewNoAuthError, viewVerifyCodeOK, viewLoggingIn],
+        successMessage: 'DOM sink produces the expected screen',
+        analyzeTestResults: analyzeTestResults,
+        transformFn: undefined,
+      },
+      authentication$: {
+        outputs: [verifyPasswordResetCodeCommand, signInCommand],
+        successMessage: 'authentication$ receives a' +
+        ' SIGN_IN_WITH_EMAIL_AND_PASSWORD command',
+        analyzeTestResults: analyzeTestResults,
+        transformFn: undefined,
+      },
+      router: {
+        outputs: [],
+        successMessage: 'sink router produces no values as expected',
+        analyzeTestResults: analyzeTestResults,
+        transformFn: undefined,
+      },
+    }
+
+    function ResetPasswordComponentCurried(settings) {
+      return function (sources) {
+        return ResetPasswordComponent(sources, settings);
+      }
+    }
+
+    runTestScenario(testInputs, expected,
+      ResetPasswordComponentCurried(dummyAuthParams), {
+        tickDuration: 5,
+        waitForFinishDelay: 20,
+        mocks: {
+          DOM: makeMockDOMSource
+        },
+        sourceFactory: {
+          DOM: () => hold(1, sync())
+        },
+        errorHandler: function (err) {
+          done(err)
+        }
+      })
+
+  });
+});
+
 describe('The ResetPassword component', () => {
   it('should be a function', () => {
     assert.ok(isFunction(ResetPasswordComponent));
@@ -1775,6 +1868,7 @@ describe('The ResetPassword component', () => {
     });
   });
 
+  // TODO : replace
   describe('When the password has been successfully reset', () => {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -1795,7 +1889,7 @@ describe('The ResetPassword component', () => {
         // Could be yet again some `most` subject/stream undocumented behaviour
         {
           authentication$: {
-            diagram: 'ab-',
+            diagram: 'a-b-',
             values: {
               a: authenticationStateVerifyCodeOK,
               b: authenticationStatePasswordResetOK
@@ -1810,13 +1904,13 @@ describe('The ResetPassword component', () => {
         },
         {
           [`DOM!${enterPasswordSelector}@input`]: {
-            diagram: '-a',
+            diagram: '-a-',
             values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
           }
         },
         {
           [`DOM!${confirmPasswordSelector}@input`]: {
-            diagram: '-a',
+            diagram: '-a-',
             values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
           }
         },

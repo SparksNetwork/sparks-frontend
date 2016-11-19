@@ -109,7 +109,7 @@ function computeSinks(makeOwnSinks, childrenComponents, sources, settings) {
 
   const shouldSwitch$ = switchSource
     .map(x => ({isEqual: eqFn(caseWhen, x), value: x}))
-    // multicast as it is subscribed twice
+    // multicast as it is subscribedtwice
     .multicast()
 
   const cachedSinks$ = shouldSwitch$
@@ -302,7 +302,7 @@ const switchCase = {
       // Dont know if there is any side-effects though of having two
       // subscriptions for the source...
       // Also doing `drain` here is a side-effect...
-      mergedSinks.drain();
+      // mergedSinks.drain();
 
       return mergedSinks
     }

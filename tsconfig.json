@@ -16,7 +16,7 @@
     // "noUnusedParameters": true,
     // "noUnusedLocals": true,
     // Added to avoid Cannot find type definition file for 'node'. errors
-    //    "types" : [ "node" ],
+     //"types" : [ "node" ],
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "preserveConstEnums": true,

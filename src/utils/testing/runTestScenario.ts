@@ -10,7 +10,11 @@ import {
 
 import * as $ from 'most'
 import {last} from 'most-last'
-import {subject} from 'most-subject'
+import { hold, sync } from 'most-subject'
+
+function standardSubjectFactory () {
+  return sync()
+}
 
 // stub the console for instance if we are running in node environment
 console.groupEnd = console.groupEnd || console.log
@@ -183,7 +187,7 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // Ex : 'authentication'
       // Create the subjects which will receive the input data
       /** @type {Object.<string, Stream>} */
-      accSources.sources[inputKey] = accSources.streams[inputKey] = subject()
+      accSources.sources[inputKey] = accSources.streams[inputKey] = standardSubjectFactory()
       return accSources
     }
     else if (isMockSource(inputKey)) {
@@ -207,7 +211,7 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // for instance: DOM!sel1@click, DOM!sel2@click
       // So the mock function should receive the current mocked object
       // and return another one
-      let stream = sourceFactory[inputKey] || subject();
+      let stream = sourceFactory[inputKey] || standardSubjectFactory();
       accSources.streams[inputKey] = stream
       accSources.sources[sourceName] = mock(accSources.sources[sourceName], sourceSpecs, stream)
     }
