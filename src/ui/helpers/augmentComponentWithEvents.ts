@@ -23,7 +23,7 @@ export function augmentComponentWithEvents<Sinks>(
 
     for (let idx: number = 0; idx < eventNameCount; ++idx)
       sinks[eventNames[idx] + `$`] =
-        sources.dom.select(`div`).events(eventNames[idx]);
+        sources.dom.events(eventNames[idx]);
 
     return sinks as Sinks & EventSinks;
   };

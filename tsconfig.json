@@ -20,7 +20,10 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "ES5",
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "types": [
+      "node"
+    ]
   },
   "formatCodeOptions": {
     "indentSize": 2,
