@@ -5,12 +5,12 @@ import { DOMSource, VNode } from '@motorcycle/dom';
 export type AppHeaderSources = Sources &
   {
     dom: DOMSource;
+    childViews$: Stream<Array<VNode>>;
   };
 
 export type AppHeaderSinks = Sinks &
   {
     dom: Stream<VNode>;
-    model$: Stream<AppHeaderModel>;
   };
 
 export type AppHeaderModel =
@@ -21,4 +21,5 @@ export type AppHeaderModel =
       transform: string;
     };
     hasShadow: boolean;
+    childViews: Array<VNode>;
   };

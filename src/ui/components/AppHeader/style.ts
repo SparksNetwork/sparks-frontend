@@ -1,28 +1,17 @@
-import { cssRule, extend } from 'typestyle';
-import { layoutFixedTop } from '../../style/flex-layout';
-
-// internal variables
-
-const backgroundColor: string =
-  `rgba(255, 255, 255, 0.95)`;
+import { cssRule } from 'typestyle';
 
 export const host: string = `#sn-app-header`;
 
 cssRule(
   host,
-  extend(
-    layoutFixedTop,
-    {
-      zIndex: 1,
-      backgroundColor,
-      display: `block`,
-      transitionTimingFunction: `linear`,
-      transitionProperty: [
-        `-webkit-transform`,
-        `transform`,
-      ],
-    }
-  )
+  {
+    display: `block`,
+    transitionTimingFunction: `linear`,
+    transitionProperty: [
+      `-webkit-transform`,
+      `transform`,
+    ],
+  }
 );
 
 cssRule(
@@ -38,7 +27,7 @@ cssRule(
     transition: `opacity 0.4s`,
     pointerEvents: `none`,
     opacity: 0,
-    boxShadow: `inset 0px 5px 6px -3px rgba(0, 0, 0, 0.2)`,
+    boxShadow: `inset 0px 5px 6px -3px rgba(0, 0, 0, 0.4)`,
     willChange: `opacity`,
   }
 );

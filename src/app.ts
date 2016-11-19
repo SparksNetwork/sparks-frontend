@@ -27,6 +27,8 @@ firebase.initializeApp(Sparks.firebase);
 
 const firebaseRef = firebase.database().ref();
 
+(document.getElementById(`sparks-app`) as HTMLElement).className = ``;
+
 const drivers = {
   dom: makeDOMDriver('#sparks-app', { transposition: false, modules }),
   router: makeRouterDriver(createHistory() as any, switchPath),

@@ -15,22 +15,23 @@
     }
     /* styling for render while resources are loading */
 
-    #sparks-app {
+    #sparks-app.unresolved {
       min-height: 101vh;
-      line-height: 68px;
+      line-height: 64px;
       text-align: center;
       font-size: 16px;
       font-weight: 600;
+      background-color: #eee;
       color: #202020;
       overflow: visible;
     }
 
-    #unresolved {
+    #sparks-app.unresolved > div {
       background-color: rgba(42, 18, 45, 0.8);
       color: #f6eef4;
     }
 
-    #unresolved > span {
+    #sparks-app.unresolved > div > span {
       color: #cd95c0;
     }
   </style>
@@ -38,8 +39,8 @@
 
 <body>
 
-  <div id="sparks-app">
-    <div id="unresolved">sparks<span>.network<span></div>
+  <div id="sparks-app" class="unresolved">
+    <div>sparks<span>.network<span></div>
   </div>
 
   <script>window.performance && performance.mark && performance.mark('index.html')</script>

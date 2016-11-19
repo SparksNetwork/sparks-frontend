@@ -9,14 +9,14 @@ let _wasScrollingDown: boolean = false;
 let _previousTimestamp: number = 0;
 
 export function update(message: Message): AppHeaderModel {
-  const { height, scrollTop } = message;
+  const { height, scrollTop, childViews } = message;
 
   let top: number = 0;
   let transitionDuration: string = `0ms`;
   let hasShadow: boolean = false;
 
   if (!height)
-    return appHeaderModel({ transitionDuration, top, hasShadow });;
+    return appHeaderModel({ transitionDuration, top, hasShadow, childViews });
 
   const maxAllowedMoveDistance: number = height + 5;
   const previousTop: number = _top;
@@ -90,11 +90,11 @@ export function update(message: Message): AppHeaderModel {
     isOnScreen(height) &&
     hasContentBelow(scrollTop, maxAllowedMoveDistance);
 
-  return appHeaderModel({ transitionDuration, top, hasShadow });;
+  return appHeaderModel({ transitionDuration, top, hasShadow, childViews });;
 }
 
 function appHeaderModel(specs: any): AppHeaderModel {
-  const { transitionDuration, top, hasShadow } = specs;
+  const { transitionDuration, top, hasShadow, childViews } = specs;
 
   const model: AppHeaderModel =
     {
@@ -103,6 +103,7 @@ function appHeaderModel(specs: any): AppHeaderModel {
         transform: `translate3d(0px, ${-top}px, 0px)`,
       },
       hasShadow,
+      childViews,
     };
 
   return model;
