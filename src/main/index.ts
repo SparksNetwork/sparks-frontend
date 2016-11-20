@@ -1,14 +1,13 @@
 import { Stream, map } from 'most'
-import { Router } from '@motorcycle/router'
 import { Location, Pathname } from '@motorcycle/history'
 import { div, h2, a } from '@motorcycle/dom'
-import { MainSources, MainSinks } from '../app'
+import { Routing, MainSources, MainSinks } from '../app'
 
 import { ConnectScreen } from './connect'
 
 export function main(sources: MainSources): MainSinks {
   const sinks$: Stream<MainSinks> =
-    Router({
+    Routing({
       '/': Screen,
       '/connect': ConnectScreen,
     }, sources)
