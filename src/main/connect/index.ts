@@ -19,7 +19,7 @@ function view() {
   return div('#page', [
       div('#dialog', [
         h2('Connect to the Sparks.Network'),
-        p('.note', [
+        div('.highlighted', [
           a({attrs: {href: '#'}}, 'I have a profile, sign in with that'),
         ]),
         p('To apply, we need to be able to reach you.'),

@@ -16,7 +16,6 @@ export interface MainSinks {
 
 import { main } from './main'
 
-
 export function Routing(
     definitions: RouterDefinitions<MainSources,MainSinks>,
     sources: RouterSources<any>,
