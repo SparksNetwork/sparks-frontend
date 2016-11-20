@@ -29,7 +29,7 @@
     "tabSize": 2
   },
   "include": [
-    "../custom-typings/nightwatch.d.ts",
+    "../custom-typings/*.d.ts",
     "./e2e/*.ts"
   ]
 }

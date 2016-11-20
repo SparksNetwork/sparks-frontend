@@ -46,5 +46,5 @@ function view(count: number): VNode {
 }
 
 run<MainSources, MainSinks>(main, {
-  dom: makeDOMDriver('#app') as DriverFn,
+  dom: makeDOMDriver('#sparks-app') as DriverFn,
 });
