@@ -33,6 +33,6 @@ function Screen(sources: MainSources): MainSinks {
 function view(location: Location) {
   return div([
       h2(`Home: ${location.pathname}`),
-      a({attrs: {href: '#'}}, 'Connect'),
+      a({attrs: {href: '/connect'}}, 'Connect'),
     ])
 }
