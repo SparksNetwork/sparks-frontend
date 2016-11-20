@@ -15,7 +15,6 @@
     "no-bitwise": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
-    "no-unreachable": true,
     "no-var-keyword": true,
     "variable-name": [
       true,

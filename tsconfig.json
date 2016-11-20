@@ -27,8 +27,8 @@
     "indentSize": 2,
     "tabSize": 2
   },
-  "files": [
-    "custom-typings/nightwatch.d.ts",
+  "include": [
+    "custom-typings/*.d.ts",
     "src/app.ts"
   ]
 }
