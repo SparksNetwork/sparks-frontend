@@ -79,6 +79,7 @@
     "firebase": "^3.6.1",
     "most": "^1.1.0",
     "ramda": "^0.22.1",
+    "sparks-design-system": "git+https://github.com/SparksNetwork/sparks-design-system.git",
     "typestyle": "^0.7.3"
   }
 }
