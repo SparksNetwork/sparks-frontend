@@ -1,6 +1,8 @@
-import { Stream, merge, constant, scan, map } from 'most';
-import { run, DriverFn } from '@motorcycle/core';
-import { makeDOMDriver, DOMSource, VNode, div, h2, button } from '@motorcycle/dom';
+import { DOMSource, VNode, button, div, h2, makeDOMDriver } from '@motorcycle/dom';
+import { DriverFn, run } from '@motorcycle/core';
+import { Stream, constant, map, merge, scan } from 'most';
+
+require('./style.scss');
 
 export interface MainSources {
   dom: DOMSource;
