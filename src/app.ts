@@ -42,8 +42,8 @@ function main(sources: MainSources): MainSinks {
 function view(count: number): VNode {
   return div(`#counter`, {}, [
     h2(`#count`, {}, `Current count: ${count}`),
-    button(`#increment`, {}, [`Increment`]),
-    button(`#decrement`, {}, [`Decrement`]),
+    button(`#increment.c-btn.c-btn--small`, {}, [`Increment`]),
+    button(`#decrement.c-btn.c-btn--small`, {}, [`Decrement`]),
   ]);
 }
 
