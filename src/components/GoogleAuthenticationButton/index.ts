@@ -4,17 +4,17 @@ import { REDIRECT, GET_REDIRECT_RESULT, AuthenticationType }
   from '../../drivers/firebase-authentication';
 import firebase = require('firebase');
 
-export function FacebookAuthenticationButton(
-  sources: FacebookAuthenticationButtonSources): FacebookAuthenticationButtonSinks
+export function GoogleAuthenticationButton(
+  sources: GoogleAuthenticationButtonSources): GoogleAuthenticationButtonSinks
 {
   const { dom } = sources;
 
   const click$: Stream<Event> =
-    dom.select(facebookButtonId).events('click');
+    dom.select(googleButtonId).events('click');
 
   const authentication$: Stream<AuthenticationType> =
     startWith(redirectResultAuthenticationType,
-      constant(facebookRedirectAuthentication, click$));
+      constant(googleRedirectAuthentication, click$));
 
   const view$: Stream<VNode> = just(view);
 
@@ -27,31 +27,31 @@ export function FacebookAuthenticationButton(
 const redirectResultAuthenticationType: AuthenticationType =
   { method: GET_REDIRECT_RESULT };
 
-const facebookRedirectAuthentication: AuthenticationType =
+const googleRedirectAuthentication: AuthenticationType =
   {
     method: REDIRECT,
-    provider: new firebase.auth.FacebookAuthProvider(),
+    provider: new firebase.auth.GoogleAuthProvider(),
   };
 
-export const facebookButtonId = `#facebook-auth`;
+export const googleButtonId = `#google-auth`;
 
 const classNames: string =
   '.c-btn--large';
 
 const style =
   {
-    backgroundColor: 'royalblue',
-    color: 'lavender',
+    backgroundColor: 'crimson',
+    color: 'snow',
   };
 
 const view: VNode =
-  button(facebookButtonId + classNames, { style }, [ 'Sign in with Facebook' ]);
+  button(googleButtonId + classNames, { style }, [ 'Sign in with Google' ]);
 
-export interface FacebookAuthenticationButtonSources {
+export interface GoogleAuthenticationButtonSources {
   dom: DOMSource;
 }
 
-export interface FacebookAuthenticationButtonSinks {
+export interface GoogleAuthenticationButtonSinks {
   dom: Stream<VNode>;
   authentication$: Stream<AuthenticationType>;
 }
