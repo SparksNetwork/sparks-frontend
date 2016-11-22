@@ -1,6 +1,8 @@
-import { Stream, merge, constant, scan, map } from 'most';
-import { run, DriverFn } from '@motorcycle/core';
-import { makeDOMDriver, DOMSource, VNode, div, h2, button } from '@motorcycle/dom';
+import { DOMSource, VNode, button, div, h2, makeDOMDriver } from '@motorcycle/dom';
+import { DriverFn, run } from '@motorcycle/core';
+import { Stream, constant, map, merge, scan } from 'most';
+
+require('./style.scss');
 
 export interface MainSources {
   dom: DOMSource;
@@ -40,8 +42,8 @@ function main(sources: MainSources): MainSinks {
 function view(count: number): VNode {
   return div(`#counter`, {}, [
     h2(`#count`, {}, `Current count: ${count}`),
-    button(`#increment`, {}, [`Increment`]),
-    button(`#decrement`, {}, [`Decrement`]),
+    button(`#increment.c-btn.c-btn--small`, {}, [`Increment`]),
+    button(`#decrement.c-btn.c-btn--small`, {}, [`Decrement`]),
   ]);
 }
 
