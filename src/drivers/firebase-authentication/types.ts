@@ -1,4 +1,4 @@
-import firebase = require('firebase');
+import * as firebase from 'firebase';
 import { AuthenticationError } from './AuthenticationError';
 
 export const ANONYMOUSLY: 'ANONYMOUSLY' = 'ANONYMOUSLY';

@@ -1,16 +1,10 @@
-import * as path from 'path';
-import * as webpack from 'webpack';
+const path = require("path");
+const webpack = require("webpack");
 const assetsPath = path.resolve('./assets');
-
-const DEV = 'development';
-
-if (!process.env.BUILD_ENV)
-  process.env.BUILD_ENV = DEV;
-
 const stringify = JSON.stringify;
 
 const Sparks = {
-  buildEnv: stringify(process.env.BUILD_ENV),
+  buildEnv: stringify("development"),
   firebase: {
     databaseURL: stringify(process.env.FIREBASE_DATABASE_URL),
     apiKey: stringify(process.env.FIREBASE_API_KEY),
@@ -20,19 +14,6 @@ const Sparks = {
   },
 };
 
-const basePlugins = [
-  new webpack.DefinePlugin({ Sparks }),
-];
-
-const prodPlugins = [
-  new webpack.optimize.UglifyJsPlugin({ compress: true }),
-  new webpack.NoErrorsPlugin(),
-];
-
-const plugins = process.env.BUILD_ENV === DEV
-  ? basePlugins
-  : basePlugins.concat(prodPlugins);
-
 const TSLoader = {
   test: /\.ts$/,
   loader: 'awesome-typescript-loader',
@@ -40,38 +21,30 @@ const TSLoader = {
 };
 
 const ImageLoader = {
-  test: /\.(jpe?g|png|gif|svg)$/i,
+  test: /\.(jpe?g|png|gif|svg|scss|css)$/i,
   loader: 'null-loader',
 };
 
-const config: webpack.Configuration = {
-  plugins,
+const plugins = [
+  new webpack.DefinePlugin({ Sparks: Sparks }),
+];
 
+module.exports = {
+  plugins: plugins,
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
     publicPath: 'http://localhost:8080/',
   },
-
   devtool: 'source-map',
-
   // required by debug module used with webpack-dev-server
   externals: [require('webpack-node-externals')()],
-
-  devServer: {
-    inline: true,
-    host: '0.0.0.0',
-    contentBase: path.resolve('./dist'),
-    historyApiFallback: true,
-  },
-
   module: {
-    loaders: [
+    rules: [
       TSLoader,
       ImageLoader,
     ],
   },
-
   resolve: {
     // module and jsnext:main are for tree-shaking compatibility
     // mainFields: ['module', 'jsnext:main', 'main'],
@@ -79,7 +52,5 @@ const config: webpack.Configuration = {
     alias: {
       assets: assetsPath,
     },
-  } as any,
+  },
 };
-
-export = config;

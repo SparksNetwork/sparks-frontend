@@ -1,4 +1,4 @@
-import firebase = require('firebase');
+import * as firebase from 'firebase';
 import { defaultUserCredential } from './defaultUserCredential';
 import { convertUserToUserCredential } from './convertUserToUserCredential';
 

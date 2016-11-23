@@ -1,5 +1,5 @@
 import { Stream, just } from 'most';
-import firebase = require('firebase');
+import * as firebase from 'firebase';
 import { create } from '@most/create';
 import {
   AuthenticationType, CreateUserAuthentication,

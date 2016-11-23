@@ -4,10 +4,8 @@
 node_modules/
 report/
 .screens
-dist/bundle.js
-dist/bundle.js.map
-dist/styles.css
-dist/styles.css.map
 dist/
 .env
 .tmp
+src/**/*.js
+src/**/*.map

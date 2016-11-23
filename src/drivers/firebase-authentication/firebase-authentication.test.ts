@@ -6,7 +6,7 @@ import {
 import {
   makeFirebaseAuthenticationDriver,
 } from './makeFirebaseAuthenticationDriver';
-import firebase = require('firebase');
+import * as firebase from 'firebase';
 import { just, periodic } from 'most';
 
 import { MockFirebase } from './MockFirebase';

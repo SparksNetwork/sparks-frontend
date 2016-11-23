@@ -1,0 +1,16 @@
+machine:
+  node:
+    version: 7.0.0
+
+test:
+  pre:
+    - "patch -p0 < .config/awesome-typescript-loader.patch"
+    - tsc
+
+deployment:
+  access:
+    branch: /^(?!master$).*$/
+    commands:
+      - tsc
+      - npm run build:prod
+      - bin/deploy_to_s3.sh

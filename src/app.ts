@@ -18,7 +18,7 @@ import firebase = require('firebase');
 declare const Sparks: any;
 firebase.initializeApp(Sparks.firebase);
 
-require('./style.scss');
+import './style.scss';
 
 export interface MainSources {
   dom: DOMSource;

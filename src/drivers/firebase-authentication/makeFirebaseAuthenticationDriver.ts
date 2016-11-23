@@ -1,6 +1,6 @@
 import { Stream, just } from 'most';
 import hold from '@most/hold';
-import firebase = require('firebase');
+import * as firebase from 'firebase';
 import { AuthenticationType, Authentication } from './types';
 import { createUserCredential$ } from './createUserCredential$';
 import { defaultUserCredential } from './defaultUserCredential';
