@@ -1,9 +1,11 @@
 import { Stream, just } from 'most'
-import { Pathname } from '@motorcycle/history'
-import { div, h2, a, button, input, form } from '@motorcycle/dom'
-import { MainSources, MainSinks } from '../../app'
+import { a, button, div, form, h2, input } from '@motorcycle/dom'
 
-export function SignInScreen(sources: MainSources): MainSinks {
+import { MainSources } from '../../app'
+import { Pathname } from '@motorcycle/history'
+import { SigninScreenSinks } from './types';
+
+export function SignInScreen(sources: MainSources): SigninScreenSinks {
   const router: Stream<Pathname> =
     sources.dom.select('a').events('click')
     .tap(evt => evt.preventDefault())
