@@ -40,11 +40,16 @@ const TSLoader = {
   exclude: /node_modules/,
 };
 
+const SASSLoader = {
+  test: /\.scss$/,
+  loaders: [ 'style-loader', 'css-loader', 'sass-loader' ],
+};
+
 const ImageLoader = {
   test: /\.(jpe?g|png|gif|svg)$/i,
   loaders: [
-    'file?hash=sha512&digest=hex&name=[hash].[ext]',
-    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
+    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false',
   ],
 };
 
@@ -76,13 +81,14 @@ const config: webpack.Configuration = {
   module: {
     loaders: [
       TSLoader,
+      SASSLoader,
       ImageLoader,
     ],
   },
 
   resolve: {
     // module and jsnext:main are for tree-shaking compatibility
-    mainFields: ['module', 'jsnext:main', 'main'],
+    mainFields: ['module', 'jsnext:main', 'browser', 'main'],
     extensions: ['.ts', '.js', '.json'],
     alias: {
       assets: assetsPath,
