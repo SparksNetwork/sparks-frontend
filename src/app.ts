@@ -4,6 +4,8 @@ import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
 import { makeRouterDriver, RouterSource, RouterDefinitions, RouterSources } from '@motorcycle/router'
 import { HistoryInput, Pathname } from '@motorcycle/history'
 
+require('./style.scss');
+
 export interface MainSources {
   dom: DOMSource;
   router: RouterSource;
