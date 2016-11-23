@@ -12,8 +12,14 @@ import * as $ from 'most'
 import {last} from 'most-last'
 import { hold, sync } from 'most-subject'
 
-function standardSubjectFactory () {
-  return sync()
+function standardSubjectFactory (name) {
+  let s : any= sync();
+  let oldComplete = s.complete.bind(s);
+  s.complete = function stubbedComplete(x){
+    console.log(`${name} completed : ${x}`)
+    oldComplete(x);
+  }
+  return s
 }
 
 // stub the console for instance if we are running in node environment
@@ -187,7 +193,7 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // Ex : 'authentication'
       // Create the subjects which will receive the input data
       /** @type {Object.<string, Stream>} */
-      accSources.sources[inputKey] = accSources.streams[inputKey] = standardSubjectFactory()
+      accSources.sources[inputKey] = accSources.streams[inputKey] = standardSubjectFactory(inputKey)
       return accSources
     }
     else if (isMockSource(inputKey)) {
@@ -211,7 +217,8 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // for instance: DOM!sel1@click, DOM!sel2@click
       // So the mock function should receive the current mocked object
       // and return another one
-      let stream = sourceFactory[inputKey] || standardSubjectFactory();
+      let stream = sourceFactory[inputKey] && sourceFactory[inputKey](inputKey)
+        || standardSubjectFactory(inputKey);
       accSources.streams[inputKey] = stream
       accSources.sources[sourceName] = mock(accSources.sources[sourceName], sourceSpecs, stream)
     }

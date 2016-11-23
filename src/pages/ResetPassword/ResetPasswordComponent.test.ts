@@ -32,6 +32,10 @@ import {
   FORGOT_PASSWORD_ROUTE
 } from '../config.properties'
 
+function holdSubjectFactory(name) {
+  return hold(1, sync());
+}
+
 const classes = cssClasses({});
 const backgroundImage = require('assets/images/login-background.jpg');
 
@@ -1263,99 +1267,6 @@ const viewValidPasswordProcessingReset = section(classes.sel('photo-background')
   ])
 ]);
 
-describe.skip('When the password has been successfully reset', () => {
-  it('should display a view with 1 DISABLED "enter new password" fields, 1' +
-    ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
-    ' feedback message area which informs of the password reset. It should' +
-    ' immediately try to log in the user', (done) => {
-    const analyzeTestResults = _analyzeTestResults(assert, plan(3, done));
-
-    const enterPasswordSelector = resetPasswordClasses.sel('resetPassword.enterPassword');
-    const confirmPasswordSelector = resetPasswordClasses.sel('resetPassword.confirmPassword');
-    const formSelector = 'form';
-
-    const testInputs = [
-      // NOTE : auth state must emit first to kick-off the intent sinks
-      // (switch combinator is used on auth state stream)
-      // Theoretically password inputs could go at any point as they are
-      // modelled with replaySubjects (i.e. as behaviours) but for some
-      // reasons, putting `authentication$` last fails the test...
-      // Could be yet again some `most` subject/stream undocumented behaviour
-      {
-        authentication$: {
-          diagram: 'a-b-',
-          values: {
-            a: authenticationStateVerifyCodeOK,
-            b: authenticationStatePasswordResetOK
-          }
-        }
-      },
-      {
-        [`DOM!${formSelector}@submit`]: {
-          diagram: '--',
-          //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
-        }
-      },
-      {
-        [`DOM!${enterPasswordSelector}@input`]: {
-          diagram: '-a-',
-          values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
-        }
-      },
-      {
-        [`DOM!${confirmPasswordSelector}@input`]: {
-          diagram: '-a-',
-          values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
-        }
-      },
-    ]
-
-    const expected = {
-      DOM: {
-        outputs: [viewNoAuthError, viewVerifyCodeOK, viewLoggingIn],
-        successMessage: 'DOM sink produces the expected screen',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-      authentication$: {
-        outputs: [verifyPasswordResetCodeCommand, signInCommand],
-        successMessage: 'authentication$ receives a' +
-        ' SIGN_IN_WITH_EMAIL_AND_PASSWORD command',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-      router: {
-        outputs: [],
-        successMessage: 'sink router produces no values as expected',
-        analyzeTestResults: analyzeTestResults,
-        transformFn: undefined,
-      },
-    }
-
-    function ResetPasswordComponentCurried(settings) {
-      return function (sources) {
-        return ResetPasswordComponent(sources, settings);
-      }
-    }
-
-    runTestScenario(testInputs, expected,
-      ResetPasswordComponentCurried(dummyAuthParams), {
-        tickDuration: 5,
-        waitForFinishDelay: 20,
-        mocks: {
-          DOM: makeMockDOMSource
-        },
-        sourceFactory: {
-          DOM: () => hold(1, sync())
-        },
-        errorHandler: function (err) {
-          done(err)
-        }
-      })
-
-  });
-});
-
 describe('The ResetPassword component', () => {
   it('should be a function', () => {
     assert.ok(isFunction(ResetPasswordComponent));
@@ -1542,7 +1453,6 @@ describe('The ResetPassword component', () => {
     });
   });
 
-  // I AM HERE add route to forgotPassword
   describe('When the password reset code has failed verification AND' +
     ' error code corresponds to an expired code', () => {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
@@ -1868,7 +1778,6 @@ describe('The ResetPassword component', () => {
     });
   });
 
-  // TODO : replace
   describe('When the password has been successfully reset', () => {
     it('should display a view with 1 DISABLED "enter new password" fields, 1' +
       ' DISABLED "confirm password", 1 DISABLED SUBMIT button and 1 ENABLED' +
@@ -1881,12 +1790,6 @@ describe('The ResetPassword component', () => {
       const formSelector = 'form';
 
       const testInputs = [
-        // NOTE : auth state must emit first to kick-off the intent sinks
-        // (switch combinator is used on auth state stream)
-        // Theoretically password inputs could go at any point as they are
-        // modelled with replaySubjects (i.e. as behaviours) but for some
-        // reasons, putting `authentication$` last fails the test...
-        // Could be yet again some `most` subject/stream undocumented behaviour
         {
           authentication$: {
             diagram: 'a-b-',
@@ -1904,13 +1807,13 @@ describe('The ResetPassword component', () => {
         },
         {
           [`DOM!${enterPasswordSelector}@input`]: {
-            diagram: '-a-',
+            diagram: 'a--',
             values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
           }
         },
         {
           [`DOM!${confirmPasswordSelector}@input`]: {
-            diagram: '-a-',
+            diagram: 'a--',
             values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
           }
         },
@@ -1952,7 +1855,15 @@ describe('The ResetPassword component', () => {
             DOM: makeMockDOMSource
           },
           sourceFactory: {
-            DOM: () => hold(1, sync())
+            'DOM!form@submit': function DOMFactory(inputKey) {
+              return holdSubjectFactory(inputKey)
+            },
+            'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+              return holdSubjectFactory(inputKey)
+            },
+            "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+              return holdSubjectFactory(inputKey)
+            },
           },
           errorHandler: function (err) {
             done(err)
@@ -1976,12 +1887,6 @@ describe('The ResetPassword component', () => {
         const formSelector = 'form';
 
         const testInputs = [
-          // NOTE : auth state must emit first to kick-off the intent sinks
-          // (switch combinator is used on auth state stream)
-          // Theoretically password inputs could go at any point as they are
-          // modelled with replaySubjects (i.e. as behaviours) but for some
-          // reasons, putting `authentication$` last fails the test...
-          // Could be yet again some `most` subject/stream undocumented behaviour
           {
             authentication$: {
               diagram: 'ab',
@@ -1999,14 +1904,12 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '-a',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '-a',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2046,9 +1949,6 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
-            },
             errorHandler: function (err) {
               done(err)
             }
@@ -2071,12 +1971,6 @@ describe('The ResetPassword component', () => {
         const formSelector = 'form';
 
         const testInputs = [
-          // NOTE : auth state must emit first to kick-off the intent sinks
-          // (switch combinator is used on auth state stream)
-          // Theoretically password inputs could go at any point as they are
-          // modelled with replaySubjects (i.e. as behaviours) but for some
-          // reasons, putting `authentication$` last fails the test...
-          // Could be yet again some `most` subject/stream undocumented behaviour
           {
             authentication$: {
               diagram: 'ab',
@@ -2089,19 +1983,16 @@ describe('The ResetPassword component', () => {
           {
             [`DOM!${formSelector}@submit`]: {
               diagram: '--',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2141,9 +2032,6 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
-            },
             errorHandler: function (err) {
               done(err)
             }
@@ -2166,12 +2054,6 @@ describe('The ResetPassword component', () => {
         const formSelector = 'form';
 
         const testInputs = [
-          // NOTE : auth state must emit first to kick-off the intent sinks
-          // (switch combinator is used on auth state stream)
-          // Theoretically password inputs could go at any point as they are
-          // modelled with replaySubjects (i.e. as behaviours) but for some
-          // reasons, putting `authentication$` last fails the test...
-          // Could be yet again some `most` subject/stream undocumented behaviour
           {
             authentication$: {
               diagram: 'ab',
@@ -2184,19 +2066,16 @@ describe('The ResetPassword component', () => {
           {
             [`DOM!${formSelector}@submit`]: {
               diagram: '--',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2236,9 +2115,6 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
-            },
             errorHandler: function (err) {
               done(err)
             }
@@ -2261,12 +2137,6 @@ describe('The ResetPassword component', () => {
         const formSelector = 'form';
 
         const testInputs = [
-          // NOTE : auth state must emit first to kick-off the intent sinks
-          // (switch combinator is used on auth state stream)
-          // Theoretically password inputs could go at any point as they are
-          // modelled with replaySubjects (i.e. as behaviours) but for some
-          // reasons, putting `authentication$` last fails the test...
-          // Could be yet again some `most` subject/stream undocumented behaviour
           {
             authentication$: {
               diagram: 'ab',
@@ -2279,19 +2149,16 @@ describe('The ResetPassword component', () => {
           {
             [`DOM!${formSelector}@submit`]: {
               diagram: '--',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2331,9 +2198,6 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
-            },
             errorHandler: function (err) {
               done(err)
             }
@@ -2356,12 +2220,6 @@ describe('The ResetPassword component', () => {
         const formSelector = 'form';
 
         const testInputs = [
-          // NOTE : auth state must emit first to kick-off the intent sinks
-          // (switch combinator is used on auth state stream)
-          // Theoretically password inputs could go at any point as they are
-          // modelled with replaySubjects (i.e. as behaviours) but for some
-          // reasons, putting `authentication$` last fails the test...
-          // Could be yet again some `most` subject/stream undocumented behaviour
           {
             authentication$: {
               diagram: 'ab',
@@ -2374,19 +2232,16 @@ describe('The ResetPassword component', () => {
           {
             [`DOM!${formSelector}@submit`]: {
               diagram: '--',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: 'a-',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2425,9 +2280,6 @@ describe('The ResetPassword component', () => {
             waitForFinishDelay: 20,
             mocks: {
               DOM: makeMockDOMSource
-            },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
             },
             errorHandler: function (err) {
               done(err)
@@ -2470,13 +2322,13 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
@@ -2518,7 +2370,15 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => hold(1, sync())
+              'DOM!form@submit': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -2554,19 +2414,19 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${formSelector}@submit`]: {
-              diagram: '--a',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              diagram: 'a--',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
@@ -2608,7 +2468,15 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => hold(1, sync())
+              'DOM!form@submit': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -2644,19 +2512,19 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${formSelector}@submit`]: {
-              diagram: '--a',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              diagram: 'a--',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
@@ -2698,7 +2566,15 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => hold(1, sync())
+              'DOM!form@submit': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -2734,19 +2610,19 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${formSelector}@submit`]: {
-              diagram: '--a',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              diagram: 'a--',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
@@ -2788,7 +2664,15 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => hold(1, sync())
+              'DOM!form@submit': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -2824,19 +2708,19 @@ describe('The ResetPassword component', () => {
           },
           {
             [`DOM!${formSelector}@submit`]: {
-              diagram: '--a',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              diagram: 'a--',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '--a-',
+              diagram: 'a---',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
@@ -2878,7 +2762,15 @@ describe('The ResetPassword component', () => {
               DOM: makeMockDOMSource
             },
             sourceFactory: {
-              DOM: () => hold(1, sync())
+              'DOM!form@submit': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -2915,19 +2807,16 @@ describe('The ResetPassword component', () => {
           {
             [`DOM!${formSelector}@submit`]: {
               diagram: '--',
-              //values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '-a',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '-a',
-              values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
+              diagram: '--',
             }
           },
         ]
@@ -2969,9 +2858,6 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
-            sourceFactory: {
-              DOM: () => hold(1, sync())
-            },
             errorHandler: function (err) {
               done(err)
             }
@@ -2980,8 +2866,7 @@ describe('The ResetPassword component', () => {
       });
   });
 
-  describe('When the password reset code has been successfully verified' +
-    ' AND' +
+  describe('When the password reset code has been successfully verified AND' +
     ' the user enters a password with less than the minimum length AND' +
     ' confirms correctly the password AND submit the form', () => {
     it('should display a view with 1 ENABLED "enter new password" fields, 1' +
@@ -2999,25 +2884,22 @@ describe('The ResetPassword component', () => {
             diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
           }
         },
-        // NOTE : form input data must go after (on another tick) authenticationState
-        // Really hard to explain why with words, will have to carefully e2e
-        // test to check behavior in actual non-simulated environment
+        {
+          [`DOM!${formSelector}@submit`]: {
+            diagram: '-a-',
+            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+          }
+        },
         {
           [`DOM!${enterPasswordSelector}@input`]: {
-            diagram: '-a-',
+            diagram: 'a--',
             values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
           }
         },
         {
           [`DOM!${confirmPasswordSelector}@input`]: {
-            diagram: '-a-',
+            diagram: 'a--',
             values: {a: decorateWithPreventDefault(stubInputEvent('dummy'))}
-          }
-        },
-        {
-          [`DOM!${formSelector}@submit`]: {
-            diagram: '-a-',
-            values: {a: decorateWithPreventDefault(stubSubmitEvent())}
           }
         },
       ]
@@ -3056,6 +2938,10 @@ describe('The ResetPassword component', () => {
           mocks: {
             DOM: makeMockDOMSource
           },
+          sourceFactory: {
+            'DOM!.resetPassword.enterPassword@input': holdSubjectFactory,
+            "DOM!.resetPassword.confirmPassword@input": holdSubjectFactory,
+          },
           errorHandler: function (err) {
             done(err)
           }
@@ -3084,25 +2970,22 @@ describe('The ResetPassword component', () => {
               diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
             }
           },
-          // NOTE : form input data must go after (on another tick) authenticationState
-          // Really hard to explain why with words, will have to carefully e2e
-          // test to check behavior in actual non-simulated environment
+          {
+            [`DOM!${formSelector}@submit`]: {
+              diagram: '-a-',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+            }
+          },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '-a-',
+              diagram: 'a-',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '-a-',
+              diagram: 'a-',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword + '$'))}
-            }
-          },
-          {
-            [`DOM!${formSelector}@submit`]: {
-              diagram: '-a-',
-              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
         ]
@@ -3141,6 +3024,10 @@ describe('The ResetPassword component', () => {
             mocks: {
               DOM: makeMockDOMSource
             },
+            sourceFactory: {
+              'DOM!.resetPassword.enterPassword@input': holdSubjectFactory,
+              "DOM!.resetPassword.confirmPassword@input": holdSubjectFactory,
+            },
             errorHandler: function (err) {
               done(err)
             }
@@ -3168,25 +3055,22 @@ describe('The ResetPassword component', () => {
               diagram: 'a-', values: {a: authenticationStateVerifyCodeOK}
             }
           },
-          // NOTE : form input data must go after (on another tick) authenticationState
-          // Really hard to explain why with words, will have to carefully e2e
-          // test to check behavior in actual non-simulated environment
+          {
+            [`DOM!${formSelector}@submit`]: {
+              diagram: '-a',
+              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+            }
+          },
           {
             [`DOM!${enterPasswordSelector}@input`]: {
-              diagram: '-a-',
+              diagram: 'a-',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
             }
           },
           {
             [`DOM!${confirmPasswordSelector}@input`]: {
-              diagram: '-a-',
+              diagram: 'a-',
               values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
-            }
-          },
-          {
-            [`DOM!${formSelector}@submit`]: {
-              diagram: '-a-',
-              values: {a: decorateWithPreventDefault(stubSubmitEvent())}
             }
           },
         ]
@@ -3224,6 +3108,14 @@ describe('The ResetPassword component', () => {
             waitForFinishDelay: 20,
             mocks: {
               DOM: makeMockDOMSource
+            },
+            sourceFactory: {
+              'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
+              "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                return holdSubjectFactory(inputKey)
+              },
             },
             errorHandler: function (err) {
               done(err)
@@ -3268,19 +3160,19 @@ describe('The ResetPassword component', () => {
             // test to check behavior in actual non-simulated environment
             {
               [`DOM!${enterPasswordSelector}@input`]: {
-                diagram: '--a-a',
+                diagram: '-a-',
                 values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
               }
             },
             {
               [`DOM!${confirmPasswordSelector}@input`]: {
-                diagram: '--a-a',
+                diagram: '-a-',
                 values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
               }
             },
             {
               [`DOM!${formSelector}@submit`]: {
-                diagram: '--a-a',
+                diagram: '--a-',
                 values: {a: decorateWithPreventDefault(stubSubmitEvent())}
               }
             },
@@ -3332,14 +3224,18 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => hold(1, sync())
+                'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
+                "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
               },
             })
 
         });
     });
 
-  // TODO : copied from here, just modify the error code from previous
   describe(
     `When no authentication was attempted yet 
   AND the password reset code has been successfully verified 
@@ -3371,24 +3267,21 @@ describe('The ResetPassword component', () => {
                 }
               }
             },
-            // NOTE : form input data must go after (on another tick) authenticationState
-            // Really hard to explain why with words, will have to carefully e2e
-            // test to check behavior in actual non-simulated environment
             {
               [`DOM!${enterPasswordSelector}@input`]: {
-                diagram: '--a-a',
+                diagram: '-a-',
                 values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
               }
             },
             {
               [`DOM!${confirmPasswordSelector}@input`]: {
-                diagram: '--a-a',
+                diagram: '-a-',
                 values: {a: decorateWithPreventDefault(stubInputEvent(dummyPassword))}
               }
             },
             {
               [`DOM!${formSelector}@submit`]: {
-                diagram: '--a-a',
+                diagram: '--a-',
                 values: {a: decorateWithPreventDefault(stubSubmitEvent())}
               }
             },
@@ -3440,7 +3333,12 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => hold(1, sync())
+                'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
+                "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
               },
             })
 
@@ -3481,12 +3379,15 @@ describe('The ResetPassword component', () => {
                 }
               }
             },
-            // NOTE : form input data must go after (on another tick) authenticationState
-            // Really hard to explain why with words, will have to carefully e2e
-            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--aa---',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
             {
               [`DOM!${enterPasswordSelector}@input`]: {
-                diagram: '--ab---',
+                diagram: '-ab---',
                 values: {
                   a: decorateWithPreventDefault(stubInputEvent(dummyTooShortPassword)),
                   b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
@@ -3495,17 +3396,11 @@ describe('The ResetPassword component', () => {
             },
             {
               [`DOM!${confirmPasswordSelector}@input`]: {
-                diagram: '--abb--',
+                diagram: '-ab--',
                 values: {
                   a: decorateWithPreventDefault(stubInputEvent(dummyTooShortPassword)),
                   b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
                 }
-              }
-            },
-            {
-              [`DOM!${formSelector}@submit`]: {
-                diagram: '--aa---',
-                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
               }
             },
           ]
@@ -3563,7 +3458,12 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => hold(1, sync())
+                'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
+                "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
               },
             })
 
@@ -3603,12 +3503,15 @@ describe('The ResetPassword component', () => {
                 }
               }
             },
-            // NOTE : form input data must go after (on another tick) authenticationState
-            // Really hard to explain why with words, will have to carefully e2e
-            // test to check behavior in actual non-simulated environment
+            {
+              [`DOM!${formSelector}@submit`]: {
+                diagram: '--aa---',
+                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
+              }
+            },
             {
               [`DOM!${enterPasswordSelector}@input`]: {
-                diagram: '--ab---',
+                diagram: '-ab---',
                 values: {
                   a: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
                   b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
@@ -3617,17 +3520,11 @@ describe('The ResetPassword component', () => {
             },
             {
               [`DOM!${confirmPasswordSelector}@input`]: {
-                diagram: '--abb--',
+                diagram: '-ab--',
                 values: {
                   a: decorateWithPreventDefault(stubInputEvent(dummyPassword + '$')),
                   b: decorateWithPreventDefault(stubInputEvent(dummyPassword)),
                 }
-              }
-            },
-            {
-              [`DOM!${formSelector}@submit`]: {
-                diagram: '--aa---',
-                values: {a: decorateWithPreventDefault(stubSubmitEvent())}
               }
             },
           ]
@@ -3685,7 +3582,12 @@ describe('The ResetPassword component', () => {
                 done(err)
               },
               sourceFactory: {
-                DOM: () => hold(1, sync())
+                'DOM!.resetPassword.enterPassword@input': function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
+                "DOM!.resetPassword.confirmPassword@input": function DOMFactory(inputKey) {
+                  return holdSubjectFactory(inputKey)
+                },
               },
             })
 
