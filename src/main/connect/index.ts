@@ -21,7 +21,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     .map(() => '/')
 
   const googleClick$: Stream<Event> =
-    sources.dom.select('.c-btn--google').events('click')
+    sources.dom.select('.c-btn-federated--google').events('click')
     .tap(evt => evt.preventDefault())
 
   const authentication$: Stream<AuthenticationType> =
@@ -41,7 +41,7 @@ function view() {
           div('.c-sign-in__title','Connect to the Sparks.Network'),
           ul('.c-sign-in__list', [
             li('.c-sign-in__list-item', [
-              button('.c-btn.c-btn-federated.c-btn-federated--google', [
+              button('.c-btn.c-btn-federated.c-btn-federated--google', {attrs: {type: 'button'}}, [
                 img('.c-btn-federated__icon', {attrs: {src: ''}}),
                 span('.c-btn-federated__text', 'Sign in with Google'),
               ])
