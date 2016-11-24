@@ -36,7 +36,7 @@ export function Routing(
 }
 
 run<MainSources, MainSinks>(main, {
-  dom: makeDOMDriver('#sparks-app') as DriverFn,
+  dom: makeDOMDriver('#app') as DriverFn,
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
 });

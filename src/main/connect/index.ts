@@ -1,6 +1,6 @@
 import { Stream, just, startWith, constant } from 'most'
 import { Pathname } from '@motorcycle/history'
-import { div, h2, a, button, p, input, form } from '@motorcycle/dom'
+import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom'
 import { MainSources, MainSinks } from '../../app'
 import { REDIRECT, GET_REDIRECT_RESULT, AuthenticationType } from '../../drivers/firebase-authentication'
 import firebase = require('firebase')
@@ -36,27 +36,43 @@ export function ConnectScreen(sources: MainSources): MainSinks {
 
 function view() {
   return div('#page', [
-      div('#dialog', [
-        h2('Connect to the Sparks.Network'),
-        div('.highlighted', [
-          a({attrs: {href: '#'}}, 'I have a profile, sign in with that'),
+      div('.c-sign-in', [
+        form('.c-sign-in__form', [
+          div('.c-sign-in__title','Connect to the Sparks.Network'),
+          ul('.c-sign-in__list', [
+            li('.c-sign-in__list-item', [
+              button('.c-btn.c-btn-federated.c-btn-federated--google', [
+                img('.c-btn-federated__icon', {attrs: {src: ''}}),
+                span('.c-btn-federated__text', 'Sign in with Google'),
+              ])
+            ]),
+            li('.c-sign-in__list-item', [
+              button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
+                img('.c-btn-federated__icon', {attrs: {src: ''}}),
+                span('.c-btn-federated__text', 'Sign in with Facebook'),
+              ])
+            ])            
+          ]),
+          ul('.c-sign-in__list', [
+            li('.c-sign-in__list-item', [
+              div('.c-textfield', [
+                label([
+                  input('.c-textfield__input', {attrs: {type: 'text', required: true}}),
+                  span('.c-textfield__label', 'Email address'),
+                ])
+              ])
+            ]),
+            li('.c-sign-in__list-item', [
+              div('.c-sign-in__password.c-textfield', [
+                label([
+                  input('.c-textfield__input', {attrs: {type: 'password', required: true}}),
+                  span('.c-textfield__label', 'Password'),
+                ]),
+                a('.c-sign-in__password-forgot', {attrs: {href: '/forgot-password'}}, 'Forgot?')
+              ])
+            ]),
+          ])
         ]),
-        p('To apply, we need to be able to reach you.'),
-        div([
-          button('.c-btn--google', 'Connect with Google'),
-          button('.c-btn--facebook', 'Connect with Facebook'),
-        ]),
-        p('.note', 'We will never post without your permission'),
-        div('.divider', 'Or create with email'),
-        form([
-          input('.email'),
-          input('.password', {attrs: {type: 'password'}}),
-          button({attrs: {type: 'submit'}}),
-        ]),
-        p('.note', [
-          'By creating a profile you agree to our',
-          a({attrs: {href: '#'}}, 'terms and conditions'),
-        ])
       ]),
     ])
 }

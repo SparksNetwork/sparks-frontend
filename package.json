@@ -83,7 +83,7 @@
     "firebase": "^3.6.1",
     "most": "^1.1.0",
     "ramda": "^0.22.1",
-    "sparks-design-system": "^0.4.0",
+    "sparks-design-system": "^0.8.0",
     "typestyle": "^0.7.3"
   }
 }
