@@ -88,7 +88,7 @@ const config: webpack.Configuration = {
 
   resolve: {
     // module and jsnext:main are for tree-shaking compatibility
-    mainFields: ['module', 'jsnext:main', 'browser', 'main'],
+    mainFields: ['module', 'jsnext:main', 'main'],
     extensions: ['.ts', '.js', '.json'],
     alias: {
       assets: assetsPath,
