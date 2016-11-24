@@ -4,10 +4,12 @@ import { REDIRECT, GET_REDIRECT_RESULT, AuthenticationType }
   from '../../drivers/firebase-authentication';
 import firebase = require('firebase');
 
-export function FacebookAuthenticationButton(
+export function Button(
   sources: FacebookAuthenticationButtonSources): FacebookAuthenticationButtonSinks
 {
   const { dom } = sources;
+
+  (sources as any).authentication$.observe((x: any) => console.log(x));
 
   const click$: Stream<Event> =
     dom.select(facebookButtonId).events('click');

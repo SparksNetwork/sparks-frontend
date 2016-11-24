@@ -1,14 +1,13 @@
-import { DriverFn, run } from '@motorcycle/core';
 import { DOMSource, VNode, makeDOMDriver } from '@motorcycle/dom';
-import { makeRouterDriver } from '@motorcycle/router';
+import { DriverFn, run } from '@motorcycle/core';
 import { Stream } from 'most';
 import { makeFirebaseAuthenticationDriver, Authentication, AuthenticationType }
   from './drivers/firebase-authentication';
 import firebase = require('firebase');
 
-require('./style.scss');
+import { Button } from './components/FacebookAuthenticationButton';
 
-import { App, AppSources, AppSinks } from './App';
+require('./style.scss');
 
 export interface MainSources {
   dom: DOMSource;
@@ -26,8 +25,7 @@ declare const Sparks: any;
 // initialize connection to Firebase
 firebase.initializeApp(Sparks.firebase);
 
-run<AppSources, AppSinks>(App, {
+run<MainSources, MainSinks>(Button, {
   dom: makeDOMDriver('#sparks-app') as DriverFn,
-  router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
 });
