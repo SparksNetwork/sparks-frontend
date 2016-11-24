@@ -1,4 +1,4 @@
-import { Stream, just } from 'most'
+import { Stream, just, never } from 'most'
 import { Pathname } from '@motorcycle/history'
 import { div, h2, a, button, input, form } from '@motorcycle/dom'
 import { MainSources, MainSinks } from '../../app'
@@ -11,6 +11,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
 
   return {
     dom: just(view()),
+    authentication$: never(),
     router,
   }
 }
