@@ -1,52 +1,42 @@
-import { DOMSource, VNode, button, div, h2, makeDOMDriver } from '@motorcycle/dom';
-import { DriverFn, run } from '@motorcycle/core';
-import { Stream, constant, map, merge, scan } from 'most';
+import { Stream } from 'most';
+import { run, DriverFn } from '@motorcycle/core';
+import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
+import { makeRouterDriver, RouterSource, RouterDefinitions, RouterSources } from '@motorcycle/router'
+import { HistoryInput, Pathname } from '@motorcycle/history'
+import { Authentication, AuthenticationType, makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication'
+
+import firebase = require('firebase')
+declare const Sparks: any;
+firebase.initializeApp(Sparks.firebase)
 
 require('./style.scss');
 
 export interface MainSources {
   dom: DOMSource;
+  router: RouterSource;
+  authentication$: Stream<Authentication>;
 }
 
 export interface MainSinks {
   dom: Stream<VNode>;
+  router: Stream<HistoryInput | Pathname>;
+  authentication$: Stream<AuthenticationType>;
 }
 
-export type CounterMessage = number;
+import { main } from './main'
 
-export type CounterModel = number;
-
-const sum = (x: number, y: number) => x + y;
-
-function main(sources: MainSources): MainSinks {
-  const increment$: Stream<number> =
-    constant(+1, sources.dom.select('#increment').events('click'));
-
-  const decrement$: Stream<number> =
-    constant(-1, sources.dom.select('#decrement').events('click'));
-
-  const message$: Stream<CounterMessage> =
-    merge(increment$, decrement$);
-
-  const model$: Stream<CounterModel> =
-    scan(sum, 0, message$);
-
-  const view$: Stream<VNode> =
-    map(view, model$);
-
-  return {
-    dom: view$,
-  };
-}
-
-function view(count: number): VNode {
-  return div(`#counter`, {}, [
-    h2(`#count`, {}, `Current count: ${count}`),
-    button(`#increment.c-btn.c-btn--small`, {}, [`Increment`]),
-    button(`#decrement.c-btn.c-btn--small`, {}, [`Decrement`]),
-  ]);
+export function Routing(
+    definitions: RouterDefinitions<MainSources,MainSinks>,
+    sources: RouterSources<any>,
+  ) : Stream<MainSinks> {
+  return sources.router.define(definitions)
+    .map(({path, value} : {path:string, value:any}) =>
+      value({...sources, router: sources.router.path(path)})
+    )
 }
 
 run<MainSources, MainSinks>(main, {
   dom: makeDOMDriver('#sparks-app') as DriverFn,
+  router: makeRouterDriver(),
+  authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
 });
