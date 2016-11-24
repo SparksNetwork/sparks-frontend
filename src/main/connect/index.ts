@@ -71,6 +71,12 @@ function view() {
                 a('.c-sign-in__password-forgot', {attrs: {href: '/forgot-password'}}, 'Forgot?')
               ])
             ]),
+            li('.c-sign-in__list-item', [
+              button('.c-btn.c-btn--primary.c-sign-in__submit', 'Sign in')
+            ]),
+          ]),
+          div([
+            a({attrs: {href: '/sign-up'}}, 'New to Sparks.Network? Sign up')
           ])
         ]),
       ]),
