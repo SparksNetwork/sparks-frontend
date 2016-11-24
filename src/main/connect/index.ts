@@ -23,7 +23,6 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn--google').events('click')
     .tap(evt => evt.preventDefault())
-    .tap(() => console.log('googleClick$'))
 
   const authentication$: Stream<AuthenticationType> =
     startWith(redirectResultAuthenticationType, constant(googleRedirectAuthentication, googleClick$))
