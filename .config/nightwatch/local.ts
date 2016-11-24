@@ -1,5 +1,5 @@
 const config = {
-  src_folders: ['tests/.tmp/tests'],
+  src_folders: ['tests/.tmp'],
   output_folder: './report',
 
   selenium: {

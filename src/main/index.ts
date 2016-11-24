@@ -1,4 +1,4 @@
-import { Stream, map, merge } from 'most'
+import { Stream, map, merge, never } from 'most'
 import { Location, Pathname } from '@motorcycle/history'
 import { div, h2, a, p } from '@motorcycle/dom'
 import { Routing, MainSources, MainSinks } from '../app'
@@ -17,6 +17,7 @@ export function main(sources: MainSources): MainSinks {
   return {
     dom: sinks$.map(sinks => sinks.dom).switch(),
     router: sinks$.map(sinks => sinks.router).switch(),
+    authentication$: sinks$.map(sinks => sinks.authentication$).switch(),
   };
 }
 
@@ -34,6 +35,7 @@ function Screen(sources: MainSources): MainSinks {
   return {
     dom: map(view, sources.router.history()),
     router: merge(connect$, signin$),
+    authentication$: never(),
   }
 }
 

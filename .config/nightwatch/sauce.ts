@@ -1,5 +1,5 @@
 export = {
-  'src_folders': ['tests/.tmp/tests'],
+  'src_folders': ['tests/.tmp'],
   'output_folder': 'report',
 
   'test_settings': {

@@ -67,7 +67,7 @@
     "style-loader": "^0.13.1",
     "ts-node": "^1.7.0",
     "tslint": "^4.0.0-dev.2",
-    "typescript": "^2.2.0-dev.20161118",
+    "typescript": "2.2.0-dev.20161121",
     "validate-commit-msg": "^2.8.2",
     "webpack": "^2.1.0-beta.27",
     "webpack-dev-server": "^2.1.0-beta.11",
@@ -83,7 +83,7 @@
     "firebase": "^3.6.1",
     "most": "^1.1.0",
     "ramda": "^0.22.1",
-    "sparks-design-system": "^0.4.0",
+    "sparks-design-system": "^0.8.0",
     "typestyle": "^0.7.3"
   }
 }
