@@ -1,4 +1,4 @@
-import { Stream, just, startWith, constant } from 'most'
+import { Stream, just, startWith, constant, merge } from 'most'
 import { Pathname } from '@motorcycle/history'
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom'
 import { MainSources, MainSinks } from '../../app'
@@ -14,6 +14,12 @@ const googleRedirectAuthentication: AuthenticationType =
     provider: new firebase.auth.GoogleAuthProvider(),
   };
 
+const facebookRedirectAuthentication: AuthenticationType =
+  {
+    method: REDIRECT,
+    provider: new firebase.auth.FacebookAuthProvider(),
+  };
+
 export function ConnectScreen(sources: MainSources): MainSinks {
   const router: Stream<Pathname> =
     sources.dom.select('a').events('click')
@@ -24,13 +30,21 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     sources.dom.select('.c-btn-federated--google').events('click')
     .tap(evt => evt.preventDefault())
 
-  const authentication$: Stream<AuthenticationType> =
+  const googleAuth$: Stream<AuthenticationType> =
     startWith(redirectResultAuthenticationType, constant(googleRedirectAuthentication, googleClick$))
+
+  const facebookClick$: Stream<Event> =
+    sources.dom.select('.c-btn-federated--facebook').events('click')
+    .tap(evt => evt.preventDefault())
+
+  const facebookAuth$: Stream<AuthenticationType> =
+    startWith(redirectResultAuthenticationType, constant(facebookRedirectAuthentication, facebookClick$))
+
 
   return {
     dom: just(view()),
     router,
-    authentication$,
+    authentication$: merge(googleAuth$, facebookAuth$),
   }
 }
 
@@ -47,7 +61,7 @@ function view() {
               ])
             ]),
             li('.c-sign-in__list-item', [
-              button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
+              button('.c-btn.c-btn-federated.c-btn-federated--facebook', {attrs: {type: 'button'}}, [
                 img('.c-btn-federated__icon', {attrs: {src: ''}}),
                 span('.c-btn-federated__text', 'Sign in with Facebook'),
               ])
