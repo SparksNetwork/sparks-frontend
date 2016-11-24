@@ -14,5 +14,7 @@ export = (function (settings) {
   if (process.env.SELENIUM_PORT)
     settings.selenium.host = process.env.SELENIUM_PORT;
 
+  settings.page_objects_path = './tests/page-objects'
+
   return settings;
 })(config);
