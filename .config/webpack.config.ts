@@ -23,6 +23,7 @@ const Sparks = {
 
 const basePlugins = [
   new webpack.DefinePlugin({ Sparks }),
+  new webpack.optimize.CommonsChunkPlugin({ name: 'screens', filename: 'screens.js' }),
 ];
 
 const prodPlugins = [
@@ -53,18 +54,27 @@ const ImageLoader = {
   ],
 };
 
+const CopyHtmlLoader = {
+  test: /\.html$/i,
+  loaders: [
+    'file-loader?name=[name].[ext]',
+  ],
+};
+
 const config: webpack.Configuration = {
   plugins,
 
   devtool: process.env.BUILD_ENV === DEV ? 'source-map' : '',
 
-  entry: [
-    path.join(srcPath, 'app.ts'),
-  ],
+  entry: {
+    app: path.join(srcPath, 'app.ts'),
+    screens: path.join(srcPath, 'screens/index.ts'),
+  },
 
   output: {
     path: path.resolve('./dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
     publicPath: 'http://localhost:8080/',
   },
 
@@ -83,6 +93,7 @@ const config: webpack.Configuration = {
       TSLoader,
       SASSLoader,
       ImageLoader,
+      CopyHtmlLoader,
     ],
   },
 
