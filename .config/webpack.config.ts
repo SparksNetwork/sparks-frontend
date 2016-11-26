@@ -68,7 +68,9 @@ const config: webpack.Configuration = {
 
   entry: {
     app: path.join(srcPath, 'app.ts'),
-    screens: path.join(srcPath, 'screens/index.ts'),
+    screens: [
+      path.join(srcPath, 'screens/index.ts'),
+    ],
   },
 
   output: {
