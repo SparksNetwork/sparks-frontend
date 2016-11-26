@@ -10,6 +10,7 @@ import { Stream } from 'most';
 import firebase = require('firebase');
 
 require('./style.scss');
+require('./index.html');
 
 import { App, AppSources, AppSinks } from './App';
 
