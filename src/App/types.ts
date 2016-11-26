@@ -1,7 +1,7 @@
 import { Stream } from 'most';
 import { DOMSource, VNode } from '@motorcycle/dom';
 import { RouterSource, RouterInput } from '@motorcycle/router';
-import { Authentication, AuthenticationType } from '../drivers/firebase-authentication';
+import { Authentication, AuthenticationType } from '@motorcycle/firebase';
 
 export interface AppSources {
   dom: DOMSource;

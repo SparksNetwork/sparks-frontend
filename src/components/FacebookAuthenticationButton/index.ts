@@ -1,7 +1,10 @@
 import { Stream, constant, just, startWith } from 'most';
 import { DOMSource, VNode, button } from '@motorcycle/dom';
-import { REDIRECT, GET_REDIRECT_RESULT, AuthenticationType }
-  from '../../drivers/firebase-authentication';
+import {
+  REDIRECT,
+  GET_REDIRECT_RESULT,
+  AuthenticationType,
+} from '@motorcycle/firebase';
 import firebase = require('firebase');
 
 export function FacebookAuthenticationButton(

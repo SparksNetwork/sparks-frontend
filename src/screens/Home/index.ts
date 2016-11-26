@@ -1,6 +1,6 @@
 import { Stream } from 'most';
 import { DOMSource, VNode } from '@motorcycle/dom';
-import { AuthenticationType } from '../../drivers/firebase-authentication';
+import { AuthenticationType } from '@motorcycle/firebase';
 import { FacebookAuthenticationButton, GoogleAuthenticationButton } from '../../components';
 import { mergeSinks } from '../../helpers';
 
