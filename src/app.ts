@@ -1,9 +1,12 @@
 import { DriverFn, run } from '@motorcycle/core';
 import { DOMSource, VNode, makeDOMDriver } from '@motorcycle/dom';
 import { makeRouterDriver } from '@motorcycle/router';
+import {
+  makeFirebaseAuthenticationDriver,
+  Authentication,
+  AuthenticationType,
+} from '@motorcycle/firebase';
 import { Stream } from 'most';
-import { makeFirebaseAuthenticationDriver, Authentication, AuthenticationType }
-  from './drivers/firebase-authentication';
 import firebase = require('firebase');
 
 require('./style.scss');
