@@ -399,7 +399,6 @@ namespace R {
         curry<T1, T2, T3, T4, T5, T6, TResult>(fn: (a: T1, b: T2, c: T3, d: T4, e: T5, f: T6) => TResult): CurriedFunction6<T1,T2, T3, T4, T5, T6, TResult>
         curry(fn: Function): Function
 
-
         /**
          * Returns a curried equivalent of the provided function, with the specified arity. The curried function has
          * two unusual capabilities. First, its arguments needn't be provided one at a time.
@@ -1804,6 +1803,7 @@ namespace R {
         zipWith<T, U, TResult>(fn: (x: T, y: U) => TResult, list1: T[]): (list2: U[]) => TResult[];
         zipWith<T, U, TResult>(fn: (x: T, y: U) => TResult): (list1: T[], list2: U[]) => TResult[];
 
+        __ : any;
     }
 }
 

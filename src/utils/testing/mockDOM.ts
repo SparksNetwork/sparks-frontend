@@ -14,7 +14,7 @@ function makeDOMMock(hashTable) {
   }
 }
 
-function makeMockDOMSource(mockedObj, sourceSpecs, stream) {
+function makeMockDOMSource(_mockedObj, sourceSpecs, stream) {
   const [select, event] = sourceSpecs.split('@');
 
   if (!isValidDOMSourceInput(select, event)) {
@@ -22,7 +22,7 @@ function makeMockDOMSource(mockedObj, sourceSpecs, stream) {
   }
 
   // Initialize object hash table if not done already
-  mockedObj = mockedObj || {};
+  let mockedObj = _mockedObj || {};
   mockedObj.hashTable = mockedObj.hashTable || {};
   mockedObj.hashTable[select] = mockedObj.hashTable[select] || {};
   mockedObj.hashTable[select][event] = mockedObj.hashTable[select][event] || {};

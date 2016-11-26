@@ -1,34 +1,3 @@
-import {
-  identity, mapObjIndexed, values, all as allR, addIndex,
-  reduce as reduceR, keys as keysR, drop, isNil, map
-} from 'ramda'
-
-import {
-  isOptSinks, removeNullsFromArray, assertSignature, assertContract,
-  isString, isFunction, isArray, isUndefined, isArrayOf, isNullableObject
-} from './checks'
-
-import * as $ from 'most'
-import {last} from 'most-last'
-import { hold, sync } from 'most-subject'
-
-function standardSubjectFactory (name) {
-  let s : any= sync();
-  let oldComplete = s.complete.bind(s);
-  s.complete = function stubbedComplete(x){
-    console.log(`${name} completed : ${x}`)
-    oldComplete(x);
-  }
-  return s
-}
-
-// stub the console for instance if we are running in node environment
-console.groupEnd = console.groupEnd || console.log
-console.groupCollapsed = console.groupCollapsed || console.log
-
-const mapIndexed = addIndex(map)
-const tickDurationDefault = 5
-
 /**
  * @typedef {function(*):boolean} Predicate
  */
@@ -49,8 +18,37 @@ const tickDurationDefault = 5
  * @property {!function (Array<Output>, Array<Output>), String} analyzeTestResults
  */
 /**
- * @typedef {!Object.<string, ExpectedRecord>} TestResults
+ * @typedef {!Object.<string, ExpectedRecord>} ExpectedTestResults
  */
+/**
+ * @typedef {{diagram: string, values:*}} Input
+ * only one key,value pair though
+ */
+/**
+ * @typedef {Object.<string, Input>} SourceInput
+ * only one key,value pair though
+ */
+
+// stub the console for instance if we are running in node environment
+console.groupEnd = console.groupEnd || console.log
+console.groupCollapsed = console.groupCollapsed || console.log
+
+import {
+  identity, mapObjIndexed, values, all as allR, addIndex, defaultTo,
+  reduce as reduceR, keys as keysR, drop, isNil, map, curry, __
+} from 'ramda'
+
+import {
+  isOptSinks, removeNullsFromArray, assertSignature, assertContract,
+  isString, isFunction, isArray, isUndefined, isArrayOf, isNullableObject
+} from './checks'
+
+import * as $ from 'most'
+import {last} from 'most-last'
+import {hold, sync} from 'most-subject'
+
+const mapIndexed = addIndex(map)
+const tickDurationDefault = 5
 
 //////
 // Contract and signature checking helpers
@@ -70,19 +68,29 @@ function isExpectedRecord(obj) {
   return allR(isExpectedStruct, values(obj))
 }
 
+function isStreamSource(inputStr) {
+  return !isMockSource(inputStr)
+}
+
+function isMockSource(inputStr) {
+  return inputStr.indexOf('!') > -1
+}
+
+function isValidSourceName(sourceName) {
+  if (typeof(sourceName) !== 'string') return false;
+  return !!sourceName
+}
+
 function hasTestCaseForEachSink(testCase, sinkNames) {
   const _sinkNames = drop(1, sinkNames)
-  return allR(sinkName => testCase[sinkName as any], _sinkNames)
+  return allR(sinkName => !!testCase[sinkName as any], _sinkNames)
 }
 
 //////
 // test execution helpers
 
-function analyzeTestResultsCurried(analyzeTestResultsFn, expectedResults,
-                                   successMessage) {
-  return function (actual) {
-    return analyzeTestResultsFn(actual, expectedResults, successMessage)
-  }
+function standardSubjectFactory() {
+  return sync()
 }
 
 function analyzeTestResults(testExpectedOutputs) {
@@ -100,9 +108,8 @@ function analyzeTestResults(testExpectedOutputs) {
     return sinkResults$
     // `analyzeTestResultsFn` should include `assert` which
     // throw if the test fails
-      .tap(analyzeTestResultsCurried(
-        analyzeTestResultsFn, expectedResults, successMessage
-        )
+      .tap(curry<any, any, any, any>(analyzeTestResultsFn)
+        (__, expectedResults, successMessage)
       )
   }
 }
@@ -137,15 +144,6 @@ function getTestResults(testInputs$, expected, settings) {
 }
 
 /**
- * @typedef {{diagram: string, values:*}} Input
- * only one key,value pair though
- */
-/**
- * @typedef {Object.<string, Input>} SourceInput
- * only one key,value pair though
- */
-
-/**
  *
  * @param {Number} tickNum
  * @param {Array<SourceInput>} inputs
@@ -164,18 +162,6 @@ function projectAtIndex(tickNum, inputs) {
   }, inputs)
 }
 
-function isStreamSource(inputStr) {
-  return !isMockSource(inputStr)
-}
-
-function isMockSource(inputStr) {
-  return inputStr.indexOf('!') > -1
-}
-
-function isValidSourceName(sourceName) {
-  return !!sourceName
-}
-
 function hasMock(mockedSourcesHandlers, sourceName) {
   return mockedSourcesHandlers[sourceName]
 }
@@ -185,6 +171,18 @@ function getMock(mockedSourcesHandlers, sourceName) {
 }
 
 function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
+  /**
+   * Accumulator function to be used in a reduce operation. Builds up a POJO
+   * of the shape {sources, streams} by adding new entries for both keys with:
+   * - in streams : the stream object through which the inputs will be
+   * emitted. Key is an identifier for an input stream
+   * - sources : either a stream (in that case, entry is the same as in
+   * `streams`) or an object built through the mocking mechanism. For
+   * instance, `DOM!xxxx` will result in an entry `sources: {DOM : mockedDOM}`
+   * @param accSources
+   * @param input
+   * @returns {{sources: Object.<string, Stream | *>, streams : Object.<string, Stream>}}
+   */
   function makeSources(accSources, input) {
     const inputKey = keysR(input)[0];
 
@@ -193,7 +191,7 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // Ex : 'authentication'
       // Create the subjects which will receive the input data
       /** @type {Object.<string, Stream>} */
-      accSources.sources[inputKey] = accSources.streams[inputKey] = standardSubjectFactory(inputKey)
+      accSources.sources[inputKey] = accSources.streams[inputKey] = standardSubjectFactory()
       return accSources
     }
     else if (isMockSource(inputKey)) {
@@ -217,8 +215,8 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
       // for instance: DOM!sel1@click, DOM!sel2@click
       // So the mock function should receive the current mocked object
       // and return another one
-      let stream = sourceFactory[inputKey] && sourceFactory[inputKey](inputKey)
-        || standardSubjectFactory(inputKey);
+      let stream = sourceFactory[inputKey] && sourceFactory[inputKey]()
+        || standardSubjectFactory();
       accSources.streams[inputKey] = stream
       accSources.sources[sourceName] = mock(accSources.sources[sourceName], sourceSpecs, stream)
     }
@@ -229,36 +227,95 @@ function computeSources(inputs, mockedSourcesHandlers, sourceFactory) {
     return accSources
   }
 
-  return reduceR(makeSources, {
-    sources: {},
-    streams: {}
-  }, inputs)
+  return reduceR(makeSources, {sources: {}, streams: {}}, inputs)
+}
+
+function defaultErrorHandler(err) {
+  console.error('An error occurred while executing test!', err)
 }
 
 //////
 // Main functions
 
 /**
- * Tests a function against sources' test input values and the expected
- * values defined in a test case object.
- * The function to test is executed, and its sinks collected. When there are
- * no more inputs to send through the sources, output from each sink are
- * collected in an array, then passed through a transform function.
- * That transform function can be used to remove fields, which are irrelevant
- * or non-reproducible (for instance timestamps), before comparison.
- * Actual outputs for each sink are compared against expected outputs,
- * by means of a `analyzeTestResults` function.
- * That function can throw in case of failed assertion.
+ * Tests a function which takes a collection of streams and returns a
+ * collection of streams. In the current implementation, a collection of
+ * streams refers to a hash object (POJO or Plain Old Javascript Object).
+ * The function is run on some inputs, and its output is compared against the
+ * expected values defined in a test case object.
+ *
+ * ### Test execution
+ * Input values are emitted on their respective input streams according to
+ * an order defined by the array `inputs` (rows) and the marble diagrams
+ * (columns). That order is such that the first column is emitted first, and
+ * then subsequent columns in the marble diagrams are emitted next.
+ * The time interval between column emission is configurable (`tickDuration`).
+ * When there are no more input values to emit, a configurable amount of
+ * time must lapse for the test to conclude (`waitForFinishDelay`).
+ * Output values are optionally transformed, then hashed by output streams and
+ * gathered into an output object which is compared against expected values.
+ * If there is a discrepancy between actual and expected values, an
+ * exception is raised.
+ *
+ * The testing behaviour can be configured with the following settings :
+ * - tickDuration :
+ *   - the interval between the emission of a column of inputs and the next one
+ * - waitForFinishDelay :
+ *   - the time lapse in ms after the last input is emitted, after which the
+ *   test is terminated
+ * - errorHandler :
+ *   - in case an exception is raised, the corresponding error is passed
+ *   through that error handler
+ * - mocks :
+ *   - only used if one of the input source key is of the form
+ *   x!y, where x is the source identifier, and y is called the
+ *   source qualifier
+ *   - matches a source identifier to a mock function which produces a
+ *   mocked object to be used in lieu of an input source
+ *   - for instance, `DOM!.button@click` as an entry in the `inputs`
+ *   hash MUST correspond to a `DOM` entry in the `mocks` object
+ *   - the mock function takes three parameters :
+ *     - mockedObj :
+ *       - current accumulated value of the mock object
+ *     - sourceSpecs :
+ *       - correspond to the `y` in `x!y`
+ *     - stream :
+ *       - subject which is produced by the matching factory
+ * - sourceFactory :
+ *   - entries whose keys are of the form `x!y` where `x` is the
+ *   identifier for the corresponding source stream, and `y` is the
+ *   qualifier for that same source. That key is matched to a function
+ *   which takes no parameter and returns a stream to be used to emit
+ *   input values (hence MUST be a subject).
  *
  * @param {Array<SourceInput>} inputs
- * @param {TestResults} expected Object which contains all the relevant data
- * relevant to the test case : expected outputs, test message,
- * comparison function, output transformation, etc.
+ * Inputs are passed in the form of an array
+ * - Each element of the array is a POJO which exactly ONE key which is the
+ * identifier for the tested function's corresponding input stream
+ *   - Input values for a given input streams are passed using the marble
+ *   diagram syntax
+ * @param {ExpectedTestResults} expected Object whose key correspond to
+ * an output stream identifier, matched to an object containing the
+ * data relevant to the test case :
+ *   - outputs : array of expected values emitted by the output stream
+ *   - successMessage : description of the test being performed
+ *   TODO : factor out analyzeTestResults to settings - always same function
+ *   - analyzeTestResults : function which receives the actual, expected,
+ *   and test messages information. It MUST raise an exception if the test
+ *   fails. Typically this function fulfills the same function as the usual
+ *   `assert.equal(actual, expected, message)`.
+ *   TODO : refactor tranformFN to transform
+ *   - transformFn : function which transforms the actual outputs from a stream.
+ *   That transform function can be used to remove fields, which are irrelevant
+ *   or non-reproducible (for instance timestamps), before comparison.
+ *
+ *   ALL output streams returned by the tested function must have defined
+ *   expected results, otherwise an exception will be thrown
  * @param {function(Sources):Sinks} testFn Function to test
- * @param {{timeUnit: Number, waitForFinishDelay: Number}} settings
+ * @param {{tickDuration: Number, waitForFinishDelay: Number}} _settings
  * @throws
  */
-function runTestScenario(inputs, expected, testFn, settings) {
+function runTestScenario(inputs, expected, testFn, _settings) {
   assertSignature('runTestScenario', arguments, [
     {inputs: isArrayOf(isSourceInput)},
     {testCase: isExpectedRecord},
@@ -267,20 +324,16 @@ function runTestScenario(inputs, expected, testFn, settings) {
   ])
 
   // Set default values if any
-  const defaultErrorHandler = function (err) {
-    console.error('An error occurred while executing test!', err)
-  }
-
-  settings = settings || {}
-  const mockedSourcesHandlers = settings.mocks || {}
-  const sourceFactory = settings.sourceFactory || {}
-  const errorHandler = settings.errorHandler || defaultErrorHandler;
-  const tickDuration = settings.tickDuration
-    ? settings.tickDuration
-    : tickDurationDefault
+  const settings = defaultTo({}, _settings);
+  const {mocks, _sourceFactory, _errorHandler, _tickDuration} = settings;
+  const mockedSourcesHandlers = defaultTo({}, mocks)
+  // TODO: add contract: for each key in sourceFactory, there MUST be the
+  // same key in `inputs` : this avoids error by omission
+  const sourceFactory = defaultTo({}, _sourceFactory)
+  const errorHandler = defaultTo(defaultErrorHandler, _errorHandler)
+  const tickDuration = defaultTo(tickDurationDefault, _tickDuration)
 
   // @type {{sources: Object.<string, *>, streams: Object.<string, Stream>}}
-
   let sourcesStruct = computeSources(inputs, mockedSourcesHandlers, sourceFactory);
 
   // Maximum length of input diagram strings
@@ -292,67 +345,66 @@ function runTestScenario(inputs, expected, testFn, settings) {
     map(sourceInput => (values(sourceInput)[0] as any).diagram.length, inputs)
   )
 
+  // Make an index array [0..maxLen[ for iteration purposes
   /** @type {Array<Number>} */
-    // Make an index array [0..maxLen] for iteration purposes
   const indexRange = mapIndexed((input, index) => index, new Array(maxLen))
 
-  /** @type Stream<Null>*/
-    // Make a single chained observable which :
-    // - waits some delay before starting to emit
-    // - then for n in [0..maxLen]
-    //   - emits the m values in position n in the input diagram, in `inputs`
-    // array order, `m` being the number of input sources
-    // wait for that emission to finish before nexting (`concat`)
-    // That way we ENSURE that :
-    // -a--
-    // -b--     if a and b are in the same vertical (emission time), they
-    // will always be emitted in the same order in every execution of the
-    // test scenario
-    // -a-
-    // b--      values that are chronologically further in the diagram will
-    // always be emitted later
-    // This allows to have predictable and consistent data when analyzing
-    // test results. That was not the case when using the `setTimeOut`
-    // scheduler to handle delays.
+  // Make a single chained observable which :
+  // - waits some delay before starting to emit
+  // - then for n in [0..maxLen[
+  //   - emits the m values in position n in the input diagram, in `inputs`
+  // array order, `m` being the number of input sources
+  // wait for that emission to finish before nexting (`concat`)
+  // That way we ENSURE that :
+  // -a--
+  // -b--     if a and b are in the same vertical (emission time), they
+  // will always be emitted in the same order in every execution of the
+  // test scenario
+  // -a-
+  // b--      values that are chronologically further in the diagram will
+  // always be emitted later
+  // This allows to have predictable and consistent data when analyzing
+  // test results. That was not the case when using the `setTimeOut`
+  // scheduler to handle delays.
   const testInputs$ = reduceR(function makeInputs$(accEmitInputs$, tickNo) {
-      return accEmitInputs$
-        .delay(tickDuration)
-        .concat(
-          $.from(projectAtIndex(tickNo, inputs))
-            .tap(function emitInputs(sourceInput) {
-              // input :: {sourceName : {{diagram : char, values: Array<*>}}
-              const sourceName = keysR(sourceInput)[0]
-              const input = sourceInput[sourceName]
-              const c = input.diagram
-              const values = input.values || {}
-              const sourceSubject = sourcesStruct.streams[sourceName]
-              const errorVal = (values && values['#']) || '#'
+    return accEmitInputs$
+      .delay(tickDuration)
+      .concat(
+        $.from(projectAtIndex(tickNo, inputs))
+          .tap(function emitInputs(sourceInput) {
+            // input :: {sourceName : {{diagram : char, values: Array<*>}}
+            const sourceName = keysR(sourceInput)[0]
+            const input = sourceInput[sourceName]
+            const c = input.diagram
+            const values = input.values || {}
+            const sourceSubject = sourcesStruct.streams[sourceName]
+            const errorVal = (values && values['#']) || '#'
 
-              if (c) {
-                // case when the diagram for that particular source is
-                // finished but other sources might still go on
-                // In any case, there is nothing to emit
-                switch (c) {
-                  case '-':
-                    // do nothing
-                    break;
-                  case '#':
-                    sourceSubject.error({data: errorVal})
-                    break;
-                  case '|':
-                    sourceSubject.complete()
-                    break;
-                  default:
-                    const val = values.hasOwnProperty(c) ? values[c] : c;
-                    console.log('emitting for source ' + sourceName + ' ' + val)
-                    sourceSubject.next(val)
-                    break;
-                }
+            if (c) {
+              // case when the diagram for that particular source is
+              // finished but other sources might still go on
+              // In any case, there is nothing to emit
+              switch (c) {
+                case '-':
+                  // do nothing
+                  break;
+                case '#':
+                  sourceSubject.error({data: errorVal})
+                  break;
+                case '|':
+                  sourceSubject.complete()
+                  break;
+                default:
+                  const val = values.hasOwnProperty(c) ? values[c] : c;
+                  console.log('emitting for source ' + sourceName + ' ' + val)
+                  sourceSubject.next(val)
+                  break;
               }
-            })
-        )
-    }, $.empty(), indexRange)
-      .multicast()
+            }
+          })
+      )
+  }, $.empty(), indexRange)
+    .multicast()
 
   // Execute the function to be tested (for example a cycle component)
   // with the source subjects
@@ -364,15 +416,16 @@ function runTestScenario(inputs, expected, testFn, settings) {
     throw 'encountered a sink which is not an observable!'
   }
 
+  // Gather the results in an array for easier processing
   /** @type {Object.<string, Stream<Array<Output>>>} */
-    // Gather the results in an array for easier processing
   const sinksResults = mapObjIndexed(
     getTestResults(testInputs$, expected, settings),
     testSinks
-    )
+  )
 
   assertContract(hasTestCaseForEachSink, [expected, keysR(sinksResults)],
-    'runTestScenario : in test Case, could not find test inputs for all sinks!'
+    'runTestScenario : in test Case, could not find expected ouputs for all' +
+    ' sinks!'
   )
 
   // Side-effect : execute `analyzeTestResults` function which

@@ -14,9 +14,10 @@ function plan(n) {
 }
 
 describe("When inputs are simulating regular stream behaviour", () => {
-  it('emits the inputs in order of (i,j) where i is the (row) index of the' +
-    ' source in the input array, and j is the (column) index of the' +
-    ' emitted input value in the source diagram', (done) => {
+  it(`emits the inputs in increasing order of (i,j), where : 
+   - i is the (row) index of the source in the input array
+   - j is the (column) index of the emitted input value in the source diagram
+   - where (2,1) < (1,2)`, (done) => {
     const assertAsync = plan(3)
 
     function analyzeTestResults(actual, expected, message) {
@@ -29,7 +30,7 @@ describe("When inputs are simulating regular stream behaviour", () => {
       {b: {diagram: 'xyz|', values: {x: 'b-0', y: 'b-1', z: 'b-2'}}},
     ]
 
-    /** @type TestResults */
+    /** @type ExpectedTestResults */
     const expected = {
       m: {
         outputs: ['m-a-0', 'm-b-0', 'm-a-1', 'm-b-1', 'm-b-2'],
@@ -123,7 +124,7 @@ describe("When inputs are simulating an object", () => {
       }
     }
 
-    /** @type TestResults */
+    /** @type ExpectedTestResults */
     const expected = {
       m: {
         outputs: ['m-a-0', 'm-a-1'],
@@ -161,10 +162,10 @@ describe("When inputs are simulating an object", () => {
   })
 })
 
-describe("When inputs are simulating an object, AND there is a factory" +
-  " defined for the source", () => {
+describe("When inputs are simulating an object, AND there is a mock" +
+  " associated to that object", () => {
   it('constructs the object according to the mock handler, constructs the' +
-    ' source with the source factory and emits the input values through that',
+    ' sources with the source factory and emits the input values through that',
     (done) => {
       const assertAsync = plan(3)
 
@@ -224,7 +225,7 @@ describe("When inputs are simulating an object, AND there is a factory" +
         }
       }
 
-      /** @type TestResults */
+      /** @type ExpectedTestResults */
       const expected = {
         m: {
           outputs: ['m-a-0', 'm-a-1'],
@@ -253,7 +254,8 @@ describe("When inputs are simulating an object, AND there is a factory" +
           DOM: makeMockDOMSource
         },
         sourceFactory: {
-          DOM: () => hold(1, sync())
+          'DOM!input@click': () => sync(),
+          'DOM!a@hover' : () => sync(),
         },
         errorHandler: function (err) {
           done(err)
