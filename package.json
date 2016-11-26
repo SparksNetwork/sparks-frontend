@@ -80,7 +80,7 @@
     "@motorcycle/dom": "^3.3.0",
     "@motorcycle/firebase": "^1.0.0",
     "@motorcycle/history": "^3.0.0",
-    "@motorcycle/router": "^3.0.0",
+    "@motorcycle/router": "^3.1.0",
     "firebase": "^3.6.1",
     "most": "^1.1.0",
     "ramda": "^0.22.1",
