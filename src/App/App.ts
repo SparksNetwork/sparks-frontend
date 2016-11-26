@@ -1,9 +1,9 @@
 import { Stream, never } from 'most';
 import { VNode } from '@motorcycle/dom';
-import { RouterInput } from '@motorcycle/router';
+import { RouterInput, Router } from '@motorcycle/router';
 
 import { AuthenticationType } from '../drivers/firebase-authentication';
-import { Router, switchMap } from '../helpers';
+import { switchMap } from '../helpers';
 import { routes } from './routes';
 import { AppSources, AppSinks } from './types';
 
