@@ -26,7 +26,7 @@
   },
   "scripts": {
     "clean": "rimraf dist/bundle* tests/.tmp .tmp .screens report",
-    "start": "ts-node ./node_modules/.bin/webpack-dev-server --config .config/webpack.config.ts",
+    "start": "npm run copy && ts-node ./node_modules/.bin/webpack-dev-server --config .config/webpack.config.ts",
     "serve": "npm start",
     "serve-static": "pushstate-server dist 8080",
     "test:lint": "tslint src/*.ts src/**/*.ts src/**/**/*.ts src/**/**/**/*.ts src/**/**/**/**/*.ts",
@@ -36,8 +36,9 @@
     "test": "npm run test:lint && npm run test:unit && npm run test:int && npm run clean",
     "connect": "sc-run --id ${TRAVIS_JOB_NUMBER} --",
     "sauce": "npm run build:e2e && cross-env TS_NODE_PROJECT=tests/tsconfig.json ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --env chrome51",
+    "copy": "rimraf dist && mkdirp dist &&  cp src/service-worker.js dist/sw.js && cp -rf images/ dist/images",
     "build:e2e": "npm run clean && tsc -P tests/tsconfig.json",
-    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts",
+    "build": "npm run copy && ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts",
     "commit": "git-cz"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "cz-conventional-changelog": "^1.2.0",
     "ghooks": "^1.3.2",
     "image-webpack-loader": "^3.0.0",
+    "mkdirp": "^0.5.1",
     "mocha": "^3.1.2",
     "mocha-webpack": "^0.7.0",
     "nightwatch": "^0.9.9",

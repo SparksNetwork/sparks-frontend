@@ -35,3 +35,13 @@ run<AppSources, AppSinks>(App, {
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase),
 });
+
+if ('serviceWorker' in navigator) {
+  (navigator as any).serviceWorker.register('/sw.js').then(function (registration: any) {
+    // Registration was successful
+    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+  }).catch(function (err: Error) {
+    // registration failed :(
+    console.log('ServiceWorker registration failed: ', err);
+  });
+}
