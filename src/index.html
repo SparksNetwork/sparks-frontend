@@ -11,17 +11,68 @@
       font-family: 'Roboto', 'Noto', sans-serif;
       font-size: 13px;
       line-height: 1.5;
-      min-height: 100vh; }
+      min-height: 100vh;
+      background-color: #eeeeee;
+    }
+
+    #loading {
+      margin: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #loading h2 {
+      text-align: center;
+      color: #4a1f50;
+    }
+
+    #loading #container {
+      flex-grow: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    #loading img {
+      width: 30%;
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+      }
+      100% {
+        -webkit-transform: rotate(-360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(-360deg);  /* IE 9 */
+        transform: rotate(-360deg);  /* Firefox 16+, IE 10+, Opera */
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <div id="sparks-app" class="unresolved">
-    <div>sparks<span>.network<span></div>
+    <div id="loading">
+      <h2>Sparks<span>.Network<span></h2>
+      <div id="container">
+        <img src="/images/logo.svg"></img>
+      </div>
+    </div>
   </div>
 
   <script>window.performance && performance.mark && performance.mark('index.html')</script>
+  <script src="/vendor.js"></script>
   <script src="/screens.js"></script>
   <script src="/app.js"></script>
   <!--

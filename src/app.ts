@@ -33,5 +33,5 @@ firebase.initializeApp(Sparks.firebase);
 run<AppSources, AppSinks>(App, {
   dom: makeDOMDriver('#sparks-app') as DriverFn,
   router: makeRouterDriver(),
-  authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
+  authentication$: makeFirebaseAuthenticationDriver(firebase),
 });

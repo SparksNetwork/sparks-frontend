@@ -23,7 +23,7 @@ const Sparks = {
 
 const basePlugins = [
   new webpack.DefinePlugin({ Sparks }),
-  new webpack.optimize.CommonsChunkPlugin({ name: 'screens', filename: 'screens.js' }),
+  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js' }),
 ];
 
 const prodPlugins = [
@@ -69,7 +69,19 @@ const config: webpack.Configuration = {
   entry: {
     app: path.join(srcPath, 'app.ts'),
     screens: [
-      path.join(srcPath, 'screens/index.ts'),
+      path.join(srcPath, 'screens/Home/index.ts'),
+    ],
+    vendor: [
+      '@most/create',
+      '@most/hold',
+      '@motorcycle/core',
+      '@motorcycle/dom',
+      '@motorcycle/firebase',
+      '@motorcycle/history',
+      '@motorcycle/router',
+      'firebase',
+      'most',
+      'ramda',
     ],
   },
 
