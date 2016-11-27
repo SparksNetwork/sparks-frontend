@@ -67,20 +67,15 @@ const config: webpack.Configuration = {
   devtool: process.env.BUILD_ENV === DEV ? 'source-map' : '',
 
   entry: {
-    app: path.join(srcPath, 'app.ts'),
-    screens: [
-      path.join(srcPath, 'screens/Home/index.ts'),
+    app: [
+      'app.ts',
+      'screens/',
     ],
     vendor: [
-      '@most/create',
-      '@most/hold',
+      'most',
       '@motorcycle/core',
       '@motorcycle/dom',
-      '@motorcycle/firebase',
-      '@motorcycle/history',
       '@motorcycle/router',
-      'firebase',
-      'most',
       'ramda',
     ],
   },
@@ -118,6 +113,10 @@ const config: webpack.Configuration = {
     alias: {
       assets: assetsPath,
     },
+    modules: [
+      srcPath,
+      'node_modules',
+    ],
   } as any,
 };
 
