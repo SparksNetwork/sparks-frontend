@@ -9,6 +9,9 @@ import {
 } from '../../drivers/firebase-authentication';
 import firebase = require('firebase');
 
+const googleIcon = require('assets/images/google.svg');
+const facebookIcon = require('assets/images/facebook.svg');
+
 const redirectResultAuthenticationType: AuthenticationType =
   { method: GET_REDIRECT_RESULT };
 
@@ -64,13 +67,13 @@ function view() {
               props: { type: 'button' },
             },
             [
-              img('.c-btn-federated__icon', { props: { src: '' } }),
+              img('.c-btn-federated__icon', { props: { src: googleIcon } }),
               span('.c-btn-federated__text', 'Sign in with Google'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', { props: { src: '' } }),
+              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
