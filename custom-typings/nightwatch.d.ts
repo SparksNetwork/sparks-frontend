@@ -5,7 +5,8 @@
 declare module 'nightwatch' {
   export interface PageObjects {
   }
-  export interface NightWatchCustomAsserions {
+
+  export interface NightWatchCustomAssertions {
   }
 
   export interface NightWatchCustomPageObjects {
