@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 const srcPath = path.resolve('./src');
-const assetsPath = path.resolve('./assets');
+const assetsPath = path.resolve('./node_modules/sparks-design-system/src/assets');
 
 const DEV = 'development';
 
