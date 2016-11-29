@@ -30,6 +30,7 @@
   },
   "include": [
     "../custom-typings/*.d.ts",
+    "./page-objects/**/*.ts",
     "./e2e/*.ts"
   ]
 }
