@@ -1,13 +1,22 @@
 import { Stream } from 'most';
 import { run, DriverFn } from '@motorcycle/core';
 import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
-import { makeRouterDriver, RouterSource, RouterDefinitions, RouterSources } from '@motorcycle/router'
-import { HistoryInput, Pathname } from '@motorcycle/history'
-import { Authentication, AuthenticationType, makeFirebaseAuthenticationDriver } from './drivers/firebase-authentication'
+import {
+  makeRouterDriver,
+  RouterSource,
+  RouterDefinitions,
+  RouterSources,
+} from '@motorcycle/router';
+import { HistoryInput, Pathname } from '@motorcycle/history';
+import {
+  Authentication,
+  AuthenticationType,
+  makeFirebaseAuthenticationDriver,
+} from './drivers/firebase-authentication';
 
-import firebase = require('firebase')
+import firebase = require('firebase');
 declare const Sparks: any;
-firebase.initializeApp(Sparks.firebase)
+firebase.initializeApp(Sparks.firebase);
 
 require('./style.scss');
 
@@ -23,16 +32,16 @@ export interface MainSinks {
   authentication$: Stream<AuthenticationType>;
 }
 
-import { main } from './main'
+import { main } from './main';
 
 export function Routing(
-    definitions: RouterDefinitions<MainSources,MainSinks>,
-    sources: RouterSources<any>,
-  ) : Stream<MainSinks> {
+  definitions: RouterDefinitions<MainSources, MainSinks>,
+  sources: RouterSources<any>,
+): Stream<MainSinks> {
   return sources.router.define(definitions)
-    .map(({path, value} : {path:string, value:any}) =>
-      value({...sources, router: sources.router.path(path)})
-    )
+    .map(({path, value}: { path: string, value: any }) =>
+      value({ ...sources, router: sources.router.path(path) }),
+    );
 }
 
 run<MainSources, MainSinks>(main, {
