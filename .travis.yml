@@ -1,8 +1,11 @@
 language: node_js
 node_js:
 - 6
-before_script: patch -p0 < .config/awesome-typescript-loader.patch
-before_deploy: npm run build:prod
+cache:
+  yarn: true
+  directories:
+    - node_modules
+before_deploy: yarn run build:prod
 deploy:
   provider: s3
   bucket: access.sparks.network
