@@ -17,7 +17,7 @@ describe("When inputs are simulating regular stream behaviour", () => {
   it(`emits the inputs in increasing order of (i,j), where : 
    - i is the (row) index of the source in the input array
    - j is the (column) index of the emitted input value in the source diagram
-   - where (2,1) < (1,2)`, (done) => {
+   - (2,1) < (1,2)`, (done) => {
     const assertAsync = plan(3)
 
     function analyzeTestResults(actual, expected, message) {

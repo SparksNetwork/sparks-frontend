@@ -259,9 +259,10 @@ function defaultErrorHandler(err) {
  *
  * The testing behaviour can be configured with the following settings :
  * - tickDuration :
- *   - the interval between the emission of a column of inputs and the next one
+ *   - the interval (ms) between the emission of a column of inputs and the
+ *   next one
  * - waitForFinishDelay :
- *   - the time lapse in ms after the last input is emitted, after which the
+ *   - the time lapse (ms) after the last input is emitted, after which the
  *   test is terminated
  * - errorHandler :
  *   - in case an exception is raised, the corresponding error is passed

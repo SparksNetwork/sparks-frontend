@@ -12,7 +12,8 @@ A user received an email with a link which allows him to reset its password. Tha
 - The password resetting occurs in three stages:
   1. The code is checked against the user database
   2. A reset password request is issued to the user repository
-  3. The user is logged-in automatically and redirected to the dashboard screen
+  3. The user is logged-in automatically and redirected to `postLogIn`
+  route
 
 - Each stage can be comprised of one or several operations which might fail or succeed. The `resetPasswordFeedback` area should informed the user of the latest information of relevance on the operations in process.
 
@@ -27,6 +28,9 @@ navigates to the `forgotPassword` screen
 # Pending issues
 - english version of feedback messages for the `resetPasswordFeedback`.
 - visual design
-- design : when navigating to another page (in case of unrecoverable error), 
-ok to do message + delay + navigation?
+  - layout
+  - behaviours : 
+    - error feedback to user
+    - when navigating to another page (in case of unrecoverable error), ok to do message + delay + navigation?
+- `postLogIn` route to specify
 - TECHNICAL : firebase repository has to be configured (email template and email link format)
