@@ -1,10 +1,10 @@
-import { Stream, just, startWith, constant, merge } from 'most';
+import { Stream, just, merge } from 'most';
 import { Pathname } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
-  redirectResultAuthenticationType,
+  redirectAuthAction,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
@@ -23,16 +23,14 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const googleAuth$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(googleRedirectAuthentication, googleClick$));
+    redirectAuthAction(googleRedirectAuthentication, googleClick$)
 
   const facebookClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--facebook').events('click')
       .tap(evt => evt.preventDefault());
 
   const facebookAuth$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(facebookRedirectAuthentication, facebookClick$));
+    redirectAuthAction(facebookRedirectAuthentication, facebookClick$)
 
   return {
     dom: just(view()),

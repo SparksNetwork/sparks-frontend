@@ -1,10 +1,10 @@
-import { Stream, just, startWith, constant } from 'most';
+import { Stream, just } from 'most';
 import { Pathname } from '@motorcycle/history';
 import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
-  redirectResultAuthenticationType,
+  redirectAuthAction,
   googleRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
 
@@ -22,8 +22,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const authentication$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(googleRedirectAuthentication, googleClick$));
+    redirectAuthAction(googleRedirectAuthentication, googleClick$)
 
   return {
     dom: just(view()),
