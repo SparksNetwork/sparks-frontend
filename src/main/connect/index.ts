@@ -23,14 +23,14 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const googleAuth$: Stream<AuthenticationType> =
-    redirectAuthAction(googleRedirectAuthentication, googleClick$)
+    redirectAuthAction(googleRedirectAuthentication, googleClick$);
 
   const facebookClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--facebook').events('click')
       .tap(evt => evt.preventDefault());
 
   const facebookAuth$: Stream<AuthenticationType> =
-    redirectAuthAction(facebookRedirectAuthentication, facebookClick$)
+    redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
 
   return {
     dom: just(view()),

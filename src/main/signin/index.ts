@@ -22,7 +22,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const authentication$: Stream<AuthenticationType> =
-    redirectAuthAction(googleRedirectAuthentication, googleClick$)
+    redirectAuthAction(googleRedirectAuthentication, googleClick$);
 
   return {
     dom: just(view()),

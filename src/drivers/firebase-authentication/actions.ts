@@ -42,5 +42,5 @@ export const facebookRedirectAuthentication: AuthenticationType =
 
 export function redirectAuthAction(authType: AuthenticationType, click$: Stream<Event>) {
   return startWith(redirectResultAuthenticationType,
-    constant(authType, click$))
+    constant(authType, click$));
 }
