@@ -56,3 +56,19 @@ export type Authentication = {
   error: AuthenticationError | null;
   userCredential: firebase.auth.UserCredential;
 };
+
+export const redirectResultAuthenticationType: AuthenticationType =
+  { method: GET_REDIRECT_RESULT };
+
+export const googleRedirectAuthentication: AuthenticationType =
+  {
+    method: REDIRECT,
+    provider: new firebase.auth.GoogleAuthProvider(),
+  };
+
+export const facebookRedirectAuthentication: AuthenticationType =
+  {
+    method: REDIRECT,
+    provider: new firebase.auth.FacebookAuthProvider(),
+  };
+
