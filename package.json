@@ -80,6 +80,7 @@
     "@motorcycle/dom": "^4.2.0",
     "@motorcycle/history": "^3.0.0",
     "@motorcycle/router": "^3.1.0",
+    "firebase": "^3.6.3",
     "most": "^1.1.1",
     "ramda": "^0.22.1",
     "sparks-design-system": "^0.8.0"
