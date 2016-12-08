@@ -40,7 +40,7 @@ export const facebookRedirectAuthentication: AuthenticationType =
     provider: new firebase.auth.FacebookAuthProvider(),
   };
 
-export function redirectAuthAction(authType: AuthenticationType, click$: Stream<Event>) {
+export function redirectAuthAction(authType: AuthenticationType, click$: Stream<any>) {
   return startWith(redirectResultAuthenticationType,
     constant(authType, click$));
 }
