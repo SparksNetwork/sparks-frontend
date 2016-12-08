@@ -1,31 +1,16 @@
-import { Stream, just, startWith, constant, merge } from 'most';
+import { Stream, just, merge } from 'most';
 import { Pathname } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
-  REDIRECT,
-  GET_REDIRECT_RESULT,
   AuthenticationType,
+  redirectAuthAction,
+  googleRedirectAuthentication,
+  facebookRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
-import firebase = require('firebase');
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
-
-const redirectResultAuthenticationType: AuthenticationType =
-  { method: GET_REDIRECT_RESULT };
-
-const googleRedirectAuthentication: AuthenticationType =
-  {
-    method: REDIRECT,
-    provider: new firebase.auth.GoogleAuthProvider(),
-  };
-
-const facebookRedirectAuthentication: AuthenticationType =
-  {
-    method: REDIRECT,
-    provider: new firebase.auth.FacebookAuthProvider(),
-  };
 
 export function ConnectScreen(sources: MainSources): MainSinks {
   const router: Stream<Pathname> =
@@ -38,16 +23,14 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const googleAuth$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(googleRedirectAuthentication, googleClick$));
+    redirectAuthAction(googleRedirectAuthentication, googleClick$);
 
   const facebookClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--facebook').events('click')
       .tap(evt => evt.preventDefault());
 
   const facebookAuth$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(facebookRedirectAuthentication, facebookClick$));
+    redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
 
   return {
     dom: just(view()),

@@ -1,25 +1,15 @@
-import { Stream, just, startWith, constant } from 'most';
+import { Stream, just } from 'most';
 import { Pathname } from '@motorcycle/history';
 import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
-  REDIRECT,
-  GET_REDIRECT_RESULT,
   AuthenticationType,
+  redirectAuthAction,
+  googleRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
-import firebase = require('firebase');
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
-
-const redirectResultAuthenticationType: AuthenticationType =
-  { method: GET_REDIRECT_RESULT };
-
-const googleRedirectAuthentication: AuthenticationType =
-  {
-    method: REDIRECT,
-    provider: new firebase.auth.GoogleAuthProvider(),
-  };
 
 export function SignInScreen(sources: MainSources): MainSinks {
   const router: Stream<Pathname> =
@@ -32,8 +22,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const authentication$: Stream<AuthenticationType> =
-    startWith(redirectResultAuthenticationType,
-      constant(googleRedirectAuthentication, googleClick$));
+    redirectAuthAction(googleRedirectAuthentication, googleClick$);
 
   return {
     dom: just(view()),
