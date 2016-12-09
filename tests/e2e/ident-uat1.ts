@@ -14,8 +14,8 @@ export = {
       .waitForElementPresent('#Passwd', 1000)
       .setValue('#Passwd', process.env.GOOGLE_TEST_EMAIL_PASSWORD)
       .click('#signIn')
-      .waitForElementPresent('#page', 1000)
-      .assert.urlContains('/connect')
+      .waitForElementPresent('#user-email', 2000)
+      .assert.containsText('#user-email', process.env.GOOGLE_TEST_EMAIL)
       .end();
   },
 };
