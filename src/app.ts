@@ -1,5 +1,7 @@
-import { Stream } from 'most';
-import { run, DriverFn } from '@motorcycle/core';
+import { Stream, map, skipRepeats } from 'most';
+import hold from '@most/hold';
+import { path } from 'ramda';
+import { run, DriverFn, Component } from '@motorcycle/core';
 import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
 import {
   makeRouterDriver,
@@ -24,6 +26,7 @@ export interface MainSources {
   dom: DOMSource;
   router: RouterSource;
   authentication$: Stream<Authentication>;
+  isAuthenticated$: Stream<boolean>;
 }
 
 export interface MainSinks {
@@ -44,8 +47,21 @@ export function Routing(
     );
 }
 
-run<MainSources, MainSinks>(main, {
+run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
   dom: makeDOMDriver('#app') as DriverFn,
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
 });
+
+function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {
+  return function augmentedComponent(sources: MainSources): MainSinks {
+    const isAuthenticated$: Stream<boolean> =
+      hold(skipRepeats(map(isAuthenticated, sources.authentication$)));
+
+    return main({ ...sources, isAuthenticated$ });
+  };
+};
+
+function isAuthenticated(auth: Authentication): boolean {
+  return !!path(['userCredential', 'user'], auth);
+}
