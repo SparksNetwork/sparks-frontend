@@ -32,6 +32,8 @@ function toUserEmail(user: firebase.User | null): string {
 
 function view(userEmail: string) {
   return div({}, [
-    p({}, [ `You are currently logged in as: ${userEmail}` ]),
+    p([ `You are currently logged in as: `,
+      p('#user-email', `${userEmail}`),
+    ]),
   ]);
 }
