@@ -14,6 +14,11 @@ import {
   makeFirebaseAuthenticationDriver,
 } from './drivers/firebase-authentication';
 
+import {
+  makeFirebaseUserDriver,
+  FirebaseUserChange,
+} from './drivers/firebase-user';
+
 import firebase = require('firebase');
 declare const Sparks: any;
 firebase.initializeApp(Sparks.firebase);
@@ -24,6 +29,7 @@ export interface MainSources {
   dom: DOMSource;
   router: RouterSource;
   authentication$: Stream<Authentication>;
+  user$: Stream<FirebaseUserChange>;
 }
 
 export interface MainSinks {
@@ -44,8 +50,12 @@ export function Routing(
     );
 }
 
+const auth = firebase.auth();
+const onAuthStateChanged = auth.onAuthStateChanged.bind(auth);
+
 run<MainSources, MainSinks>(main, {
   dom: makeDOMDriver('#app') as DriverFn,
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
+  user$: makeFirebaseUserDriver(onAuthStateChanged) as DriverFn,
 });
