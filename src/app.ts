@@ -1,6 +1,5 @@
 import { Stream, map, skipRepeats } from 'most';
 import hold from '@most/hold';
-import { path } from 'ramda';
 import { run, DriverFn, Component } from '@motorcycle/core';
 import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
 import {
