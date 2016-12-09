@@ -66,12 +66,12 @@ run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
 function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {
   return function augmentedComponent(sources: MainSources): MainSinks {
     const isAuthenticated$: Stream<boolean> =
-      hold(skipRepeats(map(isAuthenticated, sources.authentication$)));
+      hold(skipRepeats(map(isAuthenticated, sources.user$)));
 
     return main({ ...sources, isAuthenticated$ });
   };
 };
 
-function isAuthenticated(authentication: Authentication): boolean {
-  return !!path(['userCredential', 'user'], authentication);
+function isAuthenticated(user: firebase.User | null): boolean {
+  return !!user;
 }

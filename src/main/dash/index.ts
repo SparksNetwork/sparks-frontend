@@ -1,18 +1,12 @@
 import { Stream, never, map } from 'most';
-import { path, propOr } from 'ramda';
+import { propOr } from 'ramda';
 import { div, p } from '@motorcycle/dom';
 import firebase = require('firebase');
 import { MainSinks, MainSources } from '../../app';
-import { Authentication } from '../../drivers/firebase-authentication';
 
 export function Dash(sources: MainSources): MainSinks {
-  const { authentication$ } = sources;
-
-  const user$: Stream<firebase.User | null> =
-    map<Authentication, firebase.User | null>(path(['userCredential', 'user']), authentication$);
-
   const userEmail$: Stream<string> =
-    map<firebase.User | null, string>(toUserEmail, user$);
+    map<firebase.User | null, string>(toUserEmail, sources.user$);
 
   const view$ = userEmail$.map(view);
 
