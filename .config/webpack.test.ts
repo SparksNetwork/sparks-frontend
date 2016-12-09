@@ -35,7 +35,7 @@ const plugins = process.env.BUILD_ENV === DEV
 
 const TSLoader = {
   test: /\.ts$/,
-  loader: 'awesome-typescript-loader',
+  loader: 'ts-loader',
   exclude: /node_modules/,
 };
 

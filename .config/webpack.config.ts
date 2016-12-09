@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 const srcPath = path.resolve('./src');
-const assetsPath = path.resolve('./node_modules/sparks-design-system/src/assets');
+const assetsPath = path.join(__dirname, '../node_modules/sparks-design-system/src/assets');
 
 const DEV = 'development';
 
@@ -36,7 +36,7 @@ const plugins = process.env.BUILD_ENV === DEV
 
 const TSLoader = {
   test: /\.ts$/,
-  loader: 'awesome-typescript-loader',
+  loader: 'ts-loader',
   exclude: /node_modules/,
 };
 
