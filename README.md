@@ -32,6 +32,15 @@ All files ending with `.int-test.ts` are integration tests for files of the
 same corresponding name (neighbor). Integration is abbreviated as _int_ to
 avoid common typos.
 
+## End to End tests
+
+You can run end to end tests using the command `npm run test:e2e`.
+
+If you need to run only 1 of the tests you can use
+```sh
+npm run test:e2e -- --test ./test/.tmp/e2e/name-of-test-file-name.js
+```
+
 ## Environment Variables
 
 The current environment variables that the application needs in order to run.
@@ -42,13 +51,13 @@ These variables can be found by clicking "Add Firebase to your web app" on
 the overview of your firebase application page.
 
 - **FIREBASE_DATABASE_URL**
-  - URL the point to your Firbase database usually looks like https://*application-name*.firebaseio.com
+  - URL the point to your Firbase database. Usually looks like https://*application-name*.firebaseio.com
 - **FIREBASE_API_KEY**
   - Unique API key from Firebase.
 - **FIREBASE_AUTH_DOMAIN**
-  - Where Firebase communicates to various authentication endpoints from usually looking like *application-name*.firebaseapp.com
+  - Where Firebase communicates to various authentication endpoints. Usually looks like *application-name*.firebaseapp.com
 - **FIREBASE_STORAGE_BUCKET**
-  - Where your Firebase Storage is location usually looks like *application-name*.appspot.com
+  - Where your Firebase Storage is located. Usually looks like *application-name*.appspot.com
 - **FIREBASE_MESSAGING_SENDER_ID**
   - A unique key firebase uses to associate push notifications to your application.
 
