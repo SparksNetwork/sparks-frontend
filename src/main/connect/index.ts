@@ -16,7 +16,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const router: Stream<Pathname> =
     sources.dom.select('a').events('click')
       .tap(evt => evt.preventDefault())
-      .map(() => '/');
+      .map(ev => (ev.target as HTMLAnchorElement).pathname);
 
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--google').events('click')
@@ -84,7 +84,7 @@ function view() {
           ]),
         ]),
         div([
-          a({ props: { href: '/sign-up' } }, 'New to Sparks.Network? Sign up'),
+          a({ props: { href: '/signin' } }, 'New to Sparks.Network? Sign up'),
         ]),
       ]),
     ]),
