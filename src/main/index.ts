@@ -5,11 +5,13 @@ import { Routing, MainSources, MainSinks } from '../app';
 
 import { ConnectScreen } from './connect';
 import { SignInScreen } from './signin';
+import { Dash } from './dash';
 
 export function main(sources: MainSources): MainSinks {
   const sinks$: Stream<MainSinks> =
     Routing({
       '/': Screen,
+      '/dash': Dash,
       '/connect': ConnectScreen,
       '/signin': SignInScreen,
     }, sources);
