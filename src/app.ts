@@ -16,6 +16,11 @@ import {
   makeFirebaseAuthenticationDriver,
 } from './drivers/firebase-authentication';
 
+import {
+  makeFirebaseUserDriver,
+  FirebaseUserChange,
+} from './drivers/firebase-user';
+
 import firebase = require('firebase');
 declare const Sparks: any;
 firebase.initializeApp(Sparks.firebase);
@@ -27,6 +32,7 @@ export interface MainSources {
   router: RouterSource;
   authentication$: Stream<Authentication>;
   isAuthenticated$: Stream<boolean>;
+  user$: Stream<FirebaseUserChange>;
 }
 
 export interface MainSinks {
@@ -47,10 +53,14 @@ export function Routing(
     );
 }
 
+const auth = firebase.auth();
+const onAuthStateChanged = auth.onAuthStateChanged.bind(auth);
+
 run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
   dom: makeDOMDriver('#app') as DriverFn,
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
+  user$: makeFirebaseUserDriver(onAuthStateChanged) as DriverFn,
 });
 
 function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {
@@ -62,6 +72,6 @@ function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {
   };
 };
 
-function isAuthenticated(auth: Authentication): boolean {
-  return !!path(['userCredential', 'user'], auth);
+function isAuthenticated(authentication: Authentication): boolean {
+  return !!path(['userCredential', 'user'], authentication);
 }
