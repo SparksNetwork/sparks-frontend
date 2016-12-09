@@ -15,7 +15,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
   const router: Stream<Pathname> =
     sources.dom.select('a').events('click')
       .tap(evt => evt.preventDefault())
-      .map(() => '/');
+      .map(evt => (evt.target as HTMLAnchorElement).pathname);
 
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--google').events('click')
