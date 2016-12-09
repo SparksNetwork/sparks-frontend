@@ -1,15 +1,18 @@
-import { Stream, map, merge, never } from 'most';
+import { Stream, merge, never, combine } from 'most';
 import { Location, Pathname } from '@motorcycle/history';
 import { div, h2, a, p } from '@motorcycle/dom';
 import { Routing, MainSources, MainSinks } from '../app';
 
 import { ConnectScreen } from './connect';
 import { SignInScreen } from './signin';
+import { Dash } from './dash';
+import { FirebaseUserChange } from '../drivers/firebase-user';
 
 export function main(sources: MainSources): MainSinks {
   const sinks$: Stream<MainSinks> =
     Routing({
       '/': Screen,
+      '/dash': Dash,
       '/connect': ConnectScreen,
       '/signin': SignInScreen,
     }, sources);
@@ -32,14 +35,16 @@ function Screen(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault())
       .map(() => '/signin');
 
+  sources.user$.observe(u => console.log('userchange', u));
+
   return {
-    dom: map(view, sources.router.history()),
+    dom: combine(view, sources.router.history(), sources.user$),
     router: merge(connect$, signin$),
     authentication$: never(),
   };
 }
 
-function view(location: Location) {
+function view(location: Location, user: FirebaseUserChange) {
   return div([
     h2(`Home: ${location.pathname}`),
     div([
@@ -47,5 +52,6 @@ function view(location: Location) {
       p(' | '),
       a('.signin', { props: { href: '/signin' } }, 'Sign In'),
     ]),
+    div(`${user}`),
   ]);
 }

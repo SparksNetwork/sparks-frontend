@@ -7,7 +7,7 @@ export = {
       .waitForElementVisible('#page', 1000) // wait for the page to display
       .click('@googleButton')
       .api.pause(2000)
-      .assert.urlContains('ServiceLogin') // we are on the google page
+      .assert.urlContains('ServiceLogin'); // we are on the google page
 
     browser.end();
   },

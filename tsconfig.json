@@ -19,6 +19,7 @@
       "mocha",
       "node",
       "ramda",
+      "sinon",
       "webpack",
       "webpack-dev-server"
     ]

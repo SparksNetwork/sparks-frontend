@@ -8,6 +8,14 @@ export = {
       .click('.c-btn-federated--google') // click the google button
       .pause(2000) // give it time to redirect
       .assert.urlContains('ServiceLogin') // we are on the google page
+      .waitForElementPresent('#Email', 1000)
+      .setValue('#Email', process.env.GOOGLE_TEST_EMAIL)
+      .click('#next')
+      .waitForElementPresent('#Passwd', 1000)
+      .setValue('#Passwd', process.env.GOOGLE_TEST_EMAIL_PASSWORD)
+      .click('#signIn')
+      .waitForElementPresent('#user-email', 2000)
+      .assert.containsText('#user-email', process.env.GOOGLE_TEST_EMAIL)
       .end();
   },
 };

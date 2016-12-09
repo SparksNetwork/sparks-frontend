@@ -13,10 +13,14 @@ const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
 export function ConnectScreen(sources: MainSources): MainSinks {
+  const redirectToDashboard$: Stream<Pathname> =
+    sources.isAuthenticated$.filter(Boolean).constant('/dash');
+
   const router: Stream<Pathname> =
     sources.dom.select('a').events('click')
       .tap(evt => evt.preventDefault())
-      .map(ev => (ev.target as HTMLAnchorElement).pathname);
+      .map(ev => (ev.target as HTMLAnchorElement).pathname)
+      .merge(redirectToDashboard$);
 
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--google').events('click')
