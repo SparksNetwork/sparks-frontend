@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const srcPath = path.resolve('./src');
-const assetsPath = path.resolve('./assets');
+const assetsPath = path.resolve('./node_modules/sparks-design-system/src/assets');
 const stringify = JSON.stringify;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
