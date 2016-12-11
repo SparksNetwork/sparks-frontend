@@ -17,8 +17,8 @@ export function SignInScreen(sources: MainSources): MainSinks {
 
   const nav$: Stream<Pathname> =
     sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(ev => (ev.target as HTMLAnchorElement).pathname)
+        .tap(evt => evt.preventDefault())
+        .map(ev => (ev.target as HTMLAnchorElement).pathname);
 
   const router: Stream<Pathname> =
       merge(nav$, redirectToDashboard$);
