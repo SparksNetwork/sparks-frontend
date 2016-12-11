@@ -26,18 +26,18 @@
   },
   "scripts": {
     "clean": "rimraf dist/bundle* tests/.tmp .tmp .screens report",
-    "start": "ts-node ./node_modules/.bin/webpack-dev-server --config .config/webpack.config.ts",
+    "start": "./node_modules/.bin/webpack-dev-server --config .config/webpack.config.ts",
     "serve": "npm start",
     "serve-static": "pushstate-server dist 8080",
     "test:lint": "tslint src/*.ts src/**/*.ts src/**/**/*.ts src/**/**/**/*.ts src/**/**/**/**/*.ts",
-    "test:unit": "npm run clean && mocha-webpack --webpack-config .config/webpack.test.ts 'src/**/*.test.ts'",
-    "test:int": "npm run clean && mocha-webpack --webpack-config .config/webpack.int.ts 'src/**/*.int.ts'",
+    "test:unit": "npm run clean && mocha-webpack --webpack-config .config/webpack.test.ts \"src/**/*.test.ts\"",
+    "test:int": "npm run clean && mocha-webpack --webpack-config .config/webpack.int.ts \"src/**/*.int.ts\"",
     "test:e2e": "npm run build:e2e && cross-env TS_NODE_PROJECT=./tests/tsconfig.json LOCAL=true ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts",
     "test": "npm run test:lint && npm run test:unit && npm run test:int && npm run clean",
     "connect": "sc-run --id ${TRAVIS_JOB_NUMBER} --",
     "sauce": "npm run build:e2e && cross-env TS_NODE_PROJECT=tests/tsconfig.json ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --env chrome51",
     "build:e2e": "npm run clean && tsc -P tests/tsconfig.json",
-    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts",
+    "build": "./node_modules/.bin/webpack --config .config/webpack.config.ts",
     "commit": "git-cz"
   },
   "devDependencies": {
