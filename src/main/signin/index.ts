@@ -18,8 +18,8 @@ export function SignInScreen(sources: MainSources): MainSinks {
 
   const nav$: Stream<Pathname> =
     sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(ev => (ev.target as HTMLAnchorElement).pathname)
+        .tap(evt => evt.preventDefault())
+        .map(ev => (ev.target as HTMLAnchorElement).pathname);
 
   const router: Stream<Pathname> =
       merge(nav$, redirectToDashboard$);
@@ -39,7 +39,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
     redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
 
   const authentication$: Stream<AuthenticationType> =
-    merge(googleAuth$, facebookAuth$)
+    merge(googleAuth$, facebookAuth$);
 
   return {
     dom: just(view()),
