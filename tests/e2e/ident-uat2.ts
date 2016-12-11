@@ -1,8 +1,8 @@
 import { NightWatchBrowser } from 'nightwatch';
 
 export = {
-  'IDENT UAT 2: Sign in with facebook': function (browser: NightWatchBrowser) {
-    (browser.page as any).signin()
+  'IDENT UAT 2: Connect with facebook': function (browser: NightWatchBrowser) {
+    (browser.page as any).connect()
       .navigate()
       .waitForElementVisible('#page', 1000) // wait for the page to display
       .click('.c-btn-federated--facebook')
