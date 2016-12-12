@@ -5,9 +5,10 @@ import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
   redirectAuthAction,
-  EmailAndPasswordAuthentication,
+  CreateUserAuthentication,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
+  CREATE_USER,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -49,8 +50,8 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     .map(ev => (ev.target as HTMLInputElement).value);
 
   const emailAndPassword$ =
-          combine<string, string, EmailAndPasswordAuthentication>(
-            (email, password) => ({ method: 'EMAIL_AND_PASSWORD', email, password }),
+          combine<string, string, CreateUserAuthentication>(
+            (email, password) => ({ method: CREATE_USER, email, password }),
             email$, password$
           );
 
@@ -58,7 +59,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     .tap(ev => ev.preventDefault());
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<EmailAndPasswordAuthentication>(submit$);
+    .sampleWith<CreateUserAuthentication>(submit$);
 
   return {
     dom: just(view()),
