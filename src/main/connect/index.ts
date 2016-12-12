@@ -43,10 +43,10 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const facebookAuth$: Stream<AuthenticationType> =
     redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
 
-  const email$ = dom.select('c-textfield__input--email').events('input')
+  const email$ = dom.select('.c-textfield__input--email').events('input')
     .map(ev => (ev.target as HTMLInputElement).value);
 
-  const password$ = dom.select('c-textfield__input--password').events('input')
+  const password$ = dom.select('.c-textfield__input--password').events('input')
     .map(ev => (ev.target as HTMLInputElement).value);
 
   const emailAndPassword$ =
