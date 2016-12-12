@@ -42,16 +42,6 @@ export interface MainSinks {
 
 import { main } from './main';
 
-export function Routing(
-  definitions: RouterDefinitions<MainSources, MainSinks>,
-  sources: RouterSources<any>,
-): Stream<MainSinks> {
-  return sources.router.define(definitions)
-    .map(({path, value}: { path: string, value: any }) =>
-      value({ ...sources, router: sources.router.path(path) }),
-    );
-}
-
 const auth = firebase.auth();
 const onAuthStateChanged = auth.onAuthStateChanged.bind(auth);
 
