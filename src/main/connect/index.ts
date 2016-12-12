@@ -1,4 +1,5 @@
-import {Stream, just, merge, combine} from 'most';
+import {Stream, just, merge, combine, concat} from 'most';
+import hold from '@most/hold';
 import {Pathname} from '@motorcycle/history';
 import {
   div,
@@ -23,12 +24,10 @@ import {
   CREATE_USER,
   EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
+import {DASHBOARD_ROUTE, SIGN_IN_ROUTE, WRONG_PASSWORD_ERROR} from './properties'
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
-
-const SIGN_IN_ROUTE = '/signin';
-const DASHBOARD_ROUTE = '/dash';
 
 export function ConnectScreen(sources: MainSources): MainSinks {
   const {isAuthenticated$, authentication$, dom} = sources;
@@ -39,13 +38,18 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     facebookClick: dom.select('.c-btn-federated--facebook').events('click'),
     emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
     passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
-    formSubmit: dom.select('form').events('submit'),
+    formSubmit: dom.select('form').events('submit').multicast(),
 
-    account_already_exists: authentication$
+    accountAlreadyExists: authentication$
       .filter(authResponse =>
         !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use'
       )
-      .multicast()
+      .multicast(),
+    attemptToLogInWithWrongPassword: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/wrong-password'
+      )
+      .multicast(),
   };
 
   let state = {
@@ -53,7 +57,15 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .map(ev => (ev.target as HTMLInputElement).value),
     password: events.passwordFieldInput
       .map(ev => (ev.target as HTMLInputElement).value),
-    isAuthenticated$
+    isAuthenticated$,
+    errorFeedback: hold(concat<Boolean>(
+      just(false),
+      merge(
+        events.attemptToLogInWithWrongPassword.map(_ => true),
+        // remove error feedback when submitting
+        events.formSubmit.map(_ => false)
+      )
+    ))
   };
 
   let intents = {
@@ -61,7 +73,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
     navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
     signUp: events.formSubmit.tap(ev => ev.preventDefault()),
-    logUserIn: events.account_already_exists
+    logUserIn: events.accountAlreadyExists
   };
 
   let actions = {
@@ -88,7 +100,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 
   return {
-    dom: just(view()),
+    dom: state.errorFeedback.map(view),
     router: merge(
       actions.redirectToDashboard,
       actions.navigateToSignIn
@@ -102,7 +114,9 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 }
 
-function view() {
+// TODO : put the error feedback somewhere
+// TODO : also for testing, need to specify the form of the error feedback
+function view(errorFeedback: Boolean) {
   return div('#page', [
     div('.c-sign-in', [
       form('.c-sign-in__form', [
@@ -158,8 +172,11 @@ function view() {
           ]),
         ]),
         div([
-          a({props: {href: SIGN_IN_ROUTE}}, 'By creating a profile, you' +
-            ' agree to our terms and conditions'),
+          a({props: {href: SIGN_IN_ROUTE}}, 'Already have an account? Sign' +
+            ' in!'),
+          errorFeedback
+            ? div('.c-textfield.c-textfield--errorfield',WRONG_PASSWORD_ERROR)
+            : null
         ]),
       ]),
     ]),
