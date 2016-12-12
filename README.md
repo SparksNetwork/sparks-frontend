@@ -38,7 +38,7 @@ You can run end to end tests using the command `npm run test:e2e`.
 
 If you need to run only 1 of the tests you can use
 ```sh
-npm run test:e2e -- --test ./test/.tmp/e2e/name-of-test-file-name.js
+npm run test:e2e -- --test ./tests/.tmp/e2e/name-of-test-file-name.js
 ```
 
 ## Environment Variables
@@ -66,4 +66,4 @@ the overview of your firebase application page.
 - **GOOGLE_TEST_EMAIL**
   - Must be a valid Google email address. If you are a Sparks.Network team member feel free to reach out for test account credentials.
 - **GOOGLE_TEST_EMAIL_PASSWORD**
-  - Must be a valid Google email password. If you are a Sparks.Network teaem member feel free to reach out for test account credentials.
+  - Must be a valid Google email password. If you are a Sparks.Network team member feel free to reach out for test account credentials.
