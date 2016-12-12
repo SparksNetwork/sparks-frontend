@@ -24,7 +24,7 @@ function execTest(browser: NightWatchBrowser) {
     .setValue('.c-textfield__input--email', TEST_EXISTING_USER_EMAIL)
     .setValue('.c-textfield__input--password', TEST_EXISTING_USER_PASSWORD)
     .click('.c-btn.c-btn--primary.c-sign-in__submit') // click submit button
-    .pause(2000) // give it time to redirect
+    .pause(8000) // give it time to redirect
     .assert.urlContains('dash') // we are on the dashboard page
     .end();
 }

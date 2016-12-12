@@ -17,9 +17,11 @@ import {
   AuthenticationType,
   redirectAuthAction,
   CreateUserAuthentication,
+  EmailAndPasswordAuthentication,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
   CREATE_USER,
+  EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -32,52 +34,70 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const {isAuthenticated$, authentication$, dom} = sources;
 
   let events = {
-    link_click: dom.select('a').events('click'),
-    google_click: dom.select('.c-btn-federated--google').events('click'),
-    facebook_click: dom.select('.c-btn-federated--facebook').events('click'),
-    email_field_input: dom.select('.c-textfield__input--email').events('input'),
-    password_field_input: dom.select('.c-textfield__input--password').events('input'),
-    form_submit: dom.select('form').events('submit'),
-    account_already_exists: authentication$.filter(function isExistingAlready(authResponse) {
-      return authResponse.error
-        && authResponse.error.code === 'auth/email-already-in-use'
-    })
+    linkClick: dom.select('a').events('click'),
+    googleClick: dom.select('.c-btn-federated--google').events('click'),
+    facebookClick: dom.select('.c-btn-federated--facebook').events('click'),
+    emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
+    passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
+    formSubmit: dom.select('form').events('submit'),
+
+    account_already_exists: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use'
+      )
+      .multicast()
   };
 
   let state = {
-    email: events.email_field_input.map(ev => (ev.target as HTMLInputElement).value),
-    password: events.password_field_input.map(ev => (ev.target as HTMLInputElement).value),
+    email: events.emailFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    password: events.passwordFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
     isAuthenticated$
   };
 
   let intents = {
-    connect_with_google: events.google_click.tap(evt => evt.preventDefault()),
-    connect_with_facebook: events.facebook_click.tap(evt => evt.preventDefault()),
-    navigate_to_sign_in: events.link_click.tap(evt => evt.preventDefault()),
-    sign_up: events.form_submit.tap(ev => ev.preventDefault()),
+    connectWithGoogle: events.googleClick.tap(evt => evt.preventDefault()),
+    connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
+    navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
+    signUp: events.formSubmit.tap(ev => ev.preventDefault()),
+    logUserIn: events.account_already_exists
   };
 
   let actions = {
-    redirect_to_dashboard: state.isAuthenticated$.filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Pathname>,
-    navigate_to_sign_in: intents.navigate_to_sign_in.map(ev => (ev.target as HTMLAnchorElement).pathname),
-    connect_with_google: redirectAuthAction(googleRedirectAuthentication, intents.connect_with_google),
-    connect_with_facebook: redirectAuthAction(facebookRedirectAuthentication, intents.connect_with_facebook),
-    sign_up: combine<string, string, CreateUserAuthentication>(
+    redirectToDashboard: state.isAuthenticated$
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Pathname>,
+    navigateToSignIn: intents.navigateToSignIn
+      .map(ev => (ev.target as HTMLAnchorElement).pathname),
+    connectWithGoogle: redirectAuthAction(
+      googleRedirectAuthentication, intents.connectWithGoogle
+    ),
+    connectWithFacebook: redirectAuthAction(
+      facebookRedirectAuthentication, intents.connectWithFacebook
+    ),
+
+    signUp: combine<string, string, CreateUserAuthentication>(
       (email, password) => ({method: CREATE_USER, email, password}),
       state.email, state.password
-    ).sampleWith<CreateUserAuthentication>(intents.sign_up)
+    ).sampleWith<CreateUserAuthentication>(intents.signUp),
+
+    logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
+      (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+      state.email, state.password
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn)
   };
 
   return {
     dom: just(view()),
     router: merge(
-      actions.redirect_to_dashboard,
-      actions.navigate_to_sign_in
+      actions.redirectToDashboard,
+      actions.navigateToSignIn
     ),
     authentication$: merge(
-      actions.connect_with_google,
-      actions.connect_with_facebook,
-      actions.sign_up
+      actions.connectWithGoogle,
+      actions.connectWithFacebook,
+      actions.signUp,
+      actions.logUserIn
     ),
   };
 }
