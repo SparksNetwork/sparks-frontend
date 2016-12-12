@@ -1,6 +1,6 @@
 declare module 'nightwatch' {
   export interface PageObjects {
-    signin(): {
+    connect(): {
       navigate(): NightWatchBrowser;
     };
   }
