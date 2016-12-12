@@ -63,7 +63,14 @@ the overview of your firebase application page.
 
 #### Integration-test-related
 
+In all these cases you may use your own accounts.  For automated tests you
+should use SN test account credentials.
+
 - **GOOGLE_TEST_EMAIL**
-  - Must be a valid Google email address. If you are a Sparks.Network team member feel free to reach out for test account credentials.
+  - Must be a valid Google email address.
 - **GOOGLE_TEST_EMAIL_PASSWORD**
-  - Must be a valid Google email password. If you are a Sparks.Network team member feel free to reach out for test account credentials.
+  - Must be a valid Google email password.
+- **FACEBOOK_TEST_EMAIL**
+  - Must be a email address for an existing Facebook account.
+- **FACEBOOK_TEST_EMAIL_PASSWORD**
+  - Must be the password for that Facebook account.

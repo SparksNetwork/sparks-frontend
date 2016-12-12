@@ -6,6 +6,7 @@ import {
   AuthenticationType,
   redirectAuthAction,
   googleRedirectAuthentication,
+  facebookRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -27,8 +28,18 @@ export function SignInScreen(sources: MainSources): MainSinks {
     sources.dom.select('.c-btn-federated--google').events('click')
       .tap(evt => evt.preventDefault());
 
-  const authentication$: Stream<AuthenticationType> =
+  const facebookClick$: Stream<Event> =
+    sources.dom.select('.c-btn-federated--facebook').events('click')
+      .tap(evt => evt.preventDefault());
+
+  const googleAuth$: Stream<AuthenticationType> =
     redirectAuthAction(googleRedirectAuthentication, googleClick$);
+
+  const facebookAuth$: Stream<AuthenticationType> =
+    redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
+
+  const authentication$: Stream<AuthenticationType> =
+    merge(googleAuth$, facebookAuth$);
 
   return {
     dom: just(view()),
