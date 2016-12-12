@@ -14,8 +14,7 @@ export function Dash(sources: MainSources): MainSinks {
       .tap(evt => evt.preventDefault());
 
   const authentication$: Stream<AuthenticationType> =
-    click$.map(() => signoutAuthentication)
-      ;
+    click$.map(() => signoutAuthentication);
 
   const view$ = userEmail$.map(view);
 
