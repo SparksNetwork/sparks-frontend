@@ -1,6 +1,6 @@
 import {NightWatchBrowser} from 'nightwatch';
 import firebase = require('firebase');
-import {WRONG_PASSWORD_ERROR} from "../../src/main/connect/properties"
+//import {WRONG_PASSWORD_ERROR} from "../../src/main/connect/properties"
 const {TEST_EXISTING_USER_EMAIL, TEST_EXISTING_USER_PASSWORD} = process.env;
 
 const stringify = JSON.stringify;
@@ -27,7 +27,7 @@ function execTest(browser: NightWatchBrowser) {
     .click('.c-btn.c-btn--primary.c-sign-in__submit') // click submit button
     .pause(4000) // give it time to redirect
     .assert.urlContains('connect') // we are on the same page
-    .assert.containsText('.c-textfield--errorfield', WRONG_PASSWORD_ERROR)
+    .assert.containsText('.c-textfield--errorfield', 'Wrong password')
     .end();
 }
 
