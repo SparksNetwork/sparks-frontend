@@ -4,6 +4,7 @@ import {
   REDIRECT,
   GET_REDIRECT_RESULT,
   SIGN_OUT,
+  CREATE_USER,
   AuthenticationType,
 } from './types';
 
@@ -45,6 +46,16 @@ export const signoutAuthentication: AuthenticationType =
   {
     method: SIGN_OUT,
   };
+
+export function createUserAuthentication(
+  email: string,
+  password: string): AuthenticationType {
+  return {
+    method: CREATE_USER,
+    email,
+    password,
+  };
+}
 
 export function redirectAuthAction(authType: AuthenticationType, click$: Stream<any>) {
   return startWith(redirectResultAuthenticationType,

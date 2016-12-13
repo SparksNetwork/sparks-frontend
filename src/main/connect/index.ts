@@ -1,4 +1,4 @@
-import { Stream, just, merge } from 'most';
+import { Stream, just, merge, combine } from 'most';
 import { Pathname } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
@@ -7,6 +7,7 @@ import {
   redirectAuthAction,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
+  createUserAuthentication,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -36,10 +37,29 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const facebookAuth$: Stream<AuthenticationType> =
     redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
 
+  const emailValue$: Stream<string> = sources.dom
+    .select('form input[type=text]').events('input')
+    .map(ev => (ev.target as HTMLInputElement).value);
+
+  const passwordValue$: Stream<string> = sources.dom
+    .select('form input[type=password]').events('input')
+    .map(ev => (ev.target as HTMLInputElement).value);
+
+  const submit$ = sources.dom.select('form').events('submit')
+    .tap(() => console.log('FORM SUBMITTED!!!!!!!!!!!!!!'))
+    .tap(ev => ev.preventDefault());
+
+  const createUser$ =
+    combine<string, string, AuthenticationType>(
+      createUserAuthentication, emailValue$, passwordValue$,
+    )
+    .tap(a => console.log('new authtype', a))
+    .sampleWith<AuthenticationType>(submit$);
+
   return {
     dom: just(view()),
     router,
-    authentication$: merge(googleAuth$, facebookAuth$),
+    authentication$: merge(createUser$, googleAuth$, facebookAuth$),
   };
 }
 
