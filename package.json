@@ -80,7 +80,7 @@
     "@most/create": "^2.0.1",
     "@most/hold": "^1.4.3",
     "@motorcycle/core": "^1.6.0",
-    "@motorcycle/dom": "^4.2.0",
+    "@motorcycle/dom": "^6.1.0",
     "@motorcycle/history": "^3.0.0",
     "@motorcycle/router": "^3.1.0",
     "@types/sinon": "^1.16.32",

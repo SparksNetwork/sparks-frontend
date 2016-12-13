@@ -1,7 +1,7 @@
 import { Stream, map, skipRepeats } from 'most';
 import hold from '@most/hold';
 import { run, DriverFn, Component } from '@motorcycle/core';
-import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
+import { makeDomDriver, DomSource, VNode } from '@motorcycle/dom';
 import {
   makeRouterDriver,
   RouterSource,
@@ -25,7 +25,7 @@ firebase.initializeApp(Sparks.firebase);
 require('./style.scss');
 
 export interface MainSources {
-  dom: DOMSource;
+  dom: DomSource;
   router: RouterSource;
   authentication$: Stream<Authentication>;
   isAuthenticated$: Stream<boolean>;
@@ -44,7 +44,7 @@ const auth = firebase.auth();
 const onAuthStateChanged = auth.onAuthStateChanged.bind(auth);
 
 run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
-  dom: makeDOMDriver('#app') as DriverFn,
+  dom: makeDomDriver(document.querySelector('#app') as HTMLElement) as DriverFn,
   router: makeRouterDriver(),
   authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
   user$: makeFirebaseUserDriver(onAuthStateChanged) as DriverFn,
