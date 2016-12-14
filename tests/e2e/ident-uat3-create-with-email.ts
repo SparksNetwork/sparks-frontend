@@ -21,7 +21,14 @@ function prepareFirebase(): Promise<any> {
   const auth: any = getAuthAdmin();
 
   return auth.getUserByEmail(process.env.EMAIL_TEST_EMAIL)
-    .then((userRecord: any) => { auth.deleteUser(userRecord.uid); });
+      .then((userRecord: any) => {
+          console.log('deleting user', userRecord.uid);
+          auth.deleteUser(userRecord.uid);
+      })
+      .catch((err: any) => {
+          console.log('not deleting', err);
+          // return Promise.resolve();
+      });
 }
 
 function getAuthAdmin() {
