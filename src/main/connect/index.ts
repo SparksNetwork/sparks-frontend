@@ -46,14 +46,12 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     .map(ev => (ev.target as HTMLInputElement).value);
 
   const submit$ = sources.dom.select('form').events('submit')
-    .tap(() => console.log('FORM SUBMITTED!!!!!!!!!!!!!!'))
     .tap(ev => ev.preventDefault());
 
   const createUser$ =
     combine<string, string, AuthenticationType>(
       createUserAuthentication, emailValue$, passwordValue$,
     )
-    .tap(a => console.log('new authtype', a))
     .sampleWith<AuthenticationType>(submit$);
 
   return {
@@ -75,13 +73,13 @@ function view() {
             },
             [
               img('.c-btn-federated__icon', { props: { src: googleIcon } }),
-              span('.c-btn-federated__text', 'Sign in with Google'),
+              span('.c-btn-federated__text', 'Connect with Google'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
               img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
-              span('.c-btn-federated__text', 'Sign in with Facebook'),
+              span('.c-btn-federated__text', 'Connect with Facebook'),
             ]),
           ]),
         ]),
@@ -104,7 +102,7 @@ function view() {
             ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn--primary.c-sign-in__submit', 'Sign in'),
+            button('.c-btn.c-btn--primary.c-sign-in__submit', 'Connect with Email'),
           ]),
         ]),
         div([

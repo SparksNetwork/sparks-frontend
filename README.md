@@ -35,11 +35,26 @@ avoid common typos.
 ## End to End tests
 
 You can run end to end tests using the command `npm run test:e2e`.
+Make sure you have the environment variables set as described below.
 
 If you need to run only 1 of the tests you can use
 ```sh
 npm run test:e2e -- --test ./tests/.tmp/e2e/name-of-test-file-name.js
 ```
+
+### E2E firebase
+
+#### Enable Sign-on methods
+Whichever Firebase instance you use, it has to have three sign-on methods
+enabled in the Firebase console: Email, Facebook, Google.  Follow their
+instructions if you're setting up a private test database.
+
+#### Get service account credentials
+
+You will need to get service account credentials for the firebase you're
+running e2e tests against.
+
+Follow these instructions: https://firebase.google.com/docs/admin/setup 
 
 ## Environment Variables
 
@@ -74,3 +89,7 @@ should use SN test account credentials.
   - Must be a email address for an existing Facebook account.
 - **FACEBOOK_TEST_EMAIL_PASSWORD**
   - Must be the password for that Facebook account.
+- **EMAIL_TEST_EMAIL**
+  - Any valid email address, used to create a new account
+- **EMAIL_TEST_PASSWORD**
+  - Any valid password, used to create a new account
