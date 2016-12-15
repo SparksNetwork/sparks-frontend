@@ -41,6 +41,7 @@
     "commit": "git-cz"
   },
   "devDependencies": {
+    "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "@types/node": "0.0.2",
     "@types/ramda": "0.0.2",
