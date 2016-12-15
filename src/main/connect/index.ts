@@ -114,8 +114,6 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 }
 
-// TODO : put the error feedback somewhere
-// TODO : also for testing, need to specify the form of the error feedback
 function view(errorFeedback: Boolean) {
   return div('#page', [
     div('.c-sign-in', [
