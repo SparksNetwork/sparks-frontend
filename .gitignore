@@ -11,3 +11,4 @@ dist/styles.css.map
 dist/
 .env
 .tmp
+.vscode/
