@@ -32,7 +32,7 @@ All files ending with `.int-test.ts` are integration tests for files of the
 same corresponding name (neighbor). Integration is abbreviated as _int_ to
 avoid common typos.
 
-## End to End tests
+## End-to-End Tests
 
 You can run end to end tests using the command `npm run test:e2e`.
 
@@ -40,6 +40,29 @@ If you need to run only 1 of the tests you can use
 ```sh
 npm run test:e2e -- --test ./tests/.tmp/e2e/name-of-test-file-name.js
 ```
+
+To run the end-to-end tests, you need to ensure that the following steps have 
+been completed.
+
+1. Goto https://console.firebase.google.com/
+
+2. Choose **sparks-integration-test**
+
+3. Click the cog wheel next to **Overview** and choose **Project Settings**
+
+4. Click tab **SERVICE ACCOUNTS**
+
+5. In Firebase Admin SDK, click **GENERATE NEW PRIVATE KEY**. This will 
+   download a JSON file with the service account settings.
+
+6. Store the file some place safe (outside from your local repo).
+
+7. Store the absolute path the your JSON file in environment variable 
+   **FIREBASE_ADMINSDK_JSON**
+
+   Example:
+
+   `export FIREBASE_ADMINSDK_JSON=/home/user/sparks-integration-test-firebase-adminsdk.json`
 
 ## Environment Variables
 
