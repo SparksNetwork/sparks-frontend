@@ -1,32 +1,50 @@
-import { Stream, just } from 'most';
-import { Pathname } from '@motorcycle/history';
-import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
-import { MainSources, MainSinks } from '../../app';
+import {Stream, just, combine} from 'most';
+import {Pathname} from '@motorcycle/history';
+import {div, ul, li, img, label, span, a, button, input, form} from '@motorcycle/dom';
+import {MainSources, MainSinks} from '../../app';
 import {
-  AuthenticationType,
-  redirectAuthAction,
-  googleRedirectAuthentication,
+  EmailAndPasswordAuthentication,
+  EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
+const DASHBOARD_ROUTE = '/dash';
+
 export function SignInScreen(sources: MainSources): MainSinks {
+  let {dom, isAuthenticated$} = sources;
+
+  const redirectToDashboard$: Stream<Pathname> =
+          isAuthenticated$.filter(Boolean).constant(DASHBOARD_ROUTE);
+
   const router: Stream<Pathname> =
-    sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(evt => (evt.target as HTMLAnchorElement).pathname);
+          dom.select('a').events('click')
+            .tap(evt => evt.preventDefault())
+            .map(evt => (evt.target as HTMLAnchorElement).pathname)
+            .merge(redirectToDashboard$);
 
-  const googleClick$: Stream<Event> =
-    sources.dom.select('.c-btn-federated--google').events('click')
-      .tap(evt => evt.preventDefault());
+  const email$ = dom.select('.c-textfield__input--email').events('input')
+    .map(ev => (ev.target as HTMLInputElement).value);
 
-  const authentication$: Stream<AuthenticationType> =
-    redirectAuthAction(googleRedirectAuthentication, googleClick$);
+  const password$ = dom.select('.c-textfield__input--password').events('input')
+    .map(ev => (ev.target as HTMLInputElement).value);
+
+  const emailAndPassword$ =
+          combine<string, string, EmailAndPasswordAuthentication>(
+            (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+            email$, password$
+          );
+
+  const submit$ = dom.select('form').events('submit')
+    .tap(ev => ev.preventDefault());
+
+  const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
+    .sampleWith<EmailAndPasswordAuthentication>(submit$);
 
   return {
     dom: just(view()),
-    authentication$,
+    authentication$: emailAndPasswordAuthenticationMethod$,
     router,
   };
 }
@@ -39,14 +57,15 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: { type: 'button' } }, [
-              img('.c-btn-federated__icon', { props: { src: googleIcon } }),
+              props: {type: 'button'}
+            }, [
+              img('.c-btn-federated__icon', {props: {src: googleIcon}}),
               span('.c-btn-federated__text', 'Sign in with Google'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
+              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
@@ -55,7 +74,12 @@ function view() {
           li('.c-sign-in__list-item', [
             div('.c-textfield', [
               label([
-                input('.c-textfield__input', { props: { type: 'text', required: true } }),
+                input('.c-textfield__input.c-textfield__input--email', {
+                  props: {
+                    type: 'text',
+                    required: true
+                  }
+                }),
                 span('.c-textfield__label', 'Email address'),
               ]),
             ]),
@@ -63,10 +87,15 @@ function view() {
           li('.c-sign-in__list-item', [
             div('.c-sign-in__password.c-textfield', [
               label([
-                input('.c-textfield__input', { props: { type: 'password', required: true } }),
+                input('.c-textfield__input.c-textfield__input--password', {
+                  props: {
+                    type: 'password',
+                    required: true
+                  }
+                }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
+              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
@@ -74,7 +103,7 @@ function view() {
           ]),
         ]),
         div([
-          a({ props: { href: '/connect' } }, 'New to the Sparks.Network? Sign up'),
+          a({props: {href: '/connect'}}, 'New to the Sparks.Network? Sign up'),
         ]),
       ]),
     ]),
