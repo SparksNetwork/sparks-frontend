@@ -11,8 +11,8 @@ export = {
       .waitForElementPresent('#email', 1000)
       .setValue('#email', process.env.FACEBOOK_TEST_EMAIL)
       .setValue('#pass', process.env.FACEBOOK_TEST_EMAIL_PASSWORD)
-      .click('input[type=submit]')
-      .waitForElementPresent('#user-email', 2000)
+      .click('button[type=submit]')
+      .waitForElementPresent('#user-email')
       .assert.containsText('#user-email', process.env.FACEBOOK_TEST_EMAIL)
       .end();
 

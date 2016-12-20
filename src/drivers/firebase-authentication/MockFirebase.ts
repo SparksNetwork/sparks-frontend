@@ -5,7 +5,7 @@ import { convertUserToUserCredential } from './convertUserToUserCredential';
 export class MockFirebase {
   private _mockAuth: MockAuth;
 
-  constructor(private email: string, private error: string = '') {
+  constructor(private email: string, private error = '') {
     this._mockAuth = new MockAuth(this.email, this.error);
   }
 

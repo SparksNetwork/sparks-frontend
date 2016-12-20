@@ -1,3 +1,4 @@
+/* tslint:disable:max-file-line-count */
 import * as assert from 'assert';
 import {
   CREATE_USER, AuthenticationType,
@@ -8,9 +9,8 @@ import {
 } from './makeFirebaseAuthenticationDriver';
 import firebase = require('firebase');
 import { just, periodic } from 'most';
-
 import { MockFirebase } from './MockFirebase';
-import { mockStream } from './MockStream';
+import { mockStream } from '../../../tests/helpers';
 
 const firebaseConfig = {
   databaseURL: process.env.FIREBASE_DATABASE_URL,
