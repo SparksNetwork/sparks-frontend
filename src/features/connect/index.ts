@@ -1,5 +1,5 @@
 import { Stream, just, merge } from 'most';
-import { Pathname } from '@motorcycle/history';
+import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
@@ -13,14 +13,8 @@ const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const redirectToDashboard$: Stream<Pathname> =
+  const router: Stream<Path> =
     sources.isAuthenticated$.filter(Boolean).constant('/dash');
-
-  const router: Stream<Pathname> =
-    sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(ev => (ev.target as HTMLAnchorElement).pathname)
-      .merge(redirectToDashboard$);
 
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--google').events('click')
@@ -38,7 +32,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
 
   return {
     dom: just(view()),
-    router,
+    router: router,
     authentication$: merge(googleAuth$, facebookAuth$),
   };
 }
@@ -59,7 +53,9 @@ function view() {
             ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
+            button('.c-btn.c-btn-federated.c-btn-federated--facebook', {
+              props: { type: 'button' },
+            }, [
               img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
