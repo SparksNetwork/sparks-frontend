@@ -1,7 +1,12 @@
 import { NightWatchBrowser } from 'nightwatch';
+import { deleteFacebookUser } from '../../e2e-common';
 
 export = {
-  'IDENT UAT 2: Connect with facebook': function (browser: NightWatchBrowser) {
+  before: deleteFacebookUser,
+
+  after: deleteFacebookUser,
+
+  'Scenario: Connect with Facebook': function (browser: NightWatchBrowser) {
     (browser.page as any).connect()
       .navigate()
       .waitForElementVisible('#page', 1000) // wait for the page to display

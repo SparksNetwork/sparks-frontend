@@ -1,10 +1,12 @@
 import { NightWatchBrowser } from 'nightwatch';
-import { deleteGoogleUser } from '../e2e-common';
+import { deleteGoogleUser } from '../../e2e-common';
 
 export = {
-  afterEach: deleteGoogleUser,
+  before: deleteGoogleUser,
 
-  'IDENT UAT 1: Connect with Google': function (browser: NightWatchBrowser) {
+  after: deleteGoogleUser,
+
+  'Scenario: Connect with Google': function (browser: NightWatchBrowser) {
     browser
       .url('localhost:8080/connect')
       .waitForElementVisible('#page') // wait for the page to display

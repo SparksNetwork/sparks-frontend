@@ -1,10 +1,10 @@
 import { NightWatchBrowser } from 'nightwatch';
-import { deleteGoogleUser } from '../e2e-common';
+import { deleteGoogleUser } from '../../e2e-common';
 
 export = {
-  afterEach: deleteGoogleUser,
+  after: deleteGoogleUser,
 
-  connectGoogleUser: function (browser: NightWatchBrowser) {
+  'Given the User is connected with GOOGLE_TEST_EMAIL': function (browser: NightWatchBrowser) {
     (browser.page as any).connect()
       .navigate()
       .waitForElementVisible('#page') // wait for the page to display
@@ -20,7 +20,7 @@ export = {
     browser.end();
   },
 
-  'IDENT UAT 5: Sign in with google': function (browser: NightWatchBrowser) {
+  'Scenario: Sign in with Google': function (browser: NightWatchBrowser) {
 
     (browser.page as any).signin()
       .navigate()
