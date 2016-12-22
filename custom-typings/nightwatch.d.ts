@@ -1685,5 +1685,8 @@ declare module 'nightwatch' {
     launch_url: string;
   }
 
-  export interface NightWatchBrowser extends NightWatchClient, NightWatchCustomCommands, NightWatchCustomPageObjects, Expect { }
+  export interface NightWatchBrowser extends NightWatchClient, NightWatchCustomCommands, NightWatchCustomPageObjects, Expect
+  {
+    api: NightWatchBrowser;
+  }
 }

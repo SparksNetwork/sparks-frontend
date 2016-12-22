@@ -10,9 +10,12 @@ const config = {
     port: 4444,
     cli_args: {
       'webdriver.chrome.driver': './node_modules/.bin/chromedriver',
+      'webdriver.gecko.driver': './node_modules/.bin/geckodriver',
       'webdriver.ie.driver': '',
     },
   },
+
+  test_workers: true,
 
   test_settings: {
     default: {
@@ -32,10 +35,18 @@ const config = {
         acceptSslCerts: true,
       },
       globals: {
-        waitForConditionTimeout: 10000,
+        waitForConditionTimeout: 20000,
+      },
+    },
+
+    firefox: {
+      desiredCapabilities: {
+        browserName: 'firefox',
+        javascriptEnabled: true,
+        acceptSslCerts: true,
       },
     },
   },
 };
 
-export = config;
+module.exports = config;

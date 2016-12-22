@@ -7,7 +7,7 @@ declare module 'nightwatch' {
 }
 
 export = {
-  url: 'localhost:8080/connect',
+  url: 'http://localhost:8080/connect',
   elements: {
     googleButton: {
       selector: '.c-btn-federated--google',

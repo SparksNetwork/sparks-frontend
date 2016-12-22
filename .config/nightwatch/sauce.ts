@@ -1,4 +1,4 @@
-export = {
+module.exports = {
   'src_folders': ['tests/.tmp'],
   'output_folder': 'report',
 

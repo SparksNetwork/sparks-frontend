@@ -7,11 +7,10 @@ export = {
   after: deleteGoogleUser,
 
   'Scenario: Connect with Google': function (browser: NightWatchBrowser) {
-    browser
-      .url('localhost:8080/connect')
+    browser.page.connect().navigate()
       .waitForElementVisible('#page') // wait for the page to display
       .click('.c-btn-federated--google') // click the google button
-      .pause(5000) // give it time to redirect
+      .api.pause(10000) // give it time to redirect
       .assert.urlContains('ServiceLogin') // we are on the google page
       .waitForElementPresent('#Email')
       .setValue('#Email', process.env.GOOGLE_TEST_EMAIL)

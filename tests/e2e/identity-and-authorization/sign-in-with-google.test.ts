@@ -22,11 +22,11 @@ export = {
 
   'Scenario: Sign in with Google': function (browser: NightWatchBrowser) {
 
-    (browser.page as any).signin()
+    browser.page.signin()
       .navigate()
       .waitForElementVisible('#page') // wait for the page to display
       .click('.c-btn-federated--google')
-      .api.pause(2000)
+      .api.pause(10000)
       .assert.urlContains('ServiceLogin') // we are on the google page
       .waitForElementPresent('#Email')
       .setValue('#Email', process.env.GOOGLE_TEST_EMAIL)
