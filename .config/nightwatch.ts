@@ -1,3 +1,9 @@
+require('nightwatch-cucumber')({
+  nightwatchClientAsParameter: true,
+  featureFiles: ['tests/.tmp/features'],
+  stepDefinitions: ['tests/.tmp/features/step_definitions'],
+});
+
 const config = process.env.LOCAL
   ? require('./nightwatch/local.ts')
   : require('./nightwatch/sauce.ts');

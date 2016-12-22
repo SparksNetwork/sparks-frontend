@@ -1,7 +1,4 @@
 const config = {
-  src_folders: ['tests/.tmp/e2e'],
-  output_folder: './report',
-
   selenium: {
     start_process: true,
     server_path: 'node_modules/selenium-server/lib/runner/selenium-server-standalone-3.0.1.jar',
