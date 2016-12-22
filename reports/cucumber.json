@@ -1,0 +1,152 @@
+[
+  {
+    "description": "  As a User\n  I want to identify myself\n  So I can be authorized to use the application",
+    "keyword": "Feature",
+    "line": 1,
+    "name": "identity and authorization",
+    "tags": [],
+    "uri": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/identity-and-authorization.feature",
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Connect with Google",
+        "tags": [],
+        "id": "identity-and-authorization;connect-with-google",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "name": "I’m not connected with Google",
+            "result": {
+              "status": "passed",
+              "duration": 1662
+            },
+            "line": 8,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:4"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "name": "I navigate to the connect URL",
+            "result": {
+              "status": "passed",
+              "duration": 1042
+            },
+            "line": 9,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:7"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "name": "I click Connect with Google",
+            "result": {
+              "status": "passed",
+              "duration": 141
+            },
+            "line": 10,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:13"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "name": "I’m taken to Google OAuth form",
+            "result": {
+              "status": "passed",
+              "duration": 1575
+            },
+            "line": 11,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:18"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "name": "I enter my email",
+            "result": {
+              "status": "passed",
+              "duration": 135
+            },
+            "line": 12,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:23"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "name": "I click Next",
+            "result": {
+              "status": "passed",
+              "duration": 194
+            },
+            "line": 13,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:28"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "name": "I enter my password",
+            "result": {
+              "status": "passed",
+              "duration": 699
+            },
+            "line": 14,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:33"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "name": "I click Sign in",
+            "result": {
+              "status": "passed",
+              "duration": 530
+            },
+            "line": 15,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:39"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "name": "I’m taken to the dashboard",
+            "result": {
+              "status": "passed",
+              "duration": 2089
+            },
+            "line": 16,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:44"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "name": "I am signed in",
+            "result": {
+              "status": "passed",
+              "duration": 46
+            },
+            "line": 17,
+            "match": {
+              "location": "/home/frikki/.local/src/Sparks.Network/sparks-frontend/tests/.tmp/features/step_definitions/identity-and-authorization.js:49"
+            }
+          }
+        ]
+      }
+    ],
+    "id": "identity-and-authorization"
+  }
+]
