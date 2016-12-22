@@ -14,6 +14,10 @@ export = (function (settings) {
   if (process.env.SELENIUM_PORT)
     settings.selenium.host = process.env.SELENIUM_PORT;
 
+  if (process.env.TRAVIS)
+    settings.test_settings.default.desiredCapabilities.chromeOptions =
+      { args : ['--no-sandbox'] };
+
   settings.page_objects_path = './tests/.tmp/page-objects';
 
   return settings;
