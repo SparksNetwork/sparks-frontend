@@ -99,7 +99,7 @@ function view() {
             div('.c-sign-in__email.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: { type: 'text', required: true }
+                  props: { type: 'text', required: true },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -109,7 +109,7 @@ function view() {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: { type: 'password', required: true }
+                  props: { type: 'password', required: true },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
