@@ -40,8 +40,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
     .tap(ev => ev.preventDefault());
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<EmailAndPasswordAuthentication>(submit$)
-    .tap(function(x){console.warn('auth', x)});
+    .sampleWith<EmailAndPasswordAuthentication>(submit$);
 
   return {
     dom: just(view()),
