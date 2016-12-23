@@ -1,5 +1,4 @@
 require('nightwatch-cucumber')({
-  nightwatchClientAsParameter: true,
   featureFiles: ['tests/.tmp/features'],
   stepDefinitions: ['tests/.tmp/features/step_definitions'],
 });
