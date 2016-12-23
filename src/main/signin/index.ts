@@ -33,14 +33,15 @@ export function SignInScreen(sources: MainSources): MainSinks {
   const emailAndPassword$ =
           combine<string, string, EmailAndPasswordAuthentication>(
             (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
-            email$, password$
+            email$, password$,
           );
 
   const submit$ = dom.select('form').events('submit')
     .tap(ev => ev.preventDefault());
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<EmailAndPasswordAuthentication>(submit$);
+    .sampleWith<EmailAndPasswordAuthentication>(submit$)
+    .tap(function(x){console.warn('auth', x)});
 
   return {
     dom: just(view()),
@@ -57,7 +58,7 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: {type: 'button'}
+              props: {type: 'button'},
             }, [
               img('.c-btn-federated__icon', {props: {src: googleIcon}}),
               span('.c-btn-federated__text', 'Sign in with Google'),
@@ -77,8 +78,8 @@ function view() {
                 input('.c-textfield__input.c-textfield__input--email', {
                   props: {
                     type: 'text',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -90,8 +91,8 @@ function view() {
                 input('.c-textfield__input.c-textfield__input--password', {
                   props: {
                     type: 'password',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
