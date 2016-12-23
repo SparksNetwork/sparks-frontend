@@ -10,7 +10,7 @@ import {
   button,
   input,
   form,
-  label
+  label,
 } from '@motorcycle/dom';
 import {MainSources, MainSinks} from '../../app';
 import {
@@ -42,9 +42,9 @@ export function ConnectScreen(sources: MainSources): MainSinks {
 
     account_already_exists: authentication$
       .filter(authResponse =>
-        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use'
+        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use',
       )
-      .multicast()
+      .multicast(),
   };
 
   let state = {
@@ -52,7 +52,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .map(ev => (ev.target as HTMLInputElement).value),
     password: events.passwordFieldInput
       .map(ev => (ev.target as HTMLInputElement).value),
-    isAuthenticated$
+    isAuthenticated$,
   };
 
   let intents = {
@@ -60,7 +60,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
     navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
     signUp: events.formSubmit.tap(ev => ev.preventDefault()),
-    logUserIn: events.account_already_exists
+    logUserIn: events.account_already_exists,
   };
 
   let actions = {
@@ -69,34 +69,34 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     navigateToSignIn: intents.navigateToSignIn
       .map(ev => (ev.target as HTMLAnchorElement).pathname),
     connectWithGoogle: redirectAuthAction(
-      googleRedirectAuthentication, intents.connectWithGoogle
+      googleRedirectAuthentication, intents.connectWithGoogle,
     ),
     connectWithFacebook: redirectAuthAction(
-      facebookRedirectAuthentication, intents.connectWithFacebook
+      facebookRedirectAuthentication, intents.connectWithFacebook,
     ),
 
     signUp: combine<string, string, CreateUserAuthentication>(
       (email, password) => ({method: CREATE_USER, email, password}),
-      state.email, state.password
+      state.email, state.password,
     ).sampleWith<CreateUserAuthentication>(intents.signUp),
 
     logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
       (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
-      state.email, state.password
-    ).sampleWith<CreateUserAuthentication>(intents.logUserIn)
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
   };
 
   return {
     dom: just(view()),
     router: merge(
       actions.redirectToDashboard,
-      actions.navigateToSignIn
+      actions.navigateToSignIn,
     ),
     authentication$: merge(
       actions.connectWithGoogle,
       actions.connectWithFacebook,
       actions.signUp,
-      actions.logUserIn
+      actions.logUserIn,
     ),
   };
 }
@@ -130,8 +130,8 @@ function view() {
                 input('.c-textfield__input.c-textfield__input--email', {
                   props: {
                     type: 'text',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -143,8 +143,8 @@ function view() {
                 input('.c-textfield__input.c-textfield__input--password', {
                   props: {
                     type: 'password',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
