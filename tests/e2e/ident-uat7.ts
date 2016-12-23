@@ -1,24 +1,10 @@
 import {NightWatchBrowser} from 'nightwatch';
-import firebase = require('firebase');
 import * as admin from 'firebase-admin';
 
-const stringify = JSON.stringify;
-
 const {
-        FIREBASE_DATABASE_URL, FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN,
-        FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID,
+        FIREBASE_DATABASE_URL,
         EMAIL_AND_PASSWORD_TEST_EMAIL, EMAIL_AND_PASSWORD_TEST_PASSWORD
       } = process.env;
-
-const Sparks = {
-  firebase: {
-    databaseURL: stringify(FIREBASE_DATABASE_URL),
-    apiKey: stringify(FIREBASE_API_KEY),
-    authDomain: stringify(FIREBASE_AUTH_DOMAIN),
-    storageBucket: stringify(FIREBASE_STORAGE_BUCKET),
-    messagingSenderId: stringify(FIREBASE_MESSAGING_SENDER_ID),
-  },
-};
 
 function getAuthAdmin() {
   const serviceAccount = require('../../../firebase.json');
@@ -29,8 +15,6 @@ function getAuthAdmin() {
   return admin.auth() as any;
 }
 
-firebase.initializeApp(Sparks.firebase);
-// let auth = firebase.auth();
 let authAdmin: any = getAuthAdmin();
 
 function createUser(email: string, pwd: string) {
@@ -51,25 +35,28 @@ function createUser(email: string, pwd: string) {
 }
 
 function deleteIfExistsAndRecreateUser(email: string, pwd: string) {
-  deleteUser(email)
-    .catch((err: any) => {
-      console.log('user does not exist already in the database - creating it', err);
+  deleteUserAndReturnPromise(email)
+    .catch(() => {
+      // user does not exist already in the database - expected
     })
     .then(() => createUser(email, pwd))
-    ;
+  ;
 }
 
-function deleteUser(email: string) {
+function deleteUserAndReturnPromise(email: string) {
   return authAdmin.getUserByEmail(email)
     .then((userRecord: any) => {
-      console.log('deleting user', userRecord.uid);
       return authAdmin.deleteUser(userRecord.uid);
     })
 }
 
+function deleteUser(email: string) {
+  deleteUserAndReturnPromise(email);
+}
+
 export = {
   before: deleteIfExistsAndRecreateUser(EMAIL_AND_PASSWORD_TEST_EMAIL, EMAIL_AND_PASSWORD_TEST_PASSWORD),
-  // after: deleteUser(EMAIL_AND_PASSWORD_TEST_EMAIL),
+  after: deleteUser(EMAIL_AND_PASSWORD_TEST_EMAIL),
   'IDENT UAT 7: Sign in with email from Connect': function (browser: NightWatchBrowser) {
     browser
       .url('localhost:8080/signin')
