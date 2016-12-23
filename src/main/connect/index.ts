@@ -11,7 +11,7 @@ import {
   button,
   input,
   form,
-  label
+  label,
 } from '@motorcycle/dom';
 import {MainSources, MainSinks} from '../../app';
 import {
@@ -23,7 +23,7 @@ import {
   CREATE_USER,
   EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
-import {DASHBOARD_ROUTE, SIGN_IN_ROUTE, WRONG_PASSWORD_ERROR} from './properties'
+import {DASHBOARD_ROUTE, SIGN_IN_ROUTE, WRONG_PASSWORD_ERROR} from './properties';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
@@ -63,8 +63,8 @@ export function ConnectScreen(sources: MainSources): MainSinks {
         events.attemptToLogInWithWrongPassword.map(_ => true),
         // remove error feedback when submitting
         events.formSubmit.map(_ => false),
-      )
-    ))
+      ),
+    )),
   };
 
   let intents = {
@@ -84,7 +84,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       googleRedirectAuthentication, intents.connectWithGoogle,
     ),
     connectWithFacebook: redirectAuthAction(
-      facebookRedirectAuthentication, intents.connectWithFacebook
+      facebookRedirectAuthentication, intents.connectWithFacebook,
     ),
 
     signUp: combine<string, string, CreateUserAuthentication>(
@@ -95,20 +95,20 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
       (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
       state.email, state.password,
-    ).sampleWith<CreateUserAuthentication>(intents.logUserIn)
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
   };
 
   return {
     dom: state.errorFeedback.map(view),
     router: merge(
       actions.redirectToDashboard,
-      actions.navigateToSignIn
+      actions.navigateToSignIn,
     ),
     authentication$: merge(
       actions.connectWithGoogle,
       actions.connectWithFacebook,
       actions.signUp,
-      actions.logUserIn
+      actions.logUserIn,
     ),
   };
 }
@@ -142,8 +142,8 @@ function view(errorFeedback: Boolean) {
                 input('.c-textfield__input.c-textfield__input--email', {
                   props: {
                     type: 'text',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -155,8 +155,8 @@ function view(errorFeedback: Boolean) {
                 input('.c-textfield__input.c-textfield__input--password', {
                   props: {
                     type: 'password',
-                    required: true
-                  }
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
@@ -172,8 +172,8 @@ function view(errorFeedback: Boolean) {
           a({props: {href: SIGN_IN_ROUTE}}, 'Already have an account? Sign' +
             ' in!'),
           errorFeedback
-            ? div('.c-textfield.c-textfield--errorfield',WRONG_PASSWORD_ERROR)
-            : null
+            ? div('.c-textfield.c-textfield--errorfield', WRONG_PASSWORD_ERROR)
+            : null,
         ]),
       ]),
     ]),
