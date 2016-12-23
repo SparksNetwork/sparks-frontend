@@ -1,45 +1,103 @@
-import { Stream, just, merge } from 'most';
-import { Pathname } from '@motorcycle/history';
-import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
-import { MainSources, MainSinks } from '../../app';
+import {Stream, just, merge, combine} from 'most';
+import {Pathname} from '@motorcycle/history';
 import {
-  AuthenticationType,
+  div,
+  ul,
+  li,
+  img,
+  span,
+  a,
+  button,
+  input,
+  form,
+  label
+} from '@motorcycle/dom';
+import {MainSources, MainSinks} from '../../app';
+import {
   redirectAuthAction,
+  CreateUserAuthentication,
+  EmailAndPasswordAuthentication,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
+  CREATE_USER,
+  EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
+const SIGN_IN_ROUTE = '/signin';
+const DASHBOARD_ROUTE = '/dash';
+
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const redirectToDashboard$: Stream<Pathname> =
-    sources.isAuthenticated$.filter(Boolean).constant('/dash');
+  const {isAuthenticated$, authentication$, dom} = sources;
 
-  const router: Stream<Pathname> =
-    sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(ev => (ev.target as HTMLAnchorElement).pathname)
-      .merge(redirectToDashboard$);
+  let events = {
+    linkClick: dom.select('a').events('click'),
+    googleClick: dom.select('.c-btn-federated--google').events('click'),
+    facebookClick: dom.select('.c-btn-federated--facebook').events('click'),
+    emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
+    passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
+    formSubmit: dom.select('form').events('submit'),
 
-  const googleClick$: Stream<Event> =
-    sources.dom.select('.c-btn-federated--google').events('click')
-      .tap(evt => evt.preventDefault());
+    account_already_exists: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use'
+      )
+      .multicast()
+  };
 
-  const googleAuth$: Stream<AuthenticationType> =
-    redirectAuthAction(googleRedirectAuthentication, googleClick$);
+  let state = {
+    email: events.emailFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    password: events.passwordFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    isAuthenticated$
+  };
 
-  const facebookClick$: Stream<Event> =
-    sources.dom.select('.c-btn-federated--facebook').events('click')
-      .tap(evt => evt.preventDefault());
+  let intents = {
+    connectWithGoogle: events.googleClick.tap(evt => evt.preventDefault()),
+    connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
+    navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
+    signUp: events.formSubmit.tap(ev => ev.preventDefault()),
+    logUserIn: events.account_already_exists
+  };
 
-  const facebookAuth$: Stream<AuthenticationType> =
-    redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
+  let actions = {
+    redirectToDashboard: state.isAuthenticated$
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Pathname>,
+    navigateToSignIn: intents.navigateToSignIn
+      .map(ev => (ev.target as HTMLAnchorElement).pathname),
+    connectWithGoogle: redirectAuthAction(
+      googleRedirectAuthentication, intents.connectWithGoogle
+    ),
+    connectWithFacebook: redirectAuthAction(
+      facebookRedirectAuthentication, intents.connectWithFacebook
+    ),
+
+    signUp: combine<string, string, CreateUserAuthentication>(
+      (email, password) => ({method: CREATE_USER, email, password}),
+      state.email, state.password
+    ).sampleWith<CreateUserAuthentication>(intents.signUp),
+
+    logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
+      (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+      state.email, state.password
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn)
+  };
 
   return {
     dom: just(view()),
-    router,
-    authentication$: merge(googleAuth$, facebookAuth$),
+    router: merge(
+      actions.redirectToDashboard,
+      actions.navigateToSignIn
+    ),
+    authentication$: merge(
+      actions.connectWithGoogle,
+      actions.connectWithFacebook,
+      actions.signUp,
+      actions.logUserIn
+    ),
   };
 }
 
@@ -51,25 +109,30 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: { type: 'button' },
-            },
-            [
-              img('.c-btn-federated__icon', { props: { src: googleIcon } }),
-              span('.c-btn-federated__text', 'Sign in with Google'),
-            ]),
+                props: {type: 'button'},
+              },
+              [
+                img('.c-btn-federated__icon', {props: {src: googleIcon}}),
+                span('.c-btn-federated__text', 'Sign in with Google'),
+              ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
+              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
         ]),
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
-            div('.c-textfield', [
+            div('.c-sign-in__email.c-textfield', [
               label([
-                input('.c-textfield__input', { props: { type: 'text', required: true } }),
+                input('.c-textfield__input.c-textfield__input--email', {
+                  props: {
+                    type: 'text',
+                    required: true
+                  }
+                }),
                 span('.c-textfield__label', 'Email address'),
               ]),
             ]),
@@ -77,18 +140,25 @@ function view() {
           li('.c-sign-in__list-item', [
             div('.c-sign-in__password.c-textfield', [
               label([
-                input('.c-textfield__input', { props: { type: 'password', required: true } }),
+                input('.c-textfield__input.c-textfield__input--password', {
+                  props: {
+                    type: 'password',
+                    required: true
+                  }
+                }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
+              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn--primary.c-sign-in__submit', 'Sign in'),
+            button('.c-btn.c-btn--primary.c-sign-in__submit', 'Create' +
+              ' profile with email'),
           ]),
         ]),
         div([
-          a({ props: { href: '/signin' } }, 'New to Sparks.Network? Sign up'),
+          a({props: {href: SIGN_IN_ROUTE}}, 'By creating a profile, you' +
+            ' agree to our terms and conditions'),
         ]),
       ]),
     ]),
