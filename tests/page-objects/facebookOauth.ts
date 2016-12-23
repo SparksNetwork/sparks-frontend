@@ -1,6 +1,6 @@
 declare module 'nightwatch' {
   export interface PageObjects {
-    googleOauth(): {
+    facebookOauth(): {
       navigate(): NightWatchBrowser;
     };
   }
@@ -9,16 +9,13 @@ declare module 'nightwatch' {
 export = {
   elements: {
     emailField: {
-      selector: `#Email`,
-    },
-    nextButton: {
-      selector: `#next`,
+      selector: `#email`,
     },
     passwordField: {
-      selector: `#Passwd`,
+      selector: `#pass`,
     },
     submitButton: {
-      selector: `#signIn`,
+      selector: `button[type=submit]`,
     },
   },
 };

@@ -16,5 +16,14 @@ export = {
     facebookButton: {
       selector: `.c-btn-federated--facebook`,
     },
+    emailField: {
+      selector: `#Email`,
+    },
+    passwordField: {
+      selector: `#Passwd`,
+    },
+    submitButton: {
+      selector: `#signIn`,
+    },
   },
 };

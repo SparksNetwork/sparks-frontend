@@ -1,75 +1,72 @@
-import { NightWatchBrowser } from 'nightwatch';
-import { deleteGoogleUser } from '../common';
+import { connectElements, emails, pages, passwords } from '../common/identity-and-authorization';
+
+import { deleteUser } from '../common';
 
 export = function () {
 
-  this.Given('I’m not connected with Google', function () {
-    deleteGoogleUser();
-  });
+  this.Given('I’m not connected with {provider:stringInDoubleQuotes}',
+    function (provider: string, done: Function) {
+      deleteUser(emails[provider], done);
+    });
 
-  this.When('I navigate to the connect URL', function (client: NightWatchBrowser) {
-    const connect: any = client.page.connect();
+  this.When('I navigate to the connect URL', function () {
+    const connect: any = this.page.connect();
 
     connect
       .navigate()
       .waitForElementVisible('@page');
   });
 
-  this.When('I click Connect with Google', function (client: NightWatchBrowser) {
-    const connect: any = client.page.connect();
+  this.When('I click the {button:stringInDoubleQuotes} connect button', function (button: string) {
+    const connect: any = this.page.connect();
 
     connect
-      .click('@googleButton')
+      .click(connectElements[button]);
   });
 
-  this.Then('I’m taken to Google OAuth form', function (client: NightWatchBrowser) {
-    const googleOauth: any = client.page.googleOauth();
-
-    googleOauth
+  this.Then('I’m taken to {provider:stringInDoubleQuotes} OAuth form', function (provider: string) {
+    pages(this)[provider]
       .waitForElementPresent('@emailField');
   });
 
-  this.When('I enter my email', function (client: NightWatchBrowser) {
-    const googleOauth: any = client.page.googleOauth();
-
-    googleOauth
-      .setValue('@emailField', process.env.GOOGLE_TEST_EMAIL);
+  this.When('I enter my {provider:stringInDoubleQuotes} email', function (provider: string) {
+    pages(this)[provider]
+      .setValue('@emailField', emails[provider]);
   });
 
-  this.When('I click Next', function (client: NightWatchBrowser) {
-    const googleOauth: any = client.page.googleOauth();
+  this.When('I click the Next button', function () {
+    const googleOauth: any = this.page.googleOauth();
 
     googleOauth
-      .click('@next');
+      .click('@nextButton');
   });
 
-  this.When('I enter my password', function (client: NightWatchBrowser) {
-    const googleOauth: any = client.page.googleOauth();
-
-    googleOauth
+  this.When('I enter my {provider:stringInDoubleQuotes} password', function (provider: string) {
+    pages(this)[provider]
       .waitForElementPresent('@passwordField')
-      .setValue('@passwordField', process.env.GOOGLE_TEST_EMAIL_PASSWORD);
+      .setValue('@passwordField', passwords[provider]);
   });
 
-  this.When('I click Sign in', function (client: NightWatchBrowser) {
-    const googleOauth: any = client.page.googleOauth();
+  this.When('I click the {provider:stringInDoubleQuotes} submit button',
+    function (provider: string) {
+      pages(this)[provider]
+        .click('@submitButton');
+    });
 
-    googleOauth
-      .click('@signIn');
-  });
-
-  this.Then('I’m taken to the dashboard', function (client: NightWatchBrowser) {
-    const dashboard: any = client.page.dashboard();
+  this.Then('I’m taken to my dashboard', function () {
+    const dashboard: any = this.page.dashboard();
 
     dashboard
       .waitForElementPresent('@page');
   });
 
-  this.Then('I am signed in', function (client: NightWatchBrowser) {
-    const dashboard: any = client.page.dashboard();
+  this.Then('I am signed in', function () {
+    const dashboard: any = this.page.dashboard();
 
     dashboard
       .waitForElementPresent('@userEmail');
+
+    this.end();
   });
 
 }
