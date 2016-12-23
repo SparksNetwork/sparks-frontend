@@ -2,7 +2,7 @@
 .local/
 *.local.*
 node_modules/
-report/
+reports/
 .screens
 dist/bundle.js
 dist/bundle.js.map
@@ -11,4 +11,3 @@ dist/styles.css.map
 dist/
 .env
 .tmp
-.vscode/
