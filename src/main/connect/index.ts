@@ -172,7 +172,7 @@ function view(errorFeedback: Boolean) {
           a({props: {href: SIGN_IN_ROUTE}}, 'Already have an account? Sign' +
             ' in!'),
           errorFeedback
-            ? div('.c-textfield.c-textfield--errorfield',WRONG_PASSWORD_ERROR),
+            ? div('.c-textfield.c-textfield--errorfield',WRONG_PASSWORD_ERROR)
             : null,
         ]),
       ]),
