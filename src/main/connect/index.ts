@@ -52,7 +52,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   const emailAndPassword$ =
           combine<string, string, CreateUserAuthentication>(
             (email, password) => ({ method: CREATE_USER, email, password }),
-            email$, password$
+            email$, password$,
           );
 
   const submit$ = dom.select('form').events('submit')
@@ -67,7 +67,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     authentication$: merge(
       googleAuth$,
       facebookAuth$,
-      emailAndPasswordAuthenticationMethod$
+      emailAndPasswordAuthenticationMethod$,
     ),
   };
 }
@@ -98,7 +98,9 @@ function view() {
           li('.c-sign-in__list-item', [
             div('.c-sign-in__email.c-textfield', [
               label([
-                input('.c-textfield__input.c-textfield__input--email', { props: { type: 'text', required: true } }),
+                input('.c-textfield__input.c-textfield__input--email', {
+                  props: { type: 'text', required: true }
+                }),
                 span('.c-textfield__label', 'Email address'),
               ]),
             ]),
@@ -106,7 +108,9 @@ function view() {
           li('.c-sign-in__list-item', [
             div('.c-sign-in__password.c-textfield', [
               label([
-                input('.c-textfield__input.c-textfield__input--password', { props: { type: 'password', required: true } }),
+                input('.c-textfield__input.c-textfield__input--password', {
+                  props: { type: 'password', required: true }
+                }),
                 span('.c-textfield__label', 'Password'),
               ]),
               a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
