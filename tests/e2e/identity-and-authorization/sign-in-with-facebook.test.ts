@@ -9,7 +9,7 @@ export = {
       .navigate()
       .waitForElementVisible('#page') // wait for the page to display
       .click('.c-btn-federated--facebook')
-      .waitForElementPresent('#email', 1000)
+      .waitForElementPresent('#email')
       .setValue('#email', process.env.FACEBOOK_TEST_EMAIL)
       .setValue('#pass', process.env.FACEBOOK_TEST_EMAIL_PASSWORD)
       .click('button[type=submit]')
@@ -19,13 +19,13 @@ export = {
   },
 
   'Scenario: Sign in with Facebook': function (browser: NightWatchBrowser) {
-    (browser.page as any).signin()
+    browser.page.signin()
       .navigate()
-      .waitForElementVisible('#page', 1000) // wait for the page to display
+      .waitForElementVisible('#page') // wait for the page to display
       .click('.c-btn-federated--facebook')
-      .api.pause(2000)
-      .assert.urlContains('www.facebook.com/login.php') // we are on the facebook page
-      .waitForElementPresent('#email', 1000)
+      .api.pause(10000)
+      .assert.urlContains('facebook.com/login.php') // we are on the facebook page
+      .waitForElementPresent('#email')
       .setValue('#email', process.env.FACEBOOK_TEST_EMAIL)
       .setValue('#pass', process.env.FACEBOOK_TEST_EMAIL_PASSWORD)
       .click('button[type=submit]')
