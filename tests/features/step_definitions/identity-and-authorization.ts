@@ -9,10 +9,8 @@ export = function () {
       deleteUser(emails[provider], done);
     });
 
-  this.When('I navigate to the connect URL', function () {
-    const connect: any = this.page.connect();
-
-    connect
+  this.When('I navigate to the {route:stringInDoubleQuotes} URL', function (route: string) {
+    pages(this)[route]
       .navigate()
       .waitForElementVisible('@page');
   });
