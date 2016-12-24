@@ -40,12 +40,12 @@ export function SignInScreen(sources: MainSources): MainSinks {
       .map(ev => (ev.target as HTMLInputElement).value)),
     isAuthenticated$,
     errorFeedback: hold(concat<String>(
-      just(""),
+      just(''),
       merge<String>(
         events.attemptToSignInWithWrongPassword.map(_ => WRONG_PASSWORD_ERROR),
         events.attemptToSignInWithWrongEmail.map(_ => WRONG_EMAIL_ERROR),
         // remove error feedback when submitting
-        events.formSubmit.map(_ => ""),
+        events.formSubmit.map(_ => ''),
       ),
     )),
   };
@@ -78,7 +78,7 @@ function view(errorFeedback: String) {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: {type: 'button'}
+              props: {type: 'button'},
             }, [
               img('.c-btn-federated__icon', {props: {src: googleIcon}}),
               span('.c-btn-federated__text', 'Sign in with Google'),
