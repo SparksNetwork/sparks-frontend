@@ -3,6 +3,7 @@ import { Stream, startWith, constant } from 'most';
 import {
   REDIRECT,
   GET_REDIRECT_RESULT,
+  SIGN_OUT,
   AuthenticationType,
 } from './types';
 
@@ -38,6 +39,11 @@ export const facebookRedirectAuthentication: AuthenticationType =
   {
     method: REDIRECT,
     provider: new firebase.auth.FacebookAuthProvider(),
+  };
+
+export const signoutAuthentication: AuthenticationType =
+  {
+    method: SIGN_OUT,
   };
 
 export function redirectAuthAction(authType: AuthenticationType, click$: Stream<any>) {
