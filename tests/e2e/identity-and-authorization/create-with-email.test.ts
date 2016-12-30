@@ -49,6 +49,7 @@ function deleteUserAndReturnPromise(email: string) {
     .then((userRecord: any) => {
       return authAdmin.deleteUser(userRecord.uid);
     })
+  .catch((x: any) => void x)
 }
 
 function deleteUser(email: string) {
