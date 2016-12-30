@@ -24,42 +24,53 @@ function preventDefault(ev: any) {
 export function ConnectScreen(sources: MainSources): MainSinks {
   const {isAuthenticated$, dom} = sources;
 
-  const redirectToDashboard$: Stream<Path> =
-          isAuthenticated$.filter(Boolean).constant(DASHBOARD_ROUTE);
+  const redirectToDashboard$: Stream<Path> = isAuthenticated$
+    .filter(Boolean)
+    .constant(DASHBOARD_ROUTE);
 
-  const router: Stream<Path> =
-          dom.select('a').events('click')
-            .tap(preventDefault)
-            .map((ev: any) => (ev.target as HTMLAnchorElement).pathname)
-            .merge(redirectToDashboard$);
+  const router: Stream<Path> = dom
+    .select('a')
+    .events('click')
+    .tap(preventDefault)
+    .map((ev: any) => (ev.target as HTMLAnchorElement).pathname)
+    .merge(redirectToDashboard$);
 
-  const googleClick$: Stream<Event> =
-          dom.select('.c-btn-federated--google').events('click')
-            .tap(preventDefault);
+  const googleClick$: Stream<Event> = dom
+    .select('.c-btn-federated--google')
+    .events('click')
+    .tap(preventDefault);
 
-  const googleAuth$: Stream<AuthenticationType> =
-          redirectAuthAction(googleRedirectAuthentication, googleClick$);
+  const googleAuth$: Stream<AuthenticationType> = redirectAuthAction(
+    googleRedirectAuthentication,
+    googleClick$);
 
-  const facebookClick$: Stream<Event> =
-          dom.select('.c-btn-federated--facebook').events('click')
-            .tap(preventDefault);
+  const facebookClick$: Stream<Event> = dom
+    .select('.c-btn-federated--facebook')
+    .events('click')
+    .tap(preventDefault);
 
-  const facebookAuth$: Stream<AuthenticationType> =
-          redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
+  const facebookAuth$: Stream<AuthenticationType> = redirectAuthAction(
+    facebookRedirectAuthentication,
+    facebookClick$);
 
-  const email$ = dom.select('.c-textfield__input--email').events('input')
+  const email$ = dom
+    .select('.c-textfield__input--email')
+    .events('input')
     .map((ev: any) => (ev.target as HTMLInputElement).value);
 
-  const password$ = dom.select('.c-textfield__input--password').events('input')
+  const password$ = dom
+    .select('.c-textfield__input--password')
+    .events('input')
     .map((ev: any) => (ev.target as HTMLInputElement).value);
 
-  const emailAndPassword$ =
-          combine<string, string, CreateUserAuthentication>(
-            (email, password) => ({method: CREATE_USER, email, password}),
-            email$, password$,
-          );
+  const emailAndPassword$ = combine<string, string, CreateUserAuthentication>(
+    (email, password) => ({method: CREATE_USER, email, password}),
+    email$, password$,
+  );
 
-  const submit$ = dom.select('form').events('submit')
+  const submit$ = dom
+    .select('form')
+    .events('submit')
     .tap(preventDefault);
 
   const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
