@@ -1,5 +1,4 @@
 import { NightWatchBrowser } from 'nightwatch';
-
 import * as admin from 'firebase-admin';
 
 const {
@@ -18,22 +17,28 @@ const {
       } = process.env;
 
 function getAuthAdmin() {
-  const serviceAccount = {
-    "type": FIREBASE_ADMINSDK_TYPE,
-    "project_id": FIREBASE_ADMINSDK_PROJECT_ID,
-    "private_key_id": FIREBASE_ADMINSDK_PRIVATE_KEY_ID,
-    "private_key": FIREBASE_ADMINSDK_PRIVATE_KEY,
-    "client_email": FIREBASE_ADMINSDK_CLIENT_EMAIL,
-    "client_id": FIREBASE_ADMINSDK_CLIENT_ID,
-    "auth_uri": FIREBASE_ADMINSDK_AUTH_URI,
-    "token_uri": FIREBASE_ADMINSDK_TOKEN_URI,
-    "auth_provider_x509_cert_url": FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
-    "client_x509_cert_url": FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
-  };
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: FIREBASE_DATABASE_URL,
-  });
+  try {
+    admin.app();
+  }
+  catch(e) {
+    const serviceAccount = {
+      "type": FIREBASE_ADMINSDK_TYPE,
+      "project_id": FIREBASE_ADMINSDK_PROJECT_ID,
+      "private_key_id": FIREBASE_ADMINSDK_PRIVATE_KEY_ID,
+      "private_key": FIREBASE_ADMINSDK_PRIVATE_KEY,
+      "client_email": FIREBASE_ADMINSDK_CLIENT_EMAIL,
+      "client_id": FIREBASE_ADMINSDK_CLIENT_ID,
+      "auth_uri": FIREBASE_ADMINSDK_AUTH_URI,
+      "token_uri": FIREBASE_ADMINSDK_TOKEN_URI,
+      "auth_provider_x509_cert_url": FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
+      "client_x509_cert_url": FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
+    };
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: FIREBASE_DATABASE_URL,
+    });
+  }
+  
   return admin.auth() as any;
 }
 
