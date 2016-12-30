@@ -1,7 +1,7 @@
-import {Path} from '@motorcycle/history';
-import {Stream, just, merge, combine} from 'most';
-import {div, ul, li, img, span, a, button, input, form, label} from '@motorcycle/dom';
-import {MainSources, MainSinks} from '../../app';
+import { Path } from '@motorcycle/history';
+import { Stream, just, merge, combine } from 'most';
+import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
+import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
   redirectAuthAction,
@@ -22,7 +22,7 @@ function preventDefault(ev: any) {
 }
 
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const {isAuthenticated$, dom} = sources;
+  const { isAuthenticated$, dom } = sources;
 
   const redirectToDashboard$: Stream<Path> = isAuthenticated$
     .filter(Boolean)
@@ -64,7 +64,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     .map((ev: any) => (ev.target as HTMLInputElement).value);
 
   const emailAndPassword$ = combine<string, string, CreateUserAuthentication>(
-    (email, password) => ({method: CREATE_USER, email, password}),
+    (email, password) => ({ method: CREATE_USER, email, password }),
     email$, password$,
   );
 
@@ -95,18 +95,18 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-                props: {type: 'button'},
+                props: { type: 'button' },
               },
               [
-                img('.c-btn-federated__icon', {props: {src: googleIcon}}),
+                img('.c-btn-federated__icon', { props: { src: googleIcon } }),
                 span('.c-btn-federated__text', 'Sign in with Google'),
               ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', {
-              props: {type: 'button'},
+              props: { type: 'button' },
             }, [
-              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
+              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
@@ -116,7 +116,7 @@ function view() {
             div('.c-sign-in__email.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: {type: 'text', required: true},
+                  props: { type: 'text', required: true },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -126,11 +126,11 @@ function view() {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: {type: 'password', required: true},
+                  props: { type: 'password', required: true },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
+              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
@@ -139,7 +139,7 @@ function view() {
           ]),
         ]),
         div([
-          a({props: {href: SIGN_IN_ROUTE}}, 'By creating a profile, you' +
+          a({ props: { href: SIGN_IN_ROUTE } }, 'By creating a profile, you' +
             ' agree to our terms and conditions'),
         ]),
       ]),

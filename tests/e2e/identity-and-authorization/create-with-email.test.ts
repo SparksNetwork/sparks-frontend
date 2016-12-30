@@ -1,4 +1,4 @@
-import {NightWatchBrowser} from 'nightwatch';
+import { NightWatchBrowser } from 'nightwatch';
 
 import * as admin from 'firebase-admin';
 
