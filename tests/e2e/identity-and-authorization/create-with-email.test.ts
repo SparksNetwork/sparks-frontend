@@ -58,7 +58,7 @@ function deleteUser(email: string) {
 function execTest(browser: NightWatchBrowser) {
   browser
     .url('localhost:8080/connect')
-    .waitForElementVisible('#page', 2000) // wait for the page to display
+    .waitForElementVisible('#page', 6000) // wait for the page to display
     .setValue('.c-textfield__input--email', EMAIL_AND_PASSWORD_TEST_EMAIL)
     .setValue('.c-textfield__input--password', EMAIL_AND_PASSWORD_TEST_EMAIL)
     .click('.c-btn.c-btn--primary.c-sign-in__submit') // click submit button
