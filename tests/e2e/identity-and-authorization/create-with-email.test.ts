@@ -5,10 +5,31 @@ import * as admin from 'firebase-admin';
 const {
         FIREBASE_DATABASE_URL,
         EMAIL_AND_PASSWORD_TEST_EMAIL,
+        FIREBASE_ADMINSDK_TYPE,
+        FIREBASE_ADMINSDK_PROJECT_ID,
+        FIREBASE_ADMINSDK_PRIVATE_KEY_ID,
+        FIREBASE_ADMINSDK_PRIVATE_KEY,
+        FIREBASE_ADMINSDK_CLIENT_EMAIL,
+        FIREBASE_ADMINSDK_CLIENT_ID,
+        FIREBASE_ADMINSDK_AUTH_URI,
+        FIREBASE_ADMINSDK_TOKEN_URI,
+        FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
+        FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
       } = process.env;
 
 function getAuthAdmin() {
-  const serviceAccount = require('../../../../firebase.json');
+  const serviceAccount = {
+    "type": FIREBASE_ADMINSDK_TYPE,
+    "project_id": FIREBASE_ADMINSDK_PROJECT_ID,
+    "private_key_id": FIREBASE_ADMINSDK_PRIVATE_KEY_ID,
+    "private_key": FIREBASE_ADMINSDK_PRIVATE_KEY,
+    "client_email": FIREBASE_ADMINSDK_CLIENT_EMAIL,
+    "client_id": FIREBASE_ADMINSDK_CLIENT_ID,
+    "auth_uri": FIREBASE_ADMINSDK_AUTH_URI,
+    "token_uri": FIREBASE_ADMINSDK_TOKEN_URI,
+    "auth_provider_x509_cert_url": FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
+    "client_x509_cert_url": FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
+  };
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: FIREBASE_DATABASE_URL,
