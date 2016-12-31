@@ -9,7 +9,7 @@ import {
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
   CREATE_USER,
-  EMAIL_AND_PASSWORD
+  EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -17,6 +17,10 @@ const facebookIcon = require('assets/images/facebook.svg');
 
 const SIGN_IN_ROUTE = '/signin';
 const DASHBOARD_ROUTE = '/dash';
+
+function preventDefault(ev: any) {
+  ev.preventDefault();
+}
 
 export function ConnectScreen(sources: MainSources): MainSinks {
   const { isAuthenticated$, authentication$, dom } = sources;
@@ -45,10 +49,10 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 
   let intents = {
-    connectWithGoogle: events.googleClick.tap(evt => evt.preventDefault()),
-    connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
-    navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
-    signUp: events.formSubmit.tap(ev => ev.preventDefault()),
+    connectWithGoogle: events.googleClick.tap(preventDefault),
+    connectWithFacebook: events.facebookClick.tap(preventDefault),
+    navigateToSignIn: events.linkClick.tap(preventDefault),
+    signUp: events.formSubmit.tap(preventDefault),
     logUserIn: events.account_already_exists,
   };
 
