@@ -1,5 +1,5 @@
-import { NightWatchBrowser } from "nightwatch"
-import * as admin from "firebase-admin"
+import { NightWatchBrowser } from "nightwatch";
+import * as admin from "firebase-admin";
 
 const {
         FIREBASE_DATABASE_URL,
@@ -14,7 +14,7 @@ const {
         FIREBASE_ADMINSDK_AUTH_URI,
         FIREBASE_ADMINSDK_TOKEN_URI,
         FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
-        FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
+        FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL,
       } = process.env;
 
 function getAuthAdmin() {
@@ -32,7 +32,7 @@ function getAuthAdmin() {
       "auth_uri": FIREBASE_ADMINSDK_AUTH_URI,
       "token_uri": FIREBASE_ADMINSDK_TOKEN_URI,
       "auth_provider_x509_cert_url": FIREBASE_ADMINSDK_AUTH_PROVIDER_X509_CERT_URL,
-      "client_x509_cert_url": FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL
+      "client_x509_cert_url": FIREBASE_ADMINSDK_CLIENT_X509_CERT_URL,
     };
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
@@ -83,12 +83,12 @@ function deleteUser(email: string) {
 
 function execTest(browser: NightWatchBrowser) {
   browser
-    .url('localhost:8080/connect')
+    .url('http://localhost:8080/connect')
     .waitForElementVisible('#page', 1000) // wait for the page to display
     .setValue('.c-textfield__input--email', EMAIL_AND_PASSWORD_TEST_EMAIL)
     .setValue('.c-textfield__input--password', EMAIL_AND_PASSWORD_TEST_PASSWORD)
     .click('.c-btn.c-btn--primary.c-sign-in__submit') // click submit button
-    .pause(2000) // give it time to redirect
+    .pause(4000) // give it time to redirect
     .assert.urlContains('dash') // we are on the dashboard page
     .end();
 }
