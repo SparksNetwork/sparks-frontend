@@ -1,14 +1,12 @@
 import { Stream, map, skipRepeats } from 'most';
 import hold from '@most/hold';
-import { run, DriverFn, Component } from '@motorcycle/core';
-import { makeDOMDriver, DOMSource, VNode } from '@motorcycle/dom';
+import { run, Component, Sources, Sinks } from '@motorcycle/core';
+import { makeDomDriver, DomSource, VNode } from '@motorcycle/dom';
 import {
-  makeRouterDriver,
+  routerDriver,
   RouterSource,
-  RouterDefinitions,
-  RouterSources,
+  RouterInput,
 } from '@motorcycle/router';
-import { HistoryInput, Pathname } from '@motorcycle/history';
 import {
   Authentication,
   AuthenticationType,
@@ -26,40 +24,31 @@ firebase.initializeApp(Sparks.firebase);
 
 require('./style.scss');
 
-export interface MainSources {
-  dom: DOMSource;
+export interface MainSources extends Sources {
+  dom: DomSource;
   router: RouterSource;
   authentication$: Stream<Authentication>;
   isAuthenticated$: Stream<boolean>;
   user$: Stream<FirebaseUserChange>;
 }
 
-export interface MainSinks {
+export interface MainSinks extends Sinks {
   dom: Stream<VNode>;
-  router: Stream<HistoryInput | Pathname>;
+  router: RouterInput;
   authentication$: Stream<AuthenticationType>;
 }
 
 import { main } from './main';
 
-export function Routing(
-  definitions: RouterDefinitions<MainSources, MainSinks>,
-  sources: RouterSources<any>,
-): Stream<MainSinks> {
-  return sources.router.define(definitions)
-    .map(({path, value}: { path: string, value: any }) =>
-      value({ ...sources, router: sources.router.path(path) }),
-    );
-}
-
 const auth = firebase.auth();
-const onAuthStateChanged = auth.onAuthStateChanged.bind(auth);
+
+const rootElement: HTMLElement = document.querySelector('#app') as HTMLElement;
 
 run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
-  dom: makeDOMDriver('#app') as DriverFn,
-  router: makeRouterDriver(),
-  authentication$: makeFirebaseAuthenticationDriver(firebase) as DriverFn,
-  user$: makeFirebaseUserDriver(onAuthStateChanged) as DriverFn,
+  dom: makeDomDriver(rootElement),
+  router: routerDriver,
+  authentication$: makeFirebaseAuthenticationDriver(firebase),
+  user$: makeFirebaseUserDriver(listener => auth.onAuthStateChanged(listener)),
 });
 
 function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {

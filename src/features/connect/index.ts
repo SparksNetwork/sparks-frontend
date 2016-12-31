@@ -1,18 +1,7 @@
-import {Stream, just, merge, combine} from 'most';
-import {Pathname} from '@motorcycle/history';
-import {
-  div,
-  ul,
-  li,
-  img,
-  span,
-  a,
-  button,
-  input,
-  form,
-  label,
-} from '@motorcycle/dom';
-import {MainSources, MainSinks} from '../../app';
+import { Stream, just, merge, combine } from "most"
+import { Path } from "@motorcycle/history"
+import { div, ul, li, img, span, a, button, input, form, label } from "@motorcycle/dom"
+import { MainSources, MainSinks } from "../../app"
 import {
   redirectAuthAction,
   CreateUserAuthentication,
@@ -20,8 +9,8 @@ import {
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
   CREATE_USER,
-  EMAIL_AND_PASSWORD,
-} from '../../drivers/firebase-authentication';
+  EMAIL_AND_PASSWORD
+} from "../../drivers/firebase-authentication"
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
@@ -30,7 +19,7 @@ const SIGN_IN_ROUTE = '/signin';
 const DASHBOARD_ROUTE = '/dash';
 
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const {isAuthenticated$, authentication$, dom} = sources;
+  const { isAuthenticated$, authentication$, dom } = sources;
 
   let events = {
     linkClick: dom.select('a').events('click'),
@@ -65,7 +54,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
 
   let actions = {
     redirectToDashboard: state.isAuthenticated$
-      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Pathname>,
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
     navigateToSignIn: intents.navigateToSignIn
       .map(ev => (ev.target as HTMLAnchorElement).pathname),
     connectWithGoogle: redirectAuthAction(
@@ -76,12 +65,12 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     ),
 
     signUp: combine<string, string, CreateUserAuthentication>(
-      (email, password) => ({method: CREATE_USER, email, password}),
+      (email, password) => ({ method: CREATE_USER, email, password }),
       state.email, state.password,
     ).sampleWith<CreateUserAuthentication>(intents.signUp),
 
     logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
-      (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+      (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
       state.email, state.password,
     ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
   };
@@ -109,16 +98,18 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-                props: {type: 'button'},
+                props: { type: 'button' },
               },
               [
-                img('.c-btn-federated__icon', {props: {src: googleIcon}}),
+                img('.c-btn-federated__icon', { props: { src: googleIcon } }),
                 span('.c-btn-federated__text', 'Sign in with Google'),
               ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
+            button('.c-btn.c-btn-federated.c-btn-federated--facebook', {
+              props: { type: 'button' },
+            }, [
+              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
@@ -148,7 +139,7 @@ function view() {
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
+              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
@@ -157,7 +148,7 @@ function view() {
           ]),
         ]),
         div([
-          a({props: {href: SIGN_IN_ROUTE}}, 'By creating a profile, you' +
+          a({ props: { href: SIGN_IN_ROUTE } }, 'By creating a profile, you' +
             ' agree to our terms and conditions'),
         ]),
       ]),

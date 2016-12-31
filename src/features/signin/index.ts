@@ -1,28 +1,37 @@
-import { Stream, just } from 'most';
-import { Pathname } from '@motorcycle/history';
+import { Stream, just, merge } from 'most';
+import { Path } from '@motorcycle/history';
 import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
   redirectAuthAction,
   googleRedirectAuthentication,
+  facebookRedirectAuthentication,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
 export function SignInScreen(sources: MainSources): MainSinks {
-  const router: Stream<Pathname> =
-    sources.dom.select('a').events('click')
-      .tap(evt => evt.preventDefault())
-      .map(evt => (evt.target as HTMLAnchorElement).pathname);
+  const router: Stream<Path> =
+    sources.isAuthenticated$.filter(Boolean).constant('/dash');
 
   const googleClick$: Stream<Event> =
     sources.dom.select('.c-btn-federated--google').events('click')
       .tap(evt => evt.preventDefault());
 
-  const authentication$: Stream<AuthenticationType> =
+  const facebookClick$: Stream<Event> =
+    sources.dom.select('.c-btn-federated--facebook').events('click')
+      .tap(evt => evt.preventDefault());
+
+  const googleAuth$: Stream<AuthenticationType> =
     redirectAuthAction(googleRedirectAuthentication, googleClick$);
+
+  const facebookAuth$: Stream<AuthenticationType> =
+    redirectAuthAction(facebookRedirectAuthentication, facebookClick$);
+
+  const authentication$: Stream<AuthenticationType> =
+    merge(googleAuth$, facebookAuth$);
 
   return {
     dom: just(view()),
