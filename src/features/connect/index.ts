@@ -1,7 +1,7 @@
-import { Stream, just, merge, combine } from "most"
-import { Path } from "@motorcycle/history"
-import { div, ul, li, img, span, a, button, input, form, label } from "@motorcycle/dom"
-import { MainSources, MainSinks } from "../../app"
+import { Stream, just, merge, combine } from 'most';
+import { Path } from '@motorcycle/history';
+import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
+import { MainSources, MainSinks } from '../../app';
 import {
   redirectAuthAction,
   CreateUserAuthentication,
@@ -10,7 +10,7 @@ import {
   facebookRedirectAuthentication,
   CREATE_USER,
   EMAIL_AND_PASSWORD
-} from "../../drivers/firebase-authentication"
+} from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
