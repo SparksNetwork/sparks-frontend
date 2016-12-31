@@ -1,14 +1,15 @@
-import { Path } from '@motorcycle/history';
 import { Stream, just, merge, combine } from 'most';
+import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
-  AuthenticationType,
   redirectAuthAction,
   CreateUserAuthentication,
+  EmailAndPasswordAuthentication,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
   CREATE_USER,
+  EMAIL_AND_PASSWORD
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -17,72 +18,74 @@ const facebookIcon = require('assets/images/facebook.svg');
 const SIGN_IN_ROUTE = '/signin';
 const DASHBOARD_ROUTE = '/dash';
 
-function preventDefault(ev: any) {
-  ev.preventDefault();
-}
-
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const { isAuthenticated$, dom } = sources;
+  const { isAuthenticated$, authentication$, dom } = sources;
 
-  const redirectToDashboard$: Stream<Path> = isAuthenticated$
-    .filter(Boolean)
-    .constant(DASHBOARD_ROUTE);
+  let events = {
+    linkClick: dom.select('a').events('click'),
+    googleClick: dom.select('.c-btn-federated--google').events('click'),
+    facebookClick: dom.select('.c-btn-federated--facebook').events('click'),
+    emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
+    passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
+    formSubmit: dom.select('form').events('submit'),
 
-  const router: Stream<Path> = dom
-    .select('a')
-    .events('click')
-    .tap(preventDefault)
-    .map((ev: any) => (ev.target as HTMLAnchorElement).pathname)
-    .merge(redirectToDashboard$);
+    account_already_exists: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use',
+      )
+      .multicast(),
+  };
 
-  const googleClick$: Stream<Event> = dom
-    .select('.c-btn-federated--google')
-    .events('click')
-    .tap(preventDefault);
+  let state = {
+    email: events.emailFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    password: events.passwordFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    isAuthenticated$,
+  };
 
-  const googleAuth$: Stream<AuthenticationType> = redirectAuthAction(
-    googleRedirectAuthentication,
-    googleClick$);
+  let intents = {
+    connectWithGoogle: events.googleClick.tap(evt => evt.preventDefault()),
+    connectWithFacebook: events.facebookClick.tap(evt => evt.preventDefault()),
+    navigateToSignIn: events.linkClick.tap(evt => evt.preventDefault()),
+    signUp: events.formSubmit.tap(ev => ev.preventDefault()),
+    logUserIn: events.account_already_exists,
+  };
 
-  const facebookClick$: Stream<Event> = dom
-    .select('.c-btn-federated--facebook')
-    .events('click')
-    .tap(preventDefault);
+  let actions = {
+    redirectToDashboard: state.isAuthenticated$
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
+    navigateToSignIn: intents.navigateToSignIn
+      .map(ev => (ev.target as HTMLAnchorElement).pathname),
+    connectWithGoogle: redirectAuthAction(
+      googleRedirectAuthentication, intents.connectWithGoogle,
+    ),
+    connectWithFacebook: redirectAuthAction(
+      facebookRedirectAuthentication, intents.connectWithFacebook,
+    ),
 
-  const facebookAuth$: Stream<AuthenticationType> = redirectAuthAction(
-    facebookRedirectAuthentication,
-    facebookClick$);
+    signUp: combine<string, string, CreateUserAuthentication>(
+      (email, password) => ({ method: CREATE_USER, email, password }),
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.signUp),
 
-  const email$ = dom
-    .select('.c-textfield__input--email')
-    .events('input')
-    .map((ev: any) => (ev.target as HTMLInputElement).value);
-
-  const password$ = dom
-    .select('.c-textfield__input--password')
-    .events('input')
-    .map((ev: any) => (ev.target as HTMLInputElement).value);
-
-  const emailAndPassword$ = combine<string, string, CreateUserAuthentication>(
-    (email, password) => ({ method: CREATE_USER, email, password }),
-    email$, password$,
-  );
-
-  const submit$ = dom
-    .select('form')
-    .events('submit')
-    .tap(preventDefault);
-
-  const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<CreateUserAuthentication>(submit$);
+    logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
+      (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
+  };
 
   return {
     dom: just(view()),
-    router,
+    router: merge(
+      actions.redirectToDashboard,
+      actions.navigateToSignIn,
+    ),
     authentication$: merge(
-      googleAuth$,
-      facebookAuth$,
-      emailAndPasswordAuthenticationMethod$,
+      actions.connectWithGoogle,
+      actions.connectWithFacebook,
+      actions.signUp,
+      actions.logUserIn,
     ),
   };
 }
@@ -116,7 +119,10 @@ function view() {
             div('.c-sign-in__email.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: { type: 'text', required: true },
+                  props: {
+                    type: 'text',
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -126,7 +132,10 @@ function view() {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: { type: 'password', required: true },
+                  props: {
+                    type: 'password',
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
