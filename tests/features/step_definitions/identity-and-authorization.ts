@@ -67,4 +67,22 @@ export = function () {
     this.end();
   });
 
+  this.Given('I’m not signed in', function (done: Function) {
+    // As a new browser window will be opened,
+    // the User will automatically not be signed in.
+    done(null);
+  });
+
+  this.When('I click the sign-in link', function () {
+    const connect: any = this.page.connect();
+
+    connect
+      .click('@signInLink');
+  });
+
+  this.Then('I’m taken to the {route:stringInDoubleQuotes} URL', function (route: string) {
+    pages(this)[route]
+      .waitForElementPresent('@page');
+  });
+
 }

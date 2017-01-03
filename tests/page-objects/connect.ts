@@ -25,5 +25,8 @@ export = {
     submitButton: {
       selector: `#signIn`,
     },
+    signInLink: {
+      selector: `a[href^='/signin']`,
+    },
   },
 };

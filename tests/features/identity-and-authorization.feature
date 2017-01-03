@@ -73,12 +73,11 @@ Scenario: Missing password connecting with email and password
     And I click the "Connect" submit button
    Then I see missing-password error message
 
-@wip @noci
 Scenario: Switch to sign-in from connect
   Given I’m not signed in
    When I navigate to the "Connect" URL
-    And I click the "sign-in" link
-   Then I’m taken to the "sign-in" URL
+    And I click the sign-in link
+   Then I’m taken to the "Sign in" URL
 
 @wip @noci
 Scenario: Switch to connect from sign-in

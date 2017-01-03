@@ -6,6 +6,7 @@ export function pages(client: NightWatchBrowser): any {
       'Google': client.page.googleOauth(),
       'Facebook': client.page.facebookOauth(),
       'Connect': client.page.connect(),
+      'Sign in': client.page.signin(),
     };
 
   return pages;
