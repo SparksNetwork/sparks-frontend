@@ -85,4 +85,12 @@ export = function () {
       .waitForElementPresent('@page');
   });
 
+  this.When('I click the connect link', function () {
+    const signIn: any = this.page.signIn();
+
+    signIn
+      .click('@connectLink');
+  });
+
+
 }

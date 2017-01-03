@@ -79,12 +79,11 @@ Scenario: Switch to sign-in from connect
     And I click the sign-in link
    Then I’m taken to the "Sign in" URL
 
-@wip @noci
 Scenario: Switch to connect from sign-in
   Given I’m not signed in
-   When I navigate to the "Sign-in" URL
-    And I click the "connect" link
-   Then I’m taken to the "connect" URL
+   When I navigate to the "Sign in" URL
+    And I click the connect link
+   Then I’m taken to the "Connect" URL
 
 @wip @noci
 Scenario: Sign in with Google

@@ -1,13 +1,13 @@
 declare module 'nightwatch' {
   export interface PageObjects {
-    signin(): {
+    signIn(): {
       navigate(): NightWatchBrowser;
     };
   }
 }
 
 export = {
-  url: 'http://localhost:8080/connect',
+  url: 'http://localhost:8080/signin',
   elements: {
     page: `#page`,
     googleButton: {
@@ -15,6 +15,9 @@ export = {
     },
     facebookButton: {
       selector: '.c-btn-federated--facebook',
+    },
+    connectLink: {
+      selector: `a[href^='/connect']`,
     },
   },
 };
