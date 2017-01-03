@@ -11,7 +11,7 @@ export function deleteUserAndReturnPromise(email: string) {
 
 export function deleteFirebaseUser(email: string) {
   return function _deleteFirebaseUser(_, done: Function) {
-    deleteUserAndReturnPromise(email)
+    return deleteUserAndReturnPromise(email)
       .then(done);
   }
 
