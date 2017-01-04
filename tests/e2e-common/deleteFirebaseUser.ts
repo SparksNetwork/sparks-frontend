@@ -14,5 +14,4 @@ export function deleteFirebaseUser(email: string) {
     deleteUserAndReturnPromise(email)
       .then(done);
   }
-
 }
