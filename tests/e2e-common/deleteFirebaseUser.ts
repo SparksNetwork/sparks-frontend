@@ -1,9 +1,12 @@
 import "./initialize";
+import { createUser } from "./createFirebaseUser";
 import * as admin from "firebase-admin";
 
 export function deleteIfExistsAndRecreateUser(email: string, pwd: string) {
   return function _deleteIfExistsAndRecreateUser(_: any, done: Function) {
-
+    deleteUserAndReturnPromise(email)
+      .then(() => createUser(email, pwd))
+      .then(done);
   }
 }
 
