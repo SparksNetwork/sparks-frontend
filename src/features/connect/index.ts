@@ -70,7 +70,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     signUp: events.formSubmit.tap(preventDefault),
     logUserIn: events.accountAlreadyExists,
   };
-  
+
   let actions = {
     redirectToDashboard: state.isAuthenticated$
       .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
