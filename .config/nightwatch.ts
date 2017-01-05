@@ -1,3 +1,8 @@
+require('nightwatch-cucumber')({
+  featureFiles: ['tests/.tmp/features'],
+  stepDefinitions: ['tests/.tmp/features/step_definitions'],
+});
+
 module.exports = (function (settings) {
   if (process.platform === 'win32')
     settings.selenium.cli_args['webdriver.chrome.driver'] =

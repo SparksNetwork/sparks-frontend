@@ -1,9 +1,10 @@
-import { Stream, never, map } from 'most';
-import { propOr } from 'ramda';
-import { div, p, a } from '@motorcycle/dom';
-import firebase = require('firebase');
+import { AuthenticationType, signoutAuthentication } from '../../drivers/firebase-authentication';
 import { MainSinks, MainSources } from '../../app';
-import { signoutAuthentication, AuthenticationType } from '../../drivers/firebase-authentication';
+import { Stream, map, never } from 'most';
+import { a, div, p } from '@motorcycle/dom';
+
+import { propOr } from 'ramda';
+import firebase = require('firebase');
 
 export function Dash(sources: MainSources): MainSinks {
   const userEmail$: Stream<string> =
@@ -33,7 +34,7 @@ function toUserEmail(user: firebase.User | null): string {
 }
 
 function view(userEmail: string) {
-  return div({}, [
+  return div(`#dashboard`, [
     p([ `You are currently logged in as: `,
       p('#user-email', `${userEmail}`),
       div([
