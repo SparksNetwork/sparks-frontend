@@ -1,4 +1,5 @@
-import { Stream, just, merge, combine } from 'most';
+import { Stream, just, merge, combine, concat } from 'most';
+import hold from '@most/hold';
 import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
@@ -17,6 +18,7 @@ const facebookIcon = require('assets/images/facebook.svg');
 
 const SIGN_IN_ROUTE = '/signin';
 const DASHBOARD_ROUTE = '/dash';
+const WRONG_PASSWORD_ERROR = 'Wrong password!! Please try again!';
 
 function preventDefault(ev: any) {
   ev.preventDefault();
@@ -33,9 +35,14 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
     formSubmit: dom.select('form').events('submit'),
 
-    account_already_exists: authentication$
+    accountAlreadyExists: authentication$
       .filter(authResponse =>
         !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use',
+      )
+      .multicast(),
+    attemptToLogInWithWrongPassword: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/wrong-password',
       )
       .multicast(),
   };
@@ -46,6 +53,14 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     password: events.passwordFieldInput
       .map(ev => (ev.target as HTMLInputElement).value),
     isAuthenticated$,
+    errorFeedback: hold(concat<Boolean>(
+      just(false),
+      merge(
+        events.attemptToLogInWithWrongPassword.map(_ => true),
+        // remove error feedback when submitting
+        events.formSubmit.map(_ => false),
+      ),
+    )),
   };
 
   let intents = {
@@ -53,8 +68,9 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     connectWithFacebook: events.facebookClick.tap(preventDefault),
     navigateToSignIn: events.linkClick.tap(preventDefault),
     signUp: events.formSubmit.tap(preventDefault),
-    logUserIn: events.account_already_exists,
+    logUserIn: events.accountAlreadyExists,
   };
+
 
   let actions = {
     redirectToDashboard: state.isAuthenticated$
@@ -80,7 +96,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 
   return {
-    dom: just(view()),
+    dom: state.errorFeedback.map(view),
     router: merge(
       actions.redirectToDashboard,
       actions.navigateToSignIn,
@@ -94,7 +110,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
   };
 }
 
-function view() {
+function view(errorFeedback: Boolean) {
   return div('#page', [
     div('.c-sign-in', [
       form('.c-sign-in__form', [
@@ -110,9 +126,7 @@ function view() {
               ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn-federated.c-btn-federated--facebook', {
-              props: { type: 'button' },
-            }, [
+            button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
               img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
@@ -152,8 +166,11 @@ function view() {
           ]),
         ]),
         div([
-          a({ props: { href: SIGN_IN_ROUTE } }, 'By creating a profile, you' +
-            ' agree to our terms and conditions'),
+          a({ props: { href: SIGN_IN_ROUTE } }, 'Already have an account? Sign' +
+            ' in!'),
+          errorFeedback
+            ? div('.c-textfield.c-textfield--errorfield', WRONG_PASSWORD_ERROR)
+            : null,
         ]),
       ]),
     ]),
