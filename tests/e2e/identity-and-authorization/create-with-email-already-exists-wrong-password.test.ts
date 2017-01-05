@@ -5,7 +5,7 @@ const { EMAIL_AND_PASSWORD_TEST_EMAIL, EMAIL_AND_PASSWORD_TEST_PASSWORD } = proc
 
 function execTest(browser: NightWatchBrowser) {
   browser
-    .url('http:localhost:8080/connect')
+    .url('http://localhost:8080/connect')
     .waitForElementVisible('#page', 1000) // wait for the page to display
     .setValue('.c-textfield__input--email', EMAIL_AND_PASSWORD_TEST_EMAIL)
     .setValue('.c-textfield__input--password', EMAIL_AND_PASSWORD_TEST_PASSWORD + 'ddummy')
