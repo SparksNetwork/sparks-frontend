@@ -8,7 +8,7 @@ function execTest(browser: NightWatchBrowser) {
     .url('http:localhost:8080/connect')
     .waitForElementVisible('#page', 1000) // wait for the page to display
     .setValue('.c-textfield__input--email', EMAIL_AND_PASSWORD_TEST_EMAIL)
-    .setValue('.c-textfield__input--password', EMAIL_AND_PASSWORD_TEST_PASSWORD + 'dummy')
+    .setValue('.c-textfield__input--password', EMAIL_AND_PASSWORD_TEST_PASSWORD + 'ddummy')
     .click('.c-btn.c-btn--primary.c-sign-in__submit') // click submit button
     .pause(4000) // give it time to redirect
     .assert.urlContains('connect') // we are on the same page
