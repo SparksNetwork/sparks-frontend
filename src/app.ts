@@ -1,4 +1,4 @@
-import * as i18nXhr from 'i18next-xhr-backend';
+const i18nXhr = require('i18next-xhr-backend').default;
 
 import {
   Authentication,
@@ -17,7 +17,7 @@ import {
   RouterSource,
   routerDriver,
 } from '@motorcycle/router';
-import { Stream, map, skipRepeats, startWith } from 'most';
+import { Stream, map, skipRepeats } from 'most';
 
 import hold from '@most/hold';
 import { main } from './main';
@@ -44,7 +44,6 @@ export interface MainSinks extends Sinks {
   authentication$: Stream<AuthenticationType>;
 }
 
-
 const auth = firebase.auth();
 
 const rootElement: HTMLElement = document.querySelector('#app') as HTMLElement;
@@ -58,9 +57,7 @@ const i18nOptions: any =
 run<MainSources, MainSinks>(augmentWithIsAuthenticated$(main), {
   dom: makeDomDriver(rootElement),
   router: routerDriver,
-  i18n: function (language$: Stream<string>) {
-    return makeI18nDriver([i18nXhr], i18nOptions)(startWith(`en-US`, language$))
-  },
+  i18n: makeI18nDriver([i18nXhr], i18nOptions),
   authentication$: makeFirebaseAuthenticationDriver(firebase),
   user$: makeFirebaseUserDriver(listener => auth.onAuthStateChanged(listener)),
 });

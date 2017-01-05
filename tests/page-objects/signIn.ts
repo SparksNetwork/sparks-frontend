@@ -1,14 +1,13 @@
+import { PageObject, makePageObject } from '../e2e-common/makePageObject';
+
 declare module 'nightwatch' {
   export interface PageObjects {
-    signIn(): {
-      navigate(): NightWatchBrowser;
-    };
+    signIn(): PageObject;
   }
 }
 
-export = {
-  url: 'http://localhost:8080/signin',
-  elements: {
+const elements =
+  {
     page: `#page`,
     googleButton: {
       selector: '.c-btn-federated--google',
@@ -19,5 +18,21 @@ export = {
     connectLink: {
       selector: `a[href^='/connect']`,
     },
-  },
-};
+    title: {
+      selector: `.c-sign-in__title`,
+    },
+    emailLabel: {
+      selector: `.c-sign-in__email .c-textfield__label`,
+    },
+    passwordLabel: {
+      selector: `.c-sign-in__password .c-textfield__label`,
+    },
+    forgotPasswordLink: {
+      selector: `.c-sign-in__password-forgot`,
+    },
+    signInButton: {
+      selector: `.c-sign-in__submit`,
+    }
+  };
+
+export = makePageObject(`/signin`, elements);

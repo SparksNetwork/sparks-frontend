@@ -77,11 +77,11 @@ Scenario: Switch to sign-in from connect
   Given I’m not signed in
    When I navigate to the "Connect" URL
     And I click the sign-in link
-   Then I’m taken to the "Sign in" URL
+   Then I’m taken to the "Sign-in" URL
 
 Scenario: Switch to connect from sign-in
   Given I’m not signed in
-   When I navigate to the "Sign in" URL
+   When I navigate to the "Sign-in" URL
     And I click the connect link
    Then I’m taken to the "Connect" URL
 
@@ -112,8 +112,28 @@ Scenario: Sign in with Facebook
    Then I’m taken to my dashboard
     And I am signed in
 
-Scenario: Multilingual sign in
+Scenario: Spanish sign-in
   Given My browser language is "Spanish"
     And I’m not signed in
    When I navigate to the "Sign-in" URL
    Then the title is in "Spanish"
+    And the "Google button" is in "Spanish"
+    And the "Facebook button" is in "Spanish"
+    And the "Email label" is in "Spanish"
+    And the "Password label" is in "Spanish"
+    And the "Forgot password link" is in "Spanish"
+    And the "Sign-in button" is in "Spanish"
+    And the "Connect link" is in "Spanish"
+
+Scenario: American English sign-in
+  Given My browser language is "American English"
+    And I’m not signed in
+   When I navigate to the "Sign-in" URL
+   Then the title is in "American English"
+    And the "Google button" is in "American English"
+    And the "Facebook button" is in "American English"
+    And the "Email label" is in "American English"
+    And the "Password label" is in "American English"
+    And the "Forgot password link" is in "American English"
+    And the "Sign-in button" is in "American English"
+    And the "Connect link" is in "American English"

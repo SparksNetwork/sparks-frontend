@@ -25,7 +25,7 @@
     }
   },
   "scripts": {
-    "clean": "rimraf dist/bundle* tests/.tmp .tmp .screens report",
+    "clean": "rimraf dist/bundle* dist/*.svg tests/.tmp .tmp .screens report",
     "start": "ts-node ./node_modules/.bin/webpack-dev-server --config .config/webpack.config.ts",
     "serve": "npm start",
     "serve-static": "pushstate-server dist 8080",
@@ -39,7 +39,7 @@
     "connect": "sc-run --id ${TRAVIS_JOB_NUMBER} --",
     "sauce": "npm run build:e2e && cross-env TS_NODE_PROJECT=tests/tsconfig.json ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --env android,iphone,safari",
     "build:e2e": "npm run clean && tsc -P tests/tsconfig.json && cp ./tests/features/*.feature ./tests/.tmp/features",
-    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts",
+    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts && npm run build-locales-server",
     "commit": "git-cz"
   },
   "devDependencies": {
@@ -93,11 +93,12 @@
     "@motorcycle/core": "^2.1.0",
     "@motorcycle/dom": "^6.6.0",
     "@motorcycle/history": "^4.1.0",
-    "@motorcycle/i18n": "^1.0.3",
+    "@motorcycle/i18n": "^1.0.8",
     "@motorcycle/router": "^4.1.0",
     "firebase": "^3.6.4",
     "i18next-xhr-backend": "^1.2.1",
     "most": "^1.1.1",
+    "most-combineobj": "^1.0.0",
     "ramda": "^0.22.1",
     "sparks-design-system": "^0.8.0"
   }

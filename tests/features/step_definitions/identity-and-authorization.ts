@@ -1,6 +1,17 @@
-import { connectElements, emails, languageCodes, pages, passwords } from '../common/identity-and-authorization';
-
-import { deleteUser } from '../common';
+import {
+  connectElements,
+  emails,
+  pages,
+  passwords,
+  signInElements,
+} from '../common/identity-and-authorization';
+import {
+  deleteUser,
+  getLanguageCode,
+  languageCodes,
+  setLanguageCode,
+  translation,
+} from '../common';
 
 export = function () {
 
@@ -10,9 +21,11 @@ export = function () {
     });
 
   this.When('I navigate to the {route:stringInDoubleQuotes} URL', function (route: string) {
-    pages(this)[route]
-      .navigate()
-      .waitForElementVisible('@page');
+    const page = pages(this)[route];
+
+    page.changeUrl(getLanguageCode());
+
+    page.waitForElementVisible('@page');
   });
 
   this.When('I click the {button:stringInDoubleQuotes} connect button', function (button: string) {
@@ -91,17 +104,27 @@ export = function () {
   });
 
   this.Given('My browser language is {language:stringInDoubleQuotes}',
-    function (language: string, callback: Function) {
-      const languageCode = languageCodes[language];
-
-      callback(null, `pending`);
+    function (language: string) {
+      setLanguageCode(languageCodes[language]);
     });
 
-  this.Then('the title is in {arg1:stringInDoubleQuotes}',
-    function (language: string, callback: Function) {
-      Function.prototype(language);
-      // Write code here that turns the phrase above into concrete actions
-      callback(null, `pending`);
+  this.Then('the title is in {language:stringInDoubleQuotes}',
+    function (language: string) {
+      const signIn: any = this.page.signIn();
+
+      signIn
+        .assert.containsText('@title', translation(language).signin.title);
+    });
+
+  this.Then('the {button:stringInDoubleQuotes} is in {language:stringInDoubleQuotes}',
+    function (element: string, language: string) {
+      const signIn: any = this.page.signIn();
+
+      signIn
+        .assert.containsText(
+        signInElements[element],
+        translation(language).signin[signInElements[element].slice(1)]
+        );
     });
 
 }

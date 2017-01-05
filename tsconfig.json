@@ -16,7 +16,6 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "types": [
-      "i18next",
       "i18next-xhr-backend",
       "mocha",
       "node",

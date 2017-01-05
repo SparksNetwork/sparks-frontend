@@ -17,10 +17,21 @@ export function main(sources: MainSources): MainSinks {
       '/signin': augmentWithAnchorClicks(SignInScreen),
     }, sources);
 
+  const language$ =
+    sources.router
+      .history()
+      .map(location => location.queries.lang || 'en-US');
+
+  const i18n =
+    sinks$
+      .map(sinks => sinks.i18n)
+      .switch()
+      .merge(language$);
+
   return {
     dom: sinks$.map(sinks => sinks.dom).switch(),
     router: sinks$.map(sinks => sinks.router).switch(),
-    i18n: sinks$.map(sinks => sinks.i18n).switch(),
+    i18n,
     authentication$: sinks$.map(sinks => sinks.authentication$).switch(),
   };
 };
