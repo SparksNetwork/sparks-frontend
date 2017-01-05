@@ -8,13 +8,16 @@ import {
   EmailAndPasswordAuthentication,
   EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
-import { DASHBOARD_ROUTE, WRONG_PASSWORD_ERROR, WRONG_EMAIL_ERROR } from './properties';
+
+const DASHBOARD_ROUTE = '/dash';
+const WRONG_PASSWORD_ERROR = 'Wrong password!! Please try again!';
+const WRONG_EMAIL_ERROR = 'Wrong email!! Please try again!';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
 export function SignInScreen(sources: MainSources): MainSinks {
-  const {isAuthenticated$, authentication$, dom} = sources;
+  const { isAuthenticated$, authentication$, dom } = sources;
 
   let events = {
     emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
@@ -58,7 +61,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
     redirectToDashboard: state.isAuthenticated$
       .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
     signUserIn: combine<string, string, EmailAndPasswordAuthentication>(
-      (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+      (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
       state.email, state.password,
     ).sampleWith<CreateUserAuthentication>(intents.signUserIn),
   };
@@ -78,15 +81,15 @@ function view(errorFeedback: String) {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: {type: 'button'},
+              props: { type: 'button' },
             }, [
-              img('.c-btn-federated__icon', {props: {src: googleIcon}}),
+              img('.c-btn-federated__icon', { props: { src: googleIcon } }),
               span('.c-btn-federated__text', 'Sign in with Google'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
+              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
@@ -96,7 +99,7 @@ function view(errorFeedback: String) {
             div('.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: {type: 'text', required: true},
+                  props: { type: 'text', required: true },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -106,11 +109,11 @@ function view(errorFeedback: String) {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: {type: 'password', required: true},
+                  props: { type: 'password', required: true },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
+              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
@@ -118,7 +121,7 @@ function view(errorFeedback: String) {
           ]),
         ]),
         div([
-          a({props: {href: '/connect'}}, 'New to the Sparks.Network? Sign up'),
+          a({ props: { href: '/connect' } }, 'New to the Sparks.Network? Sign up'),
         ]),
         div([
           errorFeedback
