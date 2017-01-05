@@ -1,55 +1,76 @@
-import { Stream, just, combine } from 'most';
+import { Stream, just, merge, combine, concat } from 'most';
+import hold from '@most/hold';
 import { Path } from '@motorcycle/history';
-import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
+import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
+  CreateUserAuthentication,
   EmailAndPasswordAuthentication,
   EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
+import { DASHBOARD_ROUTE, WRONG_PASSWORD_ERROR, WRONG_EMAIL_ERROR } from './properties';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
 
-const DASHBOARD_ROUTE = '/dash';
-
 export function SignInScreen(sources: MainSources): MainSinks {
-  let { dom, isAuthenticated$ } = sources;
+  const {isAuthenticated$, authentication$, dom} = sources;
 
-  const redirectToDashboard$: Stream<Path> =
-          isAuthenticated$.filter(Boolean).constant(DASHBOARD_ROUTE);
+  let events = {
+    emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
+    passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
+    formSubmit: dom.select('form').events('submit').multicast(),
 
-  const router: Stream<Path> =
-          dom.select('a').events('click')
-            .tap(evt => evt.preventDefault())
-            .map(evt => (evt.target as HTMLAnchorElement).pathname)
-            .merge(redirectToDashboard$);
+    attemptToSignInWithWrongPassword: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/wrong-password',
+      )
+      .multicast(),
+    attemptToSignInWithWrongEmail: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/user-not-found',
+      )
+      .multicast(),
+  };
 
-  const email$ = dom.select('.c-textfield__input--email').events('input')
-    .map(ev => (ev.target as HTMLInputElement).value);
+  let state = {
+    email: hold(events.emailFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value)),
+    password: hold(events.passwordFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value)),
+    isAuthenticated$,
+    errorFeedback: hold(concat<String>(
+      just(''),
+      merge<String>(
+        events.attemptToSignInWithWrongPassword.map(_ => WRONG_PASSWORD_ERROR),
+        events.attemptToSignInWithWrongEmail.map(_ => WRONG_EMAIL_ERROR),
+        // remove error feedback when submitting
+        events.formSubmit.map(_ => ''),
+      ),
+    )),
+  };
 
-  const password$ = dom.select('.c-textfield__input--password').events('input')
-    .map(ev => (ev.target as HTMLInputElement).value);
+  let intents = {
+    signUserIn: events.formSubmit.tap(ev => ev.preventDefault()),
+  };
 
-  const emailAndPassword$ =
-          combine<string, string, EmailAndPasswordAuthentication>(
-            (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
-            email$, password$,
-          );
-
-  const submit$ = dom.select('form').events('submit')
-    .tap(ev => ev.preventDefault());
-
-  const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<EmailAndPasswordAuthentication>(submit$);
+  let actions = {
+    redirectToDashboard: state.isAuthenticated$
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
+    signUserIn: combine<string, string, EmailAndPasswordAuthentication>(
+      (email, password) => ({method: EMAIL_AND_PASSWORD, email, password}),
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.signUserIn),
+  };
 
   return {
-    dom: just(view()),
-    authentication$: emailAndPasswordAuthenticationMethod$,
-    router,
+    dom: state.errorFeedback.map(view),
+    authentication$: actions.signUserIn,
+    router: actions.redirectToDashboard,
   };
 }
 
-function view() {
+function view(errorFeedback: String) {
   return div('#page', [
     div('.c-sign-in', [
       form('.c-sign-in__form', [
@@ -57,15 +78,15 @@ function view() {
         ul('.c-sign-in__list', [
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--google', {
-              props: { type: 'button' },
+              props: {type: 'button'},
             }, [
-              img('.c-btn-federated__icon', { props: { src: googleIcon } }),
+              img('.c-btn-federated__icon', {props: {src: googleIcon}}),
               span('.c-btn-federated__text', 'Sign in with Google'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
             button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
-              img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
+              img('.c-btn-federated__icon', {props: {src: facebookIcon}}),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
           ]),
@@ -75,10 +96,7 @@ function view() {
             div('.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: {
-                    type: 'text',
-                    required: true,
-                  },
+                  props: {type: 'text', required: true},
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -88,14 +106,11 @@ function view() {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: {
-                    type: 'password',
-                    required: true,
-                  },
+                  props: {type: 'password', required: true},
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
-              a('.c-sign-in__password-forgot', { props: { href: '/forgot-password' } }, 'Forgot?'),
+              a('.c-sign-in__password-forgot', {props: {href: '/forgot-password'}}, 'Forgot?'),
             ]),
           ]),
           li('.c-sign-in__list-item', [
@@ -103,7 +118,12 @@ function view() {
           ]),
         ]),
         div([
-          a({ props: { href: '/connect' } }, 'New to the Sparks.Network? Sign up'),
+          a({props: {href: '/connect'}}, 'New to the Sparks.Network? Sign up'),
+        ]),
+        div([
+          errorFeedback
+            ? div('.c-textfield.c-textfield--errorfield', errorFeedback)
+            : null,
         ]),
       ]),
     ]),
