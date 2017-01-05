@@ -111,3 +111,9 @@ Scenario: Sign in with Facebook
     And I click the "Facebook" submit button
    Then I’m taken to my dashboard
     And I am signed in
+
+Scenario: Multilingual sign in
+  Given My browser language is "Spanish"
+    And I’m not signed in
+   When I navigate to the "Sign-in" URL
+   Then the title is in "Spanish"

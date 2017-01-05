@@ -4,6 +4,7 @@ import { Stream, map, never } from 'most';
 import { a, div, p } from '@motorcycle/dom';
 
 import { propOr } from 'ramda';
+
 import firebase = require('firebase');
 
 export function Dash(sources: MainSources): MainSinks {
@@ -22,6 +23,7 @@ export function Dash(sources: MainSources): MainSinks {
   return {
     dom: view$,
     router: never(),
+    i18n: never(),
     authentication$,
   };
 }

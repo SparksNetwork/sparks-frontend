@@ -45,6 +45,8 @@
   "devDependencies": {
     "@motorcycle/tslint": "^1.3.0",
     "@types/chai": "^3.4.34",
+    "@types/i18next": "^2.3.34",
+    "@types/i18next-xhr-backend": "^1.2.2",
     "@types/mocha": "^2.2.33",
     "@types/node": "0.0.2",
     "@types/ramda": "0.0.2",
@@ -61,6 +63,7 @@
     "geckodriver": "^1.2.0",
     "ghooks": "^1.3.2",
     "image-webpack-loader": "^3.0.0",
+    "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
     "mocha-webpack": "^0.7.0",
     "nightwatch": "^0.9.9",
@@ -90,8 +93,10 @@
     "@motorcycle/core": "^2.1.0",
     "@motorcycle/dom": "^6.6.0",
     "@motorcycle/history": "^4.1.0",
+    "@motorcycle/i18n": "^1.0.3",
     "@motorcycle/router": "^4.1.0",
     "firebase": "^3.6.4",
+    "i18next-xhr-backend": "^1.2.1",
     "most": "^1.1.1",
     "ramda": "^0.22.1",
     "sparks-design-system": "^0.8.0"

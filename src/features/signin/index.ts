@@ -1,13 +1,14 @@
-import { Stream, just, merge } from 'most';
-import { Path } from '@motorcycle/history';
-import { div, ul, li, img, label, span, a, button, input, form } from '@motorcycle/dom';
-import { MainSources, MainSinks } from '../../app';
 import {
   AuthenticationType,
-  redirectAuthAction,
-  googleRedirectAuthentication,
   facebookRedirectAuthentication,
+  googleRedirectAuthentication,
+  redirectAuthAction,
 } from '../../drivers/firebase-authentication';
+import { MainSinks, MainSources } from '../../app';
+import { Stream, just, merge, never } from 'most';
+import { a, button, div, form, img, input, label, li, span, ul } from '@motorcycle/dom';
+
+import { Path } from '@motorcycle/history';
 
 const googleIcon = require('assets/images/google.svg');
 const facebookIcon = require('assets/images/facebook.svg');
@@ -35,8 +36,9 @@ export function SignInScreen(sources: MainSources): MainSinks {
 
   return {
     dom: just(view()),
-    authentication$,
+    i18n: never(),
     router,
+    authentication$,
   };
 }
 

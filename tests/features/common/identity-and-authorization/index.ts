@@ -31,3 +31,8 @@ export const connectElements: any =
     'Google': `@googleButton`,
     'Facebook': `@facebookButton`,
   };
+
+export const languageCodes: any =
+  {
+    'Spanish': `es-ES`,
+  };

@@ -32,6 +32,7 @@
   "include": [
     "../custom-typings/*.d.ts",
     "./page-objects/**/*.ts",
-    "./features/**/*.ts"
+    "./features/**/*.ts",
+    "./support/**/*.ts"
   ]
 }

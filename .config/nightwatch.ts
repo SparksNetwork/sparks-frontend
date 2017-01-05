@@ -1,6 +1,7 @@
 require('nightwatch-cucumber')({
   featureFiles: ['tests/.tmp/features'],
   stepDefinitions: ['tests/.tmp/features/step_definitions'],
+  supportFiles: ['tests/.tmp/support'],
 });
 
 module.exports = (function (settings) {

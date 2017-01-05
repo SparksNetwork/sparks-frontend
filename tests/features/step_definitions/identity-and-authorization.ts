@@ -1,4 +1,4 @@
-import { connectElements, emails, pages, passwords } from '../common/identity-and-authorization';
+import { connectElements, emails, languageCodes, pages, passwords } from '../common/identity-and-authorization';
 
 import { deleteUser } from '../common';
 
@@ -63,8 +63,6 @@ export = function () {
 
     dashboard
       .waitForElementPresent('@userEmail');
-
-    this.end();
   });
 
   this.Given('I’m not signed in', function (done: Function) {
@@ -92,5 +90,18 @@ export = function () {
       .click('@connectLink');
   });
 
+  this.Given('My browser language is {language:stringInDoubleQuotes}',
+    function (language: string, callback: Function) {
+      const languageCode = languageCodes[language];
+
+      callback(null, `pending`);
+    });
+
+  this.Then('the title is in {arg1:stringInDoubleQuotes}',
+    function (language: string, callback: Function) {
+      Function.prototype(language);
+      // Write code here that turns the phrase above into concrete actions
+      callback(null, `pending`);
+    });
 
 }
