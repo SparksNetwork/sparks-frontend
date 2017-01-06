@@ -19,7 +19,7 @@ const config = {
       selenium_host: 'localhost',
       output_folder: './report',
       screenshots: {
-        enabled: true,
+        enabled: false,
         path: '.screens',
         on_failure: true,
         on_error: true,
