@@ -36,10 +36,9 @@
     "test:e2e": "npm run build:e2e && cross-env TS_NODE_PROJECT=./tests/tsconfig.json LOCAL=true ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --skiptags wip",
     "test:e2e-ci": "npm run build:e2e && cross-env TS_NODE_PROJECT=./tests/tsconfig.json LOCAL=true ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --skiptags noci",
     "test": "npm run test:lint && npm run test:unit && npm run test:int && npm run clean",
-    "connect": "sc-run --id ${TRAVIS_JOB_NUMBER} --",
     "sauce": "npm run build:e2e && cross-env TS_NODE_PROJECT=tests/tsconfig.json ts-node ./node_modules/.bin/nightwatch -c .config/nightwatch.ts --env android,iphone,safari",
     "build:e2e": "npm run clean && tsc -P tests/tsconfig.json && cp ./tests/features/*.feature ./tests/.tmp/features",
-    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts && npm run build-locales-server",
+    "build": "ts-node ./node_modules/.bin/webpack --config .config/webpack.config.ts",
     "commit": "git-cz"
   },
   "devDependencies": {
