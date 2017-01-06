@@ -28,7 +28,6 @@ Scenario: Connect with Facebook
    Then I’m taken to my dashboard
     And I am signed in
 
-@wip @noci
 Scenario: Connect with email and password
   Given I’m not connected with "email and password"
    When I navigate to the "Connect" URL
