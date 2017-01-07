@@ -43,9 +43,9 @@ export function connectWithEmailAndPassword(context: any) {
 
     dashboard
       .waitForElementPresent('@userEmail');
+    this.end();
   });
 
-  context.end();
 }
 
 // TODO : switch-to-a-from-b : not executed? finished strangely, check original code in feat branch

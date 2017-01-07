@@ -1,8 +1,7 @@
 import { connectElements, emails, pages, passwords } from '../common/identity-and-authorization';
-
 import { deleteUser } from '../common';
 
-export function connectWithGoogleOrFacebook(context : any) {
+export function connectWithGoogleOrFacebook(context: any) {
   context.Given('I’m not connected with {provider:stringInDoubleQuotes}',
     function (provider: string, done: Function) {
       deleteUser(emails[provider], done);
@@ -62,7 +61,8 @@ export function connectWithGoogleOrFacebook(context : any) {
 
     dashboard
       .waitForElementPresent('@userEmail');
+
+    this.end();
   });
 
-  context.end();
 }

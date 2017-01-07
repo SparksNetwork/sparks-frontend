@@ -26,6 +26,6 @@ export function switchToAFromB(context : any) {
       .click('@connectLink');
   });
 
-  context.end();
+//  context.end();
 
 }
