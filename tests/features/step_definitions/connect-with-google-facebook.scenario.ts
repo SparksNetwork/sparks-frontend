@@ -63,4 +63,6 @@ export function connectWithGoogleOrFacebook(context : any) {
     dashboard
       .waitForElementPresent('@userEmail');
   });
+
+  context.end();
 }

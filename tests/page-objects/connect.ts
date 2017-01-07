@@ -28,5 +28,14 @@ export = {
     signInLink: {
       selector: `a[href^='/signin']`,
     },
+    firebaseEmailField: {
+      selector: '.c-textfield__input--email'
+    },
+    firebasePasswordField: {
+      selector: '.c-textfield__input--password'
+    },
+    firebaseSubmitButton: {
+      selector : '.c-btn.c-btn--primary.c-sign-in__submit'
+    },
   },
 };
