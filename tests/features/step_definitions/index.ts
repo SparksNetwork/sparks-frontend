@@ -26,8 +26,6 @@ export = function test() {
   });
 
   this.When('I enter my {provider:stringInDoubleQuotes} email', function (provider: string) {
-    console.log('provider', provider);
-
     pages(this)[provider]
       .setValue('@emailField', emails[provider]);
   });
