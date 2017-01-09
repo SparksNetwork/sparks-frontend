@@ -49,7 +49,7 @@ Scenario: Connect with existing email and password
    Then I’m taken to my dashboard
     And I am signed in
 
-@noci
+@wip @noci
 Scenario: Connect with existing email using wrong password
   Given I’m already connected with "email and password"
    When I navigate to the "Connect" URL
@@ -58,21 +58,21 @@ Scenario: Connect with existing email using wrong password
     And I click the "Connect" submit button
    Then On the same "Connect" URL, I see wrong-password error message
 
-@wip @noci
+@noci
 Scenario: Missing email connecting with email and password
   Given I’m not connected with "email and password"
    When I navigate to the "Connect" URL
     And I enter my "Connect" password
     And I click the "Connect" submit button
-   Then On the same "Connect" URL, I see missing-email error message
+   Then On the same "Connect" URL, browser displays "missing email" error message
 
-@wip @noci
+@noci
 Scenario: Missing password connecting with email and password
   Given I’m not connected with "email and password"
    When I navigate to the "Connect" URL
     And I enter my "Connect" email
     And I click the "Connect" submit button
-   Then On the same "Connect" URL, I see missing-password error message
+   Then On the same "Connect" URL, browser displays "missing password" error message
 
 @wip
 Scenario: Switch to sign-in from connect

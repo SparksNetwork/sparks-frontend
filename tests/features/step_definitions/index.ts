@@ -3,7 +3,8 @@ import {
   emails,
   pages,
   passwords,
-  errors
+  errors,
+  errorFieldMap,
 } from '../common/identity-and-authorization';
 import { deleteUser, deleteIfExistsAndRecreateUser } from '../common';
 
@@ -116,4 +117,18 @@ export = function test() {
 
       this.end();
     });
+
+  this.Then('On the same {route:stringInDoubleQuotes} URL, browser displays' +
+    ' {error:stringInDoubleQuotes} error message',
+    function (route: string, error: string) {
+    console.log('error', error, route)
+
+      pages(this)[route]
+        .waitForElementPresent(errorFieldMap[error])
+        .assert.containsText(errorFieldMap[error], '');
+
+      this.end();
+    });
+
+
 }
