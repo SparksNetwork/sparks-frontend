@@ -1,5 +1,5 @@
  import { connectElements, emails, pages, passwords } from '../common/identity-and-authorization';
- import { deleteUser} from '../common';
+ import { deleteUser, deleteIfExistsAndRecreateUser} from '../common';
 
 export = function test() {
   this.Given('I’m not connected with {provider:stringInDoubleQuotes}',
@@ -89,5 +89,10 @@ export = function test() {
     signIn
       .click('@connectLink');
   });
+
+  this.Given('I’m already connected with {provider:stringInDoubleQuotes}',
+    function (provider: string, done: Function) {
+      deleteIfExistsAndRecreateUser(emails[provider], passwords[provider], done);
+    });
 
 }

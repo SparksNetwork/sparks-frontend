@@ -38,7 +38,7 @@ Scenario: Connect with email and password
    Then I’m taken to my dashboard
     And I am signed in
 
-@wip @noci
+@noci
 Scenario: Connect with existing email and password
   Given I’m already connected with "email and password"
    When I navigate to the "Connect" URL
