@@ -34,5 +34,8 @@ export = {
     submitButton: {
       selector: `.c-btn.c-btn--primary.c-sign-in__submit`,
     },
+    errorField: {
+      selector: '.c-textfield.c-textfield--errorfield',
+    },
   },
 };

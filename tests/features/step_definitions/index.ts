@@ -4,7 +4,8 @@ import {
   pages,
   passwords,
   errors,
-  errorFieldMap
+  errorFieldMap,
+  errorMessageMap,
 } from '../common/identity-and-authorization';
 import { deleteUser, deleteIfExistsAndRecreateUser } from '../common';
 
@@ -109,11 +110,12 @@ export = function test() {
         .setValue('@passwordField', passwords[provider] + 'dummy');
     });
 
-  this.Then('On the same {route:stringInDoubleQuotes} URL, I see wrong-password error message',
-    function (route: string) {
+  this.Then('On the same {route:stringInDoubleQuotes} URL, I see {error:stringInDoubleQuotes}' +
+    ' error message',
+    function (route: string, error : string) {
       pages(this)[route]
         .waitForElementPresent('@errorField')
-        .assert.containsText('@errorField', errors.wrongPassword);
+        .assert.containsText('@errorField', errors[errorMessageMap[error]]);
 
       this.end();
     });
@@ -128,6 +130,13 @@ export = function test() {
         .assert.containsText(errorFieldMap[error], '');
 
       this.end();
+    });
+
+  this.When('On the same {route:stringInDoubleQuotes} URL, I enter a wrong email',
+    function (provider: string) {
+      pages(this)[provider]
+        .waitForElementPresent('@emailField')
+        .setValue('@emailField', emails[provider] + 'dummy');
     });
 
 }

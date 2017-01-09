@@ -35,9 +35,15 @@ export const connectElements: any = {
 
 export const errors: any = {
   'wrongPassword': 'Wrong',
+  'wrongEmail': 'Wrong email',
 };
 
 export const errorFieldMap: any = {
   "missing email": '@invalidEmailField',
   "missing password": '@invalidPasswordField',
+};
+
+export const errorMessageMap: any = {
+  "wrong-password" : 'wrongPassword',
+  "wrong-email" : 'wrongEmail',
 };
