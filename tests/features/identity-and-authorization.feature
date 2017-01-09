@@ -126,6 +126,7 @@ Scenario: Sign in with email and password
    Then I’m taken to my dashboard
     And I am signed in
 
+@wip
 Scenario: Missing email signing in with email and password
   Given I’m already connected with "email and password"
   When I navigate to the "Sign in" URL
@@ -133,9 +134,28 @@ Scenario: Missing email signing in with email and password
   And I click the "Sign in" submit button
   Then On the same "Sign in" URL, browser displays "missing email" error message
 
+@wip
 Scenario: Missing password signing in with email and password
   Given I’m already connected with "email and password"
   When I navigate to the "Sign in" URL
   And I enter my "Sign in" email
   And I click the "Sign in" submit button
   Then On the same "Sign in" URL, browser displays "missing password" error message
+
+
+Scenario: Sign in with existing email using wrong password
+  Given I’m already connected with "email and password"
+  When I navigate to the "Sign in" URL
+  And I enter my "Sign in" email
+  And On the same "Sign in" URL, I enter a wrong password
+  And I click the "Sign in" submit button
+  Then On the same "Sign in" URL, I see wrong-password error message
+
+@wip
+Scenario: Sign in with existing password using wrong email
+  Given I’m already connected with "email and password"
+  When I navigate to the "Sign in" URL
+  And I enter my "Sign in" password
+  And On the same "Sign in" URL, I enter a wrong email
+  And I click the "Sign in" submit button
+  Then On the same "Sign in" URL, I see wrong-email error message
