@@ -17,7 +17,7 @@ Scenario: Connect with Google
    Then I’m taken to my dashboard
     And I am signed in
 
-@wip
+@wip @noci
 Scenario: Connect with Facebook
   Given I’m not connected with "Facebook"
    When I navigate to the "Connect" URL
