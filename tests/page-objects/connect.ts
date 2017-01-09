@@ -28,5 +28,8 @@ export = {
     signInLink: {
       selector: `a[href^='/signin']`,
     },
-  },
+    errorField : {
+      selector : '.c-textfield.c-textfield--errorfield',
+    },
+},
 };

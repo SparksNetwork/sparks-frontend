@@ -33,3 +33,8 @@ export const connectElements: any =
     'Google': `@googleButton`,
     'Facebook': `@facebookButton`,
   };
+
+export const errors: any =
+  {
+    'wrongPassword' : 'Wrong',
+  };

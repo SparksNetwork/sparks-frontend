@@ -39,7 +39,7 @@ Scenario: Connect with email and password
    Then I’m taken to my dashboard
     And I am signed in
 
-@noci
+@wip @noci
 Scenario: Connect with existing email and password
   Given I’m already connected with "email and password"
    When I navigate to the "Connect" URL
@@ -49,14 +49,14 @@ Scenario: Connect with existing email and password
    Then I’m taken to my dashboard
     And I am signed in
 
-@wip @noci
+@noci
 Scenario: Connect with existing email using wrong password
   Given I’m already connected with "email and password"
    When I navigate to the "Connect" URL
     And I enter my "Connect" email
-    And I enter a wrong password
+    And On the same "Connect" URL, I enter a wrong password
     And I click the "Connect" submit button
-   Then I see username-is-taken error message
+   Then On the same "Connect" URL I see wrong-password error message
 
 @wip @noci
 Scenario: Missing email connecting with email and password
