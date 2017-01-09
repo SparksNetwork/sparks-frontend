@@ -114,3 +114,14 @@ Scenario: Sign in with Facebook
     And I click the "Facebook" submit button
    Then I’m taken to my dashboard
     And I am signed in
+
+@wip
+Scenario: Sign in with email and password
+  Given I’m connected with "email and password"
+  And I’m not signed in
+  When I navigate to the "Sign-in" URL
+  And I enter my "Connect" email
+  And I enter my "Connect" password
+  And I click the "Connect" submit button
+  Then I’m taken to my dashboard
+  And I am signed in
