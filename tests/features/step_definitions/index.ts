@@ -4,7 +4,7 @@ import {
   pages,
   passwords,
   errors,
-  errorFieldMap,
+  errorFieldMap
 } from '../common/identity-and-authorization';
 import { deleteUser, deleteIfExistsAndRecreateUser } from '../common';
 
@@ -121,7 +121,7 @@ export = function test() {
   this.Then('On the same {route:stringInDoubleQuotes} URL, browser displays' +
     ' {error:stringInDoubleQuotes} error message',
     function (route: string, error: string) {
-    console.log('error', error, route)
+      console.log('error', error, route)
 
       pages(this)[route]
         .waitForElementPresent(errorFieldMap[error])
@@ -132,8 +132,7 @@ export = function test() {
 
   this.Given('I’m connected with {provider:stringInDoubleQuotes}',
     function (provider: string, done: Function) {
-      deleteUser(emails[provider], done);
+      deleteIfExistsAndRecreateUser(emails[provider], passwords[provider], done);
     });
-
 
 }
