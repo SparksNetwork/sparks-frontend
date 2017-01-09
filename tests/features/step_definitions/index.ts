@@ -130,9 +130,4 @@ export = function test() {
       this.end();
     });
 
-  this.Given('I’m connected with {provider:stringInDoubleQuotes}',
-    function (provider: string, done: Function) {
-      deleteIfExistsAndRecreateUser(emails[provider], passwords[provider], done);
-    });
-
 }

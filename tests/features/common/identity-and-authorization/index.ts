@@ -17,6 +17,7 @@ export const emails: any = {
   'Facebook': process.env.FACEBOOK_TEST_EMAIL,
   'email and password': process.env.EMAIL_AND_PASSWORD_TEST_EMAIL,
   'Connect': process.env.EMAIL_AND_PASSWORD_TEST_EMAIL,
+  'Sign in': process.env.EMAIL_AND_PASSWORD_TEST_EMAIL,
 };
 
 export const passwords: any = {
@@ -24,6 +25,7 @@ export const passwords: any = {
   'Facebook': process.env.FACEBOOK_TEST_EMAIL_PASSWORD,
   'email and password': process.env.EMAIL_AND_PASSWORD_TEST_PASSWORD,
   'Connect': process.env.EMAIL_AND_PASSWORD_TEST_PASSWORD,
+  'Sign in': process.env.EMAIL_AND_PASSWORD_TEST_PASSWORD,
 };
 
 export const connectElements: any = {

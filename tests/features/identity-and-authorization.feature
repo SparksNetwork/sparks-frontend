@@ -115,7 +115,7 @@ Scenario: Sign in with Facebook
    Then I’m taken to my dashboard
     And I am signed in
 
-
+@wip
 Scenario: Sign in with email and password
   Given I’m connected with "email and password"
     And I’m not signed in
@@ -125,3 +125,17 @@ Scenario: Sign in with email and password
     And I click the "Connect" submit button
    Then I’m taken to my dashboard
     And I am signed in
+
+Scenario: Missing email signing in with email and password
+  Given I’m already connected with "email and password"
+  When I navigate to the "Sign in" URL
+  And I enter my "Sign in" password
+  And I click the "Sign in" submit button
+  Then On the same "Sign in" URL, browser displays "missing email" error message
+
+Scenario: Missing password signing in with email and password
+  Given I’m already connected with "email and password"
+  When I navigate to the "Sign in" URL
+  And I enter my "Sign in" email
+  And I click the "Sign in" submit button
+  Then On the same "Sign in" URL, browser displays "missing password" error message

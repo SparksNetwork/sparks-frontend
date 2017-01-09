@@ -19,5 +19,20 @@ export = {
     connectLink: {
       selector: `a[href^='/connect']`,
     },
+    emailField: {
+      selector: `.c-textfield__input--email`,
+    },
+    invalidEmailField: {
+      selector: `.c-textfield__input--email:invalid`,
+    },
+    passwordField: {
+      selector: `.c-textfield__input--password`,
+    },
+    invalidPasswordField: {
+      selector: `.c-textfield__input--password:invalid`,
+    },
+    submitButton: {
+      selector: `.c-btn.c-btn--primary.c-sign-in__submit`,
+    },
   },
 };
