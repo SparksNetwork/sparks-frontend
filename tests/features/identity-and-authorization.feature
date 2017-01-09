@@ -56,7 +56,7 @@ Scenario: Connect with existing email using wrong password
     And I enter my "Connect" email
     And On the same "Connect" URL, I enter a wrong password
     And I click the "Connect" submit button
-   Then On the same "Connect" URL I see wrong-password error message
+   Then On the same "Connect" URL, I see wrong-password error message
 
 @wip @noci
 Scenario: Missing email connecting with email and password
@@ -64,7 +64,7 @@ Scenario: Missing email connecting with email and password
    When I navigate to the "Connect" URL
     And I enter my "Connect" password
     And I click the "Connect" submit button
-   Then I see missing-email error message
+   Then On the same "Connect" URL, I see missing-email error message
 
 @wip @noci
 Scenario: Missing password connecting with email and password
@@ -72,7 +72,7 @@ Scenario: Missing password connecting with email and password
    When I navigate to the "Connect" URL
     And I enter my "Connect" email
     And I click the "Connect" submit button
-   Then I see missing-password error message
+   Then On the same "Connect" URL, I see missing-password error message
 
 @wip
 Scenario: Switch to sign-in from connect

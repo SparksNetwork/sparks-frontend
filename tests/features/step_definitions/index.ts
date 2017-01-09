@@ -108,7 +108,7 @@ export = function test() {
         .setValue('@passwordField', passwords[provider] + 'dummy');
     });
 
-  this.Then('On the same {route:stringInDoubleQuotes} URL I see wrong-password error message',
+  this.Then('On the same {route:stringInDoubleQuotes} URL, I see wrong-password error message',
     function (route: string) {
       pages(this)[route]
         .waitForElementPresent('@errorField')
