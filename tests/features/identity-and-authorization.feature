@@ -117,7 +117,7 @@ Scenario: Sign in with Facebook
 
 @wip
 Scenario: Sign in with email and password
-  Given I’m connected with "email and password"
+  Given I’m already connected with "email and password"
     And I’m not signed in
    When I navigate to the "Sign in" URL
     And I enter my "Connect" email
