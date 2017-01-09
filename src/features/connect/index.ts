@@ -39,13 +39,11 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       .filter(authResponse =>
         !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use',
       )
-      .tap(console.log.bind(console,'account already exists'))
       .multicast(),
     attemptToLogInWithWrongPassword: authentication$
       .filter(authResponse =>
         !!authResponse.error && authResponse.error.code === 'auth/wrong-password',
       )
-      .tap(console.log.bind(console,'attempt to login with wrong password'))
       .multicast(),
   };
 
