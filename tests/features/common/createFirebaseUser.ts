@@ -10,7 +10,7 @@ export function createUser(email: string, pwd: string) {
     disabled: false
   })
     .then(function (userRecord: any) {
-      console.log("Successfully created a new user:", userRecord.emailInternal);
+      console.log("Successfully created a new user:", userRecord.emailInternal, pwd);
     })
     .catch(function (error: any) {
       console.error("Error creating new user:", error);

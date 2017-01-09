@@ -24,8 +24,8 @@ export const passwords: any =
   {
     'Google': process.env.GOOGLE_TEST_EMAIL_PASSWORD,
     'Facebook': process.env.FACEBOOK_TEST_EMAIL_PASSWORD,
-    'email and password': process.env.EMAIL_AND_PASSWORD_TEST_EMAIL_PASSWORD,
-    'Connect': process.env.EMAIL_AND_PASSWORD_TEST_EMAIL_PASSWORD,
+    'email and password': process.env.EMAIL_AND_PASSWORD_TEST_PASSWORD,
+    'Connect': process.env.EMAIL_AND_PASSWORD_TEST_PASSWORD,
   };
 
 export const connectElements: any =

@@ -1,14 +1,16 @@
+import { Stream, just, merge, combine, concat } from 'most';
+import hold from '@most/hold';
 import { Path } from '@motorcycle/history';
-import { Stream, just, merge, combine } from 'most';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
-  AuthenticationType,
   redirectAuthAction,
   CreateUserAuthentication,
+  EmailAndPasswordAuthentication,
   googleRedirectAuthentication,
   facebookRedirectAuthentication,
   CREATE_USER,
+  EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
 
 const googleIcon = require('assets/images/google.svg');
@@ -16,78 +18,100 @@ const facebookIcon = require('assets/images/facebook.svg');
 
 const SIGN_IN_ROUTE = '/signin';
 const DASHBOARD_ROUTE = '/dash';
+const WRONG_PASSWORD_ERROR = 'Wrong password!! Please try again!';
 
 function preventDefault(ev: any) {
   ev.preventDefault();
 }
 
 export function ConnectScreen(sources: MainSources): MainSinks {
-  const { isAuthenticated$, dom } = sources;
+  const { isAuthenticated$, authentication$, dom } = sources;
 
-  const redirectToDashboard$: Stream<Path> = isAuthenticated$
-    .filter(Boolean)
-    .constant(DASHBOARD_ROUTE);
+  let events = {
+    linkClick: dom.select('a').events('click'),
+    googleClick: dom.select('.c-btn-federated--google').events('click'),
+    facebookClick: dom.select('.c-btn-federated--facebook').events('click'),
+    emailFieldInput: dom.select('.c-textfield__input--email').events('input'),
+    passwordFieldInput: dom.select('.c-textfield__input--password').events('input'),
+    formSubmit: dom.select('form').events('submit'),
 
-  const router: Stream<Path> = dom
-    .select('a')
-    .events('click')
-    .tap(preventDefault)
-    .map((ev: any) => (ev.target as HTMLAnchorElement).pathname)
-    .merge(redirectToDashboard$);
+    accountAlreadyExists: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/email-already-in-use',
+      )
+      .tap(console.log.bind(console,'account already exists'))
+      .multicast(),
+    attemptToLogInWithWrongPassword: authentication$
+      .filter(authResponse =>
+        !!authResponse.error && authResponse.error.code === 'auth/wrong-password',
+      )
+      .tap(console.log.bind(console,'attempt to login with wrong password'))
+      .multicast(),
+  };
 
-  const googleClick$: Stream<Event> = dom
-    .select('.c-btn-federated--google')
-    .events('click')
-    .tap(preventDefault);
+  let state = {
+    email: events.emailFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    password: events.passwordFieldInput
+      .map(ev => (ev.target as HTMLInputElement).value),
+    isAuthenticated$,
+    errorFeedback: hold(concat<Boolean>(
+      just(false),
+      merge(
+        events.attemptToLogInWithWrongPassword.map(_ => true),
+        // remove error feedback when submitting
+        events.formSubmit.map(_ => false),
+      ),
+    )),
+  };
 
-  const googleAuth$: Stream<AuthenticationType> = redirectAuthAction(
-    googleRedirectAuthentication,
-    googleClick$);
+  let intents = {
+    connectWithGoogle: events.googleClick.tap(preventDefault),
+    connectWithFacebook: events.facebookClick.tap(preventDefault),
+    navigateToSignIn: events.linkClick.tap(preventDefault),
+    signUp: events.formSubmit.tap(preventDefault),
+    logUserIn: events.accountAlreadyExists,
+  };
 
-  const facebookClick$: Stream<Event> = dom
-    .select('.c-btn-federated--facebook')
-    .events('click')
-    .tap(preventDefault);
+  let actions = {
+    redirectToDashboard: state.isAuthenticated$
+      .filter(Boolean).constant(DASHBOARD_ROUTE) as Stream<Path>,
+    navigateToSignIn: intents.navigateToSignIn
+      .map(ev => (ev.target as HTMLAnchorElement).pathname),
+    connectWithGoogle: redirectAuthAction(
+      googleRedirectAuthentication, intents.connectWithGoogle,
+    ),
+    connectWithFacebook: redirectAuthAction(
+      facebookRedirectAuthentication, intents.connectWithFacebook,
+    ),
 
-  const facebookAuth$: Stream<AuthenticationType> = redirectAuthAction(
-    facebookRedirectAuthentication,
-    facebookClick$);
+    signUp: combine<string, string, CreateUserAuthentication>(
+      (email, password) => ({ method: CREATE_USER, email, password }),
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.signUp),
 
-  const email$ = dom
-    .select('.c-textfield__input--email')
-    .events('input')
-    .map((ev: any) => (ev.target as HTMLInputElement).value);
-
-  const password$ = dom
-    .select('.c-textfield__input--password')
-    .events('input')
-    .map((ev: any) => (ev.target as HTMLInputElement).value);
-
-  const emailAndPassword$ = combine<string, string, CreateUserAuthentication>(
-    (email, password) => ({ method: CREATE_USER, email, password }),
-    email$, password$,
-  );
-
-  const submit$ = dom
-    .select('form')
-    .events('submit')
-    .tap(preventDefault);
-
-  const emailAndPasswordAuthenticationMethod$ = emailAndPassword$
-    .sampleWith<CreateUserAuthentication>(submit$);
+    logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
+      (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
+      state.email, state.password,
+    ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
+  };
 
   return {
-    dom: just(view()),
-    router,
+    dom: state.errorFeedback.map(view),
+    router: merge(
+      actions.redirectToDashboard,
+      actions.navigateToSignIn,
+    ),
     authentication$: merge(
-      googleAuth$,
-      facebookAuth$,
-      emailAndPasswordAuthenticationMethod$,
+      actions.connectWithGoogle,
+      actions.connectWithFacebook,
+      actions.signUp,
+      actions.logUserIn,
     ),
   };
 }
 
-function view() {
+function view(errorFeedback: Boolean) {
   return div('#page', [
     div('.c-sign-in', [
       form('.c-sign-in__form', [
@@ -103,9 +127,7 @@ function view() {
               ]),
           ]),
           li('.c-sign-in__list-item', [
-            button('.c-btn.c-btn-federated.c-btn-federated--facebook', {
-              props: { type: 'button' },
-            }, [
+            button('.c-btn.c-btn-federated.c-btn-federated--facebook', [
               img('.c-btn-federated__icon', { props: { src: facebookIcon } }),
               span('.c-btn-federated__text', 'Sign in with Facebook'),
             ]),
@@ -116,7 +138,10 @@ function view() {
             div('.c-sign-in__email.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--email', {
-                  props: { type: 'text', required: true },
+                  props: {
+                    type: 'text',
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Email address'),
               ]),
@@ -126,7 +151,10 @@ function view() {
             div('.c-sign-in__password.c-textfield', [
               label([
                 input('.c-textfield__input.c-textfield__input--password', {
-                  props: { type: 'password', required: true },
+                  props: {
+                    type: 'password',
+                    required: true,
+                  },
                 }),
                 span('.c-textfield__label', 'Password'),
               ]),
@@ -139,8 +167,11 @@ function view() {
           ]),
         ]),
         div([
-          a({ props: { href: SIGN_IN_ROUTE } }, 'By creating a profile, you' +
-            ' agree to our terms and conditions'),
+          a({ props: { href: SIGN_IN_ROUTE } }, 'Already have an account? Sign' +
+            ' in!'),
+          errorFeedback
+            ? div('.c-textfield.c-textfield--errorfield', WRONG_PASSWORD_ERROR)
+            : null,
         ]),
       ]),
     ]),
