@@ -4,7 +4,6 @@ import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
 import { MainSources, MainSinks } from '../../app';
 import {
-  CreateUserAuthentication,
   EmailAndPasswordAuthentication,
   EMAIL_AND_PASSWORD,
 } from '../../drivers/firebase-authentication';
@@ -63,7 +62,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
     signUserIn: combine<string, string, EmailAndPasswordAuthentication>(
       (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
       state.email, state.password,
-    ).sampleWith<CreateUserAuthentication>(intents.signUserIn),
+    ).sampleWith<EmailAndPasswordAuthentication>(intents.signUserIn),
   };
 
   return {

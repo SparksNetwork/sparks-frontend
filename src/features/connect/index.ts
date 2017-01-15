@@ -91,7 +91,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
     logUserIn: combine<string, string, EmailAndPasswordAuthentication>(
       (email, password) => ({ method: EMAIL_AND_PASSWORD, email, password }),
       state.email, state.password,
-    ).sampleWith<CreateUserAuthentication>(intents.logUserIn),
+    ).sampleWith<EmailAndPasswordAuthentication>(intents.logUserIn),
   };
 
   return {
