@@ -47,6 +47,8 @@
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "@types/node": "0.0.2",
+    // TODO : should update type def. for tryCatch, third parameter x:any is non existent
+    // BUT : the correct type file seems to require features from typescript 2.2.0 (keyof, etc.)...
     "@types/ramda": "0.0.2",
     "@types/sinon": "^1.16.32",
     "@types/webpack": "^2.0.0",
@@ -57,6 +59,7 @@
     "css-loader": "^0.26.1",
     "cucumber": "2.0.0-rc.3",
     "cz-conventional-changelog": "^1.2.0",
+    "fast-json-patch": "^1.1.3",
     "firebase-admin": "^4.0.4",
     "geckodriver": "^1.2.0",
     "ghooks": "^1.3.2",
@@ -78,7 +81,7 @@
     "ts-loader": "^1.3.1",
     "ts-node": "^1.7.0",
     "tslint": "^4.0.2",
-    "typescript": "^2.1.4",
+    "typescript": "2.1.4",
     "validate-commit-msg": "^2.8.2",
     "webpack": "^2.1.0-beta.27",
     "webpack-dev-server": "^2.1.0-beta.12",
