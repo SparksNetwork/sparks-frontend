@@ -19,6 +19,8 @@ function view(location: Location, user: FirebaseUserChange) {
       a('.connect', { props: { href: '/connect' } }, 'Connect'),
       p(' | '),
       a('.signin', { props: { href: '/signin' } }, 'Sign In'),
+      p(' | '),
+      a('.apply-to-opp', { props: { href: '/activatorprime' } }, 'Apply to Activator Prime'),
     ]),
     div(`${user}`),
   ]);

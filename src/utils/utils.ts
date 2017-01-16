@@ -1,13 +1,12 @@
 import {
   mapObjIndexed, flatten, keys, always, reject, isNil, uniq, allPass, pipe,
-  merge, reduce, all, either, clone, map, values, equals, concat, addIndex,
+  reduce, all, either, map, values, equals, addIndex,
   flip, difference, isEmpty, where, both, curry
 } from 'ramda';
-import {ERROR_MESSAGE_PREFIX} from './components/properties';
+import {ERROR_MESSAGE_PREFIX} from '../components/properties';
 // TODO : change to most
-import * as Rx from 'rx';
+import {merge as mergeM} from 'most';
 
-const $ = Rx.Observable;
 const mapIndexed = addIndex(map);
 
 // Type checking typings
@@ -87,13 +86,14 @@ const mapIndexed = addIndex(map);
    *   ...
    * }
  */
-function assertSignature(fnName, _arguments, vRules) {
+function assertSignature(fnName:any, _arguments:any, vRules:any) {
   const argNames = flatten(map(keys, vRules))
   const ruleFns = flatten(map(function (vRule) {
     return values(vRule)[0]
   }, vRules));
 
-  const args = mapIndexed(function (vRule, index) {
+  const args = mapIndexed(function (vRule:any, index) {
+    void vRule;
     return _arguments[index]
   }, vRules);
 
@@ -135,7 +135,7 @@ function assertSignature(fnName, _arguments, vRules) {
  * @returns {Boolean}
  * @throws
  */
-function assertContract(contractFn, contractArgs, errorMessage) {
+function assertContract(contractFn:any, contractArgs:any, errorMessage:any) {
   const boolOrError = contractFn.apply(null, contractArgs);
   const isPredicateSatisfied = isBoolean(boolOrError) && boolOrError;
 
@@ -157,8 +157,8 @@ function assertContract(contractFn, contractArgs, errorMessage) {
  * should not have properties other than the ones checked for
  * @returns {Boolean | Array<String>}
  */
-function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
-  let arrMessages = [];
+function checkSignature(obj:any, signature:any, signatureErrorMessages:any, isStrict:any) {
+  let arrMessages = [] as any;
   let strict = !!isStrict;
 
   // Check that object properties in the signature match it
@@ -170,7 +170,8 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
 
   // Check that object properties are all in the signature if strict is set
   if (strict) {
-    mapObjIndexed((value, property) => {
+    mapObjIndexed((value:any, property) => {
+      void value;
       if (!(property in signature)) {
         arrMessages.push(`Object cannot contain a property called ${property}`)
       }
@@ -193,11 +194,11 @@ function checkSignature(obj, signature, signatureErrorMessages, isStrict) {
  * @param {Array<Object.<string, Predicate>>} overloads
  * @returns {{}}
  */
-function unfoldObjOverload(obj, overloads) {
+function unfoldObjOverload(obj:any, overloads:any) {
   let result = {} as any;
   let index = 0;
 
-  overloads.some(overload => {
+  overloads.some((overload:any )=> {
     // can only be one property
     const property = keys(overload)[0];
     const predicate : any= values(overload)[0];
@@ -220,7 +221,7 @@ function unfoldObjOverload(obj, overloads) {
  * @param obj
  * @returns {boolean}
  */
-function isFalse(obj) {
+function isFalse(obj:any) {
   return isBoolean(obj) ? !obj : false
 }
 
@@ -230,11 +231,11 @@ function isFalse(obj) {
  * @param obj
  * @returns {boolean}
  */
-function isTrue(obj) {
+function isTrue(obj:any) {
   return isBoolean(obj) ? obj : false
 }
 
-function isMergeSinkFn(obj) {
+function isMergeSinkFn(obj:any) {
   return isFunction(obj)
 }
 
@@ -243,7 +244,7 @@ function isMergeSinkFn(obj) {
  * @param {Object} obj
  * @returns {boolean}
  */
-function isNullableObject(obj) {
+function isNullableObject(obj:any) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
   return obj == null || typeof obj === 'object'
@@ -254,7 +255,7 @@ function isNullableObject(obj) {
  * @param obj
  * @returns {SignatureCheck}
  */
-function isNullableComponentDef(obj) {
+function isNullableComponentDef(obj:any) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
 
@@ -262,7 +263,7 @@ function isNullableComponentDef(obj) {
       makeLocalSources: either(isNil, isFunction),
       makeLocalSettings: either(isNil, isFunction),
       makeOwnSinks: either(isNil, isFunction),
-      mergeSinks: mergeSinks => {
+      mergeSinks: (mergeSinks:any) => {
         if (obj.computeSinks) {
           return !mergeSinks
         }
@@ -284,31 +285,31 @@ function isNullableComponentDef(obj) {
     }, true)
 }
 
-function isUndefined(obj) {
+function isUndefined(obj:any) {
   return typeof obj === 'undefined'
 }
 
-function isFunction(obj) {
+function isFunction(obj:any) {
   return typeof(obj) === 'function'
 }
 
-function isObject(obj) {
+function isObject(obj:any) {
   return typeof(obj) == 'object'
 }
 
-function isBoolean(obj) {
+function isBoolean(obj:any) {
   return typeof(obj) == 'boolean'
 }
 
-function isString(obj) {
+function isString(obj:any) {
   return typeof(obj) == 'string'
 }
 
-function isArray(obj) {
+function isArray(obj:any) {
   return Array.isArray(obj)
 }
 
-function isEmptyArray (obj) {
+function isEmptyArray (obj:any) {
   return allPass([isEmpty, isArray])(obj);
 }
 
@@ -318,14 +319,14 @@ function isEmptyArray (obj) {
  * @param {function(*):Boolean} predicateFn
  * @returns {function():Boolean}
  */
-function isArrayOf(predicateFn) {
+function isArrayOf(predicateFn:any) {
   // TODO : should I throw instead of returning false?? I think I should
   if (typeof predicateFn !== 'function') {
     console.error('isArrayOf: predicateFn is not a function!!');
     return always(false)
   }
 
-  return function _isArrayOf(obj) {
+  return function _isArrayOf(obj:any) {
     if (!Array.isArray(obj)) {
       return false
     }
@@ -334,7 +335,7 @@ function isArrayOf(predicateFn) {
   }
 }
 
-function isVNode(obj) {
+function isVNode(obj:any) {
   return ["children", "data", "elm", "key", "sel", "text"]
     .every(prop => prop in obj)
 }
@@ -346,7 +347,7 @@ function isVNode(obj) {
  * @returns {Predicate}
  * @throws when either predicate is not a function
  */
-function isHashMap(predicateKey, predicateValue) {
+function isHashMap(predicateKey:any, predicateValue:any) {
   assertContract(isFunction, [predicateKey], 'isHashMap : first argument must be a' +
     ' predicate function!');
   assertContract(isFunction, [predicateValue], 'isHashMap : second argument must be a' +
@@ -372,7 +373,7 @@ function isHashMap(predicateKey, predicateValue) {
  * - isStrictRecordOf({a : isNumber, b : isString})({a:1, b:'2', c:3}) -> false
  * - isStrictRecordOf({a : isNumber, b : isString})({a:1, b:2}) -> false
  */
-function isStrictRecord(recordSpec) {
+function isStrictRecord(recordSpec:any) {
   assertContract(isObject, [recordSpec], 'isStrictRecord : record specification argument must be' +
     ' a valid object!');
 
@@ -392,21 +393,21 @@ function isStrictRecord(recordSpec) {
  * @param obj
  * @returns {boolean}
  */
-function isComponent(obj) {
+function isComponent(obj:any) {
   // Without a type system, we just test that it is a function
   return isFunction(obj)
 }
 
-function isObservable(obj) {
+function isObservable(obj:any) {
   // duck typing in the absence of a type system
   return isFunction(obj.subscribe)
 }
 
-function isSource(obj) {
+function isSource(obj:any) {
   return isObservable(obj)
 }
 
-function isSources(obj) {
+function isSources(obj:any) {
   // We check the minimal contract which is not to be nil
   // In `cycle`, sources can have both regular
   // objects and observables (sign that the design could be improved).
@@ -417,16 +418,16 @@ function isSources(obj) {
   return !isNil(obj)
 }
 
-function isOptSinks(obj) {
+function isOptSinks(obj:any) {
   // obj can be null
   return !obj || all(either(isNil, isObservable), values(obj))
 }
 
-function isArrayOptSinks(arrSinks) {
+function isArrayOptSinks(arrSinks:any) {
   return all(isOptSinks, arrSinks)
 }
 
-function assertSourcesContracts(sources, sourcesContract) {
+function assertSourcesContracts(sources:any, sourcesContract:any) {
   // Check sources contracts
   assertContract(isSources, [sources],
     'm : `sources` parameter is invalid');
@@ -434,21 +435,21 @@ function assertSourcesContracts(sources, sourcesContract) {
     ' parameter fails contract ' + sourcesContract.name);
 }
 
-function assertSinksContracts(sinks, sinksContract) {
+function assertSinksContracts(sinks:any, sinksContract:any) {
   assertContract(isOptSinks, [sinks],
     'mergeSinks must return a hash of observable sink');
   assertContract(sinksContract, [sinks],
     'fails custom contract ' + sinksContract.name);
 }
 
-function assertSettingsContracts(mergedSettings, settingsContract) {
+function assertSettingsContracts(mergedSettings:any, settingsContract:any) {
   // Check settings contracts
   assertContract(settingsContract, [mergedSettings], 'm: `settings`' +
     ' parameter fails contract ' + settingsContract.name);
 }
 
 // from https://github.com/substack/deep-freeze/blob/master/index.js
-function deepFreeze (o) {
+function deepFreeze (o:any) {
   Object.freeze(o);
 
   Object.getOwnPropertyNames(o).forEach(function (prop) {
@@ -463,7 +464,7 @@ function deepFreeze (o) {
   return o;
 }
 
-function makeErrorMessage(errorMessage){
+function makeErrorMessage(errorMessage:any){
   return ERROR_MESSAGE_PREFIX + errorMessage;
 }
 
@@ -474,24 +475,25 @@ function makeErrorMessage(errorMessage){
  * called
  * @returns {*}
  */
-function trace(sinks, settings) {
+function trace(sinks:any, settings:any) {
   // TODO BRC
+  void settings;
   return sinks
 }
 
-function removeNullsFromArray(arr) {
+function removeNullsFromArray(arr:any) {
   return reject(isNil, arr)
 }
 
-function removeEmptyVNodes(arrVNode) {
-  return reduce((accNonEmptyVNodes, vNode) => {
+function removeEmptyVNodes(arrVNode:any) {
+  return reduce((accNonEmptyVNodes:any, vNode) => {
     return (isNullVNode(vNode)) ?
       accNonEmptyVNodes :
       (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes)
   }, [], arrVNode)
 }
 
-function isNullVNode(vNode) {
+function isNullVNode(vNode:any) {
   return equals(vNode.children, []) &&
     equals(vNode.data, {}) &&
     isUndefined(vNode.elm) &&
@@ -510,8 +512,8 @@ function isNullVNode(vNode) {
  * @param {Array<*>} obj
  * @returns {Array<*>}
  */
-function projectSinksOn(prop, obj) {
-  return map(x => x ? x[prop] : null, obj)
+function projectSinksOn(prop:any, obj:any) {
+  return map((x:any) => x ? x[prop] : null, obj)
 }
 
 /**
@@ -523,12 +525,12 @@ function projectSinksOn(prop, obj) {
  * @param {Array<Sinks>} aSinks
  * @returns {Array<String>}
  */
-function getSinkNamesFromSinksArray(aSinks) {
+function getSinkNamesFromSinksArray(aSinks:any) {
   return uniq(flatten(map(getValidKeys, aSinks)))
 }
 
-function getValidKeys(obj) {
-  let validKeys = [];
+function getValidKeys(obj:any) {
+  let validKeys = [] as any;
   mapObjIndexed((value, key) => {
     if (value != null) {
       validKeys.push(key)
@@ -547,16 +549,16 @@ function getValidKeys(obj) {
  * @param sink
  * @returns {Observable|*}
  */
-function emitNullIfEmpty(sink) {
+function emitNullIfEmpty(sink:any) {
   return isNil(sink) ?
     null :
-    $.merge(
+    mergeM(
       sink,
-      sink.isEmpty().filter(x => x).map(x => null)
+      sink.isEmpty().filter((x:any) => x).map((x:any) => void x, null)
     )
 }
 
-function makeDivVNode(x) {
+function makeDivVNode(x:any) {
   return {
     "children": undefined,
     "data": {},
@@ -567,7 +569,7 @@ function makeDivVNode(x) {
   }
 }
 
-function _handleError(msg, e) {
+function _handleError(msg:any, e:any) {
   console.error(`${msg}`, e);
   throw e;
 }

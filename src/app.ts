@@ -58,7 +58,7 @@ function augmentWithIsAuthenticated$(main: Component<MainSources, MainSinks>) {
 
     return main({ ...sources, isAuthenticated$ });
   };
-};
+}
 
 function isAuthenticated(user: firebase.User | null): boolean {
   return !!user;

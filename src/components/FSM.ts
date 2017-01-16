@@ -1,4 +1,3 @@
-// Patch library : https://github.com/Starcounter-Jack/JSON-Patch
 import {
   map as mapR,
   reduce as reduceR,
@@ -17,7 +16,7 @@ import {
   findIndex,
   tryCatch
 } from 'ramda';
-import { checkSignature, assertContract, handleError, isBoolean } from '../utils';
+import { checkSignature, assertContract, handleError, isBoolean } from '../utils/utils';
 import {
   isFsmSettings,
   isFsmEvents,
@@ -29,10 +28,14 @@ import {
   checkIsObservable,
   isArrayUpdateOperations
 } from './types';
-// TODO : most
 import {empty, mergeArray, merge, just} from 'most';
 import hold from '@most/hold';
-import * as jsonpatch from 'fast-json-patch';
+// Patch library : https://github.com/Starcounter-Jack/JSON-Patch
+// NOTE1 : dont use observe functionality for generating patches
+// it uses JSON stringify which makes it impossible to have functions in the
+// model object
+// NOTE2 : patches are applied IN PLACE
+import jsonpatch from '../utils/json-patch';
 import {
   EV_GUARD_NONE,
   ACTION_REQUEST_NONE,
@@ -52,10 +55,6 @@ import {
   CONTRACT_ACTION_GUARD_FN_RETURN_VALUE,
   CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL
 } from './properties';
-// NOTE1 : dont use observe functionality for generating patches
-// it uses JSON stringify which makes it impossible to have functions in the
-// model object
-// NOTE2 : patches are applied IN PLACE
 
 /**
  * @typedef {String} EventName
@@ -194,14 +193,14 @@ import {
  */
 
 
-function removeZeroDriver(driverNameArray) {
+function removeZeroDriver(driverNameArray:any) {
   return filter(function removeZero(driverName) {
     return driverName != ZERO_DRIVER
   }, driverNameArray)
 }
 
-function prefixWith(prefix) {
-  return function _prefixWith(obj) {
+function prefixWith(prefix:any) {
+  return function _prefixWith(obj:any) {
     return { [prefix]: obj }
   }
 }
@@ -210,7 +209,7 @@ function prefixWith(prefix) {
  * @param {Object.<string, *>} fsmEvent
  * @returns {String}
  */
-function getPrefix(fsmEvent) {
+function getPrefix(fsmEvent:any) {
   return keys(fsmEvent)[0]
 }
 
@@ -219,7 +218,7 @@ function getPrefix(fsmEvent) {
  * @param fsmEvent
  * @returns {UserEventPrefix|DriverEventPrefix}
  */
-function getEventOrigin(fsmEvent) {
+function getEventOrigin(fsmEvent:any) {
   return getPrefix(fsmEvent)
 }
 
@@ -229,7 +228,7 @@ function getEventOrigin(fsmEvent) {
  * @param {UserEvent | DriverEvent} fsmEvent
  * @returns {LabelledUserEvent | LabelledDriverEvent}
  */
-function getFsmEventValue(prefix, fsmEvent) {
+function getFsmEventValue(prefix:any, fsmEvent:any) {
   return fsmEvent[prefix]
 }
 
@@ -239,7 +238,7 @@ function getFsmEventValue(prefix, fsmEvent) {
  * @param {LabelledUserEvent|LabelledDriverEvent} fsmEventValue
  * @returns {EventData | ActionResponse}
  */
-function getEventDataOrActionResponse(eventOrDriverName, fsmEventValue) {
+function getEventDataOrActionResponse(eventOrDriverName:any, fsmEventValue:any) {
   return fsmEventValue[eventOrDriverName]
 }
 
@@ -249,7 +248,7 @@ function getEventDataOrActionResponse(eventOrDriverName, fsmEventValue) {
  * @returns {{fsmEventOrigin: (UserEventPrefix|DriverEventPrefix), fsmEventValue:
  *   (LabelledUserEvent|LabelledDriverEvent)}}
  */
-function destructureFsmEvent(fsmEvent) {
+function destructureFsmEvent(fsmEvent:any) {
   const prefix = getEventOrigin(fsmEvent);
   const fsmEventValue = getFsmEventValue(prefix, fsmEvent);
 
@@ -265,7 +264,7 @@ function destructureFsmEvent(fsmEvent) {
  * @param fsmEventValue
  * @returns {{eventOrDriverName: String, eventDataOrActionResponse: (EventData|ActionResponse)}}
  */
-function destructureFsmEventValue(fsmEventValue) {
+function destructureFsmEventValue(fsmEventValue:any) {
   const eventOrDriverName = getPrefix(fsmEventValue);
   const eventDataOrActionResponse = getEventDataOrActionResponse(eventOrDriverName, fsmEventValue);
 
@@ -280,8 +279,8 @@ function destructureFsmEventValue(fsmEventValue) {
  * @param {Transitions} transitions
  * @returns {Object.<State, EventName[]>}
  */
-function computeStateEventMap(transitions) {
-  return reduceR(function (/*OUT*/accStateEventMap, transName : any) {
+function computeStateEventMap(transitions:any) {
+  return reduceR(function (/*OUT*/accStateEventMap:any, transName : any) {
     const transOptions = transitions[transName];
     const { origin_state, event } = transOptions;
     accStateEventMap[origin_state] = accStateEventMap[origin_state] || [];
@@ -296,8 +295,8 @@ function computeStateEventMap(transitions) {
  * @param {Transitions} transitions
  * @returns {Object.<State, Object.<EventName, TransitionName>>}
  */
-function computeStateEventToTransitionNameMap(transitions) {
-  return reduceR(function (/*OUT*/acc, transName:any) {
+function computeStateEventToTransitionNameMap(transitions:any) {
+  return reduceR(function (/*OUT*/acc:any, transName:any) {
     const transOptions = transitions[transName];
     const { origin_state, event } = transOptions;
     acc[origin_state] = acc[origin_state] || {};
@@ -317,7 +316,7 @@ function computeStateEventToTransitionNameMap(transitions) {
  * @return {{ actionRequest : ActionRequest | Null, transitionEvaluation, satisfiedGuardIndex :
  *   Number | Null, noGuardSatisfied : Boolean}}
  */
-function computeTransition(transitions, transName, model, eventData) {
+function computeTransition(transitions:any, transName:any, model:any, eventData:any) {
   const NOT_FOUND = -1;
   const targetStates = transitions[transName].target_states;
 
@@ -364,15 +363,15 @@ function computeTransition(transitions, transName, model, eventData) {
  * @param {ActionResponse} actionResponse
  * @return {{ target_state : State | Null, model_update : Function, noGuardSatisfied : Boolean}}
  */
-function computeActionResponseTransition(transitions, transName, current_event_guard_index,
-                                         actionResponse) {
+function computeActionResponseTransition(transitions:any, transName:any, current_event_guard_index:any,
+                                         actionResponse:any) {
   /** @type {Array} */
   const actionResponseGuards =
           transitions[transName].target_states[current_event_guard_index].transition_evaluation;
 
   const foundSatisfiedGuard = find(function (transEval) {
     // TODO : replace any with ts type
-    const { action_guard, target_state, model_update }= transEval as any;
+    const { action_guard }= transEval as any;
 
     if (action_guard == AR_GUARD_NONE) {
       // if no action guard is configured, it is equivalent to a passing guard
@@ -394,11 +393,11 @@ function computeActionResponseTransition(transitions, transName, current_event_g
     : { target_state: null, model_update: null, noGuardSatisfied: true }
 }
 
-function isZeroActionRequest(actionRequest) {
+function isZeroActionRequest(actionRequest:any) {
   return actionRequest == ACTION_REQUEST_NONE || isZeroDriver(actionRequest.driver)
 }
 
-function isZeroDriver(driver) {
+function isZeroDriver(driver:any) {
   return driver == ZERO_DRIVER
 }
 
@@ -408,7 +407,7 @@ function isZeroDriver(driver) {
  * @param {UpdateOperation[]} modelUpdateOperations
  * @returns {FSM_Model}
  */
-function applyUpdateOperations(/*OUT*/model, modelUpdateOperations) {
+function applyUpdateOperations(/*OUT*/model:any, modelUpdateOperations:any) {
   assertContract(isArrayUpdateOperations, [modelUpdateOperations],
     `applyUpdateOperations : ${CONTRACT_MODEL_UPDATE_FN_RETURN_VALUE}`);
 
@@ -422,10 +421,11 @@ function applyUpdateOperations(/*OUT*/model, modelUpdateOperations) {
  * @param settings
  * @param {Event} event$Fn Event factory function
  * @param {EventName} eventName
+ * @param {*} _
  * @returns {Observable}
  * @throws
  */
-function _labelEvents(sources, settings, event$Fn, eventName, _) {
+function _labelEvents(sources:any, settings:any, event$Fn:any, eventName:any, _:any) {
   const event$Fn$ = event$Fn(sources, settings);
   assertContract(checkIsObservable, [event$Fn$],
     `event factory function for event ${eventName} must return an observable!`);
@@ -434,7 +434,9 @@ function _labelEvents(sources, settings, event$Fn, eventName, _) {
 }
 const computeAndLabelEvents = curry(_labelEvents);
 
-function getDriverNames(transOptions, transName) {
+function getDriverNames(transOptions:any, transName:any) {
+  void transName;
+
   const { target_states } = transOptions;
   /** @type {Array.<String|ZeroDriver>} */
   const driverNames = mapR(function (transition : any) {
@@ -447,7 +449,7 @@ function getDriverNames(transOptions, transName) {
   return driverNames;
 }
 
-export function makeFSM(events, transitions, entryComponents, fsmSettings) {
+export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSettings:any) {
   // 0. TODO : check signature deeply - I dont want to check for null all the time
 
   const fsmSignature = {
@@ -496,8 +498,9 @@ export function makeFSM(events, transitions, entryComponents, fsmSettings) {
    * @param sources
    * @param settings
    */
-  function _evaluateEvent(events, transitions, entryComponents, sources, settings,
-                          /* OUT */fsmState, fsmEvent) {
+  function _evaluateEvent(events:any, transitions:any, entryComponents:any, sources:any, settings:any,
+                          /* OUT */fsmState:any, fsmEvent:any) {
+    void events;
     // NOTE : We clone the model to eliminate possible bugs coming from user-defined functions
     // inadvertently modifying the model
     let {
@@ -726,11 +729,11 @@ export function makeFSM(events, transitions, entryComponents, fsmSettings) {
     return fsmState
   }
 
-  function _computeOutputSinks(sinks$, /* OUT */accOutputSinks, sinkName) {
+  function _computeOutputSinks(sinks$:any, /* OUT */accOutputSinks:any, sinkName:any) {
     accOutputSinks[sinkName] = sinks$
-      .map(fsmState => defaultTo(empty(), fsmState.sinks[sinkName]))
+      .map((fsmState :any)=> defaultTo(empty(), fsmState.sinks[sinkName]))
       .switch()
-      .tap(x =>
+      .tap((x:any) =>
         console.warn(`post switch  ${sinkName}`, x));
 
     return accOutputSinks
@@ -739,7 +742,7 @@ export function makeFSM(events, transitions, entryComponents, fsmSettings) {
   const evaluateEvent = curry(_evaluateEvent);
   const computeOutputSinks = curry(_computeOutputSinks);
 
-  return function fsmComponent(sources, settings) {
+  return function fsmComponent(sources:any, settings:any) {
     // 0. TODO : Merge settings somehow (precedence and merge to define) with fsmSettings
     //           init_event_data etc. could for instance be passed there instead of ahead
     // 0.X TODO check remaining contracts
@@ -813,8 +816,8 @@ export function makeFSM(events, transitions, entryComponents, fsmSettings) {
     // occurring inside a `switch` (i.e. subscriptions are delayed)
     /** @type {Observable.<Object.<SinkName, Observable.<*>>>}*/
     let sinks$ = eventEvaluation$
-      .filter(fsmState => fsmState.sinks)
-      .tap(x => console.warn('sinks', x.sinks))
+      .filter((fsmState : any)=> fsmState.sinks)
+      .tap((x:any) => console.warn('sinks', x.sinks))
       .thru(hold);
 
     /** @type {Object.<SinkName, Observable.<*>>}*/
@@ -824,7 +827,7 @@ export function makeFSM(events, transitions, entryComponents, fsmSettings) {
   };
 }
 
-function computeSinkFromActionRequest(actionRequest, model, eventData) {
+function computeSinkFromActionRequest(actionRequest:any, model:any, eventData:any) {
   return {
     [actionRequest.driver]: just(actionRequest.request(model, eventData))
   }
