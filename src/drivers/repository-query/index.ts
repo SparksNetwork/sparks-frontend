@@ -9,11 +9,10 @@ import {
   QueryHandler
 } from '../../types/repository';
 import { Stream } from 'most';
-import firebase = require('firebase');
-import { tryCatch, mapObjIndexed } from 'ramda';
+import { tryCatch } from 'ramda';
 
 // Helper functions
-function errorHandler(e: Error, repository, context, params): Error {
+function errorHandler(e: Error, repository: Repository, context: Context, params: Params): Error {
   console.error('makeDomainQueryDriver: an error occured', e);
   console.warn('estra info: repository, context, params', repository, context, params);
 
@@ -30,7 +29,7 @@ function errorHandler(e: Error, repository, context, params): Error {
  * @returns {(sink:any)=>{query: ((context:Context, params:Params)=>Stream<any>)}}
  */
 export function makeDomainQueryDriver(repository: Repository, config: ContextMap) {
-  const queryCache: HashMap<Stream<any>> = {};
+  const queryCache: HashMap<HashMap<Stream<any>>> = {};
 
   function getCachedQuery(context: Context, params: Params): Stream<any> {
     return queryCache[context][JSON.stringify(params)]
@@ -40,12 +39,11 @@ export function makeDomainQueryDriver(repository: Repository, config: ContextMap
     queryCache[context][JSON.stringify(params)] = cachedValue;
   }
 
-  return function (sink: any) {
+  return function (sink?: any) {
     // not used, this is a read-only driver
     void sink;
 
-    // TODO: not sure about this implementation
-    // Better to have cached subjects, and pass it to the QueryHandler
+    // TODO : dont cache? problem maybe with stream completion
     return {
       query: function query(context: Context, params: Params) {
         const cachedQuery = getCachedQuery(context, params);

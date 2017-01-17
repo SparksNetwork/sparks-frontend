@@ -3,14 +3,18 @@ import { Stream } from 'most';
 //import hold from '@most/hold';
 import { tryCatch, mapObjIndexed } from 'ramda';
 import { async as asyncSubjectFactory } from 'most-subject';
-import firebase = require('firebase');
 import {
-  Context, ActionResult, Repository, Params, DomainActionHandler,
-  ContextCommandMap, DomainAction
+  Context,
+  ActionResult,
+  Repository,
+  Params,
+  DomainActionHandler,
+  ContextCommandMap,
+  DomainAction
 } from '../../types/repository';
 
 // Helper functions
-function errorHandler(e: Error, repository, context, params): Error {
+function errorHandler(e: Error, repository: Repository, context: Context, params: Params): Error {
   console.error('makeDomainActionDriver: an error occured', e);
   console.warn('estra info: repository, context, params', repository, context, params);
 
@@ -56,7 +60,7 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
 
       if (isPromise(actionResult)) {
         actionResult
-          .then(result => ({
+          .then((result: any) => ({
             request: { repository, context, params },
             err: null,
             response: result
@@ -66,7 +70,7 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
             err: e,
             response: null
           }))
-          .then(actionReponse => {
+          .then((actionReponse: any) => {
             eventEmitters[context].next(actionReponse);
           })
       }
