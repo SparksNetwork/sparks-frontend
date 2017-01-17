@@ -1,8 +1,8 @@
 import { never, just } from 'most';
-import hold from '@most/hold';
+// import hold from '@most/hold';
 import { h2, div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
-import { flip, type, keys, pipe, prop, equals, always } from 'ramda';
+import { flip, type, keys, pipe, path, equals, always } from 'ramda';
 import {
   EV_GUARD_NONE,
   ACTION_REQUEST_NONE,
@@ -37,7 +37,8 @@ function dummyComponent1Sink(sources: any, settings: any) {
   return {
     dom: sources.domainAction$
       .getResponse(OPPORTUNITY)
-      .filter(pipe(prop('token'), equals(1)))
+      .tap(console.warn.bind(console,'actionResponse'))
+      .filter(pipe(path('request.params.token'.split('.')), equals(1)))
       .map(always('response received'))
       .map(view),
     domainAction$: just({
@@ -103,7 +104,7 @@ export function ProcessApplication(sources: MainSources): MainSinks {
     dom: sinks.dom,
     router: sinks.router || never(),
     authentication$: sinks.authentication$ || never(),
-    domainAction$ : sinks.domainAction$.thru(hold) || never()
+    domainAction$ : sinks.domainAction$ || never()
   };
 }
 

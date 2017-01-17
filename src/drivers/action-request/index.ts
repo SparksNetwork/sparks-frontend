@@ -96,6 +96,7 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
 
     return {
       getResponse: function getResponse(context: string) {
+        console.warn('getResponse', context);
         return eventEmitters[context]
       }
     };
