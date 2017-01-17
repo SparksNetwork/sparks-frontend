@@ -1,7 +1,8 @@
-import { never } from 'most';
+import { never, just } from 'most';
+import hold from '@most/hold';
 import { h2, div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
-import { flip, type, keys } from 'ramda';
+import { flip, type, keys, pipe, prop, equals, always } from 'ramda';
 import {
   EV_GUARD_NONE,
   ACTION_REQUEST_NONE,
@@ -9,8 +10,9 @@ import {
   INIT_EVENT_NAME,
   INIT_STATE
 } from '../../components/properties';
-import { OPPORTUNITY } from '../../domain';
+import { OPPORTUNITY, ADD } from '../../domain';
 import { makeFSM } from '../../components/FSM';
+import { DomainAction } from '../../types/repository';
 
 const initialModel = {
   dummyKey1InitModel: 'dummyValue1',
@@ -28,12 +30,25 @@ const initEventData = {
 const sinkNames = ['dom', 'domainAction$'];
 
 function dummyComponent1Sink(sources: any, settings: any) {
-  void sources;
   const { model } = settings;
   const { query$ } = sources;
+  void model, query$;
 
   return {
-    dom: query$.query(OPPORTUNITY, model.opportunity).map(view),
+    dom: sources.domainAction$
+      .getResponse(OPPORTUNITY)
+      .filter(pipe(prop('token'), equals(1)))
+      .map(always('response received'))
+      .map(view),
+    domainAction$: just({
+      context: OPPORTUNITY,
+      command: ADD,
+      params: {
+        opportunity: 'New Opportunity',
+        data: 'some name',
+        token: 1
+      }
+    } as DomainAction)
   }
 }
 
@@ -81,12 +96,14 @@ const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 
 export function ProcessApplication(sources: MainSources): MainSinks {
   const sinks = fsmComponent(sources, {});
+  console.warn('ProcessApplication', sinks);
 
 // TODO
   return {
     dom: sinks.dom,
     router: sinks.router || never(),
     authentication$: sinks.authentication$ || never(),
+    domainAction$ : sinks.domainAction$.thru(hold) || never()
   };
 }
 

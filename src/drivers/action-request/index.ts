@@ -50,9 +50,12 @@ function eventEmitterFactory(_: any, context: Context, __: any) {
 export function makeDomainActionDriver(repository: Repository, config: ContextCommandMap) {
   // Create a subject for each context defined in config
   const eventEmitters = mapObjIndexed(eventEmitterFactory, config);
+  console.warn('entered in driver maker');
 
   return function (sink$: Stream<DomainAction>) {
+    console.warn('entered in driver');
     const source$ = sink$.map(function executeAction(action: DomainAction) {
+      console.log('action', action);
       const { context, command, params } = action;
       const fnToExec: DomainActionHandler = config[context][command];
       const wrappedFn: DomainActionHandler = tryCatch(fnToExec, errorHandler);
@@ -61,12 +64,12 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
       if (isPromise(actionResult)) {
         actionResult
           .then((result: any) => ({
-            request: { repository, context, params },
+            request: action,
             err: null,
             response: result
           }))
           .catch((e: Error) => ({
-            request: { repository, context, params },
+            request: action,
             err: e,
             response: null
           }))
@@ -81,7 +84,7 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
         }
         else {
           eventEmitters[context].next({
-            request: { repository, context, params },
+            request: action,
             err: null,
             response: actionResult
           })

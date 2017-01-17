@@ -16,11 +16,14 @@ export function main(sources: MainSources): MainSinks {
             '/connect': augmentWithAnchorClicks(ConnectScreen),
             '/signin': augmentWithAnchorClicks(SignInScreen),
             '/activatorprime': augmentWithAnchorClicks(ProcessApplication),
-          }, sources);
+          }, sources)
+          // NOTE : this would be better if it would be multicasted at `Router` level
+            .multicast();
 
   return {
     dom: sinks$.map(sinks => sinks.dom).switch(),
     router: sinks$.map(sinks => sinks.router).switch(),
     authentication$: sinks$.map(sinks => sinks.authentication$).switch(),
+    domainAction$: sinks$.map(sinks => sinks.domainAction$).switch(),
   };
 }

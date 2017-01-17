@@ -1,4 +1,4 @@
-import { Stream, just, merge, combine, concat } from 'most';
+import { Stream, just, merge, combine, concat, empty } from 'most';
 import hold from '@most/hold';
 import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
@@ -70,6 +70,7 @@ export function SignInScreen(sources: MainSources): MainSinks {
     dom: state.errorFeedback.map(view),
     authentication$: actions.signUserIn,
     router: actions.redirectToDashboard,
+    domainAction$: empty()
   };
 }
 

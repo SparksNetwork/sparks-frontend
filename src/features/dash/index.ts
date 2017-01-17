@@ -1,6 +1,6 @@
 import { AuthenticationType, signoutAuthentication } from '../../drivers/firebase-authentication';
 import { MainSinks, MainSources } from '../../app';
-import { Stream, map, never } from 'most';
+import { Stream, map, never, empty } from 'most';
 import { a, div, p } from '@motorcycle/dom';
 
 import { propOr } from 'ramda';
@@ -23,6 +23,7 @@ export function Dash(sources: MainSources): MainSinks {
     dom: view$,
     router: never(),
     authentication$,
+    domainAction$: empty()
   };
 }
 

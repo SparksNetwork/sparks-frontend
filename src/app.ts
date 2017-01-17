@@ -12,7 +12,7 @@ import { makeFirebaseUserDriver, FirebaseUserChange } from './drivers/firebase-u
 import { makeDomainQueryDriver } from './drivers/repository-query';
 import { queryConfig, domainActionConfig } from './domain';
 import { makeDomainActionDriver } from './drivers/action-request';
-import { Repository } from './types/repository';
+import { Repository, DomainAction } from './types/repository';
 import { main } from './main';
 import firebase = require('firebase');
 declare const Sparks: any;
@@ -32,6 +32,7 @@ export interface MainSinks extends Sinks {
   dom: Stream<VNode>;
   router: RouterInput;
   authentication$: Stream<AuthenticationType>;
+  domainAction$: Stream<DomainAction>;
 }
 
 const auth = firebase.auth();

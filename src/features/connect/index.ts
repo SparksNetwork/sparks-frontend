@@ -1,4 +1,4 @@
-import { Stream, just, merge, combine, concat } from 'most';
+import { Stream, just, merge, combine, concat, empty } from 'most';
 import hold from '@most/hold';
 import { Path } from '@motorcycle/history';
 import { div, ul, li, img, span, a, button, input, form, label } from '@motorcycle/dom';
@@ -106,6 +106,7 @@ export function ConnectScreen(sources: MainSources): MainSinks {
       actions.signUp,
       actions.logUserIn,
     ),
+    domainAction$: empty()
   };
 }
 

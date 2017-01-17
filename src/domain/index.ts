@@ -6,6 +6,7 @@ export const OPPORTUNITY = 'OPPORTUNITY';
 export const USER_APPLICATION = 'USERAPP';
 export const OPPORTUNITY_REF = 'Opportunities';
 export const USER_APPLICATION_REF = 'UserApplication';
+export const ADD = 'Add';
 
 export const queryConfig: ContextMap = {
   [OPPORTUNITY]: function getOpportunityData(fbDb: Repository, context: Context, params: Params) {
@@ -17,8 +18,6 @@ export const queryConfig: ContextMap = {
     return getFirebaseStream(fbDb, eventName, ref);
   },
   [USER_APPLICATION]: function getUserApplicationData(fbDb: Repository, context: Context, params: Params) {
-    // NOTE : user might apply to several opportunities
-    // Hence a mechanism to filter by opportunity might be needed
     void context;
     const refMap = { [USER_APPLICATION]: USER_APPLICATION_REF };
     const eventName = defaultTo('value')(params && params.eventName);
@@ -31,6 +30,24 @@ export const queryConfig: ContextMap = {
 };
 
 export const domainActionConfig: ContextCommandMap = {
-  // TODO
+  [OPPORTUNITY]: {
+    [ADD]: function addOpportunity(fbDb: Repository, context: Context, params: Params) {
+      void context;
+
+      // Check command contracts
+      if (!params || !params.opportunity) {
+        throw 'addOpportunity: Cannot add an empty opportunity!'
+      }
+
+      const { opportunity, data }= params;
+      const refMap = { [OPPORTUNITY]: OPPORTUNITY_REF };
+      const collectionRef = refMap[OPPORTUNITY];
+      const ref = [collectionRef, opportunity].join('/');
+
+      console.log('addOpportunity', context, params, ref);
+
+      return fbDb.ref(ref).set(data);
+    }
+  }
 };
 

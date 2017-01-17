@@ -1,14 +1,18 @@
-import { never, combine } from 'most';
+import { never, combine, empty } from 'most';
 import { Location } from '@motorcycle/history';
 import { h2, a, div, p } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
 import { FirebaseUserChange } from '../../drivers/firebase-user';
+
+// import { OPPORTUNITY, ADD } from '../../domain';
+// import { DomainAction } from '../../types/repository';
 
 export function Home(sources: MainSources): MainSinks {
   return {
     dom: combine(view, sources.router.history(), sources.user$),
     router: never(),
     authentication$: never(),
+    domainAction$: empty()
   };
 }
 
