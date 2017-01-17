@@ -47,8 +47,6 @@
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "@types/node": "0.0.2",
-    // TODO : should update type def. for tryCatch, third parameter x:any is non existent
-    // BUT : the correct type file seems to require features from typescript 2.2.0 (keyof, etc.)...
     "@types/ramda": "0.0.2",
     "@types/sinon": "^1.16.32",
     "@types/webpack": "^2.0.0",
@@ -90,6 +88,7 @@
   "dependencies": {
     "@most/create": "^2.0.1",
     "@most/hold": "^1.4.3",
+    "most-subject": "^5.2.0",
     "@motorcycle/core": "^2.1.0",
     "@motorcycle/dom": "^6.6.0",
     "@motorcycle/history": "^4.1.0",
