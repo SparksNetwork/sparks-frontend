@@ -1,6 +1,4 @@
-// import { never, combine } from 'most';
-import { never, just, merge as mergeM } from 'most';
-// import { h2, a, div, p } from '@motorcycle/dom';
+import { never } from 'most';
 import { h2, div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
 import { flip, type, keys } from 'ramda';
@@ -9,33 +7,33 @@ import {
   ACTION_REQUEST_NONE,
   ACTION_GUARD_NONE,
   INIT_EVENT_NAME,
-  INIT_STATE,
-  DRIVER_PREFIX
+  INIT_STATE
 } from '../../components/properties';
+import { OPPORTUNITY } from '../../domain';
 import { makeFSM } from '../../components/FSM';
 
-
 const initialModel = {
-  dummyKey1InitModel: dummyValue1,
-  dummyKey2InitModel: dummyValue2,
+  dummyKey1InitModel: 'dummyValue1',
+  dummyKey2InitModel: 'dummyValue2',
+  opportunity: 'Activator Prime'
 };
 const opsOnInitialModel = [
-  { op: "add", path: '/dummyKey3InitModel', value: dummyValue3 },
-  { op: "replace", path: '/dummyKey1InitModel', value: dummyValue2 },
+  { op: "add", path: '/dummyKey3InitModel', value: 'dummyValue3' },
+  { op: "replace", path: '/dummyKey1InitModel', value: 'dummyValue2' },
   { op: "remove", path: '/dummyKey2InitModel' },
 ];
 const initEventData = {
-  dummyKeyEvInit: dummyValue
+  dummyKeyEvInit: 'dummyValue'
 };
-const sinkNames = ['sinkA', 'sinkB', 'sinkC', 'modelSink', dummyDriver];
+const sinkNames = ['dom', 'domainAction$'];
 
 function dummyComponent1Sink(sources: any, settings: any) {
   void sources;
   const { model } = settings;
+  const { query$ } = sources;
 
   return {
-    sinkA: just(`test init`),
-    modelSink: just(model)
+    dom: query$.query(OPPORTUNITY, model.opportunity).map(view),
   }
 }
 
@@ -87,21 +85,21 @@ export function ProcessApplication(sources: MainSources): MainSinks {
 // TODO
   return {
     dom: sinks.dom,
-    router: sinks.router,
-    authentication$: sinks.authentication$,
+    router: sinks.router || never(),
+    authentication$: sinks.authentication$ || never(),
   };
 }
 
 // TODO
 function view(obj: any) {
-  console.log('obj',obj);
+  console.log('obj', obj);
   return type(obj) === 'String'
     ? div([
     h2(`Received: ${obj}`),
   ])
-    : div (keys(obj));
+    : div(keys(obj));
 }
-
+void view;
 
 /**
  * TODO : check legacy firebase and queue driver

@@ -32,10 +32,11 @@ export function makeDomainQueryDriver(repository: Repository, config: ContextMap
   const queryCache: HashMap<HashMap<Stream<any>>> = {};
 
   function getCachedQuery(context: Context, params: Params): Stream<any> {
-    return queryCache[context][JSON.stringify(params)]
+    return queryCache && queryCache[context] && queryCache[context][JSON.stringify(params)]
   }
 
   function setCachedQuery(cachedValue: Stream<any>, context: Context, params: Params) {
+    queryCache[context] = queryCache[context] || {};
     queryCache[context][JSON.stringify(params)] = cachedValue;
   }
 
