@@ -1,5 +1,5 @@
 // import { create } from '@most/create';
-// import hold from '@most/hold';
+import hold from '@most/hold';
 import {
   Repository,
   ContextMap,
@@ -55,7 +55,9 @@ export function makeDomainQueryDriver(repository: Repository, config: ContextMap
         else {
           const fnToExec: QueryHandler = config[context];
           const wrappedFn: QueryHandler = tryCatch(fnToExec, errorHandler);
-          const liveQuery$: Stream<any> = wrappedFn(repository, context, params);
+          // NOTE : the query is a behavior (not an event), it must be memoized
+          // It must also be multicasted as it it cached, hence can have multiple subscribers
+          const liveQuery$: Stream<any> = wrappedFn(repository, context, params).thru(hold);
           setCachedQuery(liveQuery$, context, params);
 
           return liveQuery$;

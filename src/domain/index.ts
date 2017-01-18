@@ -4,8 +4,10 @@ import { getFirebaseStream } from '../utils/firebase';
 
 export const OPPORTUNITY = 'OPPORTUNITY';
 export const USER_APPLICATION = 'USERAPP';
+export const TEAMS = 'TEAMS';
 export const OPPORTUNITY_REF = 'Opportunities';
 export const USER_APPLICATION_REF = 'UserApplication';
+export const TEAMS_REF = 'Teams';
 export const ADD = 'Add';
 
 export const queryConfig: ContextMap = {
@@ -18,6 +20,9 @@ export const queryConfig: ContextMap = {
     return getFirebaseStream(fbDb, eventName, ref);
   },
   [USER_APPLICATION]: function getUserApplicationData(fbDb: Repository, context: Context, params: Params) {
+    // TODO : analyse what happens in case of error
+    // TODO : update with the new structure of userApp
+    // i.e. Applications/Users/key/Opportunities/key
     void context;
     const refMap = { [USER_APPLICATION]: USER_APPLICATION_REF };
     const eventName = defaultTo('value')(params && params.eventName);
@@ -26,7 +31,15 @@ export const queryConfig: ContextMap = {
     const ref = [collectionRef, opportunity].join('/');
 
     return getFirebaseStream(fbDb, eventName, ref);
-  }
+  },
+  [TEAMS]: function getTeamsData(fbDb: Repository, context: Context, params: Params) {
+    void context;
+    const refMap = { [TEAMS]: TEAMS_REF };
+    const eventName = defaultTo('value')(params && params.eventName);
+    const ref = refMap[TEAMS];
+
+    return getFirebaseStream(fbDb, eventName, ref);
+  },
 };
 
 export const domainActionConfig: ContextCommandMap = {
