@@ -258,17 +258,30 @@ const transitions = {
 };
 
 const entryComponents = {
-  INIT: function (model: any) {
+  [INIT_S]: function showInitView(model: any) {
     void model;
 
     // This is a transient state - display some loading indicator
-    return {
-      dom: just(div('Loading user application data...'))
+    return function initComponent(sources:any, settings:any) {
+      void sources, settings;
+
+      return {
+        dom: just(div('Loading user application data...'))
+      }
     }
   },
-  STATE_ABOUT: function (model: any) {
+  [STATE_ABOUT]: function showViewStateAbout(model: any) {
     return flip(dummyComponent1Sink)({ model })
-  }
+  },
+  [STATE_QUESTION]: function (model: any) {
+    return flip(dummyComponent1Sink)({ model })
+  },
+  [STATE_TEAMS]: function (model: any) {
+    return flip(dummyComponent1Sink)({ model })
+  },
+  [STATE_REVIEW]: function (model: any) {
+    return flip(dummyComponent1Sink)({ model })
+  },
 };
 
 const fsmSettings = {

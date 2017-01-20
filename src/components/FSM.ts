@@ -1,34 +1,16 @@
 import {
-  map as mapR,
-  reduce as reduceR,
-  mapObjIndexed,
-  uniq,
-  flatten,
-  values,
-  find,
-  equals,
-  clone,
-  keys,
-  filter,
-  pick,
-  curry,
-  defaultTo,
-  findIndex,
-  tryCatch
+  map as mapR, reduce as reduceR, mapObjIndexed, uniq, flatten, values, find, equals, clone, keys,
+  filter, pick, curry, defaultTo, findIndex, tryCatch, either, isNil
 } from 'ramda';
 import { checkSignature, assertContract, handleError, isBoolean } from '../utils/utils';
 import {
-  isFsmSettings,
-  isFsmEvents,
-  isFsmTransitions,
-  isFsmEntryComponents,
+  isFsmSettings, isFsmEvents, isFsmTransitions, isFsmEntryComponents,
   checkTargetStatesDefinedInTransitionsMustBeMappedToComponent,
   checkOriginStatesDefinedInTransitionsMustBeMappedToComponent,
-  checkEventDefinedInTransitionsMustBeMappedToEventFactory,
-  checkIsObservable,
-  isArrayUpdateOperations
+  checkEventDefinedInTransitionsMustBeMappedToEventFactory, checkIsObservable,
+  checkStateEntryComponentFnMustReturnComponent, isArrayUpdateOperations
 } from './types';
-import {empty, mergeArray, merge, just} from 'most';
+import { empty, mergeArray, merge, just } from 'most';
 import hold from '@most/hold';
 // Patch library : https://github.com/Starcounter-Jack/JSON-Patch
 // NOTE1 : dont use observe functionality for generating patches
@@ -37,22 +19,11 @@ import hold from '@most/hold';
 // NOTE2 : patches are applied IN PLACE
 import jsonpatch from '../utils/json-patch';
 import {
-  EV_GUARD_NONE,
-  ACTION_REQUEST_NONE,
-  AR_GUARD_NONE,
-  ZERO_DRIVER,
-  EVENT_PREFIX,
-  DRIVER_PREFIX,
-  INIT_EVENT_NAME,
-  AWAITING_EVENTS,
-  AWAITING_RESPONSE,
-  INIT_STATE,
-  CONTRACT_SATISFIED_GUARD_PER_ACTION_RESPONSE,
-  CONTRACT_MODEL_UPDATE_FN_RETURN_VALUE,
-  CONTRACT_EVENT_GUARD_FN_RETURN_VALUE,
-  CONTRACT_EVENT_GUARD_CANNOT_FAIL,
-  CONTRACT_ACTION_GUARD_CANNOT_FAIL,
-  CONTRACT_ACTION_GUARD_FN_RETURN_VALUE,
+  EV_GUARD_NONE, ACTION_REQUEST_NONE, AR_GUARD_NONE, ZERO_DRIVER, EVENT_PREFIX, DRIVER_PREFIX,
+  INIT_EVENT_NAME, AWAITING_EVENTS, AWAITING_RESPONSE, INIT_STATE,
+  CONTRACT_SATISFIED_GUARD_PER_ACTION_RESPONSE, CONTRACT_MODEL_UPDATE_FN_RETURN_VALUE,
+  CONTRACT_EVENT_GUARD_FN_RETURN_VALUE, CONTRACT_EVENT_GUARD_CANNOT_FAIL,
+  CONTRACT_ACTION_GUARD_CANNOT_FAIL, CONTRACT_ACTION_GUARD_FN_RETURN_VALUE,
   CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL
 } from './properties';
 
@@ -193,14 +164,14 @@ import {
  */
 
 
-function removeZeroDriver(driverNameArray:any) {
+function removeZeroDriver(driverNameArray: any) {
   return filter(function removeZero(driverName) {
     return driverName != ZERO_DRIVER
   }, driverNameArray)
 }
 
-function prefixWith(prefix:any) {
-  return function _prefixWith(obj:any) {
+function prefixWith(prefix: any) {
+  return function _prefixWith(obj: any) {
     return { [prefix]: obj }
   }
 }
@@ -209,7 +180,7 @@ function prefixWith(prefix:any) {
  * @param {Object.<string, *>} fsmEvent
  * @returns {String}
  */
-function getPrefix(fsmEvent:any) {
+function getPrefix(fsmEvent: any) {
   return keys(fsmEvent)[0]
 }
 
@@ -218,7 +189,7 @@ function getPrefix(fsmEvent:any) {
  * @param fsmEvent
  * @returns {UserEventPrefix|DriverEventPrefix}
  */
-function getEventOrigin(fsmEvent:any) {
+function getEventOrigin(fsmEvent: any) {
   return getPrefix(fsmEvent)
 }
 
@@ -228,7 +199,7 @@ function getEventOrigin(fsmEvent:any) {
  * @param {UserEvent | DriverEvent} fsmEvent
  * @returns {LabelledUserEvent | LabelledDriverEvent}
  */
-function getFsmEventValue(prefix:any, fsmEvent:any) {
+function getFsmEventValue(prefix: any, fsmEvent: any) {
   return fsmEvent[prefix]
 }
 
@@ -238,7 +209,7 @@ function getFsmEventValue(prefix:any, fsmEvent:any) {
  * @param {LabelledUserEvent|LabelledDriverEvent} fsmEventValue
  * @returns {EventData | ActionResponse}
  */
-function getEventDataOrActionResponse(eventOrDriverName:any, fsmEventValue:any) {
+function getEventDataOrActionResponse(eventOrDriverName: any, fsmEventValue: any) {
   return fsmEventValue[eventOrDriverName]
 }
 
@@ -248,7 +219,7 @@ function getEventDataOrActionResponse(eventOrDriverName:any, fsmEventValue:any) 
  * @returns {{fsmEventOrigin: (UserEventPrefix|DriverEventPrefix), fsmEventValue:
  *   (LabelledUserEvent|LabelledDriverEvent)}}
  */
-function destructureFsmEvent(fsmEvent:any) {
+function destructureFsmEvent(fsmEvent: any) {
   const prefix = getEventOrigin(fsmEvent);
   const fsmEventValue = getFsmEventValue(prefix, fsmEvent);
 
@@ -264,7 +235,7 @@ function destructureFsmEvent(fsmEvent:any) {
  * @param fsmEventValue
  * @returns {{eventOrDriverName: String, eventDataOrActionResponse: (EventData|ActionResponse)}}
  */
-function destructureFsmEventValue(fsmEventValue:any) {
+function destructureFsmEventValue(fsmEventValue: any) {
   const eventOrDriverName = getPrefix(fsmEventValue);
   const eventDataOrActionResponse = getEventDataOrActionResponse(eventOrDriverName, fsmEventValue);
 
@@ -279,8 +250,8 @@ function destructureFsmEventValue(fsmEventValue:any) {
  * @param {Transitions} transitions
  * @returns {Object.<State, EventName[]>}
  */
-function computeStateEventMap(transitions:any) {
-  return reduceR(function (/*OUT*/accStateEventMap:any, transName : any) {
+function computeStateEventMap(transitions: any) {
+  return reduceR(function (/*OUT*/accStateEventMap: any, transName: any) {
     const transOptions = transitions[transName];
     const { origin_state, event } = transOptions;
     accStateEventMap[origin_state] = accStateEventMap[origin_state] || [];
@@ -295,8 +266,8 @@ function computeStateEventMap(transitions:any) {
  * @param {Transitions} transitions
  * @returns {Object.<State, Object.<EventName, TransitionName>>}
  */
-function computeStateEventToTransitionNameMap(transitions:any) {
-  return reduceR(function (/*OUT*/acc:any, transName:any) {
+function computeStateEventToTransitionNameMap(transitions: any) {
+  return reduceR(function (/*OUT*/acc: any, transName: any) {
     const transOptions = transitions[transName];
     const { origin_state, event } = transOptions;
     acc[origin_state] = acc[origin_state] || {};
@@ -316,7 +287,7 @@ function computeStateEventToTransitionNameMap(transitions:any) {
  * @return {{ actionRequest : ActionRequest | Null, transitionEvaluation, satisfiedGuardIndex :
  *   Number | Null, noGuardSatisfied : Boolean}}
  */
-function computeTransition(transitions:any, transName:any, model:any, eventData:any) {
+function computeTransition(transitions: any, transName: any, model: any, eventData: any) {
   const NOT_FOUND = -1;
   const targetStates = transitions[transName].target_states;
 
@@ -330,7 +301,7 @@ function computeTransition(transitions:any, transName:any, model:any, eventData:
     }
     else {
       // EventGuard :: Model -> EventData -> Boolean
-      const wrappedEventGuard:any = tryCatch(eventGuard, handleError(CONTRACT_EVENT_GUARD_CANNOT_FAIL));
+      const wrappedEventGuard: any = tryCatch(eventGuard, handleError(CONTRACT_EVENT_GUARD_CANNOT_FAIL));
       const guardValue = wrappedEventGuard(model, eventData);
       assertContract(isBoolean, [guardValue],
         `computeTransition: ${CONTRACT_EVENT_GUARD_FN_RETURN_VALUE}`);
@@ -363,8 +334,8 @@ function computeTransition(transitions:any, transName:any, model:any, eventData:
  * @param {ActionResponse} actionResponse
  * @return {{ target_state : State | Null, model_update : Function, noGuardSatisfied : Boolean}}
  */
-function computeActionResponseTransition(transitions:any, transName:any, current_event_guard_index:any,
-                                         actionResponse:any) {
+function computeActionResponseTransition(transitions: any, transName: any, current_event_guard_index: any,
+                                         actionResponse: any) {
   /** @type {Array} */
   const actionResponseGuards =
           transitions[transName].target_states[current_event_guard_index].transition_evaluation;
@@ -379,7 +350,7 @@ function computeActionResponseTransition(transitions:any, transName:any, current
     }
     else {
       // ActionGuard :: ActionResponse -> Boolean
-      const wrappedActionGuard : any= tryCatch(action_guard, handleError(CONTRACT_ACTION_GUARD_CANNOT_FAIL));
+      const wrappedActionGuard: any = tryCatch(action_guard, handleError(CONTRACT_ACTION_GUARD_CANNOT_FAIL));
       const guardValue = wrappedActionGuard(actionResponse);
       assertContract(isBoolean, [guardValue],
         `computeTransition: ${CONTRACT_ACTION_GUARD_FN_RETURN_VALUE}`);
@@ -393,11 +364,11 @@ function computeActionResponseTransition(transitions:any, transName:any, current
     : { target_state: null, model_update: null, noGuardSatisfied: true }
 }
 
-function isZeroActionRequest(actionRequest:any) {
+function isZeroActionRequest(actionRequest: any) {
   return actionRequest == ACTION_REQUEST_NONE || isZeroDriver(actionRequest.driver)
 }
 
-function isZeroDriver(driver:any) {
+function isZeroDriver(driver: any) {
   return driver == ZERO_DRIVER
 }
 
@@ -407,7 +378,7 @@ function isZeroDriver(driver:any) {
  * @param {UpdateOperation[]} modelUpdateOperations
  * @returns {FSM_Model}
  */
-function applyUpdateOperations(/*OUT*/model:any, modelUpdateOperations:any) {
+function applyUpdateOperations(/*OUT*/model: any, modelUpdateOperations: any) {
   assertContract(isArrayUpdateOperations, [modelUpdateOperations],
     `applyUpdateOperations : ${CONTRACT_MODEL_UPDATE_FN_RETURN_VALUE}`);
 
@@ -425,7 +396,7 @@ function applyUpdateOperations(/*OUT*/model:any, modelUpdateOperations:any) {
  * @returns {Observable}
  * @throws
  */
-function _labelEvents(sources:any, settings:any, event$Fn:any, eventName:any, _:any) {
+function _labelEvents(sources: any, settings: any, event$Fn: any, eventName: any, _: any) {
   const event$Fn$ = event$Fn(sources, settings);
   assertContract(checkIsObservable, [event$Fn$],
     `event factory function for event ${eventName} must return an observable!`);
@@ -434,12 +405,12 @@ function _labelEvents(sources:any, settings:any, event$Fn:any, eventName:any, _:
 }
 const computeAndLabelEvents = curry(_labelEvents);
 
-function getDriverNames(transOptions:any, transName:any) {
+function getDriverNames(transOptions: any, transName: any) {
   void transName;
 
   const { target_states } = transOptions;
   /** @type {Array.<String|ZeroDriver>} */
-  const driverNames = mapR(function (transition : any) {
+  const driverNames = mapR(function (transition: any) {
     const { action_request } = transition;
     const { driver } : any = action_request || {};
 
@@ -449,7 +420,7 @@ function getDriverNames(transOptions:any, transName:any) {
   return driverNames;
 }
 
-export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSettings:any) {
+export function makeFSM(events: any, transitions: any, entryComponents: any, fsmSettings: any) {
   // 0. TODO : check signature deeply - I dont want to check for null all the time
 
   const fsmSignature = {
@@ -498,8 +469,8 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
    * @param sources
    * @param settings
    */
-  function _evaluateEvent(events:any, transitions:any, entryComponents:any, sources:any, settings:any,
-                          /* OUT */fsmState:any, fsmEvent:any) {
+  function _evaluateEvent(events: any, transitions: any, entryComponents: any, sources: any, settings: any,
+                          /* OUT */fsmState: any, fsmEvent: any) {
     void events;
     // NOTE : We clone the model to eliminate possible bugs coming from user-defined functions
     // inadvertently modifying the model
@@ -579,7 +550,7 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
                   // TODO : check contract : only ONE action_guard which MUST be Zero
                   const { target_state, model_update } =  transitionEvaluation[0];
                   // TODO : seek the second reference to it
-                  const wrappedModelUpdate:any = tryCatch(model_update,
+                  const wrappedModelUpdate: any = tryCatch(model_update,
                     handleError(CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL));
                   const modelUpdateOperations = wrappedModelUpdate(clonedModel, eventData, null);
                   const entryComponent = entryComponents[target_state];
@@ -591,6 +562,13 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
                   // is faster
                   clonedModel = clone(model);
                   // NOTE : The model to be passed to the entry component is post update
+                  const stateEntryComponent = entryComponent ? entryComponent(clonedModel) : null;
+                  assertContract(either(isNil, checkStateEntryComponentFnMustReturnComponent),
+                    [stateEntryComponent],
+                    `state entry component function ${entryComponent.name} 
+                    for state ${target_state} MUST return a component or be null`
+                  );
+
                   sinks = entryComponent ? entryComponent(clonedModel)(sources, settings) : {};
                   internal_state = AWAITING_EVENTS;
                   current_event_guard_index = null;
@@ -680,7 +658,7 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
                 throw CONTRACT_SATISFIED_GUARD_PER_ACTION_RESPONSE
               }
               else {
-                const wrappedModelUpdate :any = tryCatch(model_update,
+                const wrappedModelUpdate: any = tryCatch(model_update,
                   handleError(CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL));
                 const modelUpdateOperations = wrappedModelUpdate(model, current_event_data, actionResponse);
                 const entryComponent = entryComponents[target_state];
@@ -729,11 +707,11 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
     return fsmState
   }
 
-  function _computeOutputSinks(sinks$:any, /* OUT */accOutputSinks:any, sinkName:any) {
+  function _computeOutputSinks(sinks$: any, /* OUT */accOutputSinks: any, sinkName: any) {
     accOutputSinks[sinkName] = sinks$
-      .map((fsmState :any)=> defaultTo(empty(), fsmState.sinks[sinkName]))
+      .map((fsmState: any) => defaultTo(empty(), fsmState.sinks[sinkName]))
       .switch()
-      .tap((x:any) =>
+      .tap((x: any) =>
         console.warn(`post switch  ${sinkName}`, x));
 
     return accOutputSinks
@@ -742,7 +720,7 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
   const evaluateEvent = curry(_evaluateEvent);
   const computeOutputSinks = curry(_computeOutputSinks);
 
-  return function fsmComponent(sources:any, settings:any) {
+  return function fsmComponent(sources: any, settings: any) {
     // 0. TODO : Merge settings somehow (precedence and merge to define) with fsmSettings
     //           init_event_data etc. could for instance be passed there instead of ahead
     // 0.X TODO check remaining contracts
@@ -763,7 +741,7 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
     /** @type {String[]} */
     const driverNameArray = removeZeroDriver(uniq(flatten(driverNameArrays)));
     /** @type {Array.<Observable.<Object.<SinkName, ActionResponse>>>} */
-    const actionResponseObsArray = mapR(function getActionResponseObs(driverName:any) {
+    const actionResponseObsArray = mapR(function getActionResponseObs(driverName: any) {
       return sources[driverName].map(prefixWith(driverName))
     }, driverNameArray);
 
@@ -816,8 +794,8 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
     // occurring inside a `switch` (i.e. subscriptions are delayed)
     /** @type {Observable.<Object.<SinkName, Observable.<*>>>}*/
     let sinks$ = eventEvaluation$
-      .filter((fsmState : any)=> fsmState.sinks)
-      .tap((x:any) => console.warn('sinks', x.sinks))
+      .filter((fsmState: any) => fsmState.sinks)
+      .tap((x: any) => console.warn('sinks', x.sinks))
       .thru(hold);
 
     /** @type {Object.<SinkName, Observable.<*>>}*/
@@ -827,7 +805,7 @@ export function makeFSM(events:any, transitions:any, entryComponents:any, fsmSet
   };
 }
 
-function computeSinkFromActionRequest(actionRequest:any, model:any, eventData:any) {
+function computeSinkFromActionRequest(actionRequest: any, model: any, eventData: any) {
   return {
     [actionRequest.driver]: just(actionRequest.request(model, eventData))
   }

@@ -1,38 +1,17 @@
 import {
-  either,
-  isNil,
-  allPass,
-  complement,
-  isEmpty,
-  pipe,
-  values,
-  any,
-  propEq,
-  both,
-  flatten,
-  map,
-  prop,
-  flip,
-  all,
-  identity,
-  filter,
-  equals,
-  cond,
-  T
+  either, isNil, allPass, complement, isEmpty, pipe, values, any, propEq, both, flatten, map, tap,
+  prop, flip, all, identity, filter, equals, cond, T
 } from 'ramda';
 import {
-  isHashMap,
-  isStrictRecord,
-  isFunction,
-  isString,
-  isArrayOf,
-  isObject,
-  isEmptyArray
+  isHashMap, isStrictRecord, isFunction, isString, isArrayOf, isObject, isEmptyArray
 } from '../utils/utils';
 import { INIT_EVENT_NAME, INIT_STATE } from './properties';
 
+void tap;
+
 ////////
 // Types FSM
+const isComponent = isFunction;
 const isNotEmpty = complement(isEmpty);
 const isEventName = both(isString, isNotEmpty);
 const isTransitionName = both(isString, isNotEmpty);
@@ -118,10 +97,11 @@ export const isFsmTransitions = allPass([
   // go through all values and check for an event property which INIT_EVENT_NAME
 ]);
 
-export function checkTargetStatesDefinedInTransitionsMustBeMappedToComponent(events:any, transitions:any,
-                                                                             entryComponents:any,
-                                                                             fsmSettings:any) {
+export function checkTargetStatesDefinedInTransitionsMustBeMappedToComponent(events: any, transitions: any,
+                                                                             entryComponents: any,
+                                                                             fsmSettings: any) {
   void events, fsmSettings;
+
   return pipe(
     values, map(prop('target_states')), flatten,
     map(prop('transition_evaluation')), flatten,
@@ -131,21 +111,23 @@ export function checkTargetStatesDefinedInTransitionsMustBeMappedToComponent(eve
   (transitions);
 }
 
-export function checkOriginStatesDefinedInTransitionsMustBeMappedToComponent(events:any, transitions:any,
-                                                                             entryComponents:any,
-                                                                             fsmSettings:any) {
+
+export function checkOriginStatesDefinedInTransitionsMustBeMappedToComponent(events: any, transitions: any,
+                                                                             entryComponents: any,
+                                                                             fsmSettings: any) {
   void events, fsmSettings;
   return pipe(
     values, map(prop('origin_state')),
     filter(complement(equals(INIT_STATE))),
     map(flip(prop)(entryComponents)),
-    all(identity))
+    all(identity)
+  )
   (transitions);
 }
 
-export function checkEventDefinedInTransitionsMustBeMappedToEventFactory(events:any, transitions:any,
-                                                                         entryComponents:any,
-                                                                         fsmSettings:any) {
+export function checkEventDefinedInTransitionsMustBeMappedToEventFactory(events: any, transitions: any,
+                                                                         entryComponents: any,
+                                                                         fsmSettings: any) {
   void entryComponents, fsmSettings;
   const check = pipe(
     values, map(prop('event')),
@@ -157,7 +139,7 @@ export function checkEventDefinedInTransitionsMustBeMappedToEventFactory(events:
   return check;
 }
 
-export function checkIsObservable(obj:any) {
+export function checkIsObservable(obj: any) {
   return !!obj.subscribe
 }
 
@@ -212,3 +194,5 @@ export const isUpdateOperation = cond([
   [isOpTest, T],
 ]);
 export const isArrayUpdateOperations = either(isEmptyArray, isArrayOf(isUpdateOperation));
+
+export const checkStateEntryComponentFnMustReturnComponent = isComponent;
