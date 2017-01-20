@@ -1,9 +1,9 @@
 export interface UserApplication {
-  user: string,
-  opportunity: string,
+  userKey: string,
+  opportunityKey: string,
   about: ApplicationAboutInfo,
   questions: ApplicationQuestionInfo,
-  teams: TeamInfo,
+  teams: TeamsInfo,
   progress: Progress
 }
 
@@ -32,8 +32,13 @@ export interface ApplicationQuestionInfo {
   answer: string
 }
 
-export interface TeamInfo {
+export interface TeamsInfo {
+  [teamKey: string]: ApplicationTeamInfo
+}
 
+export interface ApplicationTeamInfo {
+  answer: string;
+  alreadyVisited: boolean
 }
 
 export type Step = string; // actually should be an enum

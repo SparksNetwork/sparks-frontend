@@ -4,24 +4,25 @@
 // dump Opps reference
 // https://sparks-staging-v3.firebaseio.com/Opps.json?print=pretty&auth=rwjUlSb4haFyYgkA3h5kL1LUG81qIr7RvAPvXm1f
 // auth token here is in settings, service account, database secret
-import { never, just, combineArray } from 'most';
-// TODO : add to package json
-// import { sampleArray } from '@most/sample';
+import { Stream, never, just, combineArray } from 'most';
 import { h2, div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
-import { flip, type, keys, pipe, path, equals, always, mapObjIndexed, values , curry} from 'ramda';
 import {
-  EV_GUARD_NONE,
-  ACTION_REQUEST_NONE,
-  ACTION_GUARD_NONE,
-  INIT_EVENT_NAME,
-  INIT_STATE
+  map, filter, flip, type, keys, pipe, path, equals, always, mapObjIndexed, values, curry, zipObj
+} from 'ramda';
+import {
+  EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
 import { OPPORTUNITY, ADD, USER_APPLICATION, TEAMS } from '../../domain';
 import { makeFSM } from '../../components/FSM';
 import { modelUpdateIdentity } from '../../utils/FSM';
 import { DomainAction } from '../../types/repository';
-import { UserApplication, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, Step } from '../../types/processApplication';
+import { Opportunity, Teams, Team } from '../../types/domain';
+import { FirebaseUserChange } from '../../drivers/firebase-user';
+import {
+  UserApplication, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, Step, ApplicationTeamInfo,
+  TeamsInfo, ApplicationQuestionInfo, Progress, ApplicationAboutInfo
+} from '../../types/processApplication';
 
 const initialModel = {
   dummyKey1InitModel: 'dummyValue1',
@@ -57,25 +58,60 @@ function dummyComponent1Sink(sources: any, settings: any) {
   }
 }
 
-function initializeModel (model:any, eventData:any, actionResponse:any){
+function initializeModel(model: any, eventData: any, actionResponse: any) {
   void actionResponse, model;
 
-  const userApplication : UserApplication = eventData.userApplication;
+  const userApplication: UserApplication | null = eventData.userApplication;
+  let initialModel;
 
-  // basically the model should mirror the user application
-  // Note: we copy the user application in the model, we should make sure that the user
-  // application is immutable, otherwise it will spill in the model
-  // TODO : maybe clone it here instead?
-  return pipe(mapObjIndexed((key, value) => {
-    return {
-      op: "add",
-      path: ['', key].join('/'),
-      value: value
-    }
-  }), values)(userApplication)
+  if (!userApplication) {
+    const { userKey, opportunity, teams, opportunityKey } = eventData;
+    // user :: FirebaseUserChange = firebase.User | null;
+    // opportunity here is the Opportunity whose key is somehow encoded in the URL
+    // teams is all the teams in the database (!)
+    // we want to keep only the teams for the opportunity
+    // For that, we get the project key in the opportunity
+    // and keep only the team with that project key
+    const { projectKey } = opportunity as Opportunity;
+
+    // go through the teams, for each key, keep only those whose value satisfy a predicate
+    const filteredTeamKeys = filter(teamKey => (teams[teamKey] as Team).projectKey === projectKey,
+      keys(teams as Teams));
+    const teamsInfo: TeamsInfo = zipObj(filteredTeamKeys, map(always({
+      answer: '',
+      alreadyVisited: false
+    } as ApplicationTeamInfo), filteredTeamKeys));
+
+    initialModel = {
+      userKey: userKey,
+      opportunityKey: opportunityKey,
+      about: {
+        aboutYou: { superPower: '' },
+        personal: { phone: '', preferredName: '', zipCode: '', legalName: '', birthday: '' }
+      } as ApplicationAboutInfo,
+      questions: { answer: '' } as ApplicationQuestionInfo,
+      teams: teamsInfo,
+      progress: {
+        step: STEP_ABOUT,
+        hasApplied: false,
+        latestTeam: ''
+      } as Progress
+    };
+  }
+  else {
+    // Note: we reference the user application in the model, we should make sure that the user
+    // application is immutable, otherwise it will spill in the model
+    initialModel = userApplication
+  }
+
+  return pipe(mapObjIndexed((key, value) => ({
+    op: "add",
+    path: ['', key].join('/'),
+    value: value
+  })), values)(initialModel);
 }
 
-function _isStepX(targetStep:Step, model: any, eventData: any){
+function _isStepX(targetStep: Step, model: any, eventData: any) {
   void model;
   // event data here is the result of the query on user application
   // it is null if there is no existing user application
@@ -100,7 +136,7 @@ function _isStepX(targetStep:Step, model: any, eventData: any){
     return targetStep === STEP_ABOUT
   }
 }
-const isStepX = curry(_isStepX);
+const isStep = curry(_isStepX);
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
@@ -110,27 +146,40 @@ const STATE_REVIEW = 'Review';
 
 const FETCH_EV = 'fetch';
 
+// TODO : also beware that the responses wont be caught as they come with .getResponse...
+// find a workaround
+
+// TODO : think about what happen when in state team detail, not handled for now... extra arrow
+// in graph? I guess so, and use lastTeam as info
 const events = {
   [FETCH_EV]: (sources: any, settings: any) => {
     const { user$ } = sources;
     const userApp$ = sources.query$.query(USER_APPLICATION, {
-      opportunity: settings.opportunity,
-      user: settings.user
+      opportunityKey: settings.opportunityKey,
+      userKey: settings.userKey
     })
       .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
     const teams$ = sources.query$.query(TEAMS, {})
       .tap(console.warn.bind(console, 'TEAMS fetch event'));
-    const opportunities$ = sources.query$.query(OPPORTUNITY, {
-      opportunity: settings.opportunity,
+    const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, {
+      opportunityKey: settings.opportunityKey,
     })
       .tap(console.warn.bind(console, 'OPPORTUNITY fetch event'));
 
+    // TODO : add typescript types for { user, opportunity, userApplication, teams }
     // NOTE : combineArray will produce its first value when all its dependent streams have
     // produced their first value. Hence this is equivalent to a zip for the first value, which
     // is the only one we need anyways (there is no zipArray in most)
-    return combineArray(
-      (user: any, opportunity: any, userApplication: any, teams: any) =>
-        ({ user, opportunity, userApplication, teams }),
+    return combineArray<FirebaseUserChange, Opportunity, UserApplication, Teams, any>(
+      (user, opportunity, userApplication, teams) =>
+        ({
+          user,
+          opportunity,
+          userApplication,
+          teams,
+          userKey: settings.userKey,
+          opportunityKey: settings.opportunityKey
+        }),
       [user$, opportunities$, userApp$, teams$]
     )
       .tap(console.warn.bind(console, 'combined user, userapp, teams fetch event'))
@@ -161,7 +210,7 @@ const transitions = {
     event: FETCH_EV,
     target_states: [
       {
-        event_guard: isStepX(STEP_ABOUT),
+        event_guard: isStep(STEP_ABOUT),
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -172,7 +221,7 @@ const transitions = {
         ]
       },
       {
-        event_guard: isStepX(STEP_QUESTION),
+        event_guard: isStep(STEP_QUESTION),
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -183,7 +232,7 @@ const transitions = {
         ]
       },
       {
-        event_guard: isStepX(STEP_TEAMS),
+        event_guard: isStep(STEP_TEAMS),
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -194,7 +243,7 @@ const transitions = {
         ]
       },
       {
-        event_guard: isStepX(STEP_REVIEW),
+        event_guard: isStep(STEP_REVIEW),
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -217,7 +266,7 @@ const entryComponents = {
       dom: just(div('Loading user application data...'))
     }
   },
-  First: function (model: any) {
+  STATE_ABOUT: function (model: any) {
     return flip(dummyComponent1Sink)({ model })
   }
 };
@@ -288,7 +337,7 @@ void view;
  *        teams: TeamInfo,
  *        progress: Progress
  *      )
- *   + TeamInfo :: Hashmap (TeamName, ApplicationTeamInfo)
+ *   + TeamsInfo :: Hashmap (TeamName, ApplicationTeamInfo)
  *     + ApplicationTeamInfo :: Record (answer :: string, alreadyVisited :: boolean)
  *   + ApplicationAboutInfo :: Record (
  *       aboutYou:: ApplicationAboutYouInfo, Personal:: ApplicationPersonalInfo
