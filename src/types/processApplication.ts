@@ -1,3 +1,4 @@
+import { Stream } from 'most';
 export interface UserApplication {
   userKey: string,
   opportunityKey: string,
@@ -5,6 +6,24 @@ export interface UserApplication {
   questions: ApplicationQuestionInfo,
   teams: TeamsInfo,
   progress: Progress
+}
+
+export interface AboutStateRecord$ {
+  'superPower': Stream<string>,
+  'legalName': Stream<string>,
+  'preferredName': Stream<string>,
+  'phone': Stream<string>,
+  'birthday': Stream<string>,
+  'zipCode': Stream<string>
+}
+
+export interface AboutStateRecord {
+  'superPower': string,
+  'legalName': string,
+  'preferredName': string,
+  'phone': string,
+  'birthday': string,
+  'zipCode': string
 }
 
 export type PhoneNumber = string;
@@ -52,4 +71,5 @@ export const STEP_ABOUT = 'about';
 export const STEP_QUESTION = 'question';
 export const STEP_TEAMS = 'teams';
 export const STEP_REVIEW = 'review';
+export const applicationProcessSteps = [STEP_ABOUT , STEP_QUESTION, STEP_TEAMS, STEP_REVIEW];
 // TODO: a step TEAM_DETAIL or not?

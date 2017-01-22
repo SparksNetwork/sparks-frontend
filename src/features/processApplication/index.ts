@@ -5,70 +5,52 @@
 // https://sparks-staging-v3.firebaseio.com/Opps.json?print=pretty&auth=rwjUlSb4haFyYgkA3h5kL1LUG81qIr7RvAPvXm1f
 // auth token here is in settings, service account, database secret
 import { Stream, never, just, combineArray } from 'most';
-import { h2, div } from '@motorcycle/dom';
+import { div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
-import {
-  map, filter, flip, type, keys, pipe, path, equals, always, mapObjIndexed, values, curry, zipObj
-} from 'ramda';
+import { map, filter, flip, keys, pipe, always, mapObjIndexed, values, curry, zipObj } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { OPPORTUNITY, ADD, USER_APPLICATION, TEAMS } from '../../domain';
+import { OPPORTUNITY, USER_APPLICATION, TEAMS } from '../../domain';
 import { makeFSM } from '../../components/FSM';
 import { modelUpdateIdentity } from '../../utils/FSM';
-import { DomainAction } from '../../types/repository';
 import { Opportunity, Teams, Team } from '../../types/domain';
 import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
   UserApplication, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, Step, ApplicationTeamInfo,
   TeamsInfo, ApplicationQuestionInfo, Progress, ApplicationAboutInfo
 } from '../../types/processApplication';
+import { aboutComponent } from './aboutComponent';
 
 const initialModel = {
   dummyKey1InitModel: 'dummyValue1',
   dummyKey2InitModel: 'dummyValue2',
-  opportunity: 'Activator Prime'
 };
 const initEventData = {
   dummyKeyEvInit: 'dummyValue'
 };
+
+const INIT_S = 'INIT';
+const STATE_ABOUT = 'About';
+const STATE_QUESTION = 'Question';
+const STATE_TEAMS = 'Teams';
+const STATE_REVIEW = 'Review';
+
+const FETCH_EV = 'fetch';
+
 const sinkNames = ['dom', 'domainAction$'];
-
-function dummyComponent1Sink(sources: any, settings: any) {
-  const { model } = settings;
-  const { query$ } = sources;
-  void model, query$;
-
-  return {
-    dom: sources.domainAction$
-      .getResponse(OPPORTUNITY)
-      .tap(console.warn.bind(console, 'actionResponse'))
-      .filter(pipe(path('request.params.token'.split('.')), equals(1)))
-      .map(always('response received'))
-      .map(view),
-    domainAction$: just({
-      context: OPPORTUNITY,
-      command: ADD,
-      params: {
-        opportunity: 'New Opportunity',
-        data: 'some name',
-        token: 1
-      }
-    } as DomainAction)
-  }
-}
 
 function initializeModel(model: any, eventData: any, actionResponse: any) {
   void actionResponse, model;
 
-  const userApplication: UserApplication | null = eventData.userApplication;
   let initialModel;
+  const userApplication: UserApplication | null = eventData.userApplication;
+  const { userKey, opportunity, teams, opportunityKey } = eventData;
+  // user :: FirebaseUserChange = firebase.User | null;
+  // opportunity here is the Opportunity whose key is somehow encoded in the URL
+  // teams is all the teams in the database (!)
 
   if (!userApplication) {
-    const { userKey, opportunity, teams, opportunityKey } = eventData;
-    // user :: FirebaseUserChange = firebase.User | null;
-    // opportunity here is the Opportunity whose key is somehow encoded in the URL
-    // teams is all the teams in the database (!)
     // we want to keep only the teams for the opportunity
     // For that, we get the project key in the opportunity
     // and keep only the team with that project key
@@ -83,28 +65,32 @@ function initializeModel(model: any, eventData: any, actionResponse: any) {
     } as ApplicationTeamInfo), filteredTeamKeys));
 
     initialModel = {
-      userKey: userKey,
-      opportunityKey: opportunityKey,
-      about: {
-        aboutYou: { superPower: '' },
-        personal: { phone: '', preferredName: '', zipCode: '', legalName: '', birthday: '' }
-      } as ApplicationAboutInfo,
-      questions: { answer: '' } as ApplicationQuestionInfo,
-      teams: teamsInfo,
-      progress: {
-        step: STEP_ABOUT,
-        hasApplied: false,
-        latestTeam: ''
-      } as Progress
-    };
+      opportunity: opportunity,
+      teams: teams,
+      userApplication: {
+        userKey: userKey,
+        opportunityKey: opportunityKey,
+        about: {
+          aboutYou: { superPower: '' },
+          personal: { phone: '', preferredName: '', zipCode: '', legalName: '', birthday: '' }
+        } as ApplicationAboutInfo,
+        questions: { answer: '' } as ApplicationQuestionInfo,
+        teams: teamsInfo,
+        progress: {
+          step: STEP_ABOUT,
+          hasApplied: false,
+          latestTeam: ''
+        } as Progress
+      }
+    }
   }
   else {
     // Note: we reference the user application in the model, we should make sure that the user
     // application is immutable, otherwise it will spill in the model
-    initialModel = userApplication
+    initialModel = { opportunity, teams, userApplication }
   }
 
-  return pipe(mapObjIndexed((key, value) => ({
+  return pipe(mapObjIndexed((value, key) => ({
     op: "add",
     path: ['', key].join('/'),
     value: value
@@ -137,14 +123,6 @@ function _isStepX(targetStep: Step, model: any, eventData: any) {
   }
 }
 const isStep = curry(_isStepX);
-
-const INIT_S = 'INIT';
-const STATE_ABOUT = 'About';
-const STATE_QUESTION = 'Question';
-const STATE_TEAMS = 'Teams';
-const STATE_REVIEW = 'Review';
-
-const FETCH_EV = 'fetch';
 
 // TODO : also beware that the responses wont be caught as they come with .getResponse...
 // find a workaround
@@ -262,7 +240,7 @@ const entryComponents = {
     void model;
 
     // This is a transient state - display some loading indicator
-    return function initComponent(sources:any, settings:any) {
+    return function initComponent(sources: any, settings: any) {
       void sources, settings;
 
       return {
@@ -271,16 +249,16 @@ const entryComponents = {
     }
   },
   [STATE_ABOUT]: function showViewStateAbout(model: any) {
-    return flip(dummyComponent1Sink)({ model })
+    return flip(aboutComponent)({ model })
   },
   [STATE_QUESTION]: function (model: any) {
-    return flip(dummyComponent1Sink)({ model })
+    return flip(aboutComponent)({ model })
   },
   [STATE_TEAMS]: function (model: any) {
-    return flip(dummyComponent1Sink)({ model })
+    return flip(aboutComponent)({ model })
   },
   [STATE_REVIEW]: function (model: any) {
-    return flip(dummyComponent1Sink)({ model })
+    return flip(aboutComponent)({ model })
   },
 };
 
@@ -293,7 +271,9 @@ const fsmSettings = {
 const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 
 export function ProcessApplication(sources: MainSources): MainSinks {
-  const sinks = fsmComponent(sources, { opportunity: 'Activator Prime', user: 'Bob Dobbs' });
+  const sinks = fsmComponent(sources, {
+    opportunityKey: '-KEMfQuSuMoabBEy9Sdb', userKey: 'facebook:10209589368915969'
+  });
   console.warn('ProcessApplication', sinks);
 
 // TODO
@@ -304,17 +284,6 @@ export function ProcessApplication(sources: MainSources): MainSinks {
     domainAction$: sinks.domainAction$ || never()
   };
 }
-
-// TODO
-function view(obj: any) {
-  console.log('obj', obj);
-  return type(obj) === 'String'
-    ? div([
-    h2(`Received: ${obj}`),
-  ])
-    : div(keys(obj));
-}
-void view;
 
 // TODO : in User application domain, object is userapps:{users:{key:{opps:{key:{::UserApplication}
 //   so from the url get user key and opp key, and from that get the user application

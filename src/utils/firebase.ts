@@ -11,8 +11,8 @@ export function getFirebaseStream(fbDb: Repository, eventName: string, ref: stri
       add(value);
     });
 
-    return function dispose() {
-      fbDb.off(eventName, cb);
+    return function disposeFirebaseListener() {
+      fbDb.ref(ref).off(eventName, cb);
     }
   });
 }
