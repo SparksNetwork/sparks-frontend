@@ -2,7 +2,7 @@ import { div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
 import { Stream, combineArray, concat, just } from 'most';
 import hold from '@most/hold';
 import {
-  pipe, curry, zipObj, isEmpty, cond, T, gt, length, mapObjIndexed, values, keys, map
+  pipe, curry, zipObj, isEmpty, cond, T, gt, length, mapObjIndexed, values, keys, map, isNil
 } from 'ramda';
 import {
   AboutStateRecord$, applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS,
@@ -133,42 +133,58 @@ export function aboutComponent(sources: any, settings: any) {
       .multicast(),
   };
 
-  function renderApplicationProcessAbout(model: UserApplication) {
-    const {
-            about:{
-              aboutYou: superPower,
-              personal: { legalName, preferredName, phone, birthday, zipCode }
-            },
-          } = model;
+  function renderApplicationProcessAbout(model: UserApplication | null, validationResult: any) {
+    // TODO : add the validation results error messages
+    const initialRendering = isNil(model);
+    let superPower, legalName, preferredName, phone, birthday, zipCode;
+
+    if (initialRendering) {
+      ({
+        about: {
+          aboutYou: superPower,
+          personal: {
+            legalName, preferredName, phone, birthday, zipCode
+          }
+        },
+      } = model as UserApplication);
+    }
+
+    function makeProps(initialRendering: boolean, fieldValue: any) {
+      return initialRendering
+        ? {
+        props: {
+          value: fieldValue,
+          type: 'text',
+          required: false,
+        }
+      }
+        : {
+        props: {
+          type: 'text',
+          required: false,
+        }
+      }
+    }
 
     return [
       ul('.c-application__about', [
-        li('.c-application__list-item', [
-          div('.c-application__about-div.c-textfield', [
-            label([
-              input('.c-textfield__input.c-textfield__input--super-power', {
-                props: {
-                  value: superPower,
-                  type: 'text',
-                  required: false,
-                }
-              })
+          li('.c-application__list-item', [
+            div('.c-application__about-div.c-textfield', [
+              label([
+                input('.c-textfield__input.c-textfield__input--super-power',
+                  makeProps(initialRendering, superPower))
+              ]),
+              span('.c-textfield__label', 'About you')
             ]),
-            span('.c-textfield__label', 'About you')
           ]),
-        ]),
-      ]),
+        ]
+      ),
       ul('.c-application__personal-details', [
         li('.c-application__list-item', [
           div('.c-application__personal-div.c-textfield', [
             label([
-              input('.c-textfield__input.c-textfield__input--legal-name', {
-                props: {
-                  value: legalName,
-                  type: 'text',
-                  required: false,
-                }
-              })
+              input('.c-textfield__input.c-textfield__input--legal-name',
+                makeProps(initialRendering, legalName))
             ]),
             span('.c-textfield__label', 'Legal name')
           ]),
@@ -176,13 +192,8 @@ export function aboutComponent(sources: any, settings: any) {
         li('.c-application__list-item', [
           div('.c-application__personal-div.c-textfield', [
             label([
-              input('.c-textfield__input.c-textfield__input--preferred-name', {
-                props: {
-                  value: preferredName,
-                  type: 'text',
-                  required: false,
-                }
-              })
+              input('.c-textfield__input.c-textfield__input--preferred-name',
+                makeProps(initialRendering, preferredName))
             ]),
             span('.c-textfield__label', 'Preferred name')
           ]),
@@ -190,13 +201,8 @@ export function aboutComponent(sources: any, settings: any) {
         li('.c-application__list-item', [
           div('.c-application__personal-div.c-textfield', [
             label([
-              input('.c-textfield__input.c-textfield__input--phone', {
-                props: {
-                  value: phone,
-                  type: 'text',
-                  required: false,
-                }
-              })
+              input('.c-textfield__input.c-textfield__input--phone',
+                makeProps(initialRendering, phone))
             ]),
             span('.c-textfield__label', 'Phone')
           ]),
@@ -204,13 +210,8 @@ export function aboutComponent(sources: any, settings: any) {
         li('.c-application__list-item', [
           div('.c-application__personal-div.c-textfield', [
             label([
-              input('.c-textfield__input.c-textfield__input--birthday', {
-                props: {
-                  value: birthday,
-                  type: 'text',
-                  required: false,
-                }
-              })
+              input('.c-textfield__input.c-textfield__input--birthday',
+                makeProps(initialRendering, birthday))
             ]),
             span('.c-textfield__label', 'Birthday')
           ]),
@@ -218,13 +219,8 @@ export function aboutComponent(sources: any, settings: any) {
         li('.c-application__list-item', [
           div('.c-application__personal-div.c-textfield', [
             label([
-              input('.c-textfield__input.c-textfield__input--zip-code', {
-                props: {
-                  value: zipCode,
-                  type: 'text',
-                  required: false,
-                }
-              })
+              input('.c-textfield__input.c-textfield__input--zip-code',
+                makeProps(initialRendering, zipCode))
             ]),
             span('.c-textfield__label', 'Zip code')
           ]),
@@ -253,12 +249,12 @@ export function aboutComponent(sources: any, settings: any) {
     // TODO
   }
 
-  function renderApplicationProcessStep(step: Step, model: UserApplication) {
+  function renderApplicationProcessStep(step: Step, model: UserApplication, validationResult: any) {
     switch (step) {
       case STEP_ABOUT :
         // TODO : think about which parameter to pass to this function, must work with Initial
         // and later
-        return renderApplicationProcessAbout(model);
+        return renderApplicationProcessAbout(model, validationResult);
       case STEP_QUESTION :
         return renderApplicationProcessQuestion(model);
       case STEP_TEAMS :
@@ -271,7 +267,7 @@ export function aboutComponent(sources: any, settings: any) {
     }
   }
 
-  function renderInitialView(model: any) {
+  function renderInitialView(model: any, validationResult) {
     const { opportunity, userApplication } = model;
     const { description } = opportunity;
     const { about, questions, teams, progress } = userApplication;
@@ -296,13 +292,12 @@ export function aboutComponent(sources: any, settings: any) {
               : div('.c-application__unselected-step', step)
           }, applicationProcessSteps)
         ),
-        form('.c-application__form', renderApplicationProcessStep(step, model))
+        form('.c-application__form', renderApplicationProcessStep(step, model, validationResult))
       ]),
     ]);
   }
 
   const validationResults = actions.validateFormOnClick;
-
 
   return {
     // sources.domainAction$.getResponse(OPPORTUNITY)
