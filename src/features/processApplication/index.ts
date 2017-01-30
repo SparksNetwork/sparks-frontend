@@ -7,28 +7,32 @@
 import { Stream, never, just, combineArray } from 'most';
 import { div } from '@motorcycle/dom';
 import { MainSinks, MainSources } from '../../app';
-import { map, filter, flip, keys, pipe, always, mapObjIndexed, values, curry, zipObj } from 'ramda';
+import {
+  map, filter, all, flip, keys, pipe, always, mapObjIndexed, values, curry, zipObj, identity, pick,
+  flatten, T
+} from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { OPPORTUNITY, USER_APPLICATION, TEAMS } from '../../domain';
+import { OPPORTUNITY, USER_APPLICATION, TEAMS, UPDATE } from '../../domain';
 import { makeFSM } from '../../components/FSM';
-import { modelUpdateIdentity } from '../../utils/FSM';
-import { Opportunity, Teams, Team } from '../../types/domain';
+import { modelUpdateIdentity, toJsonPatch } from '../../utils/FSM';
+import { Opportunity, Teams, Team, Project } from '../../types/domain';
 import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
   UserApplication, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, Step, ApplicationTeamInfo,
-  TeamsInfo, ApplicationQuestionInfo, Progress, ApplicationAboutInfo
+  TeamsInfo, ApplicationQuestionInfo, Progress, ApplicationAboutInfo, UserApplicationModel,
+  AboutStateRecord
 } from '../../types/processApplication';
-import { aboutComponent } from './aboutComponent';
+import {
+  aboutComponent, getAboutEvents, getAboutIntents, getAboutState, getAboutFormData,
+  aboutScreenFieldValidationSpecs
+} from './aboutComponent';
+import { Transitions, FSM_Model, EventData } from '../../components/types';
+import { DomainActionResponse } from '../../types/repository';
 
-const initialModel = {
-  dummyKey1InitModel: 'dummyValue1',
-  dummyKey2InitModel: 'dummyValue2',
-};
-const initEventData = {
-  dummyKeyEvInit: 'dummyValue'
-};
+const aboutYouFields = ['superPower'];
+const personalFields = ['birthday', 'phone', 'preferredName', 'zipCode', 'legalName'];
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
@@ -37,13 +41,14 @@ const STATE_TEAMS = 'Teams';
 const STATE_REVIEW = 'Review';
 
 const FETCH_EV = 'fetch';
+const ABOUT_CONTINUE = 'about_continue';
 
 const sinkNames = ['dom', 'domainAction$'];
 
 function initializeModel(model: any, eventData: any, actionResponse: any) {
   void actionResponse, model;
 
-  let initialModel;
+  let initialModel: UserApplicationModel;
   const userApplication: UserApplication | null = eventData.userApplication;
   const { userKey, opportunity, teams, opportunityKey } = eventData;
   // user :: FirebaseUserChange = firebase.User | null;
@@ -67,6 +72,7 @@ function initializeModel(model: any, eventData: any, actionResponse: any) {
     initialModel = {
       opportunity: opportunity,
       teams: teams,
+      errorMessage: null,
       userApplication: {
         userKey: userKey,
         opportunityKey: opportunityKey,
@@ -87,14 +93,10 @@ function initializeModel(model: any, eventData: any, actionResponse: any) {
   else {
     // Note: we reference the user application in the model, we should make sure that the user
     // application is immutable, otherwise it will spill in the model
-    initialModel = { opportunity, teams, userApplication }
+    initialModel = { opportunity, teams, userApplication, errorMessage: null }
   }
 
-  return pipe(mapObjIndexed((value, key) => ({
-    op: "add",
-    path: ['', key].join('/'),
-    value: value
-  })), values)(initialModel);
+  return toJsonPatch('')(initialModel);
 }
 
 function _isStepX(targetStep: Step, model: any, eventData: any) {
@@ -124,48 +126,121 @@ function _isStepX(targetStep: Step, model: any, eventData: any) {
 }
 const isStep = curry(_isStepX);
 
+function fetchUserApplicationData(sources: any, settings: any) {
+  const { user$ } = sources;
+  const { model : { userApplication : { opportunityKey, userKey } } } = settings;
+  const userApp$ = sources.query$.query(USER_APPLICATION, { opportunityKey, userKey })
+    .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
+  const teams$ = sources.query$.query(TEAMS, {})
+    .tap(console.warn.bind(console, 'TEAMS fetch event'));
+  const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, { opportunityKey })
+    .tap(console.warn.bind(console, 'OPPORTUNITY fetch event'));
+
+  // TODO : add typescript types for { user, opportunity, userApplication, teams }
+  // NOTE : combineArray will produce its first value when all its dependent streams have
+  // produced their first value. Hence this is equivalent to a zip for the first value, which
+  // is the only one we need anyways (there is no zipArray in most)
+  return combineArray<FirebaseUserChange, Opportunity, UserApplication, Teams, any>(
+    (user, opportunity, userApplication, teams) =>
+      ({
+        user,
+        opportunity,
+        userApplication,
+        teams,
+        userKey: settings.userKey,
+        opportunityKey: settings.opportunityKey
+      }),
+    [user$, opportunities$, userApp$, teams$]
+  )
+    .tap(console.warn.bind(console, 'combined user, userapp, teams fetch event'))
+    .take(1)
+}
+
+function makeRequestToUpdateUserApplication(model: UserApplicationModel, eventData: AboutStateRecord) {
+  console.log('action_request : eventData :AboutStateRecord', eventData);
+
+  // Build user application :
+  // - from the about fields (event data)
+  // - from the past information stored in the current value of model
+  // NOTE : userApplication should always exist, it is created by FETCH_EV event
+  const userApplication: UserApplication = {
+    userKey: model.userApplication.userKey,
+    opportunityKey: model.userApplication.opportunityKey,
+    about: {
+      aboutYou: {
+        superPower: eventData.superPower
+      },
+      personal: {
+        birthday: eventData.birthday,
+        phone: eventData.phone,
+        preferredName: eventData.preferredName,
+        zipCode: eventData.zipCode,
+        legalName: eventData.legalName
+      }
+    },
+    questions: model.userApplication.questions,
+    teams: model.userApplication.teams,
+    progress: model.userApplication.progress
+  };
+
+  return {
+    context: USER_APPLICATION,
+    command: UPDATE,
+    payload: userApplication
+  }
+}
+
+function updateModelWithAboutDataAndError(model: FSM_Model, eventData: EventData,
+                                          actionResponse: DomainActionResponse) {
+  const { err } = actionResponse;
+  // By construction err cannot be null, but typescript will force to consider that case
+
+  return flatten([
+    updateModelWithAboutData(model, eventData, actionResponse),
+    {
+      op: 'add',
+      path: '/errorMessage',
+      value: err ? err.toString() : 'internal error! there should be an error message'
+    }
+  ])
+}
+
+function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
+                                  actionResponse: DomainActionResponse) {
+  void actionResponse, model;
+
+  return flatten([
+    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, eventData)),
+    toJsonPatch('/userApplication/about/personal')(pick(personalFields, eventData)),
+    toJsonPatch('/errorMessage')(null),
+  ])
+}
+
 // TODO : also beware that the responses wont be caught as they come with .getResponse...
 // find a workaround
-
+// TODO : also investiate I don't need a token if I keep the request, comparison with == should
+// suffice
 // TODO : think about what happen when in state team detail, not handled for now... extra arrow
 // in graph? I guess so, and use lastTeam as info
-const events = {
-  [FETCH_EV]: (sources: any, settings: any) => {
-    const { user$ } = sources;
-    const userApp$ = sources.query$.query(USER_APPLICATION, {
-      opportunityKey: settings.opportunityKey,
-      userKey: settings.userKey
-    })
-      .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
-    const teams$ = sources.query$.query(TEAMS, {})
-      .tap(console.warn.bind(console, 'TEAMS fetch event'));
-    const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, {
-      opportunityKey: settings.opportunityKey,
-    })
-      .tap(console.warn.bind(console, 'OPPORTUNITY fetch event'));
 
-    // TODO : add typescript types for { user, opportunity, userApplication, teams }
-    // NOTE : combineArray will produce its first value when all its dependent streams have
-    // produced their first value. Hence this is equivalent to a zip for the first value, which
-    // is the only one we need anyways (there is no zipArray in most)
-    return combineArray<FirebaseUserChange, Opportunity, UserApplication, Teams, any>(
-      (user, opportunity, userApplication, teams) =>
-        ({
-          user,
-          opportunity,
-          userApplication,
-          teams,
-          userKey: settings.userKey,
-          opportunityKey: settings.opportunityKey
-        }),
-      [user$, opportunities$, userApp$, teams$]
-    )
-      .tap(console.warn.bind(console, 'combined user, userapp, teams fetch event'))
-      .take(1)
+const events = {
+  [FETCH_EV]: fetchUserApplicationData,
+  [ABOUT_CONTINUE]: (sources: any, settings: any) => {
+    const events = getAboutEvents(sources, settings);
+    const intents = getAboutIntents(sources, settings, events);
+    const state = getAboutState(sources, settings, events);
+
+    return getAboutFormData(state, intents)
+    // basically let pass iff all fields passed validation
+      .filter(pipe(
+        mapObjIndexed((value, key) => aboutScreenFieldValidationSpecs[key](value))),
+        values,
+        all(identity)
+      ) as Stream <AboutStateRecord>
   }
 };
 
-const transitions = {
+const transitions: Transitions = {
   T_INIT: {
     origin_state: INIT_STATE,
     event: INIT_EVENT_NAME,
@@ -232,11 +307,46 @@ const transitions = {
         ]
       }
     ]
+  },
+  toQuestionScreen: {
+    origin_state: STATE_ABOUT,
+    event: ABOUT_CONTINUE,
+    target_states: [
+      {
+        event_guard: EV_GUARD_NONE,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplication
+        },
+        transition_evaluation: [
+          {
+            action_guard: (model: FSM_Model, actionResponse: DomainActionResponse) => {
+              void model;
+              const { err } = actionResponse;
+              return !err;
+            },
+            target_state: STATE_QUESTION,
+            // keep model in sync with repository
+            model_update: updateModelWithAboutData
+          },
+          // If there is an error updating the model, keep in the same state
+          // It is important to update the model locally even if the update could not go in the
+          // remote repository, so that when the view is shown the already entered
+          // values are shown
+          // TODO : same would be nice while saving to remote to show some message `pending...`
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithAboutDataAndError
+          }
+        ]
+      },
+    ]
   }
 };
 
 const entryComponents = {
-  [INIT_S]: function showInitView(model: any) {
+  [INIT_S]: function showInitView(model: UserApplicationModel) {
     void model;
 
     // This is a transient state - display some loading indicator
@@ -248,32 +358,74 @@ const entryComponents = {
       }
     }
   },
-  [STATE_ABOUT]: function showViewStateAbout(model: any) {
+  [STATE_ABOUT]: function showViewStateAbout(model: UserApplicationModel) {
     return flip(aboutComponent)({ model })
   },
-  [STATE_QUESTION]: function (model: any) {
+  // TODO : replace aboutComponent by questionComponent
+  [STATE_QUESTION]: function (model: UserApplicationModel) {
     return flip(aboutComponent)({ model })
   },
-  [STATE_TEAMS]: function (model: any) {
+  // TODO : same here
+  [STATE_TEAMS]: function (model: UserApplicationModel) {
     return flip(aboutComponent)({ model })
   },
-  [STATE_REVIEW]: function (model: any) {
+  // TODO : same here
+  [STATE_REVIEW]: function (model: UserApplicationModel) {
     return flip(aboutComponent)({ model })
   },
 };
 
 const fsmSettings = {
-  initial_model: initialModel,
-  init_event_data: initEventData,
+  initial_model: {},
+  init_event_data: {},
   sinkNames: sinkNames
 };
 
+
 const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 
+function getEmptyProject(): Project {
+  return {
+    name: '',
+    description: '',
+    ownerProfileKey: ''
+  }
+}
+
+function getEmptyUserApplicationModel(): UserApplicationModel {
+  return {
+    opportunity: {
+      description: '',
+      authorProfilekey: '',
+      isPublic: true,
+      name: '',
+      project: getEmptyProject(),
+      projectKey: '',
+      question: '',
+      confirmationsOn: false
+    },
+    teams: {},
+    userApplication: {
+      opportunityKey: '', userKey: '',
+      about: {
+        aboutYou: { superPower: '' },
+        personal: { legalName: '', preferredName: '', phone: '', zipCode: '', birthday: '' }
+      },
+      questions: { answer: '' },
+      progress: { step: '', hasApplied: false, latestTeam: '' },
+      teams: {}
+    },
+    errorMessage: null
+  }
+}
+
+// Note : in the case of a rounting, ProcessApplication will be called with the keys in setting
 export function ProcessApplication(sources: MainSources): MainSinks {
-  const sinks = fsmComponent(sources, {
-    opportunityKey: '-KEMfQuSuMoabBEy9Sdb', userKey: 'facebook:10209589368915969'
-  });
+  const emptyUserApplicationModel = getEmptyUserApplicationModel();
+  emptyUserApplicationModel.userApplication.opportunityKey = '-KEMfQuSuMoabBEy9Sdb';
+  emptyUserApplicationModel.userApplication.userKey = 'facebook:10209589368915969';
+
+  const sinks = fsmComponent(sources, { model: emptyUserApplicationModel });
   console.warn('ProcessApplication', sinks);
 
 // TODO
@@ -297,8 +449,6 @@ export function ProcessApplication(sources: MainSources): MainSinks {
 // for UserApplication init, which will also be model init
 
 /**
- * TODO : check legacy firebase and queue driver
- * TODO : move to domain object API?
  * TODO : sources:
  * - user$
  *   - from firebase.User, got from log in

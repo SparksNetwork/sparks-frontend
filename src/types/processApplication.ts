@@ -1,4 +1,15 @@
 import { Stream } from 'most';
+import { HashMap } from './repository';
+import { Opportunity } from './domain';
+
+export interface UserApplicationModel {
+  opportunity: Opportunity;
+  teams: any;
+  userApplication: UserApplication;
+  errorMessage: String | null;
+}
+
+// export type UserApplications = HashMap<UserApplication>;
 export interface UserApplication {
   userKey: string,
   opportunityKey: string,
@@ -71,5 +82,7 @@ export const STEP_ABOUT = 'about';
 export const STEP_QUESTION = 'question';
 export const STEP_TEAMS = 'teams';
 export const STEP_REVIEW = 'review';
-export const applicationProcessSteps = [STEP_ABOUT , STEP_QUESTION, STEP_TEAMS, STEP_REVIEW];
+export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW];
 // TODO: a step TEAM_DETAIL or not?
+
+export type ValidationResult = HashMap<boolean|string>;

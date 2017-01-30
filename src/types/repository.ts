@@ -1,9 +1,15 @@
+import { ActionResponse, Request } from '../components/types';
 export type Context = string;
 export type ActionResult = any;
+export interface DomainActionResponse {
+  request: Request | null,
+  err: Error | null;
+  response: ActionResponse;
+}
 export type Repository = any;
-export type Params = any;
+export type Payload = any;
 export interface DomainActionHandler {
-  (repository: Repository, context: Context, params: Params): any;
+  (repository: Repository, context: Context, payload: Payload): any;
 }
 export interface CommandMap {
   [command: string]: DomainActionHandler;
@@ -14,10 +20,10 @@ export interface ContextCommandMap {
 export interface DomainAction {
   context: Context;
   command: string;
-  params: Params;
+  payload: Payload;
 }
 export interface QueryHandler {
-  (repository: Repository, context: Context, params: Params): any;
+  (repository: Repository, context: Context, payload: Payload): any;
 }
 export interface ContextMap {
   [context: string]: QueryHandler;

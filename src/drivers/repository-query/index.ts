@@ -5,14 +5,14 @@ import {
   ContextMap,
   Context,
   HashMap,
-  Params,
+  Payload,
   QueryHandler
 } from '../../types/repository';
 import { Stream } from 'most';
 import { tryCatch } from 'ramda';
 
 // Helper functions
-function errorHandler(e: Error, repository: Repository, context: Context, params: Params): Error {
+function errorHandler(e: Error, repository: Repository, context: Context, params: Payload): Error {
   console.error('makeDomainQueryDriver: an error occured', e);
   console.warn('estra info: repository, context, params', repository, context, params);
 
@@ -31,11 +31,11 @@ function errorHandler(e: Error, repository: Repository, context: Context, params
 export function makeDomainQueryDriver(repository: Repository, config: ContextMap) {
   const queryCache: HashMap<HashMap<Stream<any>>> = {};
 
-  function getCachedQuery(context: Context, params: Params): Stream<any> {
+  function getCachedQuery(context: Context, params: Payload): Stream<any> {
     return queryCache && queryCache[context] && queryCache[context][JSON.stringify(params)]
   }
 
-  function setCachedQuery(cachedValue: Stream<any>, context: Context, params: Params) {
+  function setCachedQuery(cachedValue: Stream<any>, context: Context, params: Payload) {
     queryCache[context] = queryCache[context] || {};
     queryCache[context][JSON.stringify(params)] = cachedValue;
   }
@@ -46,7 +46,7 @@ export function makeDomainQueryDriver(repository: Repository, config: ContextMap
 
     // TODO : dont cache? problem maybe with stream completion
     return {
-      query: function query(context: Context, params: Params) {
+      query: function query(context: Context, params: Payload) {
         const cachedQuery = getCachedQuery(context, params);
 
         if (cachedQuery) {

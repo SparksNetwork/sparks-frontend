@@ -1,6 +1,6 @@
 import {
   map as mapR, reduce as reduceR, mapObjIndexed, uniq, flatten, values, find, equals, clone, keys,
-  filter, pick, curry, defaultTo, findIndex, tryCatch, either, isNil
+  filter, pick, curry, defaultTo, findIndex, tryCatch, either, isNil, pipe
 } from 'ramda';
 import { checkSignature, assertContract, handleError, isBoolean } from '../utils/utils';
 import {
@@ -9,7 +9,7 @@ import {
   checkOriginStatesDefinedInTransitionsMustBeMappedToComponent,
   checkEventDefinedInTransitionsMustBeMappedToEventFactory, checkIsObservable,
   checkStateEntryComponentFnMustReturnComponent, isArrayUpdateOperations
-} from './types';
+} from './typeChecks';
 import { empty, mergeArray, merge, just } from 'most';
 import hold from '@most/hold';
 // Patch library : https://github.com/Starcounter-Jack/JSON-Patch
@@ -26,143 +26,6 @@ import {
   CONTRACT_ACTION_GUARD_CANNOT_FAIL, CONTRACT_ACTION_GUARD_FN_RETURN_VALUE,
   CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL
 } from './properties';
-
-/**
- * @typedef {String} EventName
- */
-/**
- * @typedef {SinkName} DriverName
- */
-/**
- * @typedef {*} EventData
- */
-/**
- * @typedef {String} State
- */
-/**
- * @typedef {String} JSON_Pointer
- * albeit a string with a particular format
- * cf. https://tools.ietf.org/html/rfc6901
- * The ABNF syntax of a JSON Pointer is:
- *  json-pointer    = *( "/" reference-token )
- *  reference-token = *( unescaped / escaped )
- *  unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF ; %x2F ('/') and %x7E ('~') are excluded from
- *   'unescaped' escaped         = "~" ( "0" / "1" ) ; representing '~' and '/', respectively
- */
-/**
- * @typedef {String} TransitionName
- */
-/**
- * @typedef {Object.<EventName, Event>} Events
- */
-/**
- * @typedef {function(Sources):EventData} Event
- */
-/**
- * @typedef {*} FSM_Model
- */
-/**
- * @typedef {*} Command
- */
-/**
- * @typedef {*} Payload
- */
-/**
- * @typedef {*} ActionResponse
- */
-/**
- * @typedef {String} ZeroDriver
- */
-/**
- * @typedef {{command : Command, payload : Payload}} Request
- */
-/**
- * @typedef {function(FSM_Model, EventData):Request} RequestFn
- */
-/**
- * @typedef {{driver : SinkName|ZeroDriver, request : RequestFn, }} ActionRequest
- */
-/**
- * @typedef {function(FSM_Model, EventData) : Boolean} EventGuard
- */
-/**
- * @typedef {function(ActionResponse) : Boolean} ActionGuard
- */
-/**
- * @typedef {{op : "add", path : JSON_Pointer, value : *}} Op_Add
- */
-/**
- * @typedef {{op : "replace", path : JSON_Pointer, value : *}} Op_Replace
- */
-/**
- * @typedef {{op : "remove", path : JSON_Pointer}} Op_Remove
- */
-/**
- * @typedef {{op : "move", from : JSON_Pointer, path : JSON_Pointer}} Op_Move
- */
-/**
- * @typedef {{op : "copy", from : JSON_Pointer, path : JSON_Pointer}} Op_Copy
- */
-/**
- * @typedef {{op : "copy", path : JSON_Pointer, value : *}} Op_Test
- */
-/**
- * @typedef {Op_Add|Op_Remove|Op_Replace|Op_Move|Op_Copy|Op_Test} JSON_Patch
- */
-/**
- * @typedef {JSON_Patch} UpdateOperation
- */
-/**
- * @typedef {function(FSM_Model, EventData, ActionResponse) : UpdateOperation[]} UpdateFn
- */
-/**
- * @typedef {{action_guard : ActionGuard, target_state : State, model_update : UpdateFn}} TransEval
- */
-/**
- * @typedef {{event_guard : EventGuard, action_request : ActionRequest, transition_evaluation :
- *   TransEval[]}} Transition
- */
-/**
- * @typedef {{origin_state : State, event : EventName, target_states : Transition[]}}
- *   TransitionOptions
- */
-/**
- * @typedef {Object.<TransitionName, TransitionOptions>} Transitions
- */
-/**
- * @typedef {String} AWAITING_EVENTS
- */
-/**
- * @typedef {String} AWAITING_ACTION_RESPONSE
- */
-/**
- * @typedef {AWAITING_EVENTS|AWAITING_ACTION_RESPONSE} InternalState
- */
-/**
- * @typedef {{internal_state : InternalState, external_state : State, model : FSM_Model,
- *   current_event_name : EventName | Null, current_event_data : EventData | Null,
- *   current_event_guard_index : Number | Null, current_action_request_driver : DriverName | Null,
- *   sinks : Sinks | Null}} FSM_State
- */
-/**
- * @typedef {String} UserEventPrefix
- */
-/**
- * @typedef {String} DriverEventPrefix
- */
-/**
- * @typedef {Object.<EventName, EventData>} LabelledUserEvent
- */
-/**
- * @typedef {Object.<DriverName, ActionResponse>} LabelledDriverEvent
- */
-/**
- * @typedef {Object.<UserEventPrefix, LabelledUserEvent>} UserEvent
- */
-/**
- * @typedef {Object.<DriverEventPrefix, LabelledDriverEvent>} DriverEvent
- */
-
 
 function removeZeroDriver(driverNameArray: any) {
   return filter(function removeZero(driverName) {
@@ -332,10 +195,12 @@ function computeTransition(transitions: any, transName: any, model: any, eventDa
  * @param {String} transName
  * @param {Number} current_event_guard_index
  * @param {ActionResponse} actionResponse
- * @return {{ target_state : State | Null, model_update : Function, noGuardSatisfied : Boolean}}
+ * @param model
+ * @return {U|{target_state: null, model_update: null, noGuardSatisfied: boolean}}
  */
-function computeActionResponseTransition(transitions: any, transName: any, current_event_guard_index: any,
-                                         actionResponse: any) {
+function computeActionResponseTransition(transitions: any, transName: any,
+                                         current_event_guard_index: any,
+                                         model: any, actionResponse: any) {
   /** @type {Array} */
   const actionResponseGuards =
           transitions[transName].target_states[current_event_guard_index].transition_evaluation;
@@ -351,7 +216,7 @@ function computeActionResponseTransition(transitions: any, transName: any, curre
     else {
       // ActionGuard :: ActionResponse -> Boolean
       const wrappedActionGuard: any = tryCatch(action_guard, handleError(CONTRACT_ACTION_GUARD_CANNOT_FAIL));
-      const guardValue = wrappedActionGuard(actionResponse);
+      const guardValue = wrappedActionGuard(model, actionResponse);
       assertContract(isBoolean, [guardValue],
         `computeTransition: ${CONTRACT_ACTION_GUARD_FN_RETURN_VALUE}`);
 
@@ -477,13 +342,10 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     let {
           internal_state, external_state, model, clonedModel,
           current_event_name, current_event_data, current_event_guard_index,
-          current_action_request_driver, sinks
+          current_action_request_driver, current_action_request, sinks
         } = fsmState;
 
-    /**
-     * NOTE : fsmEvent MUST only have one key
-     * TODO : add contract somewhere, maybe not here
-     */
+    // NOTE : fsmEvent only has one key by construction
     const { fsmEventOrigin, fsmEventValue } = destructureFsmEvent(fsmEvent);
     const { eventOrDriverName, eventDataOrActionResponse } = destructureFsmEventValue(fsmEventValue);
 
@@ -575,15 +437,17 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
                   current_event_name = null;
                   current_event_data = null;
                   current_action_request_driver = null;
+                  current_action_request = null;
                 }
                 else {
-                  // TODO : what happens if request is empty?? filtered out already
-                  sinks = computeSinkFromActionRequest(actionRequest, model, eventData);
+                  const { request, driver, sink } = computeSinkFromActionRequest(actionRequest, model, eventData);
+                  sinks = sink;
                   internal_state = AWAITING_RESPONSE;
                   current_event_guard_index = satisfiedGuardIndex;
                   current_event_name = eventName;
                   current_event_data = eventData;
-                  current_action_request_driver = getPrefix(sinks);
+                  current_action_request_driver = driver;
+                  current_action_request = request;
                   // model and external_state are unchanged
                 }
               }
@@ -605,6 +469,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
           current_event_name,
           current_event_data,
           current_action_request_driver,
+          current_action_request,
           sinks
         };
 
@@ -637,6 +502,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
           case DRIVER_PREFIX :
             const driverName = eventOrDriverName;
             const actionResponse = eventDataOrActionResponse;
+            const { request } = actionResponse;
             const transName = stateEventToTransitionNameMap[external_state][current_event_name];
 
             if (driverName !== current_action_request_driver) {
@@ -646,9 +512,16 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
                  Ignoring...`);
               sinks = null;
             }
+            else if (request != current_action_request || !equals(request, current_action_request)) {
+              console.warn(`
+              Received action response through driver ${driverName} and ignored it as that
+                 response does not match the request sent...`);
+              sinks = null;
+            }
             else {
               const { target_state, model_update, noGuardSatisfied } =
-                      computeActionResponseTransition(transitions, transName, current_event_guard_index, actionResponse) as any;
+                      computeActionResponseTransition(transitions, transName, current_event_guard_index,
+                        model, actionResponse) as any;
 
               if (noGuardSatisfied) {
                 console.error(`While processing action response from driver ${driverName},
@@ -674,6 +547,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
                 current_event_name = null;
                 current_event_data = null;
                 current_action_request_driver = null;
+                current_action_request = null;
               }
 
             }
@@ -693,6 +567,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
           current_event_name,
           current_event_data,
           current_action_request_driver,
+          current_action_request,
           sinks
         };
 
@@ -746,8 +621,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     }, driverNameArray);
 
     /** @type {Object.<EventName, EventData>} */
-          // TODO : use R.pipe
-    const initialEvent = prefixWith(EVENT_PREFIX)(prefixWith(INIT_EVENT_NAME)(init_event_data));
+    const initialEvent = pipe(prefixWith(INIT_EVENT_NAME), prefixWith(EVENT_PREFIX))(init_event_data);
 
     const fsmEvents = merge(
       mergeArray(eventsArray).map(prefixWith(EVENT_PREFIX)).tap(x => console.warn('user event', x)),
@@ -775,6 +649,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
       current_event_data: null,
       current_event_guard_index: null,
       current_action_request_driver: null,
+      current_action_request: null,
       sinks: null
     };
 
@@ -806,7 +681,12 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
 }
 
 function computeSinkFromActionRequest(actionRequest: any, model: any, eventData: any) {
+  const request = actionRequest.request(model, eventData);
+  const driver = actionRequest.driver;
+
   return {
-    [actionRequest.driver]: just(actionRequest.request(model, eventData))
+    request: request,
+    driver: driver,
+    sink: { [driver]: just(request) }
   }
 }

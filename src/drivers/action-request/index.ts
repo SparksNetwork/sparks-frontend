@@ -1,20 +1,15 @@
-import { Stream } from 'most';
+import { Stream, mergeArray } from 'most';
 //import { create } from '@most/create';
 //import hold from '@most/hold';
-import { tryCatch, mapObjIndexed } from 'ramda';
+import { tryCatch, mapObjIndexed, values } from 'ramda';
 import { async as asyncSubjectFactory } from 'most-subject';
 import {
-  Context,
-  ActionResult,
-  Repository,
-  Params,
-  DomainActionHandler,
-  ContextCommandMap,
-  DomainAction
+  Context, ActionResult, Repository, Payload, DomainActionHandler, ContextCommandMap, DomainAction,
+  DomainActionResponse
 } from '../../types/repository';
 
 // Helper functions
-function errorHandler(e: Error, repository: Repository, context: Context, params: Params): Error {
+function errorHandler(e: Error, repository: Repository, context: Context, params: Payload): Error {
   console.error('makeDomainActionDriver: an error occured', e);
   console.warn('estra info: repository, context, params', repository, context, params);
 
@@ -56,10 +51,10 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
     console.warn('entered in driver');
     const source$ = sink$.map(function executeAction(action: DomainAction) {
       console.log('action', action);
-      const { context, command, params } = action;
+      const { context, command, payload } = action;
       const fnToExec: DomainActionHandler = config[context][command];
       const wrappedFn: DomainActionHandler = tryCatch(fnToExec, errorHandler);
-      const actionResult: ActionResult = wrappedFn(repository, context, params);
+      const actionResult: ActionResult = wrappedFn(repository, context, payload);
 
       if (isPromise(actionResult)) {
         actionResult
@@ -73,7 +68,7 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
             err: e,
             response: null
           }))
-          .then((actionReponse: any) => {
+          .then((actionReponse: DomainActionResponse) => {
             eventEmitters[context].next(actionReponse);
           })
       }
@@ -94,11 +89,13 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
 
     source$.drain();
 
-    return {
-      getResponse: function getResponse(context: string) {
-        console.warn('getResponse', context);
-        return eventEmitters[context]
-      }
+    // TODO : merge all the emitters, return that, then add getResponse to it
+    const responseSource$: any = mergeArray(values(eventEmitters));
+    responseSource$.getResponse = function getResponse(context: string) {
+      console.warn('getResponse', context);
+      return eventEmitters[context]
     };
+
+    return responseSource$;
   }
 }
