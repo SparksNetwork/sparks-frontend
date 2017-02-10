@@ -387,7 +387,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
             /** @type {EventData} */
             const eventData = eventDataOrActionResponse;
 
-            if (!find(equals(eventName), configuredEvents)) {
+            if (!configuredEvents || !find(equals(eventName), configuredEvents)) {
               console.warn('Received event for which there is no transition defined!' +
                 ' Ignoring...');
               sinks = null;

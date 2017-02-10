@@ -1,6 +1,6 @@
 import { Stream, just } from 'most';
 import { div } from '@motorcycle/dom';
-import { all, flip, pipe, mapObjIndexed, values, T } from 'ramda';
+import { all, flip, pipe, values, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
@@ -8,15 +8,17 @@ import { modelUpdateIdentity } from '../../utils/FSM';
 import {
   STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, AboutStateRecord
 } from '../../types/processApplication';
-import { aboutComponent, aboutScreenFieldValidationSpecs } from './aboutComponent';
+import {
+  aboutComponent, aboutScreenFieldValidationSpecs, getAboutFormData, validateAboutScreenFields
+} from './aboutComponent';
 import { Transitions, FSM_Model } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
 import {
   fetchUserApplicationModelData, isStep, initializeModel, makeRequestToUpdateUserApplication,
   updateModelWithAboutData, updateModelWithAboutDataAndError
 } from './processApplicationFsmFns';
-import { getInputValue } from '../../utils/dom';
 import { isBoolean } from '../../utils/utils';
+import { questionComponent } from './questionComponent';
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
@@ -34,6 +36,7 @@ export const events = {
   [ABOUT_CONTINUE]: (sources: any, settings: any) => {
     // should continue only if all fields have been validated
     void settings;
+    void validateAboutScreenFields, aboutScreenFieldValidationSpecs, all, pipe, values, isBoolean;
 
     // TODO : check response is received
     // TODO : check that state is changed and new view is displayed
@@ -42,22 +45,13 @@ export const events = {
     // account the model, hence also not the initial value for the fields. And the repository
     // does not have the current value of the fields either. So only way is this
     return sources.dom.select('form.c-application__form').events('submit')
-      .map(function (_: any) {
-        return {
-          'superPower': getInputValue('.c-textfield__input--super-power'),
-          'legalName': getInputValue('.c-textfield__input--legal-name'),
-          'preferredName': getInputValue('.c-textfield__input--preferred-name'),
-          'phone': getInputValue('.c-textfield__input--phone'),
-          'birthday': getInputValue('.c-textfield__input--birthday'),
-          'zipCode': getInputValue('.c-textfield__input--zip-code')
-        }
-      })
+      .map(getAboutFormData)
       .tap(console.warn.bind(console, 'sumbit button clicked'))
-      .filter(pipe(
-        mapObjIndexed((value, key) => aboutScreenFieldValidationSpecs[key](value)),
-        values,
-        all(isBoolean)
-      ))
+      .thru(validateAboutScreenFields(aboutScreenFieldValidationSpecs))
+      .tap(console.warn.bind(console, 'validation performed'))
+      .filter(pipe(values, all(isBoolean)))
+      .tap(console.warn.bind(console, 'passed validation'))
+      .map(getAboutFormData)
       .tap(console.warn.bind(console, 'field passed validation results')) as Stream <AboutStateRecord>
   }
 };
@@ -184,8 +178,8 @@ export const entryComponents = {
     return flip(aboutComponent)({ model })
   },
   // TODO : replace aboutComponent by questionComponent
-  [STATE_QUESTION]: function (model: UserApplicationModel) {
-    return flip(aboutComponent)({ model })
+  [STATE_QUESTION]: function showViewStateQuestion(model: UserApplicationModel) {
+    return flip(questionComponent)({ model })
   },
   // TODO : same here
   [STATE_TEAMS]: function (model: UserApplicationModel) {

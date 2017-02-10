@@ -1,4 +1,5 @@
 export function getInputValue(sel: string) {
-  return (document.querySelector(sel) as HTMLInputElement).value
+  const el = document.querySelector(sel) as HTMLInputElement;
+  return el ? el.value : ''
 }
 

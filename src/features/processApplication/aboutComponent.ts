@@ -1,15 +1,12 @@
 import { div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
-import { Stream, combineArray, concat, just } from 'most';
-import hold from '@most/hold';
+import { Stream, concat, just } from 'most';
+import { pipe, curry, isEmpty, cond, T, gt, length, mapObjIndexed, map } from 'ramda';
 import {
-  pipe, curry, zipObj, isEmpty, cond, T, gt, length, mapObjIndexed, values, keys, map
-} from 'ramda';
-import {
-  AboutStateRecord$, applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS,
-  STEP_REVIEW, UserApplication, ValidationResult, UserApplicationModel, UserApplicationModelNotNull
+  applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
+  ValidationResult, UserApplicationModel, UserApplicationModelNotNull
 } from '../../types/processApplication';
 import { HashMap } from '../../types/repository';
-
+import { getInputValue } from '../../utils/dom';
 
 const FIELD_MIN_LENGTH = 2;
 
@@ -25,19 +22,12 @@ function pleaseMinLength() {
   return `Please fill field with at least ${FIELD_MIN_LENGTH} characters!`
 }
 
-function validateAboutScreenFields(validationSpecs: HashMap<Function>,
-                                   stream: Stream<any>): Stream<ValidationResult> {
+// Helper functions
+function _validateAboutScreenFields(validationSpecs: HashMap<Function>,
+                                    stream: Stream<any>): Stream<ValidationResult> {
   return stream.map(mapObjIndexed((value, key) => validationSpecs[key](value)))
 }
-
-// Helper functions
-function getCombinedStateStream(state: AboutStateRecord$) {
-  void zipObj, keys;
-  return combineArray(
-    zipObj(keys(aboutScreenFieldValidationSpecs)),
-    values(state) as Array<Stream<string>> // bug in ts? does not understand the type well
-  ) as any
-}
+export const validateAboutScreenFields = curry(_validateAboutScreenFields);
 
 function makeProps(initialRendering: boolean, fieldValue: any) {
   return initialRendering
@@ -85,6 +75,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
 
   // second guard is because of typescript null type checking
   // by construction initialRendering <=> model != null, so no harm is done
+  console.log('model', model);
   if (initialRendering && model != null) {
     ({
       userApplication: {
@@ -212,6 +203,8 @@ function render(initialRendering: boolean, model: UserApplicationModelNotNull, v
   const { step, hasApplied, latestTeam } = progress;
   void about, questions, teams, hasApplied, latestTeam;
 
+  console.log(initialRendering ? 'initial rendering' : 'second+ rendering');
+
   return div('#page', [
     div('.c-application', [
       div('.c-application__header', [
@@ -243,16 +236,8 @@ function render(initialRendering: boolean, model: UserApplicationModelNotNull, v
 export function getAboutEvents(sources: any, settings: any) {
   void settings;
 
-  const { dom } = sources;
-
   return {
-    continueButtonClick: dom.select('form.c-application__form').events('submit'),
-    aboutYouFieldInput: dom.select('.c-textfield__input--super-power').events('input'),
-    legalNameFieldInput: dom.select('.c-textfield__input--legal-name').events('input'),
-    preferredNameFieldInput: dom.select('.c-textfield__input--preferred-name').events('input'),
-    phoneFieldInput: dom.select('.c-textfield__input--phone').events('input'),
-    birthdayFieldInput: dom.select('.c-textfield__input--birthday').events('input'),
-    zipCodeFieldInput: dom.select('.c-textfield__input--zip-code').events('input'),
+    continueButtonClick: sources.dom.select('form.c-application__form').events('submit'),
   }
 }
 
@@ -264,79 +249,37 @@ export function getAboutIntents(sources: any, settings: any, events: any) {
   }
 }
 
-export function getAboutState(sources: any, settings: any, events: any): AboutStateRecord$ {
-  void sources;
-
-  const model = settings.model;
-  const { opportunity, userApplication } = model;
-  const { description } = opportunity;
-  const {
-          about : {
-            aboutYou : { superPower },
-            personal:{ legalName, preferredName, phone, zipCode, birthday }
-          },
-          questions:{ answer },
-          teams,
-          progress : { step, hasApplied, latestTeam }
-        } = userApplication as UserApplication;
-  void answer, hasApplied, teams, latestTeam, latestTeam, description, step;
-
+export function getAboutFormData(_?: any) {
   return {
-    superPower: events.aboutYouFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(superPower)
-      // hold is in fact not necessary because sampleWith is already memoizing
-      // we keep it for conceptual consistency (state is composed of behaviors)
-      .thru(hold),
-    legalName: events.legalNameFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(legalName)
-      .thru(hold),
-    preferredName: events.preferredNameFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(preferredName)
-      .thru(hold),
-    phone: events.phoneFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(phone)
-      .thru(hold),
-    birthday: events.birthdayFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(birthday)
-      .thru(hold),
-    zipCode: events.zipCodeFieldInput
-      .map((ev: any) => (ev.target as HTMLInputElement).value)
-      .startWith(zipCode)
-      .thru(hold),
+    'superPower': getInputValue('.c-textfield__input--super-power'),
+    'legalName': getInputValue('.c-textfield__input--legal-name'),
+    'preferredName': getInputValue('.c-textfield__input--preferred-name'),
+    'phone': getInputValue('.c-textfield__input--phone'),
+    'birthday': getInputValue('.c-textfield__input--birthday'),
+    'zipCode': getInputValue('.c-textfield__input--zip-code')
   }
 }
 
-export function getAboutFormData(state: any, intents: any) {
-  return getCombinedStateStream(state)
-    .tap(console.log.bind(console, 'getAboutFormData'))
-    .sampleWith(intents.continueToNext.tap(preventDefault))
-}
-
-export function getAboutActions(sources: any, settings: any, state: any, intents: any) {
+export function getAboutActions(sources: any, settings: any, intents: any) {
   void sources, settings;
 
   return {
-    validateFormOnClick: getAboutFormData(state, intents)
-      .thru(curry(validateAboutScreenFields)(aboutScreenFieldValidationSpecs))
+    validateFormOnClick: intents.continueToNext
+      .map(preventDefault)
+      .map(getAboutFormData)
+      .thru(validateAboutScreenFields(aboutScreenFieldValidationSpecs))
       .multicast(),
   }
 }
 
+// TODO : put the validation in a guard, if not valid re-enter the state, hence next state
+// TODO : That means I need to implement FSM with state re-entry with re-exec or do nothing options 
 export function aboutComponent(sources: any, settings: any) {
   // in charge of displaying About step screen and implementing the behaviour
   // 1. View
   //   - every field has to pass validation
   //   - if all validation are successful -> display all fields and button disabled (processing...)
   //   - else -> display error message below corresponding field, continue button disabled
-  //   That means having a state property which is
-  //   - validated : boolean
-  //   - errors : Array<FieldValidation>, FieldValidation :: String ('' if ok)
-  //   - model
   // 2. FSM :
   //   - Continue click && validated =>
   //     - action request : save data in repository
@@ -348,9 +291,7 @@ export function aboutComponent(sources: any, settings: any) {
 
   const intents = getAboutIntents(sources, settings, events);
 
-  const state = getAboutState(sources, settings, events);
-
-  const actions = getAboutActions(sources, settings, state, intents);
+  const actions = getAboutActions(sources, settings, intents);
 
   const validationResults: Stream<ValidationResult> = actions.validateFormOnClick;
 
@@ -362,7 +303,7 @@ export function aboutComponent(sources: any, settings: any) {
     // update, so not just(render(MODEL but query%... | model | ''
     // TODO: the combinedArray sreans start with the model values for these fields
     dom: concat(
-      just(render(true, model, mapObjIndexed(T, state))),
+      just(render(true, model, mapObjIndexed(T, aboutScreenFieldValidationSpecs))),
       validationResults.map(validationResult => render(false, model, validationResult)))
     // NOTE : no domainAction here, that's done by the state machine as part of the transition
   }
