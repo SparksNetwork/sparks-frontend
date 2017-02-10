@@ -1,12 +1,22 @@
 import { Stream } from 'most';
 import { HashMap } from './repository';
 import { Opportunity } from './domain';
+import { FirebaseUserChange } from '../drivers/firebase-user/index';
 
 export interface UserApplicationModel {
-  opportunity: Opportunity;
-  teams: any;
-  userApplication: UserApplication;
+  user : FirebaseUserChange;
+  opportunity: Opportunity | null;
+  teams: any | null;
+  userApplication: UserApplication | null;
   errorMessage: String | null;
+}
+
+export interface UserApplicationModelNotNull {
+  user : FirebaseUserChange;
+  opportunity: Opportunity ;
+  teams: any ;
+  userApplication: UserApplication ;
+  errorMessage: String;
 }
 
 // export type UserApplications = HashMap<UserApplication>;

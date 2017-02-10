@@ -118,7 +118,7 @@ export interface ActionGuard {
  * @typedef {function(FSM_Model, EventData, ActionResponse) : UpdateOperation[]} UpdateFn
  */
 export interface UpdateFn {
-  (model : FSM_Model, eventData : EventData, actionResponse : ActionResponse): Array<UpdateOperation>
+  (model : FSM_Model, eventData : EventData, actionResponse : ActionResponse, settings: any): Array<UpdateOperation>
 }
 
 /**

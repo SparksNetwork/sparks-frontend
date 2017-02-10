@@ -414,7 +414,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
                   // TODO : seek the second reference to it
                   const wrappedModelUpdate: any = tryCatch(model_update,
                     handleError(CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL));
-                  const modelUpdateOperations = wrappedModelUpdate(clonedModel, eventData, null);
+                  const modelUpdateOperations = wrappedModelUpdate(clonedModel, eventData, null, settings);
                   const entryComponent = entryComponents[target_state];
 
                   // Set values for next FSM state update
@@ -533,7 +533,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
               else {
                 const wrappedModelUpdate: any = tryCatch(model_update,
                   handleError(CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL));
-                const modelUpdateOperations = wrappedModelUpdate(model, current_event_data, actionResponse);
+                const modelUpdateOperations = wrappedModelUpdate(model, current_event_data, actionResponse, settings);
                 const entryComponent = entryComponents[target_state];
 
                 internal_state = AWAITING_EVENTS;

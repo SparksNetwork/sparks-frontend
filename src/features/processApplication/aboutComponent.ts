@@ -6,7 +6,7 @@ import {
 } from 'ramda';
 import {
   AboutStateRecord$, applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS,
-  STEP_REVIEW, UserApplication, ValidationResult, UserApplicationModel
+  STEP_REVIEW, UserApplication, ValidationResult, UserApplicationModel, UserApplicationModelNotNull
 } from '../../types/processApplication';
 import { HashMap } from '../../types/repository';
 
@@ -32,6 +32,7 @@ function validateAboutScreenFields(validationSpecs: HashMap<Function>,
 
 // Helper functions
 function getCombinedStateStream(state: AboutStateRecord$) {
+  void zipObj, keys;
   return combineArray(
     zipObj(keys(aboutScreenFieldValidationSpecs)),
     values(state) as Array<Stream<string>> // bug in ts? does not understand the type well
@@ -41,18 +42,18 @@ function getCombinedStateStream(state: AboutStateRecord$) {
 function makeProps(initialRendering: boolean, fieldValue: any) {
   return initialRendering
     ? {
-    props: {
-      value: fieldValue,
-      type: 'text',
-      required: false,
+      props: {
+        value: fieldValue,
+        type: 'text',
+        required: false,
+      }
     }
-  }
     : {
-    props: {
-      type: 'text',
-      required: false,
+      props: {
+        type: 'text',
+        required: false,
+      }
     }
-  }
 }
 
 function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {
@@ -78,7 +79,7 @@ export const aboutScreenFieldValidationSpecs = {
 } as HashMap<any>;
 
 function renderApplicationProcessAbout(initialRendering: boolean,
-                                       model: UserApplicationModel | null,
+                                       model: UserApplicationModelNotNull,
                                        validationResult: ValidationResult) {
   let superPower, legalName, preferredName, phone, birthday, zipCode;
 
@@ -88,10 +89,8 @@ function renderApplicationProcessAbout(initialRendering: boolean,
     ({
       userApplication: {
         about: {
-          aboutYou: superPower,
-          personal: {
-            legalName, preferredName, phone, birthday, zipCode
-          }
+          aboutYou: { superPower },
+          personal: { legalName, preferredName, phone, birthday, zipCode }
         },
       }
     } = model);
@@ -189,7 +188,7 @@ function renderApplicationProcessReview(model: UserApplicationModel): any {
 }
 
 function renderApplicationProcessStep(step: Step, initialRendering: boolean,
-                                      model: UserApplicationModel,
+                                      model: UserApplicationModelNotNull,
                                       validationResult: ValidationResult) {
   switch (step) {
     case STEP_ABOUT :
@@ -206,7 +205,7 @@ function renderApplicationProcessStep(step: Step, initialRendering: boolean,
   }
 }
 
-function render(initialRendering: boolean, model: UserApplicationModel, validationResult: ValidationResult) {
+function render(initialRendering: boolean, model: UserApplicationModelNotNull, validationResult: ValidationResult) {
   const { opportunity, userApplication, errorMessage } = model;
   const { description } = opportunity;
   const { about, questions, teams, progress } = userApplication;
@@ -314,7 +313,7 @@ export function getAboutState(sources: any, settings: any, events: any): AboutSt
 
 export function getAboutFormData(state: any, intents: any) {
   return getCombinedStateStream(state)
-    .tap(console.log.bind(console, 'validateFormOnClick'))
+    .tap(console.log.bind(console, 'getAboutFormData'))
     .sampleWith(intents.continueToNext.tap(preventDefault))
 }
 
@@ -343,7 +342,7 @@ export function aboutComponent(sources: any, settings: any) {
   //     - action request : save data in repository
   //     - transition when acknowledgement of ok saved
 
-  const model: UserApplicationModel = settings.model;
+  const model: UserApplicationModelNotNull = settings.model;
 
   const events = getAboutEvents(sources, settings);
 
@@ -358,6 +357,10 @@ export function aboutComponent(sources: any, settings: any) {
   return {
     // sources.domainAction$.getResponse(OPPORTUNITY)
     // TODO : arrange types but should be something like that
+    // TODO : case I reenter about component, I should see what is in the database, and if
+    // nothing, what is in the modelxAbout, and if nothing then nothing, and then on each click
+    // update, so not just(render(MODEL but query%... | model | ''
+    // TODO: the combinedArray sreans start with the model values for these fields
     dom: concat(
       just(render(true, model, mapObjIndexed(T, state))),
       validationResults.map(validationResult => render(false, model, validationResult)))
