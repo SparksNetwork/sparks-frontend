@@ -265,7 +265,7 @@ export function getAboutActions(sources: any, settings: any, intents: any) {
 
   return {
     validateFormOnClick: intents.continueToNext
-      .map(preventDefault)
+      .tap(preventDefault)
       .map(getAboutFormData)
       .thru(validateAboutScreenFields(aboutScreenFieldValidationSpecs))
       .multicast(),
@@ -273,7 +273,7 @@ export function getAboutActions(sources: any, settings: any, intents: any) {
 }
 
 // TODO : put the validation in a guard, if not valid re-enter the state, hence next state
-// TODO : That means I need to implement FSM with state re-entry with re-exec or do nothing options 
+// TODO : That means I need to implement FSM with state re-entry with re-exec or do nothing options
 export function aboutComponent(sources: any, settings: any) {
   // in charge of displaying About step screen and implementing the behaviour
   // 1. View
@@ -296,12 +296,11 @@ export function aboutComponent(sources: any, settings: any) {
   const validationResults: Stream<ValidationResult> = actions.validateFormOnClick;
 
   return {
+    // TODO : beware this FILE should be only for About, it seems to be for all?? I mean the render
     // sources.domainAction$.getResponse(OPPORTUNITY)
-    // TODO : arrange types but should be something like that
     // TODO : case I reenter about component, I should see what is in the database, and if
     // nothing, what is in the modelxAbout, and if nothing then nothing, and then on each click
     // update, so not just(render(MODEL but query%... | model | ''
-    // TODO: the combinedArray sreans start with the model values for these fields
     dom: concat(
       just(render(true, model, mapObjIndexed(T, aboutScreenFieldValidationSpecs))),
       validationResults.map(validationResult => render(false, model, validationResult)))

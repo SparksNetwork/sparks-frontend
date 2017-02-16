@@ -196,3 +196,5 @@ export const isUpdateOperation = cond([
 export const isArrayUpdateOperations = either(isEmptyArray, isArrayOf(isUpdateOperation));
 
 export const checkStateEntryComponentFnMustReturnComponent = isComponent;
+export const isEntryComponentFactory =  either(isNil, isFunction);
+export const isEntryComponent = either(isNil, isFunction);
