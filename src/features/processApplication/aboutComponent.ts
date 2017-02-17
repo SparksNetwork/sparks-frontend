@@ -1,5 +1,5 @@
 import { div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
-import { Stream, concat, just } from 'most';
+import { just } from 'most';
 import { pipe, curry, isEmpty, cond, T, gt, length, mapObjIndexed, map } from 'ramda';
 import {
   applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
@@ -7,12 +7,9 @@ import {
 } from '../../types/processApplication';
 import { HashMap } from '../../types/repository';
 import { getInputValue } from '../../utils/dom';
+import { isBoolean } from '../../utils/utils';
 
 const FIELD_MIN_LENGTH = 2;
-
-function preventDefault(ev: any) {
-  ev.preventDefault();
-}
 
 function pleaseFillFieldIn() {
   return `Mandatory field : please fill in !`
@@ -24,13 +21,13 @@ function pleaseMinLength() {
 
 // Helper functions
 function _validateAboutScreenFields(validationSpecs: HashMap<Function>,
-                                    stream: Stream<any>): Stream<ValidationResult> {
-  return stream.map(mapObjIndexed((value, key) => validationSpecs[key](value)))
+                                    formData: any): ValidationResult {
+  return mapObjIndexed((value, key) => validationSpecs[key](value))(formData)
 }
 export const validateAboutScreenFields = curry(_validateAboutScreenFields);
 
-function makeProps(initialRendering: boolean, fieldValue: any) {
-  return initialRendering
+function makeProps(fieldValue: any) {
+  return fieldValue
     ? {
       props: {
         value: fieldValue,
@@ -47,9 +44,15 @@ function makeProps(initialRendering: boolean, fieldValue: any) {
 }
 
 function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {
+  console.log('makeErrDiv', validationResult, prop, selector);
   const isValidatedOrError = validationResult[prop];
 
-  return isValidatedOrError ? null : div(selector, isValidatedOrError);
+  return isBoolean(isValidatedOrError)
+    ? (
+      isValidatedOrError
+        ? null : div(selector, isValidatedOrError)
+    )
+    : div(selector, isValidatedOrError);
 }
 
 const validateSuperPower = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
@@ -68,15 +71,14 @@ export const aboutScreenFieldValidationSpecs = {
   'zipCode': validateZipCode
 } as HashMap<any>;
 
-function renderApplicationProcessAbout(initialRendering: boolean,
-                                       model: UserApplicationModelNotNull,
-                                       validationResult: ValidationResult) {
+function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
   let superPower, legalName, preferredName, phone, birthday, zipCode;
 
   // second guard is because of typescript null type checking
   // by construction initialRendering <=> model != null, so no harm is done
-  console.log('model', model);
-  if (initialRendering && model != null) {
+  console.info('entered renderApplicationProcessAbout');
+
+  if (model != null) {
     ({
       userApplication: {
         about: {
@@ -87,7 +89,12 @@ function renderApplicationProcessAbout(initialRendering: boolean,
     } = model);
   }
 
-  const makeErrDiv = curry(_makeErrDiv)(validationResult);
+  console.log('data', superPower, legalName, preferredName, phone, birthday, zipCode);
+  console.log('validation', model.validationMessages);
+
+  const makeErrDiv = curry(_makeErrDiv)(model.validationMessages);
+
+  console.log('testing err div', makeErrDiv('superPower', '.c-textfield__error..c-textfield__error--super-power'))
 
   return [
     ul('.c-application__about', [
@@ -95,7 +102,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
           div('.c-application__about-div.c-textfield', [
             label([
               input('.c-textfield__input.c-textfield__input--super-power',
-                makeProps(initialRendering, superPower))
+                makeProps(superPower))
             ]),
             span('.c-textfield__label', 'About you')
           ]),
@@ -108,7 +115,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--legal-name',
-              makeProps(initialRendering, legalName))
+              makeProps(legalName))
           ]),
           span('.c-textfield__label', 'Legal name')
         ]),
@@ -118,7 +125,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--preferred-name',
-              makeProps(initialRendering, preferredName))
+              makeProps(preferredName))
           ]),
           span('.c-textfield__label', 'Preferred name')
         ]),
@@ -128,7 +135,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--phone',
-              makeProps(initialRendering, phone))
+              makeProps(phone))
           ]),
           span('.c-textfield__label', 'Phone')
         ]),
@@ -138,7 +145,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--birthday',
-              makeProps(initialRendering, birthday))
+              makeProps(birthday))
           ]),
           span('.c-textfield__label', 'Birthday')
         ]),
@@ -148,7 +155,7 @@ function renderApplicationProcessAbout(initialRendering: boolean,
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--zip-code',
-              makeProps(initialRendering, zipCode))
+              makeProps(zipCode))
           ]),
           span('.c-textfield__label', 'Zip code')
         ]),
@@ -178,12 +185,10 @@ function renderApplicationProcessReview(model: UserApplicationModel): any {
   // TODO
 }
 
-function renderApplicationProcessStep(step: Step, initialRendering: boolean,
-                                      model: UserApplicationModelNotNull,
-                                      validationResult: ValidationResult) {
+function renderApplicationProcessStep(step: Step, model: UserApplicationModelNotNull) {
   switch (step) {
     case STEP_ABOUT :
-      return renderApplicationProcessAbout(initialRendering, model, validationResult);
+      return renderApplicationProcessAbout(model);
     case STEP_QUESTION :
       return renderApplicationProcessQuestion(model);
     case STEP_TEAMS :
@@ -196,14 +201,12 @@ function renderApplicationProcessStep(step: Step, initialRendering: boolean,
   }
 }
 
-function render(initialRendering: boolean, model: UserApplicationModelNotNull, validationResult: ValidationResult) {
+function render(model: UserApplicationModelNotNull) {
   const { opportunity, userApplication, errorMessage } = model;
   const { description } = opportunity;
   const { about, questions, teams, progress } = userApplication;
   const { step, hasApplied, latestTeam } = progress;
   void about, questions, teams, hasApplied, latestTeam;
-
-  console.log(initialRendering ? 'initial rendering' : 'second+ rendering');
 
   return div('#page', [
     div('.c-application', [
@@ -222,31 +225,12 @@ function render(initialRendering: boolean, model: UserApplicationModelNotNull, v
             : div('.c-application__unselected-step', step)
         }, applicationProcessSteps)
       ),
-      form('.c-application__form', renderApplicationProcessStep(
-        step, initialRendering,
-        model, validationResult
-      )),
+      form('.c-application__form', renderApplicationProcessStep(step, model)),
       errorMessage
         ? div('.c-application__error', `An error occurred : ${errorMessage}`)
         : '',
     ]),
   ]);
-}
-
-export function getAboutEvents(sources: any, settings: any) {
-  void settings;
-
-  return {
-    continueButtonClick: sources.dom.select('form.c-application__form').events('submit'),
-  }
-}
-
-export function getAboutIntents(sources: any, settings: any, events: any) {
-  void sources, settings;
-
-  return {
-    continueToNext: events.continueButtonClick
-  }
 }
 
 export function getAboutFormData(_?: any) {
@@ -260,17 +244,6 @@ export function getAboutFormData(_?: any) {
   }
 }
 
-export function getAboutActions(sources: any, settings: any, intents: any) {
-  void sources, settings;
-
-  return {
-    validateFormOnClick: intents.continueToNext
-      .tap(preventDefault)
-      .map(getAboutFormData)
-      .thru(validateAboutScreenFields(aboutScreenFieldValidationSpecs))
-      .multicast(),
-  }
-}
 
 // TODO : put the validation in a guard, if not valid re-enter the state, hence next state
 // TODO : That means I need to implement FSM with state re-entry with re-exec or do nothing options
@@ -285,15 +258,9 @@ export function aboutComponent(sources: any, settings: any) {
   //     - action request : save data in repository
   //     - transition when acknowledgement of ok saved
 
+  void sources;
   const model: UserApplicationModelNotNull = settings.model;
-
-  const events = getAboutEvents(sources, settings);
-
-  const intents = getAboutIntents(sources, settings, events);
-
-  const actions = getAboutActions(sources, settings, intents);
-
-  const validationResults: Stream<ValidationResult> = actions.validateFormOnClick;
+  console.log('entering aboutComponent', model);
 
   return {
     // TODO : beware this FILE should be only for About, it seems to be for all?? I mean the render
@@ -301,10 +268,7 @@ export function aboutComponent(sources: any, settings: any) {
     // TODO : case I reenter about component, I should see what is in the database, and if
     // nothing, what is in the modelxAbout, and if nothing then nothing, and then on each click
     // update, so not just(render(MODEL but query%... | model | ''
-    dom: concat(
-      just(render(true, model, mapObjIndexed(T, aboutScreenFieldValidationSpecs))),
-      validationResults.map(validationResult => render(false, model, validationResult)))
-    // NOTE : no domainAction here, that's done by the state machine as part of the transition
+    dom: just(render(model))
   }
 }
 

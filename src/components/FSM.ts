@@ -93,7 +93,7 @@ function destructureFsmEvent(fsmEvent: any) {
   }
 }
 
-// Note that types do not match! TODO : fix that or duplicate functions :-(
+// Note that types do not match!
 /**
  *
  * @param fsmEventValue
@@ -601,10 +601,7 @@ function processEventWhenAwaitingResponseEvent(fsmCompiled: any, sources: any, s
   return newFsmState
 }
 
-// TODO: I am here
 export function makeFSM(events: any, transitions: any, entryComponents: any, fsmSettings: any) {
-  // 0. TODO : check signature deeply - I dont want to check for null all the time
-
   const fsmSignature = {
     events: isFsmEvents,
     transitions: isFsmTransitions,
@@ -681,7 +678,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
         throw err;
     }
 
-    return fsmState
+    return newFsmState
   }
 
   function _computeOutputSinks(sinks$: any, /* OUT */accOutputSinks: any, sinkName: any) {

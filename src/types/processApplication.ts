@@ -9,6 +9,7 @@ export interface UserApplicationModel {
   teams: any | null;
   userApplication: UserApplication | null;
   errorMessage: String | null;
+  validationMessages : ValidationResult;
 }
 
 export interface UserApplicationModelNotNull {
@@ -17,6 +18,7 @@ export interface UserApplicationModelNotNull {
   teams: any ;
   userApplication: UserApplication ;
   errorMessage: String;
+  validationMessages : ValidationResult;
 }
 
 // export type UserApplications = HashMap<UserApplication>;
@@ -96,3 +98,6 @@ export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, S
 // TODO: a step TEAM_DETAIL or not?
 
 export type ValidationResult = HashMap<boolean|string>;
+
+export const aboutYouFields = ['superPower'];
+export const personalFields = ['birthday', 'phone', 'preferredName', 'zipCode', 'legalName'];

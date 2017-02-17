@@ -3,7 +3,7 @@ import {
   prop, flip, all, identity, filter, equals, cond, T
 } from 'ramda';
 import {
-  isHashMap, isStrictRecord, isFunction, isString, isArrayOf, isObject, isEmptyArray
+  isHashMap, isStrictRecord, isFunction, isString, isArrayOf, isObject, isEmptyArray, isBoolean
 } from '../utils/utils';
 import { INIT_EVENT_NAME, INIT_STATE } from './properties';
 
@@ -57,6 +57,7 @@ const isTransEval = isStrictRecord({
 // }`
 const isTransition = isStrictRecord({
   event_guard: isEventGuard,
+  re_entry: either(isNil, isBoolean),
   action_request: either(isNil, isActionRequest),
   transition_evaluation: isArrayOf(isTransEval),
 });

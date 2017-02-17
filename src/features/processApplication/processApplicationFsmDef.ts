@@ -1,12 +1,13 @@
-import { Stream, just } from 'most';
+import { just } from 'most';
 import { div } from '@motorcycle/dom';
-import { all, flip, pipe, values, T } from 'ramda';
+import { flatten, pick, all, flip, pipe, values, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { modelUpdateIdentity } from '../../utils/FSM';
+import { modelUpdateIdentity, toJsonPatch } from '../../utils/FSM';
 import {
-  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, AboutStateRecord
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, aboutYouFields,
+  personalFields
 } from '../../types/processApplication';
 import {
   aboutComponent, aboutScreenFieldValidationSpecs, getAboutFormData, validateAboutScreenFields
@@ -15,9 +16,9 @@ import { Transitions, FSM_Model } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
 import {
   fetchUserApplicationModelData, isStep, initializeModel, makeRequestToUpdateUserApplication,
-  updateModelWithAboutData, updateModelWithAboutDataAndError
+  updateModelWithAboutData, updateModelWithAboutDataAndError, isAboutFormValid
 } from './processApplicationFsmFns';
-import { isBoolean } from '../../utils/utils';
+import { isBoolean, preventDefault } from '../../utils/utils';
 import { questionComponent } from './questionComponent';
 
 const INIT_S = 'INIT';
@@ -45,16 +46,32 @@ export const events = {
     // account the model, hence also not the initial value for the fields. And the repository
     // does not have the current value of the fields either. So only way is this
     return sources.dom.select('form.c-application__form').events('submit')
-      .map(getAboutFormData)
+      .tap(preventDefault)
       .tap(console.warn.bind(console, 'sumbit button clicked'))
-      .thru(validateAboutScreenFields(aboutScreenFieldValidationSpecs))
+      .map((x: any) => {
+        void x;
+        const formData = getAboutFormData();
+
+        return {
+          formData,
+          validationData: validateAboutScreenFields(aboutScreenFieldValidationSpecs, formData)
+        }
+      })
       .tap(console.warn.bind(console, 'validation performed'))
-      .filter(pipe(values, all(isBoolean)))
-      .tap(console.warn.bind(console, 'passed validation'))
-      .map(getAboutFormData)
-      .tap(console.warn.bind(console, 'field passed validation results')) as Stream <AboutStateRecord>
   }
 };
+
+function updateModelWithValidationMessages(model : FSM_Model, eventData: any, actionResponse:any){
+  void actionResponse, model; // no request for the transition leading to this model update
+  const {formData, validationData} = eventData;
+
+  return flatten([
+    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
+    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
+    toJsonPatch('/errorMessage')(null),
+    toJsonPatch('/validationMessages')(validationData)
+  ])
+}
 
 export const transitions: Transitions = {
   T_INIT: {
@@ -63,6 +80,7 @@ export const transitions: Transitions = {
     target_states: [
       {
         event_guard: EV_GUARD_NONE,
+        re_entry : true, // necessary as INIT is both target and current state in the beginning
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -129,7 +147,8 @@ export const transitions: Transitions = {
     event: ABOUT_CONTINUE,
     target_states: [
       {
-        event_guard: EV_GUARD_NONE,
+        // Case form has only valid fields
+        event_guard: isAboutFormValid,
         action_request: {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
@@ -157,6 +176,20 @@ export const transitions: Transitions = {
           }
         ]
       },
+      {
+        // Case form has invalid fields
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            // keep model in sync with repository
+            model_update: updateModelWithValidationMessages
+          },
+        ]
+      }
     ]
   }
 };

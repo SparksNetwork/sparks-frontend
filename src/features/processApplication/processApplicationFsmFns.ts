@@ -1,18 +1,17 @@
 import { Stream, combineArray } from 'most';
-import { map, filter, keys, always, curry, zipObj, pick, flatten } from 'ramda';
+import { pipe, values, all, map, filter, keys, always, curry, zipObj, pick, flatten } from 'ramda';
 import { OPPORTUNITY, USER_APPLICATION, TEAMS, UPDATE } from '../../domain';
 import { toJsonPatch } from '../../utils/FSM';
 import { Opportunity, Teams, Team } from '../../types/domain';
 import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
   UserApplication, STEP_ABOUT, STEP_REVIEW, Step, ApplicationTeamInfo, TeamsInfo,
-  ApplicationQuestionInfo, Progress, ApplicationAboutInfo, UserApplicationModel, AboutStateRecord
+  ApplicationQuestionInfo, Progress, ApplicationAboutInfo, UserApplicationModel, aboutYouFields,
+  personalFields
 } from '../../types/processApplication';
 import { FSM_Model, EventData } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
-
-const aboutYouFields = ['superPower'];
-const personalFields = ['birthday', 'phone', 'preferredName', 'zipCode', 'legalName'];
+import { isBoolean } from '../../utils/utils';
 
 export function initializeModel(model: any, eventData: UserApplicationModel, actionResponse: any, settings: any) {
   void actionResponse, model;
@@ -57,14 +56,15 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
           hasApplied: false,
           latestTeam: ''
         } as Progress
-      }
+      },
+      validationMessages : {}
     }
   }
   else {
     // Note: we reference the user application in the model, we should make sure that the user
     // application is immutable, otherwise it will spill in the model
     // TODO : check validity of userApp coming from repository or not??
-    initialModel = { user, opportunity, teams, userApplication, errorMessage: null }
+    initialModel = { user, opportunity, teams, userApplication, errorMessage: null, validationMessages:{} }
   }
 
   return toJsonPatch('')(initialModel);
@@ -89,7 +89,8 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
         opportunity,
         userApplication,
         teams,
-        errorMessage: null
+        errorMessage: null,
+        validationMessages : {}
       }),
     [user$, opportunities$, userApp$, teams$]
   )
@@ -97,8 +98,9 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
     .take(1)
 }
 
-export function makeRequestToUpdateUserApplication(model: UserApplicationModel, eventData: AboutStateRecord) {
+export function makeRequestToUpdateUserApplication(model: UserApplicationModel, eventData: any) {
   console.log('action_request : eventData :AboutStateRecord', eventData);
+  const formData = eventData.formData;
   if (!model.userApplication) {
     throw 'internal error: model at this stage must have' +
     ' userApplication property set!';
@@ -113,14 +115,14 @@ export function makeRequestToUpdateUserApplication(model: UserApplicationModel, 
     opportunityKey: model.userApplication.opportunityKey,
     about: {
       aboutYou: {
-        superPower: eventData.superPower
+        superPower: formData.superPower
       },
       personal: {
-        birthday: eventData.birthday,
-        phone: eventData.phone,
-        preferredName: eventData.preferredName,
-        zipCode: eventData.zipCode,
-        legalName: eventData.legalName
+        birthday: formData.birthday,
+        phone: formData.phone,
+        preferredName: formData.preferredName,
+        zipCode: formData.zipCode,
+        legalName: formData.legalName
       }
     },
     questions: model.userApplication.questions,
@@ -141,7 +143,7 @@ export function updateModelWithAboutDataAndError(model: FSM_Model, eventData: Ev
   // By construction err cannot be null, but typescript will force to consider that case
 
   return flatten([
-    updateModelWithAboutData(model, eventData, actionResponse),
+    updateModelWithAboutData(model, eventData.formData, actionResponse),
     {
       op: 'add',
       path: '/errorMessage',
@@ -185,13 +187,17 @@ export function fetchUserApplicationData(sources: any, opportunityKey: string, u
 export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
                                          actionResponse: DomainActionResponse) {
   void actionResponse, model;
+  const formData = eventData.formData;
 
   return flatten([
-    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, eventData)),
-    toJsonPatch('/userApplication/about/personal')(pick(personalFields, eventData)),
+    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
+    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
     toJsonPatch('/errorMessage')(null),
   ])
 }
 
-
+export function isAboutFormValid(model: any, eventData: any) {
+  void model;
+  return pipe(values, all(isBoolean))(eventData.validationData)
+}
 

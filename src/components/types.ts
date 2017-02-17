@@ -138,6 +138,7 @@ export interface TransEval {
 type EventGuardNone = null;
 export interface Transition {
   event_guard : EventGuard | EventGuardNone;
+  re_entry? : Boolean;
   action_request : ActionRequest | null;
   transition_evaluation : Array<TransEval>;
 }

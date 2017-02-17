@@ -575,6 +575,10 @@ function _handleError(msg:any, e:any) {
 
 const handleError = curry(_handleError);
 
+function preventDefault(e:any){
+  e.preventDefault();
+}
+
 export {
   makeDivVNode,
   handleError,
@@ -611,5 +615,6 @@ export {
   assertSettingsContracts,
   deepFreeze,
   makeErrorMessage,
-  trace
+  trace,
+  preventDefault
 }

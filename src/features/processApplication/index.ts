@@ -43,7 +43,8 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
       progress: { step: '', hasApplied: false, latestTeam: '' },
       teams: {}
     },
-    errorMessage: null
+    errorMessage: null,
+    validationMessages : {}
   }
 }
 
