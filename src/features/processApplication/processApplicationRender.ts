@@ -1,6 +1,8 @@
-import { div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
+import { a, div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
 import { just } from 'most';
-import { pipe, curry, isEmpty, cond, T, gt, length, mapObjIndexed, map } from 'ramda';
+import {
+  flatten, keys, values, pipe, curry, isEmpty, cond, T, gt, length, mapObjIndexed, map, addIndex
+} from 'ramda';
 import {
   applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
   ValidationResult, UserApplicationModel, UserApplicationModelNotNull
@@ -8,6 +10,8 @@ import {
 import { HashMap } from '../../types/repository';
 import { getInputValue } from '../../utils/dom';
 import { isBoolean } from '../../utils/utils';
+const format = require('fmt-obj');
+const mapIndexed = addIndex(map);
 
 const FIELD_MIN_LENGTH = 2;
 
@@ -20,11 +24,11 @@ function pleaseMinLength() {
 }
 
 // Helper functions
-function _validateAboutScreenFields(validationSpecs: HashMap<Function>,
-                                    formData: any): ValidationResult {
+function _validateScreenFields(validationSpecs: HashMap<Function>,
+                               formData: any): ValidationResult {
   return mapObjIndexed((value, key) => validationSpecs[key](value))(formData)
 }
-export const validateAboutScreenFields = curry(_validateAboutScreenFields);
+export const validateScreenFields = curry(_validateScreenFields);
 
 function makeProps(fieldValue: any) {
   return fieldValue
@@ -36,7 +40,8 @@ function makeProps(fieldValue: any) {
       }
     }
     : {
-      props: {
+      props: {// TODO : doc, this is bug? if I don't put field value, wrong past input value is kept
+        value: fieldValue,
         type: 'text',
         required: false,
       }
@@ -44,7 +49,6 @@ function makeProps(fieldValue: any) {
 }
 
 function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {
-  console.log('makeErrDiv', validationResult, prop, selector);
   const isValidatedOrError = validationResult[prop];
 
   return isBoolean(isValidatedOrError)
@@ -54,7 +58,9 @@ function _makeErrDiv(validationResult: ValidationResult, prop: string, selector:
     )
     : div(selector, isValidatedOrError);
 }
+const makeErrDiv = curry(_makeErrDiv);
 
+// About screen validation
 const validateSuperPower = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
 const validateLegalName = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
 const validatePreferredName = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
@@ -71,6 +77,16 @@ export const aboutScreenFieldValidationSpecs = {
   'zipCode': validateZipCode
 } as HashMap<any>;
 
+// Question screen validation
+const validateAnswer = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
+
+export const questionScreenFieldValidationSpecs = {
+  'answer': validateAnswer
+} as HashMap<any>;
+
+
+// TODO : add render for the links - tab component with parameters and state
+//
 function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
   let superPower, legalName, preferredName, phone, birthday, zipCode;
 
@@ -89,14 +105,13 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
     } = model);
   }
 
-  console.log('data', superPower, legalName, preferredName, phone, birthday, zipCode);
+  console.log('form data', superPower, legalName, preferredName, phone, birthday, zipCode);
   console.log('validation', model.validationMessages);
+  const _makeErrDiv = makeErrDiv(model.validationMessages);
 
-  const makeErrDiv = curry(_makeErrDiv)(model.validationMessages);
+  console.log('testing err div', _makeErrDiv('superPower', '.c-textfield__error..c-textfield__error--super-power'))
 
-  console.log('testing err div', makeErrDiv('superPower', '.c-textfield__error..c-textfield__error--super-power'))
-
-  return [
+  return void 0,
     ul('.c-application__about', [
         li('.c-application__list-item', [
           div('.c-application__about-div.c-textfield', [
@@ -106,7 +121,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
             ]),
             span('.c-textfield__label', 'About you')
           ]),
-          makeErrDiv('superPower', '.c-textfield__error..c-textfield__error--super-power')
+          _makeErrDiv('superPower', '.c-textfield__error.c-textfield__error--super-power')
         ]),
       ]
     ),
@@ -119,7 +134,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
           ]),
           span('.c-textfield__label', 'Legal name')
         ]),
-        makeErrDiv('legalName', '.c-textfield__error..c-textfield__error--legal-name')
+        _makeErrDiv('legalName', '.c-textfield__error.c-textfield__error--legal-name')
       ]),
       li('.c-application__list-item', [
         div('.c-application__personal-div.c-textfield', [
@@ -129,7 +144,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
           ]),
           span('.c-textfield__label', 'Preferred name')
         ]),
-        makeErrDiv('preferredName', '.c-textfield__error..c-textfield__error--preferred-name')
+        _makeErrDiv('preferredName', '.c-textfield__error.c-textfield__error--preferred-name')
       ]),
       li('.c-application__list-item', [
         div('.c-application__personal-div.c-textfield', [
@@ -139,7 +154,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
           ]),
           span('.c-textfield__label', 'Phone')
         ]),
-        makeErrDiv('phone', '.c-textfield__error..c-textfield__error--phone')
+        _makeErrDiv('phone', '.c-textfield__error.c-textfield__error--phone')
       ]),
       li('.c-application__list-item', [
         div('.c-application__personal-div.c-textfield', [
@@ -149,7 +164,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
           ]),
           span('.c-textfield__label', 'Birthday')
         ]),
-        makeErrDiv('birthday', '.c-textfield__error..c-textfield__error--birthday')
+        _makeErrDiv('birthday', '.c-textfield__error.c-textfield__error--birthday')
       ]),
       li('.c-application__list-item', [
         div('.c-application__personal-div.c-textfield', [
@@ -159,25 +174,86 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
           ]),
           span('.c-textfield__label', 'Zip code')
         ]),
-        makeErrDiv('zipCode', '.c-textfield__error..c-textfield__error--zip-code')
+        _makeErrDiv('zipCode', '.c-textfield__error.c-textfield__error--zip-code')
       ]),
     ]),
     ul('.c-application__personal-details', [
       li('.c-sign-in__list-item', [
         button('.c-btn.c-btn--primary.c-application__submit--about', `Continue`),
       ]),
-    ]),
-  ]
+    ])
 }
 
-function renderApplicationProcessQuestion(model: UserApplicationModel): any {
-  void model;
-  // TODO
+function renderApplicationProcessQuestion(model: UserApplicationModelNotNull): any {
+  let answer;
+
+  const { opportunity: { question } } = model;
+
+  console.info('entered renderApplicationProcessQuestion', question);
+
+  if (model != null) {
+    ({
+      userApplication: {
+        questions: {
+          answer
+        },
+      }
+    } = model);
+  }
+
+  console.log('form data', answer);
+  console.log('validation', model.validationMessages);
+  const _makeErrDiv = makeErrDiv(model.validationMessages);
+
+  return void 0,
+    div('.c-application__question-div.c-title', question),
+    ul('.c-application__question', [
+        li('.c-application__list-item', [
+          div('.c-application__question-div.c-textfield', [
+            label([
+              input('.c-textfield__input.c-textfield__input--answer',
+                makeProps(answer))
+            ]),
+            span('.c-textfield__label', `Organizer's question`)
+          ]),
+          _makeErrDiv('answer', '.c-textfield__error.c-textfield__error--answer')
+        ]),
+      ]
+    ),
+    ul('.c-application__question-details', [
+      li('.c-application__list-item', [
+        button('.c-btn.c-btn--primary.c-application__submit--question', `Continue`),
+      ]),
+    ])
 }
 
-function renderApplicationProcessTeams(model: UserApplicationModel): any {
-  void model;
-  // TODO
+function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any {
+  const { userApplication: { teams } } = model;
+  const dbTeams = model.teams;
+  const teamKeys = keys(dbTeams);
+
+  return void 0,
+    div('.c-application__teams-title', 'Select a team'),
+    ul('.c-application__teams-list', flatten([
+      mapIndexed((teamKey: string, index: Number) => {
+        const { description, name, question } = dbTeams[teamKey];
+        const { alreadyFilledIn, answer } = teams[teamKey];
+
+        return void 0,
+          li('.c-application__list-item', [
+            span('.c-icon__visited', alreadyFilledIn ? `o` : 'x'),
+            div('.c-application__teams-div', { attrs: { 'data-index': index } }, [
+              span('.c-textfield__label', `${name}`)
+            ]),
+          ])
+      }, teamKeys)
+    ])),
+    ul('.c-application__teams-details', [
+      li('.c-application__list-item', [
+        button('.c-btn.c-btn--primary.c-application__submit--teams', `Continue`),
+      ]),
+    ])
+
 }
 
 function renderApplicationProcessReview(model: UserApplicationModel): any {
@@ -201,6 +277,14 @@ function renderApplicationProcessStep(step: Step, model: UserApplicationModelNot
   }
 }
 
+function renderApplicationProcessTabs(step: Step) {
+  return div('.c-application__progress-bar', map((_step: Step) => {
+    return _step !== step
+      ? a('.c-application__selected-step', { props: { href: `/${_step}` } }, _step)
+      : div('.c-application__unselected-step', _step)
+  }, values(applicationProcessSteps)));
+}
+
 function render(model: UserApplicationModelNotNull) {
   const { opportunity, userApplication, errorMessage } = model;
   const { description } = opportunity;
@@ -217,15 +301,8 @@ function render(model: UserApplicationModelNotNull) {
         div('.c-application__opportunity-date', 'date'),
       ]),
       div('.c-application__title', `Complete your application for ${description}`),
-      div('.c-application__progress-bar',
-        map((_step: Step) => {
-          // put the link where it should be, i.e. cf. progress.step
-          _step === step
-            ? div('.c-application__selected-step', step)
-            : div('.c-application__unselected-step', step)
-        }, applicationProcessSteps)
-      ),
-      form('.c-application__form', renderApplicationProcessStep(step, model)),
+      div('.c-application__progress-bar', [renderApplicationProcessTabs(step)]),
+      form('.c-application__form', [renderApplicationProcessStep(step, model)]),
       errorMessage
         ? div('.c-application__error', `An error occurred : ${errorMessage}`)
         : '',
@@ -244,31 +321,42 @@ export function getAboutFormData(_?: any) {
   }
 }
 
+export function getQuestionFormData(_?: any) {
+  return {
+    'answer': getInputValue('.c-textfield__input--answer'),
+  }
+}
 
-// TODO : put the validation in a guard, if not valid re-enter the state, hence next state
-// TODO : That means I need to implement FSM with state re-entry with re-exec or do nothing options
 export function aboutComponent(sources: any, settings: any) {
-  // in charge of displaying About step screen and implementing the behaviour
-  // 1. View
-  //   - every field has to pass validation
-  //   - if all validation are successful -> display all fields and button disabled (processing...)
-  //   - else -> display error message below corresponding field, continue button disabled
-  // 2. FSM :
-  //   - Continue click && validated =>
-  //     - action request : save data in repository
-  //     - transition when acknowledgement of ok saved
-
   void sources;
   const model: UserApplicationModelNotNull = settings.model;
-  console.log('entering aboutComponent', model);
+  console.info('entering aboutComponent', model);
 
   return {
-    // TODO : beware this FILE should be only for About, it seems to be for all?? I mean the render
-    // sources.domainAction$.getResponse(OPPORTUNITY)
-    // TODO : case I reenter about component, I should see what is in the database, and if
-    // nothing, what is in the modelxAbout, and if nothing then nothing, and then on each click
-    // update, so not just(render(MODEL but query%... | model | ''
     dom: just(render(model))
   }
 }
+
+export function questionComponent(sources: any, settings: any) {
+  void sources;
+
+  const model: UserApplicationModelNotNull = settings.model;
+  console.info('entering questionComponent', model);
+
+  return {
+    dom: just(render(model))
+  }
+}
+
+export function TeamComponent(sources: any, settings: any) {
+  void sources;
+
+  const model: UserApplicationModelNotNull = settings.model;
+  console.info('entering TeamComponent', model);
+
+  return {
+    dom: just(render(model))
+  }
+}
+
 
