@@ -40,7 +40,7 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
         personal: { legalName: '', preferredName: '', phone: '', zipCode: '', birthday: '' }
       },
       questions: { answer: '' },
-      progress: { step: '', hasApplied: false, latestTeam: '' },
+      progress: { step: '', hasApplied: false, latestTeamIndex: '' },
       teams: {}
     },
     errorMessage: null,

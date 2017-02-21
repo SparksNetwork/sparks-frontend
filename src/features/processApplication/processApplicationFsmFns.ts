@@ -1,17 +1,24 @@
 import { Stream, combineArray } from 'most';
-import { pipe, values, all, map, filter, keys, always, curry, zipObj, pick, flatten } from 'ramda';
+import {
+  any, merge, pipe, values, all, map, filter, keys, always, curry, zipObj, pick, flatten
+} from 'ramda';
 import { OPPORTUNITY, USER_APPLICATION, TEAMS, UPDATE } from '../../domain';
-import { toJsonPatch } from '../../utils/FSM';
+import { toJsonPatch, addOpToJsonPatch } from '../../utils/FSM';
 import { Opportunity, Teams, Team } from '../../types/domain';
 import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
   UserApplication, STEP_ABOUT, STEP_REVIEW, Step, ApplicationTeamInfo, TeamsInfo,
   ApplicationQuestionInfo, Progress, ApplicationAboutInfo, UserApplicationModel, aboutYouFields,
-  personalFields
+  personalFields, STEP_QUESTION, STEP_TEAMS, questionFields, UserApplicationModelNotNull
 } from '../../types/processApplication';
 import { FSM_Model, EventData } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
-import { isBoolean } from '../../utils/utils';
+import { isBoolean, preventDefault } from '../../utils/utils';
+import {
+  validateScreenFields, aboutScreenFieldValidationSpecs,
+  questionScreenFieldValidationSpecs
+} from './processApplicationValidation';
+import { getAboutFormData, getQuestionFormData } from './processApplicationFetch';
 
 export function initializeModel(model: any, eventData: UserApplicationModel, actionResponse: any, settings: any) {
   void actionResponse, model;
@@ -34,7 +41,7 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
       keys(teams as Teams));
     const teamsInfo: TeamsInfo = zipObj(filteredTeamKeys, map(always({
       answer: '',
-      alreadyVisited: false
+      alreadyFilledIn: false
     } as ApplicationTeamInfo), filteredTeamKeys));
 
     initialModel = {
@@ -54,17 +61,24 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
         progress: {
           step: STEP_ABOUT,
           hasApplied: false,
-          latestTeam: ''
+          latestTeamIndex: ''
         } as Progress
       },
-      validationMessages : {}
+      validationMessages: {}
     }
   }
   else {
     // Note: we reference the user application in the model, we should make sure that the user
     // application is immutable, otherwise it will spill in the model
     // TODO : check validity of userApp coming from repository or not??
-    initialModel = { user, opportunity, teams, userApplication, errorMessage: null, validationMessages:{} }
+    initialModel = {
+      user,
+      opportunity,
+      teams,
+      userApplication,
+      errorMessage: null,
+      validationMessages: {}
+    }
   }
 
   return toJsonPatch('')(initialModel);
@@ -74,10 +88,8 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
   const { user$ } = sources;
   const { opportunityKey, userKey } = settings;
   const userApp$ = fetchUserApplicationData(sources, opportunityKey, userKey);
-  const teams$ = sources.query$.query(TEAMS, {})
-    .tap(console.warn.bind(console, 'TEAMS fetch event'));
-  const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, { opportunityKey })
-    .tap(console.warn.bind(console, 'OPPORTUNITY fetch event'));
+  const teams$ = sources.query$.query(TEAMS, {});
+  const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, { opportunityKey });
 
   // NOTE : combineArray will produce its first value when all its dependent streams have
   // produced their first value. Hence this is equivalent to a zip for the first value, which
@@ -90,7 +102,7 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
         userApplication,
         teams,
         errorMessage: null,
-        validationMessages : {}
+        validationMessages: {}
       }),
     [user$, opportunities$, userApp$, teams$]
   )
@@ -98,61 +110,130 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
     .take(1)
 }
 
-export function makeRequestToUpdateUserApplication(model: UserApplicationModel, eventData: any) {
-  console.log('action_request : eventData :AboutStateRecord', eventData);
-  const formData = eventData.formData;
-  if (!model.userApplication) {
-    throw 'internal error: model at this stage must have' +
-    ' userApplication property set!';
-  }
+export function fetchUserApplicationData(sources: any, opportunityKey: string, userKey: string) {
+  return sources.query$.query(USER_APPLICATION, { opportunityKey, userKey })
+    .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
+}
 
-  // Build user application :
-  // - from the about fields (event data)
-  // - from the past information stored in the current value of model
-  // NOTE : userApplication should always exist, it is created by FETCH_EV event
-  const userApplication: UserApplication = {
-    userKey: model.userApplication.userKey,
-    opportunityKey: model.userApplication.opportunityKey,
-    about: {
-      aboutYou: {
-        superPower: formData.superPower
-      },
-      personal: {
-        birthday: formData.birthday,
-        phone: formData.phone,
-        preferredName: formData.preferredName,
-        zipCode: formData.zipCode,
-        legalName: formData.legalName
+export function reShapeEventData(formData: any, step: Step) {
+  switch (step) {
+    case STEP_ABOUT :
+      const { superPower, birthday, phone, preferredName, zipCode, legalName } = formData;
+      return {
+        about: {
+          aboutYou: { superPower },
+          personal: { birthday, phone, preferredName, zipCode, legalName }
+        },
       }
-    },
-    questions: model.userApplication.questions,
-    teams: model.userApplication.teams,
-    progress: model.userApplication.progress
-  };
+
+    case STEP_QUESTION :
+      const { answer } = formData;
+      return {
+        questions: { answer: answer }
+      }
+
+    case STEP_TEAMS :
+      // in this case, no event data, updates have already been made directly in the model
+      return {};
+
+    default:
+      throw 'internal error : unconfigured step encountered in the application process state' +
+      ' machine'
+  }
+}
+
+export function makeRequestToUpdateUserApplication(model: UserApplicationModel, eventData: any) {
+  console.log('action_request : eventData : AboutStateRecord', eventData);
+  const formData = eventData.formData;
+  const { userApplication } = model;
+  if (!userApplication) {
+    throw 'internal error: model at this stage must have userApplication property set!';
+  }
+  const step = userApplication.progress.step;
+  console.log('makeRequestToUpdateUserApplication: step', step);
+
+  const updates = reShapeEventData(formData, step);
+  const newUserApplication = merge(userApplication, updates);
+
+  // TODO : but even better is to have the firebase update be an update not a set operation!!
+  // this means less traffic towards the server
 
   return {
     context: USER_APPLICATION,
     command: UPDATE,
-    payload: userApplication
+    payload: newUserApplication
   }
 }
 
-export function updateModelWithAboutDataAndError(model: FSM_Model, eventData: EventData,
-                                                 actionResponse: DomainActionResponse) {
+function _updateModelWithStepAndError(updateModelFn: Function, step: Step, model: FSM_Model, eventData: EventData,
+                                      actionResponse: DomainActionResponse) {
+  console.log('_updateModelWithStepAndError');
   const { err } = actionResponse;
-  // By construction err cannot be null, but typescript will force to consider that case
 
   return flatten([
-    updateModelWithAboutData(model, eventData.formData, actionResponse),
-    {
-      op: 'add',
-      path: '/errorMessage',
-      value: err ? err.toString() : 'internal error! there should be an error message'
-    }
+    updateModelFn(model, eventData.formData, actionResponse),
+    addOpToJsonPatch('/userApplication/progress/step', step),
+    addOpToJsonPatch('/errorMessage', err ? err.toString() : 'internal error! there should be an error message')
+  ])
+}
+export const updateModelWithStepAndError = curry(_updateModelWithStepAndError);
+
+function _updateModelWithValidationMessages(updateModelFn: Function, step: Step, model: FSM_Model, eventData: any, actionResponse: any) {
+  void actionResponse, model; // no request for the transition leading to this model update
+  const { validationData } = eventData;
+  console.log('_updateModelWithValidationMessages');
+
+  return flatten([
+    updateModelFn(model, eventData, actionResponse),
+    toJsonPatch('/validationMessages')(validationData),
+    addOpToJsonPatch('/userApplication/progress/step', step),
+  ])
+}
+export const updateModelWithValidationMessages = curry(_updateModelWithValidationMessages);
+
+export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
+                                         actionResponse: DomainActionResponse) {
+  console.log('updateModelWithAboutData');
+  void actionResponse, model;
+  const formData = eventData.formData;
+
+  return flatten([
+    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
+    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
+    addOpToJsonPatch('/userApplication/progress/step', STEP_QUESTION),
+    toJsonPatch('/errorMessage')(null),
   ])
 }
 
-function _isStepX(targetStep: Step, model: any, eventData: any) {
+export function updateModelWithQuestionData(model: FSM_Model, eventData: EventData,
+                                            actionResponse: DomainActionResponse) {
+  void actionResponse, model;
+  console.log('updateModelWithQuestionData');
+  const formData = eventData.formData;
+
+  return flatten([
+    toJsonPatch('/userApplication/questions')(pick(questionFields, formData)),
+    addOpToJsonPatch('/userApplication/progress/step', STEP_TEAMS),
+    toJsonPatch('/errorMessage')(null),
+  ])
+}
+
+export function updateModelWithSelectedTeamData(model: FSM_Model, eventData: Number,
+                                                actionResponse: DomainActionResponse) {
+  void actionResponse, model;
+  const selectedTeamIndex = eventData;
+
+  console.log('updateModelWithSelectedTeamData', eventData);
+
+  return flatten([
+    addOpToJsonPatch('/userApplication/progress/latestTeamIndex', selectedTeamIndex),
+  ])
+}
+
+///////
+// Event guards
+
+function _isStepX(targetStep: Step, model: FSM_Model, eventData: EventData) {
   void model;
   // event data here is the result of the query on user application
   // it is null if there is no existing user application
@@ -179,25 +260,98 @@ function _isStepX(targetStep: Step, model: any, eventData: any) {
 }
 export const isStep = curry(_isStepX);
 
-export function fetchUserApplicationData(sources: any, opportunityKey: string, userKey: string) {
-  return sources.query$.query(USER_APPLICATION, { opportunityKey, userKey })
-    .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
-}
-
-export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
-                                         actionResponse: DomainActionResponse) {
-  void actionResponse, model;
-  const formData = eventData.formData;
-
-  return flatten([
-    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
-    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
-    toJsonPatch('/errorMessage')(null),
-  ])
-}
-
-export function isAboutFormValid(model: any, eventData: any) {
+export function isFormValid(model: FSM_Model, eventData: EventData) {
   void model;
   return pipe(values, all(isBoolean))(eventData.validationData)
 }
 
+export function hasJoinedAtLeastOneTeam(model: UserApplicationModelNotNull, eventData: EventData) {
+  const { userApplication : { teams } } = model;
+  const _hasJoinedAtLeastOneTeam = any((teamKey: string) => {
+    return teams[teamKey].alreadyFilledIn
+  }, keys(teams));
+  console.log('hasJoinedAtLeastOneTeam', _hasJoinedAtLeastOneTeam);
+
+  return _hasJoinedAtLeastOneTeam;
+}
+
+///////
+// Events
+
+// We just read the god damn values from the dom directly
+// Events are executed prior to starting the state machine, so they can't take into
+// account the model, hence also not the initial value for the fields. And the repository
+// does not have the current value of the fields either. So only way is this
+export function aboutContinueEventFactory(sources: any, settings: any) {
+  // should continue only if all fields have been validated
+  void settings;
+
+  return sources.dom.select('button.c-application__submit--about').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'submit button clicked'))
+    .map((x: any) => {
+      void x;
+      const formData = getAboutFormData();
+
+      return {
+        formData,
+        validationData: validateScreenFields(aboutScreenFieldValidationSpecs, formData)
+      }
+    })
+    .tap(console.warn.bind(console, 'validation About fields performed'))
+}
+
+export function questionContinueEventFactory(sources: any, settings: any) {
+  // should continue only if all fields have been validated
+  void settings;
+
+  return sources.dom.select('button.c-application__submit--question').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'submit button clicked'))
+    .map((x: any) => {
+      void x;
+      const formData = getQuestionFormData();
+
+      return {
+        formData,
+        validationData: validateScreenFields(questionScreenFieldValidationSpecs, formData)
+      }
+    })
+    .tap(console.warn.bind(console, 'validation Question fields performed'))
+}
+
+// @returns Stream<Number> returns the index of the team which has been clicked or throws
+export function teamClickedEventFactory(sources: any, settings: any) {
+  void settings;
+
+  return sources.dom.select('.c-application__teams-list').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'team list area clicked'))
+    .map((e: Event) => {
+      const target = e.target as Element;
+      const elIndex = target.getAttribute('data-index');
+
+      if (!elIndex) {
+        throw `teamClickedEventFactory : could not find (team) target for click!`
+      }
+
+      return elIndex
+    })
+    .tap(console.warn.bind(console, 'team index'))
+}
+
+export function teamContinueEventFactory(sources: any, settings: any) {
+  void settings;
+
+  return sources.dom.select('.c-application__submit--teams').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'teamContinueEventFactory : submit button clicked'))
+}
+
+///////
+// Actions
+export function checkActionResponseIsSuccess(model: FSM_Model, actionResponse: DomainActionResponse) {
+  void model;
+  const { err } = actionResponse;
+  return !err;
+}

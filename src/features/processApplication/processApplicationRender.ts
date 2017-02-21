@@ -8,85 +8,15 @@ import {
   ValidationResult, UserApplicationModel, UserApplicationModelNotNull
 } from '../../types/processApplication';
 import { HashMap } from '../../types/repository';
-import { getInputValue } from '../../utils/dom';
+import { getInputValue, makeErrDiv, makeInputProps } from '../../utils/dom';
 import { isBoolean } from '../../utils/utils';
+import { State } from '../../components/types';
 const format = require('fmt-obj');
 const mapIndexed = addIndex(map);
 
-const FIELD_MIN_LENGTH = 2;
+//////
+// Render functions
 
-function pleaseFillFieldIn() {
-  return `Mandatory field : please fill in !`
-}
-
-function pleaseMinLength() {
-  return `Please fill field with at least ${FIELD_MIN_LENGTH} characters!`
-}
-
-// Helper functions
-function _validateScreenFields(validationSpecs: HashMap<Function>,
-                               formData: any): ValidationResult {
-  return mapObjIndexed((value, key) => validationSpecs[key](value))(formData)
-}
-export const validateScreenFields = curry(_validateScreenFields);
-
-function makeProps(fieldValue: any) {
-  return fieldValue
-    ? {
-      props: {
-        value: fieldValue,
-        type: 'text',
-        required: false,
-      }
-    }
-    : {
-      props: {// TODO : doc, this is bug? if I don't put field value, wrong past input value is kept
-        value: fieldValue,
-        type: 'text',
-        required: false,
-      }
-    }
-}
-
-function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {
-  const isValidatedOrError = validationResult[prop];
-
-  return isBoolean(isValidatedOrError)
-    ? (
-      isValidatedOrError
-        ? null : div(selector, isValidatedOrError)
-    )
-    : div(selector, isValidatedOrError);
-}
-const makeErrDiv = curry(_makeErrDiv);
-
-// About screen validation
-const validateSuperPower = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
-const validateLegalName = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
-const validatePreferredName = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
-const validatePhone = cond([[pipe(length, gt(FIELD_MIN_LENGTH)), pleaseMinLength], [T, T]]);
-const validateBirthday = cond([[pipe(length, gt(FIELD_MIN_LENGTH)), pleaseMinLength], [T, T]]);
-const validateZipCode = cond([[pipe(length, gt(FIELD_MIN_LENGTH)), pleaseMinLength], [T, T]]);
-
-export const aboutScreenFieldValidationSpecs = {
-  'superPower': validateSuperPower,
-  'legalName': validateLegalName,
-  'preferredName': validatePreferredName,
-  'phone': validatePhone,
-  'birthday': validateBirthday,
-  'zipCode': validateZipCode
-} as HashMap<any>;
-
-// Question screen validation
-const validateAnswer = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
-
-export const questionScreenFieldValidationSpecs = {
-  'answer': validateAnswer
-} as HashMap<any>;
-
-
-// TODO : add render for the links - tab component with parameters and state
-//
 function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
   let superPower, legalName, preferredName, phone, birthday, zipCode;
 
@@ -109,15 +39,13 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
   console.log('validation', model.validationMessages);
   const _makeErrDiv = makeErrDiv(model.validationMessages);
 
-  console.log('testing err div', _makeErrDiv('superPower', '.c-textfield__error..c-textfield__error--super-power'))
-
-  return void 0,
+  return [
     ul('.c-application__about', [
         li('.c-application__list-item', [
           div('.c-application__about-div.c-textfield', [
             label([
               input('.c-textfield__input.c-textfield__input--super-power',
-                makeProps(superPower))
+                makeInputProps(superPower))
             ]),
             span('.c-textfield__label', 'About you')
           ]),
@@ -130,7 +58,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--legal-name',
-              makeProps(legalName))
+              makeInputProps(legalName))
           ]),
           span('.c-textfield__label', 'Legal name')
         ]),
@@ -140,7 +68,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--preferred-name',
-              makeProps(preferredName))
+              makeInputProps(preferredName))
           ]),
           span('.c-textfield__label', 'Preferred name')
         ]),
@@ -150,7 +78,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--phone',
-              makeProps(phone))
+              makeInputProps(phone))
           ]),
           span('.c-textfield__label', 'Phone')
         ]),
@@ -160,7 +88,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--birthday',
-              makeProps(birthday))
+              makeInputProps(birthday))
           ]),
           span('.c-textfield__label', 'Birthday')
         ]),
@@ -170,7 +98,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         div('.c-application__personal-div.c-textfield', [
           label([
             input('.c-textfield__input.c-textfield__input--zip-code',
-              makeProps(zipCode))
+              makeInputProps(zipCode))
           ]),
           span('.c-textfield__label', 'Zip code')
         ]),
@@ -182,6 +110,7 @@ function renderApplicationProcessAbout(model: UserApplicationModelNotNull) {
         button('.c-btn.c-btn--primary.c-application__submit--about', `Continue`),
       ]),
     ])
+  ]
 }
 
 function renderApplicationProcessQuestion(model: UserApplicationModelNotNull): any {
@@ -205,14 +134,14 @@ function renderApplicationProcessQuestion(model: UserApplicationModelNotNull): a
   console.log('validation', model.validationMessages);
   const _makeErrDiv = makeErrDiv(model.validationMessages);
 
-  return void 0,
+  return [
     div('.c-application__question-div.c-title', question),
-    ul('.c-application__question', [
+    ul('.c-application__question-list', [
         li('.c-application__list-item', [
           div('.c-application__question-div.c-textfield', [
             label([
               input('.c-textfield__input.c-textfield__input--answer',
-                makeProps(answer))
+                makeInputProps(answer))
             ]),
             span('.c-textfield__label', `Organizer's question`)
           ]),
@@ -225,6 +154,7 @@ function renderApplicationProcessQuestion(model: UserApplicationModelNotNull): a
         button('.c-btn.c-btn--primary.c-application__submit--question', `Continue`),
       ]),
     ])
+  ]
 }
 
 function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any {
@@ -232,9 +162,9 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
   const dbTeams = model.teams;
   const teamKeys = keys(dbTeams);
 
-  return void 0,
+  return [
     div('.c-application__teams-title', 'Select a team'),
-    ul('.c-application__teams-list', flatten([
+    ul('.c-application__teams-list',
       mapIndexed((teamKey: string, index: Number) => {
         const { description, name, question } = dbTeams[teamKey];
         const { alreadyFilledIn, answer } = teams[teamKey];
@@ -242,18 +172,16 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
         return void 0,
           li('.c-application__list-item', [
             span('.c-icon__visited', alreadyFilledIn ? `o` : 'x'),
-            div('.c-application__teams-div', { attrs: { 'data-index': index } }, [
-              span('.c-textfield__label', `${name}`)
-            ]),
+            div('.c-application__teams-div', { attrs: { 'data-index': index } }, `${name}`),
           ])
       }, teamKeys)
-    ])),
+    ),
     ul('.c-application__teams-details', [
       li('.c-application__list-item', [
         button('.c-btn.c-btn--primary.c-application__submit--teams', `Continue`),
       ]),
     ])
-
+  ]
 }
 
 function renderApplicationProcessReview(model: UserApplicationModel): any {
@@ -289,8 +217,8 @@ function render(model: UserApplicationModelNotNull) {
   const { opportunity, userApplication, errorMessage } = model;
   const { description } = opportunity;
   const { about, questions, teams, progress } = userApplication;
-  const { step, hasApplied, latestTeam } = progress;
-  void about, questions, teams, hasApplied, latestTeam;
+  const { step, hasApplied, latestTeamIndex } = progress;
+  void about, questions, teams, hasApplied, latestTeamIndex;
 
   return div('#page', [
     div('.c-application', [
@@ -301,62 +229,25 @@ function render(model: UserApplicationModelNotNull) {
         div('.c-application__opportunity-date', 'date'),
       ]),
       div('.c-application__title', `Complete your application for ${description}`),
-      div('.c-application__progress-bar', [renderApplicationProcessTabs(step)]),
-      form('.c-application__form', [renderApplicationProcessStep(step, model)]),
+      div('.c-application__progress-bar', flatten([renderApplicationProcessTabs(step)])),
+      form('.c-application__form', flatten([renderApplicationProcessStep(step, model)])),
       errorMessage
         ? div('.c-application__error', `An error occurred : ${errorMessage}`)
-        : '',
+        : div('.c-application__error', '')
     ]),
   ]);
 }
 
-export function getAboutFormData(_?: any) {
-  return {
-    'superPower': getInputValue('.c-textfield__input--super-power'),
-    'legalName': getInputValue('.c-textfield__input--legal-name'),
-    'preferredName': getInputValue('.c-textfield__input--preferred-name'),
-    'phone': getInputValue('.c-textfield__input--phone'),
-    'birthday': getInputValue('.c-textfield__input--birthday'),
-    'zipCode': getInputValue('.c-textfield__input--zip-code')
-  }
-}
-
-export function getQuestionFormData(_?: any) {
-  return {
-    'answer': getInputValue('.c-textfield__input--answer'),
-  }
-}
-
-export function aboutComponent(sources: any, settings: any) {
+function _renderComponent(state: State, sources: any, settings: any) {
   void sources;
   const model: UserApplicationModelNotNull = settings.model;
-  console.info('entering aboutComponent', model);
+  console.info(`entering ${state}`);
 
   return {
     dom: just(render(model))
   }
 }
+export const renderComponent = curry(_renderComponent);
 
-export function questionComponent(sources: any, settings: any) {
-  void sources;
-
-  const model: UserApplicationModelNotNull = settings.model;
-  console.info('entering questionComponent', model);
-
-  return {
-    dom: just(render(model))
-  }
-}
-
-export function TeamComponent(sources: any, settings: any) {
-  void sources;
-
-  const model: UserApplicationModelNotNull = settings.model;
-  console.info('entering TeamComponent', model);
-
-  return {
-    dom: just(render(model))
-  }
-}
 
 

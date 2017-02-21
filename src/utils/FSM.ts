@@ -8,3 +8,11 @@ export const toJsonPatch = (path: JSON_Pointer) => pipe(mapObjIndexed((value, ke
   path: [path, key].join('/'),
   value: value
 } as UpdateOperation)), values);
+
+export function addOpToJsonPatch(path: string, value: any) {
+  return [{
+    op: "add",
+    path: path,
+    value: value
+  } as UpdateOperation]
+}

@@ -16,7 +16,7 @@ export interface UserApplicationModelNotNull {
   user : FirebaseUserChange;
   opportunity: Opportunity ;
   teams: any ;
-  userApplication: UserApplication ;
+  userApplication: UserApplication;
   errorMessage: String;
   validationMessages : ValidationResult;
 }
@@ -80,24 +80,34 @@ export interface TeamsInfo {
 
 export interface ApplicationTeamInfo {
   answer: string;
-  alreadyVisited: boolean
+  // NOTE : semantics are true <=> field value passed validation
+  alreadyFilledIn: boolean
 }
 
 export type Step = string; // actually should be an enum
 export interface Progress {
   step: Step,
   hasApplied: boolean,
-  latestTeam: string
+  latestTeamIndex: string
 }
 
 export const STEP_ABOUT = 'about';
 export const STEP_QUESTION = 'question';
 export const STEP_TEAMS = 'teams';
 export const STEP_REVIEW = 'review';
-export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW];
+export const STEP_TEAM_DETAIL = 'team_detail';
+// export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, STEP_TEAM_DETAIL];
+export const applicationProcessSteps = {
+  [STEP_ABOUT] : STEP_ABOUT,
+  [STEP_QUESTION]: STEP_QUESTION,
+  [STEP_TEAMS]:STEP_TEAMS,
+  [STEP_TEAM_DETAIL]: STEP_TEAM_DETAIL,
+  [STEP_REVIEW]:STEP_REVIEW
+};
 // TODO: a step TEAM_DETAIL or not?
 
 export type ValidationResult = HashMap<boolean|string>;
 
 export const aboutYouFields = ['superPower'];
 export const personalFields = ['birthday', 'phone', 'preferredName', 'zipCode', 'legalName'];
+export const questionFields = ['answer'];

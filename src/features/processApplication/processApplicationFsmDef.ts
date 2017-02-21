@@ -1,78 +1,53 @@
 import { just } from 'most';
 import { div } from '@motorcycle/dom';
-import { flatten, pick, all, flip, pipe, values, T } from 'ramda';
+import { flatten, pick, flip, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { modelUpdateIdentity, toJsonPatch } from '../../utils/FSM';
+import { modelUpdateIdentity , toJsonPatch, addOpToJsonPatch } from '../../utils/FSM';
 import {
-  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, aboutYouFields,
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, STEP_TEAM_DETAIL, UserApplicationModel, aboutYouFields,
   personalFields
 } from '../../types/processApplication';
-import {
-  aboutComponent, aboutScreenFieldValidationSpecs, getAboutFormData, validateAboutScreenFields
-} from './aboutComponent';
+import {  renderComponent} from './processApplicationRender';
 import { Transitions, FSM_Model } from '../../components/types';
-import { DomainActionResponse } from '../../types/repository';
 import {
   fetchUserApplicationModelData, isStep, initializeModel, makeRequestToUpdateUserApplication,
-  updateModelWithAboutData, updateModelWithAboutDataAndError, isAboutFormValid
+  updateModelWithAboutData, isFormValid, aboutContinueEventFactory, questionContinueEventFactory,
+  checkActionResponseIsSuccess, updateModelWithQuestionData, updateModelWithStepAndError,
+  updateModelWithValidationMessages, teamClickedEventFactory, updateModelWithSelectedTeamData,
+  hasJoinedAtLeastOneTeam, teamContinueEventFactory
 } from './processApplicationFsmFns';
-import { isBoolean, preventDefault } from '../../utils/utils';
-import { questionComponent } from './questionComponent';
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
 const STATE_QUESTION = 'Question';
 const STATE_TEAMS = 'Teams';
+const STATE_TEAM_DETAIL = 'Team_Detail';
 const STATE_REVIEW = 'Review';
 
 const FETCH_EV = 'fetch';
 const ABOUT_CONTINUE = 'about_continue';
+const QUESTION_CONTINUE = 'question_continue';
+const TEAM_CLICKED = 'team_clicked';
+const TEAM_CONTINUE = 'team_continue';
 
 const sinkNames = ['dom', 'domainAction$'];
 
 export const events = {
   [FETCH_EV]: fetchUserApplicationModelData,
-  [ABOUT_CONTINUE]: (sources: any, settings: any) => {
-    // should continue only if all fields have been validated
-    void settings;
-    void validateAboutScreenFields, aboutScreenFieldValidationSpecs, all, pipe, values, isBoolean;
-
-    // TODO : check response is received
-    // TODO : check that state is changed and new view is displayed
-    // We just read the god damn values from the dom directly
-    // Events are executed prior to starting the state machine, so they can't take into
-    // account the model, hence also not the initial value for the fields. And the repository
-    // does not have the current value of the fields either. So only way is this
-    return sources.dom.select('form.c-application__form').events('submit')
-      .tap(preventDefault)
-      .tap(console.warn.bind(console, 'sumbit button clicked'))
-      .map((x: any) => {
-        void x;
-        const formData = getAboutFormData();
-
-        return {
-          formData,
-          validationData: validateAboutScreenFields(aboutScreenFieldValidationSpecs, formData)
-        }
-      })
-      .tap(console.warn.bind(console, 'validation performed'))
-  }
+  [ABOUT_CONTINUE]: aboutContinueEventFactory,
+  [QUESTION_CONTINUE]: questionContinueEventFactory,
+  [TEAM_CLICKED] : teamClickedEventFactory,
+  [TEAM_CONTINUE]: teamContinueEventFactory
 };
 
-function updateModelWithValidationMessages(model : FSM_Model, eventData: any, actionResponse:any){
-  void actionResponse, model; // no request for the transition leading to this model update
-  const {formData, validationData} = eventData;
-
-  return flatten([
-    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
-    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
-    toJsonPatch('/errorMessage')(null),
-    toJsonPatch('/validationMessages')(validationData)
-  ])
-}
-
+// TODO : relocate comment
+// If there is an error updating the model, keep in the same state
+// It is important to update the model locally even if the update could not go in the
+// remote repository, so that when the view is shown the already entered
+// values are shown
+// TODO : same would be nice while saving to remote to show some message `pending...`
 export const transitions: Transitions = {
   T_INIT: {
     origin_state: INIT_STATE,
@@ -80,7 +55,7 @@ export const transitions: Transitions = {
     target_states: [
       {
         event_guard: EV_GUARD_NONE,
-        re_entry : true, // necessary as INIT is both target and current state in the beginning
+        re_entry: true, // necessary as INIT is both target and current state in the beginning
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
           {
@@ -142,37 +117,29 @@ export const transitions: Transitions = {
       }
     ]
   },
-  toQuestionScreen: {
+  fromAboutScreen: {
     origin_state: STATE_ABOUT,
     event: ABOUT_CONTINUE,
     target_states: [
       {
         // Case form has only valid fields
-        event_guard: isAboutFormValid,
+        event_guard: isFormValid,
+        re_entry: true,
         action_request: {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
         },
         transition_evaluation: [
           {
-            action_guard: (model: FSM_Model, actionResponse: DomainActionResponse) => {
-              void model;
-              const { err } = actionResponse;
-              return !err;
-            },
+            action_guard: checkActionResponseIsSuccess,
             target_state: STATE_QUESTION,
             // keep model in sync with repository
             model_update: updateModelWithAboutData
           },
-          // If there is an error updating the model, keep in the same state
-          // It is important to update the model locally even if the update could not go in the
-          // remote repository, so that when the view is shown the already entered
-          // values are shown
-          // TODO : same would be nice while saving to remote to show some message `pending...`
           {
             action_guard: T,
             target_state: STATE_ABOUT,
-            model_update: updateModelWithAboutDataAndError
+            model_update: updateModelWithStepAndError(updateModelWithAboutData, STEP_ABOUT)
           }
         ]
       },
@@ -186,10 +153,98 @@ export const transitions: Transitions = {
             action_guard: T,
             target_state: STATE_ABOUT,
             // keep model in sync with repository
-            model_update: updateModelWithValidationMessages
+            model_update: updateModelWithValidationMessages(updateModelWithAboutData, STEP_ABOUT)
           },
         ]
       }
+    ]
+  },
+  fromQuestionScreen: {
+    origin_state: STATE_QUESTION,
+    event: QUESTION_CONTINUE,
+    target_states: [
+      {
+        // Case form has only valid fields
+        event_guard: isFormValid,
+        re_entry: true,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplication
+        },
+        transition_evaluation: [
+          {
+            action_guard: checkActionResponseIsSuccess,
+            target_state: STATE_TEAMS,
+            // keep model in sync with repository
+            model_update: updateModelWithQuestionData
+          },
+          {
+            action_guard: T,
+            target_state: STATE_QUESTION,
+            model_update: updateModelWithStepAndError(updateModelWithQuestionData, STEP_QUESTION)
+          }
+        ]
+      },
+      {
+        // Case form has invalid fields
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_QUESTION,
+            // keep model in sync with repository
+            model_update: updateModelWithValidationMessages(updateModelWithQuestionData, STEP_QUESTION)
+          },
+        ]
+      }
+    ]
+  },
+  fromTeamsScreenEventTeamClick: {
+    origin_state: STATE_TEAMS,
+    event: TEAM_CLICKED,
+    target_states: [
+      {
+        // Case form has only valid fields
+        event_guard: T,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_TEAM_DETAIL,
+            model_update: updateModelWithSelectedTeamData
+          },
+        ]
+      },
+    ]
+  },
+  fromTeamsScreenToReview: {// TODO I am here
+    origin_state: STATE_TEAMS,
+    event: TEAM_CONTINUE,
+    target_states: [
+      {
+        // Case form has only valid fields
+        event_guard: hasJoinedAtLeastOneTeam,
+        // answered and passing val
+        re_entry: true,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplication
+        },
+        transition_evaluation: [
+          {
+            action_guard: checkActionResponseIsSuccess,
+            target_state: STATE_REVIEW,
+            model_update: modelUpdateIdentity
+          },
+          {
+            action_guard: T,
+            target_state: STATE_TEAMS,
+            model_update: updateModelWithStepAndError(modelUpdateIdentity, STEP_TEAMS)
+          }
+        ]
+      },
     ]
   }
 };
@@ -208,19 +263,20 @@ export const entryComponents = {
     }
   },
   [STATE_ABOUT]: function showViewStateAbout(model: UserApplicationModel) {
-    return flip(aboutComponent)({ model })
+    return flip(renderComponent(STATE_ABOUT))({ model })
   },
-  // TODO : replace aboutComponent by questionComponent
   [STATE_QUESTION]: function showViewStateQuestion(model: UserApplicationModel) {
-    return flip(questionComponent)({ model })
+    return flip(renderComponent(STATE_QUESTION))({ model })
   },
-  // TODO : same here
   [STATE_TEAMS]: function (model: UserApplicationModel) {
-    return flip(aboutComponent)({ model })
+    return flip(renderComponent(STATE_TEAMS))({ model })
+  },
+  [STATE_TEAM_DETAIL] : function (model: UserApplicationModel) {
+    return flip(renderComponent(STATE_TEAM_DETAIL))({ model })
   },
   // TODO : same here
   [STATE_REVIEW]: function (model: UserApplicationModel) {
-    return flip(aboutComponent)({ model })
+    return flip(renderComponent(STATE_ABOUT))({ model })
   },
 };
 
