@@ -9,7 +9,8 @@ import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
   UserApplication, STEP_ABOUT, STEP_REVIEW, Step, ApplicationTeamInfo, TeamsInfo,
   ApplicationQuestionInfo, Progress, ApplicationAboutInfo, UserApplicationModel, aboutYouFields,
-  personalFields, STEP_QUESTION, STEP_TEAMS, questionFields, UserApplicationModelNotNull
+  personalFields, STEP_QUESTION, STEP_TEAMS, questionFields, UserApplicationModelNotNull,
+  STEP_TEAM_DETAIL
 } from '../../types/processApplication';
 import { FSM_Model, EventData } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
@@ -61,7 +62,7 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
         progress: {
           step: STEP_ABOUT,
           hasApplied: false,
-          latestTeamIndex: ''
+          latestTeamIndex: undefined
         } as Progress
       },
       validationMessages: {}
@@ -227,6 +228,7 @@ export function updateModelWithSelectedTeamData(model: FSM_Model, eventData: Num
 
   return flatten([
     addOpToJsonPatch('/userApplication/progress/latestTeamIndex', selectedTeamIndex),
+    addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
   ])
 }
 
@@ -346,6 +348,14 @@ export function teamContinueEventFactory(sources: any, settings: any) {
   return sources.dom.select('.c-application__submit--teams').events('click')
     .tap(preventDefault)
     .tap(console.warn.bind(console, 'teamContinueEventFactory : submit button clicked'))
+}
+
+export function skipTeamClickedEventFactory(sources: any, settings: any) {
+  void settings;
+
+  return sources.dom.select('.c-application__submit--team_detail_skip').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'skipTeamClickedEventFactory : button clicked'))
 }
 
 ///////
