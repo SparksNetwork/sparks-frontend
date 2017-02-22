@@ -41,7 +41,14 @@ export const aboutScreenFieldValidationSpecs = {
 
 // Question screen validation
 const validateAnswer = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
-
 export const questionScreenFieldValidationSpecs = {
   'answer': validateAnswer
 } as HashMap<any>;
+
+// Team detail's answer validation
+const validateTeamDetailAnswer = cond([[isEmpty, pleaseFillFieldIn], [T, T]]);
+export const teamDetailScreenFieldValidationSpecs = {
+  'answer': validateAnswer
+} as HashMap<any>;
+
+

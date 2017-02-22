@@ -20,3 +20,8 @@ export function getQuestionFormData(_?: any) {
   }
 }
 
+export function getTeamDetailFormData(_?: any) {
+  return {
+    'answer': getInputValue('.c-textfield__input--team_detail_answer'),
+  }
+}

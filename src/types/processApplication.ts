@@ -81,14 +81,15 @@ export interface TeamsInfo {
 export interface ApplicationTeamInfo {
   answer: string;
   // NOTE : semantics are true <=> field value passed validation
-  alreadyFilledIn: boolean
+  alreadyFilledIn: boolean,
+  hasBeenJoined: boolean
 }
 
 export type Step = string; // actually should be an enum
 export interface Progress {
   step: Step,
   hasApplied: boolean,
-  latestTeamIndex: string
+  latestTeamIndex: number
 }
 
 export const STEP_ABOUT = 'about';
@@ -104,7 +105,6 @@ export const applicationProcessSteps = {
   [STEP_TEAM_DETAIL]: STEP_TEAM_DETAIL,
   [STEP_REVIEW]:STEP_REVIEW
 };
-// TODO: a step TEAM_DETAIL or not?
 
 export type ValidationResult = HashMap<boolean|string>;
 

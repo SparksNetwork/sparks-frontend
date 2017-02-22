@@ -1,23 +1,30 @@
 import { just } from 'most';
 import { div } from '@motorcycle/dom';
-import { flatten, pick, flip, T } from 'ramda';
+import { flip, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { modelUpdateIdentity , toJsonPatch, addOpToJsonPatch } from '../../utils/FSM';
+import { modelUpdateIdentity } from '../../utils/FSM';
 import {
-  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, STEP_TEAM_DETAIL, UserApplicationModel, aboutYouFields,
-  personalFields
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, STEP_TEAM_DETAIL
 } from '../../types/processApplication';
-import {  renderComponent} from './processApplicationRender';
-import { Transitions, FSM_Model } from '../../components/types';
+import { renderComponent } from './processApplicationRender';
+import { Transitions } from '../../components/types';
 import {
-  fetchUserApplicationModelData, isStep, initializeModel, makeRequestToUpdateUserApplication,
-  updateModelWithAboutData, isFormValid, aboutContinueEventFactory, questionContinueEventFactory,
-  checkActionResponseIsSuccess, updateModelWithQuestionData, updateModelWithStepAndError,
-  updateModelWithValidationMessages, teamClickedEventFactory, updateModelWithSelectedTeamData,
-  hasJoinedAtLeastOneTeam, teamContinueEventFactory
-} from './processApplicationFsmFns';
+  makeRequestToUpdateUserApplication, checkActionResponseIsSuccess
+} from './processApplicationActions';
+import {
+  fetchUserApplicationModelData, initializeModel, updateModelWithAboutData,
+  updateModelWithQuestionData, updateModelWithStepAndError, updateModelWithValidationMessages,
+  updateModelWithSelectedTeamData, updateModelWithSkippedTeamData, updateModelWithJoinedTeamData,
+  updateModelWithAnswerAndStep, updateModelWithStepOnly, updateModelWithTeamDetailAnswerData
+} from './processApplicationModelUpdates';
+import {
+  isStep, isFormValid, aboutContinueEventFactory, questionContinueEventFactory,
+  teamClickedEventFactory, hasJoinedAtLeastOneTeam, teamContinueEventFactory,
+  skipTeamClickedEventFactory, joinTeamClickedEventFactory, backTeamClickedEventFactory,
+  changeAboutEventFactory, changeQuestionEventFactory, changeTeamsEventFactory
+} from './processApplicationEvents';
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
@@ -30,7 +37,13 @@ const FETCH_EV = 'fetch';
 const ABOUT_CONTINUE = 'about_continue';
 const QUESTION_CONTINUE = 'question_continue';
 const TEAM_CLICKED = 'team_clicked';
+const SKIP_TEAM_CLICKED = 'skip_team_clicked';
+const JOIN_TEAM_CLICKED = 'join_team_clicked';
+const BACK_TEAM_CLICKED= 'back_team_clicked';
 const TEAM_CONTINUE = 'team_continue';
+const CHANGE_ABOUT = 'change_about';
+const CHANGE_QUESTION = 'change_question';
+const CHANGE_TEAMS = 'change_teams';
 
 const sinkNames = ['dom', 'domainAction$'];
 
@@ -38,16 +51,21 @@ export const events = {
   [FETCH_EV]: fetchUserApplicationModelData,
   [ABOUT_CONTINUE]: aboutContinueEventFactory,
   [QUESTION_CONTINUE]: questionContinueEventFactory,
-  [TEAM_CLICKED] : teamClickedEventFactory,
-  [TEAM_CONTINUE]: teamContinueEventFactory
+  [TEAM_CLICKED]: teamClickedEventFactory,
+  [SKIP_TEAM_CLICKED]: skipTeamClickedEventFactory,
+  [JOIN_TEAM_CLICKED]: joinTeamClickedEventFactory,
+  [BACK_TEAM_CLICKED] : backTeamClickedEventFactory,
+  [TEAM_CONTINUE]: teamContinueEventFactory,
+  [CHANGE_ABOUT]: changeAboutEventFactory,
+  [CHANGE_QUESTION]: changeQuestionEventFactory,
+  [CHANGE_TEAMS]: changeTeamsEventFactory,
 };
 
-// TODO : relocate comment
 // If there is an error updating the model, keep in the same state
 // It is important to update the model locally even if the update could not go in the
 // remote repository, so that when the view is shown the already entered
 // values are shown
-// TODO : same would be nice while saving to remote to show some message `pending...`
+// TODO : same would be nice while saving to remote to show some message `pending...` = feature
 export const transitions: Transitions = {
   T_INIT: {
     origin_state: INIT_STATE,
@@ -206,7 +224,6 @@ export const transitions: Transitions = {
     event: TEAM_CLICKED,
     target_states: [
       {
-        // Case form has only valid fields
         event_guard: T,
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
@@ -219,14 +236,79 @@ export const transitions: Transitions = {
       },
     ]
   },
-  fromTeamsScreenToReview: {// TODO I am here
+  fromTeamDetailScreenSkipClick: {
+    origin_state: STATE_TEAM_DETAIL,
+    event: SKIP_TEAM_CLICKED,
+    target_states: [
+      {
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_TEAM_DETAIL,
+            model_update: updateModelWithSkippedTeamData
+          },
+        ]
+      },
+    ]
+  },
+  fromTeamDetailScreenJoinClick: {
+    origin_state: STATE_TEAM_DETAIL,
+    event: JOIN_TEAM_CLICKED,
+    target_states: [
+      {
+        // Case form has only valid fields
+        event_guard: isFormValid,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_TEAM_DETAIL,
+            model_update: updateModelWithJoinedTeamData
+          },
+        ]
+      },
+      {
+        // Case form has soem invalid field(s)
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_TEAM_DETAIL,
+            model_update: updateModelWithValidationMessages(updateModelWithTeamDetailAnswerData, STEP_TEAM_DETAIL)
+          },
+        ]
+      },
+    ]
+  },
+  fromTeamDetailScreenBackClick: {
+    origin_state: STATE_TEAM_DETAIL,
+    event: BACK_TEAM_CLICKED,
+    target_states: [
+      {
+        event_guard: T,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_TEAMS,
+            model_update: updateModelWithAnswerAndStep
+          },
+        ]
+      },
+    ]
+  },
+  fromTeamsScreenToReview: {
     origin_state: STATE_TEAMS,
     event: TEAM_CONTINUE,
     target_states: [
       {
-        // Case form has only valid fields
         event_guard: hasJoinedAtLeastOneTeam,
-        // answered and passing val
         re_entry: true,
         action_request: {
           driver: 'domainAction$',
@@ -236,7 +318,7 @@ export const transitions: Transitions = {
           {
             action_guard: checkActionResponseIsSuccess,
             target_state: STATE_REVIEW,
-            model_update: modelUpdateIdentity
+            model_update: updateModelWithStepOnly(STEP_REVIEW)
           },
           {
             action_guard: T,
@@ -246,7 +328,61 @@ export const transitions: Transitions = {
         ]
       },
     ]
-  }
+  },
+  fromReviewScreenToAbout: {
+    origin_state: STATE_REVIEW,
+    event: CHANGE_ABOUT,
+    target_states: [
+      {
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithStepOnly(STEP_ABOUT)
+          },
+        ]
+      },
+    ]
+  },
+  fromReviewScreenToQuestion: {
+    origin_state: STATE_REVIEW,
+    event: CHANGE_QUESTION,
+    target_states: [
+      {
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithStepOnly(STEP_QUESTION)
+          },
+        ]
+      },
+    ]
+  },
+  fromReviewScreenToTeams: {
+    origin_state: STATE_REVIEW,
+    event: CHANGE_TEAMS,
+    target_states: [
+      {
+        event_guard: T,
+        re_entry: true,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithStepOnly(STEP_TEAMS)
+          },
+        ]
+      },
+    ]
+  },
 };
 
 export const entryComponents = {
@@ -271,12 +407,12 @@ export const entryComponents = {
   [STATE_TEAMS]: function (model: UserApplicationModel) {
     return flip(renderComponent(STATE_TEAMS))({ model })
   },
-  [STATE_TEAM_DETAIL] : function (model: UserApplicationModel) {
+  [STATE_TEAM_DETAIL]: function (model: UserApplicationModel) {
     return flip(renderComponent(STATE_TEAM_DETAIL))({ model })
   },
   // TODO : same here
   [STATE_REVIEW]: function (model: UserApplicationModel) {
-    return flip(renderComponent(STATE_ABOUT))({ model })
+    return flip(renderComponent(STATE_REVIEW))({ model })
   },
 };
 

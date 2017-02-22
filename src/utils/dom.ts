@@ -1,5 +1,5 @@
 import { ValidationResult } from '../types/processApplication';
-import { curry } from 'ramda';
+import { curry, isEmpty } from 'ramda';
 import { isBoolean } from './utils';
 import { div } from '@motorcycle/dom';
 
@@ -8,9 +8,12 @@ export function getInputValue(sel: string) {
   return el ? el.value : ''
 }
 
-export function makeInputProps(fieldValue: any) {
+export function makeInputProps(fieldValue: any, latestTeamIndex: any) {
+  // NOTE!!!! The key MUST be passed to indicate to the virtual node library that those node are
+  // indeed different
   return fieldValue
     ? {
+      key : latestTeamIndex,
       props: {
         value: fieldValue,
         type: 'text',
@@ -18,8 +21,8 @@ export function makeInputProps(fieldValue: any) {
       }
     }
     : {
-      props: {// TODO : doc, this is bug? if I don't put field value, wrong past input value is kept
-        value: fieldValue,
+    key : latestTeamIndex,
+      props: {
         type: 'text',
         required: false,
       }
@@ -29,10 +32,10 @@ export function makeInputProps(fieldValue: any) {
 function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {
   const isValidatedOrError = validationResult[prop];
 
-  return isBoolean(isValidatedOrError)
+  return isBoolean(isValidatedOrError) || isEmpty(isValidatedOrError)
     ? (
       isValidatedOrError
-        ? null : div(selector, isValidatedOrError)
+        ? div(selector, '') : div(selector, isValidatedOrError)
     )
     : div(selector, isValidatedOrError);
 }
