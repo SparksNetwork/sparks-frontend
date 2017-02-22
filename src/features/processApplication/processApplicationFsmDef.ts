@@ -358,7 +358,7 @@ export const transitions: Transitions = {
         transition_evaluation: [
           {
             action_guard: T,
-            target_state: STATE_ABOUT,
+            target_state: STATE_QUESTION,
             model_update: updateModelWithStepOnly(STEP_QUESTION)
           },
         ]
@@ -376,7 +376,7 @@ export const transitions: Transitions = {
         transition_evaluation: [
           {
             action_guard: T,
-            target_state: STATE_ABOUT,
+            target_state: STATE_TEAMS,
             model_update: updateModelWithStepOnly(STEP_TEAMS)
           },
         ]
