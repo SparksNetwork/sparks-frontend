@@ -40,7 +40,7 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
         personal: { legalName: '', preferredName: '', phone: '', zipCode: '', birthday: '' }
       },
       questions: { answer: '' },
-      progress: { step: '', hasApplied: false, latestTeamIndex: 0 },
+      progress: { step: '', hasApplied: false, hasReviewedApplication: false, latestTeamIndex: 0 },
       teams: {}
     },
     errorMessage: null,
@@ -50,11 +50,18 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
 
 // TODO : also beware that the responses wont be caught as they come with .getResponse...
 // find a workaround
-// TODO : also investiate I don't need a token if I keep the request, comparison with == should
-// suffice
-// TODO : think about what happen when in state team detail, not handled for now... extra arrow
-// in graph? I guess so, and use lastTeam as info
-// TODO : should have the model reflect the GUI state as a fallback to the remote repository
+// TODO : 6. FSM re_entry should be lower, at action guard level when I put the target state
+// TODO : 5. error message when the model is corrupted - missing field etc.
+// TODO : 4. add a button unjoin team - could be same button Join/Unjoin is not joined or joined
+// TODO : 1. investigate bug with skip and join button => send issues to snadbomm github
+// TODO : 6. write a monad which allow to chain model update (in FSM/utils lib or index)
+// TODO : 3. add events for each input field to adjust the model and redraw to avoid 1.
+// TODO : 3. factor it so that each input is just calling a factored function with parameters
+// TODO : 2. think about facilities for testing the FSM! try to test with it
+// TODO : 1. put better CSS as much as possible to make it look good
+
+// ---> the usual one, but move document.getElementById to sources.DOM, and create a mockDom when
+// testing
 
 const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 

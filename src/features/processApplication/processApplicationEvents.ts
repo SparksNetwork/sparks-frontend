@@ -142,10 +142,18 @@ export function changeQuestionEventFactory(sources: any, settings: any) {
 
 export function changeTeamsEventFactory(sources: any, settings: any) {
   void settings;
-// TODO : I am here
+
   return sources.dom.select('.c-application__change--teams').events('click')
     .tap(preventDefault)
     .tap(console.warn.bind(console, 'changeTeamsEventFactory : button clicked'))
+}
+
+export function applicationCompletedEventFactory(sources: any, settings: any) {
+  void settings;
+
+  return sources.dom.select('.c-application__review--submit').events('click')
+    .tap(preventDefault)
+    .tap(console.warn.bind(console, 'applicationCompletedEventFactory : button clicked'))
 }
 
 ///////
@@ -181,6 +189,13 @@ export const isStep = curry(_isStepX);
 export function isFormValid(model: FSM_Model, eventData: EventData) {
   void model;
   return pipe(values, all(isBoolean))(eventData.validationData)
+}
+
+export function hasReachedReviewStep(model: UserApplicationModelNotNull, eventData: EventData) {
+  void eventData;
+  const {userApplication : {progress : {hasReviewedApplication}}} = model;
+
+  return hasReviewedApplication
 }
 
 export function hasJoinedAtLeastOneTeam(model: UserApplicationModelNotNull, eventData: EventData) {

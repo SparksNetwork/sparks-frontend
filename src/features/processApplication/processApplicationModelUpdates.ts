@@ -28,14 +28,12 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
   let initialModel: UserApplicationModel;
   const { userKey, opportunityKey } = settings;
   const { user, opportunity, teams, userApplication } = eventData;
-  // userKey and opportunityKey are in settigns but we dont have settings here
   // opportunity here is the Opportunity whose key is somehow encoded in the URL
   // teams is all the teams in the database (!)
 
   if (!userApplication) {
-    // we want to keep only the teams for the opportunity
-    // For that, we get the project key in the opportunity
-    // and keep only the team with that project key
+    // we want to keep only the teams for the opportunity. For that, we get the project key in
+    // the opportunity and keep only the team with that project key
     const { projectKey } = opportunity as Opportunity;
 
     // go through the teams, for each key, keep only those whose value satisfy a predicate
@@ -43,7 +41,6 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
       keys(teams as Teams));
     const teamsInfo: TeamsInfo = zipObj(filteredTeamKeys, map(always({
       answer: '',
-      // alreadyFilledIn: false,
       hasBeenJoined: false
     } as ApplicationTeamInfo), filteredTeamKeys));
 
@@ -64,6 +61,7 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
         progress: {
           step: STEP_ABOUT,
           hasApplied: false,
+          hasReviewedApplication : false,
           latestTeamIndex: 0
         } as Progress
       },
@@ -132,7 +130,6 @@ function _updateModelWithStepAndError(updateModelFn: Function, step: Step, model
 export const updateModelWithStepAndError = curry(_updateModelWithStepAndError);
 
 function _updateModelWithValidationMessages(updateModelFn: Function, step: Step, model: FSM_Model, eventData: any, actionResponse: any) {
-  void actionResponse, model; // no request for the transition leading to this model update
   const { validationData } = eventData;
   console.log('_updateModelWithValidationMessages', validationData);
 
@@ -147,7 +144,6 @@ export const updateModelWithValidationMessages = curry(_updateModelWithValidatio
 export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
                                          actionResponse: DomainActionResponse) {
   console.log('updateModelWithAboutData');
-  void actionResponse, model;
   const formData = eventData.formData;
 
   return flatten([
@@ -159,12 +155,40 @@ export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
   ])
 }
 
+export function updateModelWithAboutDataAndStepReview(model: FSM_Model, eventData: EventData,
+                                                      actionResponse: DomainActionResponse) {
+  console.log('updateModelWithAboutDataAndStepReview');
+  const formData = eventData.formData;
+
+  return flatten([
+    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
+    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
+    toJsonPatch('/validationMessages')({}),
+    addOpToJsonPatch('/userApplication/progress/step', STEP_REVIEW),
+    toJsonPatch('/errorMessage')(null),
+  ])
+}
+
+export function updateModelWithQuestionDataAndStepReview(model: FSM_Model, eventData: EventData,
+                                                      actionResponse: DomainActionResponse) {
+  console.log('updateModelWithQuestionDataAndStepReview');
+  const formData = eventData.formData;
+
+  return flatten([
+    patchModelWithQuestionData(formData),
+    addOpToJsonPatch('/userApplication/progress/step', STEP_REVIEW),
+  ])
+}
+
 export function updateModelWithQuestionData(model: FSM_Model, eventData: EventData,
                                             actionResponse: DomainActionResponse) {
-  void actionResponse, model;
   console.log('updateModelWithQuestionData');
   const formData = eventData.formData;
 
+  return patchModelWithQuestionData(formData)
+}
+
+function patchModelWithQuestionData(formData:any){
   return flatten([
     toJsonPatch('/userApplication/questions')(pick(questionFields, formData)),
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAMS),
@@ -175,7 +199,6 @@ export function updateModelWithQuestionData(model: FSM_Model, eventData: EventDa
 
 export function updateModelWithSelectedTeamData(model: FSM_Model, eventData: Number,
                                                 actionResponse: DomainActionResponse) {
-  void actionResponse, model;
   const selectedTeamIndex = eventData;
 
   console.log('updateModelWithSelectedTeamData', eventData);
@@ -188,7 +211,6 @@ export function updateModelWithSelectedTeamData(model: FSM_Model, eventData: Num
 
 export function updateModelWithSkippedTeamData(model: UserApplicationModelNotNull, eventData: EventData,
                                                actionResponse: DomainActionResponse) {
-  void actionResponse;
   const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
   const teamKeys = keys(teams);
   const numberOfTeams = teamKeys.length;
@@ -204,13 +226,11 @@ export function updateModelWithSkippedTeamData(model: UserApplicationModelNotNul
     addOpToJsonPatch('/userApplication/progress/latestTeamIndex', nextTeamIndex),
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-    // addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/alreadyFilledIn`, ),
   ])
 }
 
 export function updateModelWithJoinedTeamData(model: UserApplicationModelNotNull, eventData: EventData,
                                               actionResponse: DomainActionResponse) {
-  void actionResponse;
   const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
   const teamKeys = keys(teams);
   const numberOfTeams = teamKeys.length;
@@ -227,13 +247,11 @@ export function updateModelWithJoinedTeamData(model: UserApplicationModelNotNull
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/hasBeenJoined`, true),
-    // addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/alreadyFilledIn`, ),
   ])
 }
 
 export function updateModelWithTeamDetailAnswerData(model: UserApplicationModelNotNull, eventData: EventData,
                                                     actionResponse: DomainActionResponse) {
-  void actionResponse;
   const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
   const teamKeys = keys(teams);
   const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
@@ -244,14 +262,12 @@ export function updateModelWithTeamDetailAnswerData(model: UserApplicationModelN
   return flatten([
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-    // addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/alreadyFilledIn`, ),
   ])
 }
 
 
 export function updateModelWithAnswerAndStep(model: UserApplicationModelNotNull, eventData: EventData,
                                              actionResponse: DomainActionResponse) {
-  void actionResponse;
   const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
   const teamKeys = keys(teams);
   const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
@@ -262,16 +278,28 @@ export function updateModelWithAnswerAndStep(model: UserApplicationModelNotNull,
   return flatten([
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAMS),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-    // addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/alreadyFilledIn`, ),
   ])
 }
 
 function _updateModelWithStepOnly(step:Step, model: UserApplicationModelNotNull, eventData: EventData,
                                         actionResponse: DomainActionResponse) {
-  void actionResponse, model, eventData;
-
   return flatten([
     addOpToJsonPatch('/userApplication/progress/step', step),
   ])
 }
 export const updateModelWithStepOnly = curry(_updateModelWithStepOnly);
+
+export function updateModelWithStepAndHasReviewed(model: UserApplicationModelNotNull, eventData: EventData,
+                                                  actionResponse: DomainActionResponse) {
+  return flatten([
+    addOpToJsonPatch('/userApplication/progress/step', STEP_REVIEW),
+    addOpToJsonPatch('/userApplication/progress/hasReviewedApplication', true),
+  ])
+}
+
+export function updateModelWithAppliedData (model: UserApplicationModelNotNull, eventData: EventData,
+                                        actionResponse: DomainActionResponse) {
+  return flatten([
+    addOpToJsonPatch('/userApplication/progress/hasApplied', true),
+  ])
+}

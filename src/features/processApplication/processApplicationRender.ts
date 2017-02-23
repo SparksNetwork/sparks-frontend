@@ -1,9 +1,10 @@
-import { a, div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
+///<reference path="../../types/processApplication.ts"/>
+import { h2, div, input, form, label, ul, li, span, button } from '@motorcycle/dom';
 import { just } from 'most';
-import { filter, flatten, keys, values, curry, map, addIndex } from 'ramda';
+import { none, filter, flatten, keys, values, curry, map, addIndex } from 'ramda';
 import {
   applicationProcessSteps, Step, STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
-  UserApplicationModelNotNull, STEP_TEAM_DETAIL
+  UserApplicationModelNotNull, STEP_TEAM_DETAIL, STEP_APPLIED
 } from '../../types/processApplication';
 import { makeErrDiv, makeInputProps } from '../../utils/dom';
 import { State } from '../../components/types';
@@ -157,6 +158,11 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
   const { userApplication: { teams } } = model;
   const dbTeams = model.teams;
   const teamKeys = keys(dbTeams);
+  // disabled true <=> hasJoinedAtLeastOneTeam
+  const disabled = none((teamKey: string) => {
+    return teams[teamKey].hasBeenJoined
+  }, keys(teams));
+  console.log('disabled', disabled);
 
   return [
     div('.c-application__teams-title', 'Select a team'),
@@ -175,7 +181,9 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
     ),
     ul('.c-application__teams-details', [
       li('.c-application__list-item', [
-        button('.c-btn.c-btn--primary.c-application__submit--teams', `Continue`),
+        button('.c-btn.c-btn--primary.c-application__submit--teams',
+          { props: { disabled: disabled } },
+          `Continue`),
       ]),
     ])
   ]
@@ -305,6 +313,12 @@ function renderApplyButton(model: UserApplicationModelNotNull) {
   ]
 }
 
+function renderApplicationProcessApplied(model: UserApplicationModelNotNull){
+  return [
+    div (`.c-application__applied`, `You successfully applied! Stay in touch`)
+  ]
+}
+
 function renderApplicationProcessStep(step: Step, model: UserApplicationModelNotNull) {
   switch (step) {
     case STEP_ABOUT :
@@ -317,6 +331,8 @@ function renderApplicationProcessStep(step: Step, model: UserApplicationModelNot
       return renderApplicationProcessTeamDetail(model);
     case STEP_REVIEW :
       return renderApplicationProcessReview(model);
+    case STEP_APPLIED :
+      return renderApplicationProcessApplied(model);
     default:
       throw 'internal error : unexpected step in the application process!'
     // break;
@@ -326,8 +342,8 @@ function renderApplicationProcessStep(step: Step, model: UserApplicationModelNot
 function renderApplicationProcessTabs(step: Step) {
   return div('.c-application__progress-bar', map((_step: Step) => {
     return _step !== step
-      ? a('.c-application__selected-step', { props: { href: `/${_step}` } }, _step)
-      : div('.c-application__unselected-step', _step)
+      ? div('.c-application__unselected-step', _step)
+      : div('.c-application__selected-step', [h2(_step)])
   }, values(applicationProcessSteps)));
 }
 

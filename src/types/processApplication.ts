@@ -4,21 +4,21 @@ import { Opportunity } from './domain';
 import { FirebaseUserChange } from '../drivers/firebase-user/index';
 
 export interface UserApplicationModel {
-  user : FirebaseUserChange;
+  user: FirebaseUserChange;
   opportunity: Opportunity | null;
   teams: any | null;
   userApplication: UserApplication | null;
   errorMessage: String | null;
-  validationMessages : ValidationResult;
+  validationMessages: ValidationResult;
 }
 
 export interface UserApplicationModelNotNull {
-  user : FirebaseUserChange;
+  user: FirebaseUserChange;
   opportunity: Opportunity ;
   teams: any ;
   userApplication: UserApplication;
   errorMessage: String;
-  validationMessages : ValidationResult;
+  validationMessages: ValidationResult;
 }
 
 // export type UserApplications = HashMap<UserApplication>;
@@ -89,6 +89,7 @@ export type Step = string; // actually should be an enum
 export interface Progress {
   step: Step,
   hasApplied: boolean,
+  hasReviewedApplication: boolean,
   latestTeamIndex: number
 }
 
@@ -97,13 +98,16 @@ export const STEP_QUESTION = 'question';
 export const STEP_TEAMS = 'teams';
 export const STEP_REVIEW = 'review';
 export const STEP_TEAM_DETAIL = 'team_detail';
-// export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, STEP_TEAM_DETAIL];
+export const STEP_APPLIED = 'step_applied';
+// export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
+// STEP_TEAM_DETAIL, STEP_APPLIED];
 export const applicationProcessSteps = {
-  [STEP_ABOUT] : STEP_ABOUT,
+  [STEP_ABOUT]: STEP_ABOUT,
   [STEP_QUESTION]: STEP_QUESTION,
-  [STEP_TEAMS]:STEP_TEAMS,
+  [STEP_TEAMS]: STEP_TEAMS,
   [STEP_TEAM_DETAIL]: STEP_TEAM_DETAIL,
-  [STEP_REVIEW]:STEP_REVIEW
+  [STEP_REVIEW]: STEP_REVIEW,
+  [STEP_APPLIED]: STEP_APPLIED
 };
 
 export type ValidationResult = HashMap<boolean|string>;

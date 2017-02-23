@@ -1,37 +1,44 @@
 import { just } from 'most';
 import { div } from '@motorcycle/dom';
-import { flip, T } from 'ramda';
+import { both, complement, flip, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
 import { modelUpdateIdentity } from '../../utils/FSM';
 import {
-  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, STEP_TEAM_DETAIL
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, STEP_TEAM_DETAIL,
+  STEP_APPLIED
 } from '../../types/processApplication';
 import { renderComponent } from './processApplicationRender';
 import { Transitions } from '../../components/types';
 import {
-  makeRequestToUpdateUserApplication, checkActionResponseIsSuccess
+  makeRequestToUpdateUserApplication, checkActionResponseIsSuccess,
+  makeRequestToUpdateUserApplicationWithHasReviewed,
+  makeRequestToUpdateUserApplicationWithHasApplied
 } from './processApplicationActions';
 import {
   fetchUserApplicationModelData, initializeModel, updateModelWithAboutData,
   updateModelWithQuestionData, updateModelWithStepAndError, updateModelWithValidationMessages,
   updateModelWithSelectedTeamData, updateModelWithSkippedTeamData, updateModelWithJoinedTeamData,
-  updateModelWithAnswerAndStep, updateModelWithStepOnly, updateModelWithTeamDetailAnswerData
+  updateModelWithAnswerAndStep, updateModelWithStepOnly, updateModelWithTeamDetailAnswerData,
+  updateModelWithStepAndHasReviewed, updateModelWithAboutDataAndStepReview,
+  updateModelWithQuestionDataAndStepReview, updateModelWithAppliedData
 } from './processApplicationModelUpdates';
 import {
   isStep, isFormValid, aboutContinueEventFactory, questionContinueEventFactory,
   teamClickedEventFactory, hasJoinedAtLeastOneTeam, teamContinueEventFactory,
   skipTeamClickedEventFactory, joinTeamClickedEventFactory, backTeamClickedEventFactory,
-  changeAboutEventFactory, changeQuestionEventFactory, changeTeamsEventFactory
+  changeAboutEventFactory, changeQuestionEventFactory, changeTeamsEventFactory,
+  hasReachedReviewStep, applicationCompletedEventFactory
 } from './processApplicationEvents';
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
 const STATE_QUESTION = 'Question';
 const STATE_TEAMS = 'Teams';
-const STATE_TEAM_DETAIL = 'Team_Detail';
+const STATE_TEAM_DETAIL = 'Team Detail';
 const STATE_REVIEW = 'Review';
+const STATE_APPLIED ='State Applied';
 
 const FETCH_EV = 'fetch';
 const ABOUT_CONTINUE = 'about_continue';
@@ -44,6 +51,7 @@ const TEAM_CONTINUE = 'team_continue';
 const CHANGE_ABOUT = 'change_about';
 const CHANGE_QUESTION = 'change_question';
 const CHANGE_TEAMS = 'change_teams';
+const APPLICATION_COMPLETED = 'application_completed';
 
 const sinkNames = ['dom', 'domainAction$'];
 
@@ -59,6 +67,7 @@ export const events = {
   [CHANGE_ABOUT]: changeAboutEventFactory,
   [CHANGE_QUESTION]: changeQuestionEventFactory,
   [CHANGE_TEAMS]: changeTeamsEventFactory,
+  [APPLICATION_COMPLETED]: applicationCompletedEventFactory
 };
 
 // If there is an error updating the model, keep in the same state
@@ -140,9 +149,8 @@ export const transitions: Transitions = {
     event: ABOUT_CONTINUE,
     target_states: [
       {
-        // Case form has only valid fields
-        event_guard: isFormValid,
-        re_entry: true,
+        // Case form has only valid fields AND has NOT reached the review stage of the app
+        event_guard: both(isFormValid, complement(hasReachedReviewStep)),
         action_request: {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
@@ -153,6 +161,28 @@ export const transitions: Transitions = {
             target_state: STATE_QUESTION,
             // keep model in sync with repository
             model_update: updateModelWithAboutData
+          },
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithStepAndError(updateModelWithAboutData, STEP_ABOUT)
+          }
+        ]
+      },
+      {
+        // Case form has only valid fields AND has reached the review stage of the app
+        event_guard: both(isFormValid, hasReachedReviewStep),
+        re_entry: true,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplication
+        },
+        transition_evaluation: [
+          {
+            action_guard: checkActionResponseIsSuccess,
+            target_state: STATE_REVIEW,
+            // keep model in sync with repository
+            model_update: updateModelWithAboutDataAndStepReview
           },
           {
             action_guard: T,
@@ -182,9 +212,8 @@ export const transitions: Transitions = {
     event: QUESTION_CONTINUE,
     target_states: [
       {
-        // Case form has only valid fields
-        event_guard: isFormValid,
-        re_entry: true,
+        // Case form has only valid fields AND has NOT reached the review stage of the app
+        event_guard: both(isFormValid, complement(hasReachedReviewStep)),
         action_request: {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
@@ -195,6 +224,28 @@ export const transitions: Transitions = {
             target_state: STATE_TEAMS,
             // keep model in sync with repository
             model_update: updateModelWithQuestionData
+          },
+          {
+            action_guard: T,
+            target_state: STATE_QUESTION,
+            model_update: updateModelWithStepAndError(updateModelWithQuestionData, STEP_QUESTION)
+          }
+        ]
+      },
+      {
+        // Case form has only valid fields AND has reached the review stage of the app
+        event_guard: both(isFormValid, hasReachedReviewStep),
+        re_entry: true,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplication
+        },
+        transition_evaluation: [
+          {
+            action_guard: checkActionResponseIsSuccess,
+            target_state: STATE_REVIEW,
+            // keep model in sync with repository
+            model_update: updateModelWithQuestionDataAndStepReview
           },
           {
             action_guard: T,
@@ -312,13 +363,13 @@ export const transitions: Transitions = {
         re_entry: true,
         action_request: {
           driver: 'domainAction$',
-          request: makeRequestToUpdateUserApplication
+          request: makeRequestToUpdateUserApplicationWithHasReviewed
         },
         transition_evaluation: [
           {
             action_guard: checkActionResponseIsSuccess,
             target_state: STATE_REVIEW,
-            model_update: updateModelWithStepOnly(STEP_REVIEW)
+            model_update: updateModelWithStepAndHasReviewed
           },
           {
             action_guard: T,
@@ -383,6 +434,34 @@ export const transitions: Transitions = {
       },
     ]
   },
+  fromReviewScreenToApplied: {
+    origin_state: STATE_REVIEW,
+    event: APPLICATION_COMPLETED,
+    target_states: [
+      {
+        // Case form has only valid fields AND has NOT reached the review stage of the app
+        event_guard: T,
+        re_entry: true,
+        action_request: {
+          driver: 'domainAction$',
+          request: makeRequestToUpdateUserApplicationWithHasApplied
+        },
+        transition_evaluation: [
+          {
+            action_guard: checkActionResponseIsSuccess,
+            target_state: STATE_APPLIED,
+            // keep model in sync with repository
+            model_update: updateModelWithAppliedData
+          },
+          {
+            action_guard: T,
+            target_state: STATE_ABOUT,
+            model_update: updateModelWithStepAndError(updateModelWithAppliedData, STEP_APPLIED)
+          }
+        ]
+      },
+    ]
+  },
 };
 
 export const entryComponents = {
@@ -410,9 +489,20 @@ export const entryComponents = {
   [STATE_TEAM_DETAIL]: function (model: UserApplicationModel) {
     return flip(renderComponent(STATE_TEAM_DETAIL))({ model })
   },
-  // TODO : same here
   [STATE_REVIEW]: function (model: UserApplicationModel) {
     return flip(renderComponent(STATE_REVIEW))({ model })
+  },
+  [STATE_APPLIED]: function showInitView(model: UserApplicationModel) {
+    void model;
+
+    // This is a transient state - display some loading indicator
+    return function appliedComponent(sources: any, settings: any) {
+      void sources, settings;
+
+      return {
+        dom: just(div('You successfully applied...'))
+      }
+    }
   },
 };
 
