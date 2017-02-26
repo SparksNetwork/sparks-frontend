@@ -4,33 +4,37 @@ import { both, complement, flip, T } from 'ramda';
 import {
   EV_GUARD_NONE, ACTION_REQUEST_NONE, ACTION_GUARD_NONE, INIT_EVENT_NAME, INIT_STATE
 } from '../../components/properties';
-import { modelUpdateIdentity } from '../../utils/FSM';
 import {
-  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, STEP_TEAM_DETAIL,
-  STEP_APPLIED
+  modelUpdateIdentity, makeDefaultActionResponseProcessing, checkActionResponseIsSuccess
+} from '../../utils/FSM';
+import {
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW, UserApplicationModel, STEP_APPLIED
 } from '../../types/processApplication';
 import { renderComponent } from './processApplicationRender';
 import { Transitions } from '../../components/types';
 import {
-  makeRequestToUpdateUserApplication, checkActionResponseIsSuccess,
+  makeRequestToUpdateUserApplication,
   makeRequestToUpdateUserApplicationWithHasReviewed,
   makeRequestToUpdateUserApplicationWithHasApplied
 } from './processApplicationActions';
 import {
-  fetchUserApplicationModelData, initializeModel, updateModelWithAboutData,
-  updateModelWithQuestionData, updateModelWithStepAndError, updateModelWithValidationMessages,
-  updateModelWithSelectedTeamData, updateModelWithSkippedTeamData, updateModelWithJoinedTeamData,
-  updateModelWithAnswerAndStep, updateModelWithStepOnly, updateModelWithTeamDetailAnswerData,
-  updateModelWithStepAndHasReviewed, updateModelWithAboutDataAndStepReview,
-  updateModelWithQuestionDataAndStepReview, updateModelWithAppliedData
+  initializeModel, updateModelWithAboutData, updateModelWithQuestionData,
+  updateModelWithStepAndError, updateModelWithSelectedTeamData, updateModelWithSkippedTeamData,
+  updateModelWithJoinedOrUnjoinedTeamData, updateModelWithTeamDetailAnswerAndNextStep,
+  updateModelWithStepOnly, updateModelWithStepAndHasReviewed, updateModelWithAboutDataAndStepReview,
+  updateModelWithQuestionDataAndStepReview, updateModelWithAppliedData,
+  updateModelWithTeamDetailValidationMessages, updateModelWithAboutValidationMessages,
+  updateModelWithQuestionValidationMessages, updateModelWithAboutDataAndStepQuestion,
+  initializeModelAndStepReview
 } from './processApplicationModelUpdates';
 import {
   isStep, isFormValid, aboutContinueEventFactory, questionContinueEventFactory,
   teamClickedEventFactory, hasJoinedAtLeastOneTeam, teamContinueEventFactory,
   skipTeamClickedEventFactory, joinTeamClickedEventFactory, backTeamClickedEventFactory,
   changeAboutEventFactory, changeQuestionEventFactory, changeTeamsEventFactory,
-  hasReachedReviewStep, applicationCompletedEventFactory
+  hasReachedReviewStep, applicationCompletedEventFactory, hasApplied
 } from './processApplicationEvents';
+import { fetchUserApplicationModelData } from './processApplicationFetch';
 
 const INIT_S = 'INIT';
 const STATE_ABOUT = 'About';
@@ -38,15 +42,15 @@ const STATE_QUESTION = 'Question';
 const STATE_TEAMS = 'Teams';
 const STATE_TEAM_DETAIL = 'Team Detail';
 const STATE_REVIEW = 'Review';
-const STATE_APPLIED ='State Applied';
+const STATE_APPLIED = 'State Applied';
 
 const FETCH_EV = 'fetch';
 const ABOUT_CONTINUE = 'about_continue';
 const QUESTION_CONTINUE = 'question_continue';
 const TEAM_CLICKED = 'team_clicked';
 const SKIP_TEAM_CLICKED = 'skip_team_clicked';
-const JOIN_TEAM_CLICKED = 'join_team_clicked';
-const BACK_TEAM_CLICKED= 'back_team_clicked';
+const JOIN_OR_UNJOIN_TEAM_CLICKED = 'join_team_clicked';
+const BACK_TEAM_CLICKED = 'back_team_clicked';
 const TEAM_CONTINUE = 'team_continue';
 const CHANGE_ABOUT = 'change_about';
 const CHANGE_QUESTION = 'change_question';
@@ -61,8 +65,8 @@ export const events = {
   [QUESTION_CONTINUE]: questionContinueEventFactory,
   [TEAM_CLICKED]: teamClickedEventFactory,
   [SKIP_TEAM_CLICKED]: skipTeamClickedEventFactory,
-  [JOIN_TEAM_CLICKED]: joinTeamClickedEventFactory,
-  [BACK_TEAM_CLICKED] : backTeamClickedEventFactory,
+  [JOIN_OR_UNJOIN_TEAM_CLICKED]: joinTeamClickedEventFactory,
+  [BACK_TEAM_CLICKED]: backTeamClickedEventFactory,
   [TEAM_CONTINUE]: teamContinueEventFactory,
   [CHANGE_ABOUT]: changeAboutEventFactory,
   [CHANGE_QUESTION]: changeQuestionEventFactory,
@@ -75,6 +79,8 @@ export const events = {
 // remote repository, so that when the view is shown the already entered
 // values are shown
 // TODO : same would be nice while saving to remote to show some message `pending...` = feature
+// The way to do this is to have ONE global pending internal FSM state which is associated to
+// some action (think about how, if we update the view with a spinner, how?)
 export const transitions: Transitions = {
   T_INIT: {
     origin_state: INIT_STATE,
@@ -98,6 +104,20 @@ export const transitions: Transitions = {
     origin_state: INIT_S,
     event: FETCH_EV,
     target_states: [
+      {
+        // whatever step the application is in, if the user has applied, we start with the review
+        event_guard: hasApplied,
+        action_request: ACTION_REQUEST_NONE,
+        transition_evaluation: [
+          {
+            action_guard: ACTION_GUARD_NONE,
+            target_state: STATE_REVIEW,
+            // Business rule
+            // if the user has applied, then he starts the app process route with the review stage
+            model_update: initializeModelAndStepReview
+          }
+        ]
+      },
       {
         event_guard: isStep(STEP_ABOUT),
         action_request: ACTION_REQUEST_NONE,
@@ -155,19 +175,16 @@ export const transitions: Transitions = {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
         },
-        transition_evaluation: [
-          {
-            action_guard: checkActionResponseIsSuccess,
+        transition_evaluation: makeDefaultActionResponseProcessing({
+          success: {
             target_state: STATE_QUESTION,
-            // keep model in sync with repository
-            model_update: updateModelWithAboutData
+            model_update: updateModelWithAboutDataAndStepQuestion
           },
-          {
-            action_guard: T,
+          error: {
             target_state: STATE_ABOUT,
             model_update: updateModelWithStepAndError(updateModelWithAboutData, STEP_ABOUT)
           }
-        ]
+        })
       },
       {
         // Case form has only valid fields AND has reached the review stage of the app
@@ -177,19 +194,16 @@ export const transitions: Transitions = {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplication
         },
-        transition_evaluation: [
-          {
-            action_guard: checkActionResponseIsSuccess,
+        transition_evaluation: makeDefaultActionResponseProcessing({
+          success: {
             target_state: STATE_REVIEW,
-            // keep model in sync with repository
             model_update: updateModelWithAboutDataAndStepReview
           },
-          {
-            action_guard: T,
+          error: {
             target_state: STATE_ABOUT,
             model_update: updateModelWithStepAndError(updateModelWithAboutData, STEP_ABOUT)
           }
-        ]
+        })
       },
       {
         // Case form has invalid fields
@@ -201,7 +215,7 @@ export const transitions: Transitions = {
             action_guard: T,
             target_state: STATE_ABOUT,
             // keep model in sync with repository
-            model_update: updateModelWithValidationMessages(updateModelWithAboutData, STEP_ABOUT)
+            model_update: updateModelWithAboutValidationMessages
           },
         ]
       }
@@ -264,7 +278,7 @@ export const transitions: Transitions = {
             action_guard: T,
             target_state: STATE_QUESTION,
             // keep model in sync with repository
-            model_update: updateModelWithValidationMessages(updateModelWithQuestionData, STEP_QUESTION)
+            model_update: updateModelWithQuestionValidationMessages
           },
         ]
       }
@@ -305,9 +319,9 @@ export const transitions: Transitions = {
       },
     ]
   },
-  fromTeamDetailScreenJoinClick: {
+  fromTeamDetailScreenJoinOrUnjoinClick: {
     origin_state: STATE_TEAM_DETAIL,
-    event: JOIN_TEAM_CLICKED,
+    event: JOIN_OR_UNJOIN_TEAM_CLICKED,
     target_states: [
       {
         // Case form has only valid fields
@@ -318,12 +332,12 @@ export const transitions: Transitions = {
           {
             action_guard: T,
             target_state: STATE_TEAM_DETAIL,
-            model_update: updateModelWithJoinedTeamData
+            model_update: updateModelWithJoinedOrUnjoinedTeamData
           },
         ]
       },
       {
-        // Case form has soem invalid field(s)
+        // Case form has some invalid field(s)
         event_guard: T,
         re_entry: true,
         action_request: ACTION_REQUEST_NONE,
@@ -331,7 +345,7 @@ export const transitions: Transitions = {
           {
             action_guard: T,
             target_state: STATE_TEAM_DETAIL,
-            model_update: updateModelWithValidationMessages(updateModelWithTeamDetailAnswerData, STEP_TEAM_DETAIL)
+            model_update: updateModelWithTeamDetailValidationMessages
           },
         ]
       },
@@ -348,7 +362,7 @@ export const transitions: Transitions = {
           {
             action_guard: T,
             target_state: STATE_TEAMS,
-            model_update: updateModelWithAnswerAndStep
+            model_update: updateModelWithTeamDetailAnswerAndNextStep
           },
         ]
       },
@@ -365,18 +379,16 @@ export const transitions: Transitions = {
           driver: 'domainAction$',
           request: makeRequestToUpdateUserApplicationWithHasReviewed
         },
-        transition_evaluation: [
-          {
-            action_guard: checkActionResponseIsSuccess,
+        transition_evaluation: makeDefaultActionResponseProcessing({
+          success: {
             target_state: STATE_REVIEW,
             model_update: updateModelWithStepAndHasReviewed
           },
-          {
-            action_guard: T,
+          error: {
             target_state: STATE_TEAMS,
             model_update: updateModelWithStepAndError(modelUpdateIdentity, STEP_TEAMS)
           }
-        ]
+        })
       },
     ]
   },
@@ -511,4 +523,3 @@ export const fsmSettings = {
   init_event_data: {},
   sinkNames: sinkNames
 };
-

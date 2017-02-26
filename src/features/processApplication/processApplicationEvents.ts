@@ -1,6 +1,4 @@
-import {
-  complement, isNil, identity, any, merge, pipe, values, all, map, filter, keys, always, curry, zipObj, pick, flatten
-} from 'ramda';
+import { complement, isNil, any, pipe, values, all, keys, curry } from 'ramda';
 import { preventDefault, isBoolean } from '../../utils/utils';
 import {
   getAboutFormData, getQuestionFormData, getTeamDetailFormData
@@ -10,7 +8,7 @@ import {
   teamDetailScreenFieldValidationSpecs
 } from './processApplicationValidation';
 import {
-  Step, UserApplicationModelNotNull, UserApplication, STEP_REVIEW, STEP_ABOUT
+  Step, UserApplicationModelNotNull, UserApplication, STEP_REVIEW, STEP_ABOUT, UserApplicationModel
 } from '../../types/processApplication';
 import { FSM_Model, EventData } from '../../components/types';
 
@@ -94,7 +92,7 @@ export function skipTeamClickedEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__submit--team_detail_skip').events('click')
     .tap(preventDefault)
-    .map((x:any) => ({formData: getTeamDetailFormData()}))
+    .map((x: any) => ({ formData: getTeamDetailFormData() }))
     .tap(console.warn.bind(console, 'skipTeamClickedEventFactory : button clicked'))
 }
 
@@ -126,7 +124,7 @@ export function backTeamClickedEventFactory(sources: any, settings: any) {
 
 export function changeAboutEventFactory(sources: any, settings: any) {
   void settings;
-// TODO : I am here
+
   return sources.dom.select('.c-application__change--about').events('click')
     .tap(preventDefault)
     .tap(console.warn.bind(console, 'changeAboutEventFactory : button clicked'))
@@ -134,7 +132,7 @@ export function changeAboutEventFactory(sources: any, settings: any) {
 
 export function changeQuestionEventFactory(sources: any, settings: any) {
   void settings;
-// TODO : I am here
+
   return sources.dom.select('.c-application__change--question').events('click')
     .tap(preventDefault)
     .tap(console.warn.bind(console, 'changeQuestionEventFactory : button clicked'))
@@ -158,6 +156,19 @@ export function applicationCompletedEventFactory(sources: any, settings: any) {
 
 ///////
 // Event guards
+
+export function hasApplied(model: FSM_Model, eventData: UserApplicationModel) {
+  void model;
+  const userApplication = eventData.userApplication;
+
+  if (userApplication) {
+    const { progress : { step, hasApplied } } = userApplication;
+    return hasApplied
+  }
+  else {
+    return false
+  }
+}
 
 function _isStepX(targetStep: Step, model: FSM_Model, eventData: EventData) {
   void model;
@@ -193,7 +204,7 @@ export function isFormValid(model: FSM_Model, eventData: EventData) {
 
 export function hasReachedReviewStep(model: UserApplicationModelNotNull, eventData: EventData) {
   void eventData;
-  const {userApplication : {progress : {hasReviewedApplication}}} = model;
+  const { userApplication : { progress : { hasReviewedApplication } } } = model;
 
   return hasReviewedApplication
 }
