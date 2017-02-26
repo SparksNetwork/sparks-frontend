@@ -1,27 +1,23 @@
-import { Stream, combineArray } from 'most';
-import { keys, map, filter, always, curry, zipObj, pick, flatten } from 'ramda';
-import { OPPORTUNITY, USER_APPLICATION, TEAMS } from '../../domain';
-import { toJsonPatch, addOpToJsonPatch } from '../../utils/FSM';
+import { merge, keys, map, filter, always, curry, zipObj, pick, flatten } from 'ramda';
+import { toJsonPatch, addOpToJsonPatch, chainModelUpdates, getSelectedKey } from '../../utils/FSM';
 import { Opportunity, Teams, Team } from '../../types/domain';
-import { FirebaseUserChange } from '../../drivers/firebase-user';
 import {
-  UserApplication, STEP_ABOUT, Step, ApplicationTeamInfo, TeamsInfo, ApplicationQuestionInfo,
-  Progress, ApplicationAboutInfo, UserApplicationModel, aboutYouFields, personalFields,
-  STEP_QUESTION, STEP_TEAMS, questionFields, STEP_TEAM_DETAIL, UserApplicationModelNotNull,
-  STEP_REVIEW
+  UserApplicationModelNotNull, ApplicationTeamInfo, TeamsInfo, ApplicationQuestionInfo, Step,
+  STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_TEAM_DETAIL, STEP_REVIEW, Progress,
+  ApplicationAboutInfo, UserApplicationModel, aboutYouFields, personalFields, questionFields
 } from '../../types/processApplication';
 import { FSM_Model, EventData } from '../../components/types';
 import { DomainActionResponse } from '../../types/repository';
+import { assertContract } from '../../utils/utils';
+import { checkUserApplicationContracts } from '../../domain/contracts';
 
 
-///////
-// Helpers
-function getSelectedKey(latestTeamIndex:any, teamKeys:any){
-  return teamKeys[latestTeamIndex];
+function _updateModelWithStepOnly(step: Step, model: UserApplicationModelNotNull, eventData: EventData,
+                                  actionResponse: DomainActionResponse) {
+  return flatten([addOpToJsonPatch('/userApplication/progress/step', step)])
 }
+export const updateModelWithStepOnly = curry(_updateModelWithStepOnly);
 
-///////
-// Model updates
 export function initializeModel(model: any, eventData: UserApplicationModel, actionResponse: any, settings: any) {
   void actionResponse, model;
 
@@ -61,7 +57,7 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
         progress: {
           step: STEP_ABOUT,
           hasApplied: false,
-          hasReviewedApplication : false,
+          hasReviewedApplication: false,
           latestTeamIndex: 0
         } as Progress
       },
@@ -69,9 +65,19 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
     }
   }
   else {
-    // Note: we reference the user application in the model, we should make sure that the user
-    // application is immutable, otherwise it will spill in the model
-    // TODO : check validity of userApp coming from repository or not??
+    assertContract(checkUserApplicationContracts, [userApplication], `
+user application read from the database is corrupted. 
+Please check fields for correctness vs. expected format
+`);
+
+    // TODO : maybe to remove when I changed elsewhere initializeModelAndStepReview
+    const {progress : {hasApplied, step}} = userApplication;
+    const updatedUserApplication = hasApplied
+      ? merge(userApplication, {progress : {step : STEP_REVIEW}})
+      : userApplication;
+
+    console.log('updatedUserApplication', userApplication);
+
     initialModel = {
       user,
       opportunity,
@@ -85,39 +91,13 @@ export function initializeModel(model: any, eventData: UserApplicationModel, act
   return toJsonPatch('')(initialModel);
 }
 
-export function fetchUserApplicationModelData(sources: any, settings: any) {
-  const { user$ } = sources;
-  const { opportunityKey, userKey } = settings;
-  const userApp$ = fetchUserApplicationData(sources, opportunityKey, userKey);
-  const teams$ = sources.query$.query(TEAMS, {});
-  const opportunities$: Stream<Opportunity> = sources.query$.query(OPPORTUNITY, { opportunityKey });
+export const initializeModelAndStepReview = chainModelUpdates([
+  initializeModel,
+  updateModelWithStepOnly(STEP_REVIEW)
+]);
 
-  // NOTE : combineArray will produce its first value when all its dependent streams have
-  // produced their first value. Hence this is equivalent to a zip for the first value, which
-  // is the only one we need anyways (there is no zipArray in most)
-  return combineArray<FirebaseUserChange, Opportunity | null, UserApplication | null, Teams | null, any>(
-    (user, opportunity, userApplication, teams) =>
-      ({
-        user,
-        opportunity,
-        userApplication,
-        teams,
-        errorMessage: null,
-        validationMessages: {}
-      }),
-    [user$, opportunities$, userApp$, teams$]
-  )
-    .tap(console.warn.bind(console, 'combined user, userapp, teams fetch event'))
-    .take(1)
-}
-
-export function fetchUserApplicationData(sources: any, opportunityKey: string, userKey: string) {
-  return sources.query$.query(USER_APPLICATION, { opportunityKey, userKey })
-    .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
-}
-
-function _updateModelWithStepAndError(updateModelFn: Function, step: Step, model: FSM_Model, eventData: EventData,
-                                      actionResponse: DomainActionResponse) {
+function _updateModelWithStepAndError(updateModelFn: Function, step: Step, model: FSM_Model,
+                                      eventData: EventData, actionResponse: DomainActionResponse) {
   console.log('_updateModelWithStepAndError');
   const { err } = actionResponse;
 
@@ -129,48 +109,38 @@ function _updateModelWithStepAndError(updateModelFn: Function, step: Step, model
 }
 export const updateModelWithStepAndError = curry(_updateModelWithStepAndError);
 
-function _updateModelWithValidationMessages(updateModelFn: Function, step: Step, model: FSM_Model, eventData: any, actionResponse: any) {
-  const { validationData } = eventData;
-  console.log('_updateModelWithValidationMessages', validationData);
+export const updateModelWithAboutDataAndStepQuestion = chainModelUpdates([
+  updateModelWithAboutData,
+  updateModelWithEmptyErrorMessages,
+  updateModelWithStepOnly(STEP_QUESTION)
+]);
 
-  return flatten([
-    updateModelFn(model, eventData, actionResponse),
-    toJsonPatch('/validationMessages')(validationData),
-    addOpToJsonPatch('/userApplication/progress/step', step),
-  ])
-}
-export const updateModelWithValidationMessages = curry(_updateModelWithValidationMessages);
+export const updateModelWithAboutDataAndStepReview = chainModelUpdates([
+  updateModelWithAboutData,
+  updateModelWithEmptyErrorMessages,
+  updateModelWithStepOnly(STEP_REVIEW)
+]);
 
 export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
                                          actionResponse: DomainActionResponse) {
-  console.log('updateModelWithAboutData');
-  const formData = eventData.formData;
-
-  return flatten([
-    toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
-    toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
-    toJsonPatch('/validationMessages')({}),
-    addOpToJsonPatch('/userApplication/progress/step', STEP_QUESTION),
-    toJsonPatch('/errorMessage')(null),
-  ])
-}
-
-export function updateModelWithAboutDataAndStepReview(model: FSM_Model, eventData: EventData,
-                                                      actionResponse: DomainActionResponse) {
   console.log('updateModelWithAboutDataAndStepReview');
   const formData = eventData.formData;
 
   return flatten([
     toJsonPatch('/userApplication/about/aboutYou')(pick(aboutYouFields, formData)),
     toJsonPatch('/userApplication/about/personal')(pick(personalFields, formData)),
-    toJsonPatch('/validationMessages')({}),
-    addOpToJsonPatch('/userApplication/progress/step', STEP_REVIEW),
-    toJsonPatch('/errorMessage')(null),
   ])
 }
 
+export function updateModelWithEmptyErrorMessages(model: FSM_Model, eventData: EventData,
+                                                  actionResponse: DomainActionResponse) {
+  console.log('updateModelWithEmptyErrorMessages');
+
+  return flatten([toJsonPatch('/validationMessages')({}), toJsonPatch('/errorMessage')(null)])
+}
+
 export function updateModelWithQuestionDataAndStepReview(model: FSM_Model, eventData: EventData,
-                                                      actionResponse: DomainActionResponse) {
+                                                         actionResponse: DomainActionResponse) {
   console.log('updateModelWithQuestionDataAndStepReview');
   const formData = eventData.formData;
 
@@ -188,7 +158,7 @@ export function updateModelWithQuestionData(model: FSM_Model, eventData: EventDa
   return patchModelWithQuestionData(formData)
 }
 
-function patchModelWithQuestionData(formData:any){
+function patchModelWithQuestionData(formData: any) {
   return flatten([
     toJsonPatch('/userApplication/questions')(pick(questionFields, formData)),
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAMS),
@@ -229,65 +199,33 @@ export function updateModelWithSkippedTeamData(model: UserApplicationModelNotNul
   ])
 }
 
-export function updateModelWithJoinedTeamData(model: UserApplicationModelNotNull, eventData: EventData,
-                                              actionResponse: DomainActionResponse) {
-  const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
-  const teamKeys = keys(teams);
+export function updateModelWithJoinedOrUnjoinedTeamData(model: UserApplicationModelNotNull,
+                                                        eventData: EventData,
+                                                        actionResponse: DomainActionResponse) {
+  const { teams : dbTeams, userApplication : { teams, progress:{ latestTeamIndex } } }= model;
+  const teamKeys = keys(dbTeams);
   const numberOfTeams = teamKeys.length;
   const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
   const { formData: { answer } } = eventData;
+  const { hasBeenJoined } = teams[selectedTeamKey];
   // loop back to first team if met end of teams
   const nextTeamIndex = (latestTeamIndex + 1) % numberOfTeams;
 
-  console.log('updateModelWithJoinedTeamData', latestTeamIndex, nextTeamIndex, selectedTeamKey);
+  console.log('updateModelWithJoinedTeamData', latestTeamIndex, nextTeamIndex, selectedTeamKey, hasBeenJoined);
 
   return flatten([
     addOpToJsonPatch('/validationMessages', {}),
     addOpToJsonPatch('/userApplication/progress/latestTeamIndex', nextTeamIndex),
     addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
     addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-    addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/hasBeenJoined`, true),
+    addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/hasBeenJoined`, !hasBeenJoined),
   ])
 }
 
-export function updateModelWithTeamDetailAnswerData(model: UserApplicationModelNotNull, eventData: EventData,
-                                                    actionResponse: DomainActionResponse) {
-  const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
-  const teamKeys = keys(teams);
-  const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
-  const { formData: { answer } } = eventData;
-
-  console.log('updateModelWithJoinedTeamData', latestTeamIndex, selectedTeamKey);
-
-  return flatten([
-    addOpToJsonPatch('/userApplication/progress/step', STEP_TEAM_DETAIL),
-    addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-  ])
-}
-
-
-export function updateModelWithAnswerAndStep(model: UserApplicationModelNotNull, eventData: EventData,
-                                             actionResponse: DomainActionResponse) {
-  const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
-  const teamKeys = keys(teams);
-  const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
-  const { answer } = eventData;
-
-  console.log('updateModelWithAnswerAndStep', latestTeamIndex, selectedTeamKey, answer);
-
-  return flatten([
-    addOpToJsonPatch('/userApplication/progress/step', STEP_TEAMS),
-    addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
-  ])
-}
-
-function _updateModelWithStepOnly(step:Step, model: UserApplicationModelNotNull, eventData: EventData,
-                                        actionResponse: DomainActionResponse) {
-  return flatten([
-    addOpToJsonPatch('/userApplication/progress/step', step),
-  ])
-}
-export const updateModelWithStepOnly = curry(_updateModelWithStepOnly);
+export const updateModelWithTeamDetailAnswerAndNextStep = chainModelUpdates([
+  updateModelWithStepOnly(STEP_TEAMS),
+  updateModelWithTeamDetailAnswerData
+]);
 
 export function updateModelWithStepAndHasReviewed(model: UserApplicationModelNotNull, eventData: EventData,
                                                   actionResponse: DomainActionResponse) {
@@ -297,9 +235,47 @@ export function updateModelWithStepAndHasReviewed(model: UserApplicationModelNot
   ])
 }
 
-export function updateModelWithAppliedData (model: UserApplicationModelNotNull, eventData: EventData,
-                                        actionResponse: DomainActionResponse) {
+export function updateModelWithAppliedData(model: UserApplicationModelNotNull, eventData: EventData,
+                                           actionResponse: DomainActionResponse) {
+  return flatten([addOpToJsonPatch('/userApplication/progress/hasApplied', true),])
+}
+
+function updateModelWithValidationData(model: UserApplicationModelNotNull, eventData: EventData,
+                                       actionResponse: DomainActionResponse) {
+  const { validationData } = eventData;
+  console.log('updateModelWithValidationData', validationData);
+
+  return toJsonPatch('/validationMessages')(validationData);
+}
+
+function updateModelWithTeamDetailAnswerData(model: UserApplicationModelNotNull, eventData: EventData,
+                                             actionResponse: DomainActionResponse) {
+  const { teams, userApplication : { progress:{ latestTeamIndex } } }= model;
+  const teamKeys = keys(teams);
+  const selectedTeamKey = getSelectedKey(latestTeamIndex, teamKeys);
+  const { answer } = eventData;
+
+  console.log('updateModelWithTeamDetailAnswerData', latestTeamIndex, selectedTeamKey, answer);
+
   return flatten([
-    addOpToJsonPatch('/userApplication/progress/hasApplied', true),
+    addOpToJsonPatch(`/userApplication/teams/${selectedTeamKey}/answer`, answer),
   ])
 }
+
+export const updateModelWithTeamDetailValidationMessages = chainModelUpdates([
+  updateModelWithTeamDetailAnswerData,
+  updateModelWithValidationData,
+  updateModelWithStepOnly(STEP_TEAM_DETAIL)
+]);
+
+export const updateModelWithAboutValidationMessages = chainModelUpdates([
+  updateModelWithAboutData,
+  updateModelWithValidationData,
+  updateModelWithStepOnly(STEP_ABOUT)
+]);
+
+export const updateModelWithQuestionValidationMessages = chainModelUpdates([
+  updateModelWithQuestionData,
+  updateModelWithValidationData,
+  updateModelWithStepOnly(STEP_QUESTION)
+]);

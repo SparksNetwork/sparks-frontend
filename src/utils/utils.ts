@@ -3,7 +3,7 @@ import {
   map, values, equals, addIndex, flip, difference, isEmpty, where, both, curry
 } from 'ramda';
 import { ERROR_MESSAGE_PREFIX } from '../components/properties';
-// TODO : change to most
+
 import { merge as mergeM } from 'most';
 
 const mapIndexed = addIndex(map);

@@ -102,6 +102,7 @@ export const STEP_APPLIED = 'step_applied';
 // export const applicationProcessSteps = [STEP_ABOUT, STEP_QUESTION, STEP_TEAMS, STEP_REVIEW,
 // STEP_TEAM_DETAIL, STEP_APPLIED];
 export const applicationProcessSteps = {
+  // NOTE !! It is very important that the keys and the values are equal!!
   [STEP_ABOUT]: STEP_ABOUT,
   [STEP_QUESTION]: STEP_QUESTION,
   [STEP_TEAMS]: STEP_TEAMS,

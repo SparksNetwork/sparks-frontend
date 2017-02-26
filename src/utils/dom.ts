@@ -11,22 +11,14 @@ export function getInputValue(sel: string) {
 export function makeInputProps(fieldValue: any, latestTeamIndex: any) {
   // NOTE!!!! The key MUST be passed to indicate to the virtual node library that those node are
   // indeed different
-  return fieldValue
-    ? {
-      key : latestTeamIndex,
-      props: {
-        value: fieldValue,
-        type: 'text',
-        required: false,
-      }
+  return {
+    key: latestTeamIndex,
+    props: {
+      value: fieldValue ? fieldValue : '',
+      type: 'text',
+      required: false,
     }
-    : {
-    key : latestTeamIndex,
-      props: {
-        type: 'text',
-        required: false,
-      }
-    }
+  }
 }
 
 function _makeErrDiv(validationResult: ValidationResult, prop: string, selector: string) {

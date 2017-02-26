@@ -89,7 +89,8 @@ export function makeDomainActionDriver(repository: Repository, config: ContextCo
 
     source$.drain();
 
-    // TODO : merge all the emitters, return that, then add getResponse to it
+    // DOC : responseSource$ will emit responses for any of the action request
+    // DOC : for use cases when one wants to filter per context, `getResponse` property is added
     const responseSource$: any = mergeArray(values(eventEmitters));
     responseSource$.getResponse = function getResponse(context: string) {
       console.warn('getResponse', context);

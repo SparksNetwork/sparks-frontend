@@ -48,20 +48,10 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
   }
 }
 
-// TODO : also beware that the responses wont be caught as they come with .getResponse...
-// find a workaround
-// TODO : 6. FSM re_entry should be lower, at action guard level when I put the target state
-// TODO : 5. error message when the model is corrupted - missing field etc.
-// TODO : 4. add a button unjoin team - could be same button Join/Unjoin is not joined or joined
-// TODO : 1. investigate bug with skip and join button => send issues to snadbomm github
-// TODO : 6. write a monad which allow to chain model update (in FSM/utils lib or index)
-// TODO : 3. add events for each input field to adjust the model and redraw to avoid 1.
-// TODO : 3. factor it so that each input is just calling a factored function with parameters
-// TODO : 2. think about facilities for testing the FSM! try to test with it
-// TODO : 1. put better CSS as much as possible to make it look good
-
-// ---> the usual one, but move document.getElementById to sources.DOM, and create a mockDom when
-// testing
+// TODO : 3. but even better is to have the firebase update be an update not a set operation!!
+// this means less traffic towards the server
+// TODO : 4. remove the unused field in progress or what is teams? remove alreadyFilledIn id never used
+// fixme : 1. investigate bug with skip and join button => happens once then not when refresh
 
 const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 
@@ -84,7 +74,7 @@ export function ProcessApplication(sources: MainSources): MainSinks {
   });
   console.warn('ProcessApplication', sinks);
 
-// TODO
+// TODO : to finish when specs evolves (for instance, routing specs, where next to apply?)
   return {
     dom: sinks.dom,
     router: sinks.router || never(),
@@ -92,14 +82,3 @@ export function ProcessApplication(sources: MainSources): MainSinks {
     domainAction$: sinks.domainAction$ || never()
   };
 }
-
-// TODO : in User application domain, object is userapps:{users:{key:{opps:{key:{::UserApplication}
-//   so from the url get user key and opp key, and from that get the user application
-// WRITE : I will be writing to that
-// Read : same
-// !! how to get the team info from Opps and user key
-
-// basically get the project key from the opps and then all the teams and filter by project key
-// UserApplication = f(User, Opps, Teams) = Model
-// So event data init will be {User, Opps, Teams} then update model will the makeup
-// for UserApplication init, which will also be model init

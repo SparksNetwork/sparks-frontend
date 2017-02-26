@@ -723,9 +723,8 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     const initialEvent = pipe(prefixWith(INIT_EVENT_NAME), prefixWith(EVENT_PREFIX))(init_event_data);
 
     const fsmEvents = merge(
-      mergeArray(eventsArray).map(prefixWith(EVENT_PREFIX)).tap(x => console.warn('user event', x)),
-      mergeArray(actionResponseObsArray).map(prefixWith(DRIVER_PREFIX)).tap(
-        x => console.warn('response event', x)),
+      mergeArray(eventsArray).tap(x => console.warn('user event', x)).map(prefixWith(EVENT_PREFIX)),
+      mergeArray(actionResponseObsArray).tap(x => console.warn('response event', x)).map(prefixWith(DRIVER_PREFIX)),
     )
       .startWith(initialEvent);
 
@@ -754,8 +753,6 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
 
     /** @type {Observable.<FSM_State>}*/
     let eventEvaluation$ = fsmEvents
-      .tap(x =>
-        console.warn('fsm events', x))
       .scan(
         evaluateEvent(events, transitions, entryComponents, sources, settings),
         initialFSM_State

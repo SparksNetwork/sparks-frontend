@@ -3,7 +3,8 @@ import { defaultTo } from 'ramda';
 import { getFirebaseStream } from '../utils/firebase';
 import { UserApplication } from '../types/processApplication';
 import { assertContract } from '../utils/utils';
-import { isValidUserApplicationPK } from './contracts';
+import { checkUserApplicationContracts } from './contracts';
+// TODO : those contracts should be in the domain???
 
 export const OPPORTUNITY = 'OPPORTUNITY';
 export const USER_APPLICATION = 'USERAPP';
@@ -30,7 +31,6 @@ export const queryConfig: ContextMap = {
   [USER_APPLICATION]: function getUserApplicationData(fbDb: Repository, context: Context, params: Payload) {
     // TODO : analyse what happens in case of error
     // TODO : improve code for when there is no oppKey nor userKey -> ref//!
-    // TODO : typescript type for params subtype of any
     // i.e. Applications/Users/key/Opportunities/key
     void context;
     const refMap = { [USER_APPLICATION]: USER_APPLICATION_REF };
@@ -84,7 +84,7 @@ export const domainActionConfig: ContextCommandMap = {
       void context;
 
       // Check command contracts
-      assertContract(isValidUserApplicationPK, [payload],
+      assertContract(checkUserApplicationContracts, [payload],
         `UserApplication's user and opportunity keys cannot be null!`);
 
       const { userKey, opportunityKey, } = payload;

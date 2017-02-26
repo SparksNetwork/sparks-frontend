@@ -169,8 +169,7 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
     ul('.c-application__teams-list',
       mapIndexed((teamKey: string, index: Number) => {
         const { description, name, question } = dbTeams[teamKey];
-        const { alreadyFilledIn, hasBeenJoined, answer } = teams[teamKey];
-        // TODO : remove alreadyFilledIn id never used
+        const { hasBeenJoined, answer } = teams[teamKey];
 
         return void 0,
           li('.c-application__list-item', [
@@ -183,6 +182,7 @@ function renderApplicationProcessTeams(model: UserApplicationModelNotNull): any 
       li('.c-application__list-item', [
         button('.c-btn.c-btn--primary.c-application__submit--teams',
           { props: { disabled: disabled } },
+          // { },
           `Continue`),
       ]),
     ])
@@ -197,9 +197,9 @@ function renderApplicationProcessTeamDetail(model: UserApplicationModelNotNull):
         } = model;
   const latestTeamKey = keys(dbTeams)[latestTeamIndex];
   const { name, description, question } = dbTeams[latestTeamKey];
-  const { answer } = teams[latestTeamKey];
+  const { answer, hasBeenJoined } = teams[latestTeamKey];
   const _makeErrDiv = makeErrDiv(validationMessages);
-  console.log('makeInputProps answer', makeInputProps(answer, latestTeamIndex), answer)
+  console.log('makeInputProps answer', makeInputProps(answer, latestTeamIndex), answer);
 
   return [
     button('.c-application__team_detail-back', 'Back to teams'),
@@ -221,10 +221,15 @@ function renderApplicationProcessTeamDetail(model: UserApplicationModelNotNull):
     ),
     ul('.c-application__team_detail-details', [
       li('.c-application__list-item', [
-        button('.c-btn.c-btn--quiet.c-application__submit--team_detail_skip', `Skip this team`),
+        button('.c-btn.c-btn--quiet.c-application__submit--team_detail_skip',
+          // NOTE!!! have to put disabled false to avoid a snabbdom bug? the past disabled attribute
+          // from past button remains
+          { props: { disabled: false } }, `Skip this team`),
       ]),
       li('.c-application__list-item', [
-        button('.c-btn.c-btn--primary.c-application__submit--team_detail_join', `Join team`),
+        hasBeenJoined
+          ? button('.c-btn.c-btn--primary.c-application__submit--team_detail_join', `Unjoin team`)
+          : button('.c-btn.c-btn--primary.c-application__submit--team_detail_join', `Join team`)
       ]),
     ])
   ]
@@ -232,7 +237,6 @@ function renderApplicationProcessTeamDetail(model: UserApplicationModelNotNull):
 
 function renderApplicationProcessReview(model: UserApplicationModelNotNull): any {
   void model;
-  // TODO
 
   return flatten([
     renderAboutYouList(model),
@@ -313,9 +317,9 @@ function renderApplyButton(model: UserApplicationModelNotNull) {
   ]
 }
 
-function renderApplicationProcessApplied(model: UserApplicationModelNotNull){
+function renderApplicationProcessApplied(model: UserApplicationModelNotNull) {
   return [
-    div (`.c-application__applied`, `You successfully applied! Stay in touch`)
+    div(`.c-application__applied`, `You successfully applied! Stay in touch`)
   ]
 }
 
@@ -375,7 +379,7 @@ function render(model: UserApplicationModelNotNull) {
 function _renderComponent(state: State, sources: any, settings: any) {
   void sources;
   const model: UserApplicationModelNotNull = settings.model;
-  console.info(`entering ${state}`);
+  console.info(`entering ${state}`, model);
 
   return {
     dom: just(render(model))

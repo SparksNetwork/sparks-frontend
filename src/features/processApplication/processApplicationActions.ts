@@ -68,8 +68,6 @@ export function makeRequestToUpdateUserApplication(model: UserApplicationModelNo
   const newUserApplication  = getUserApplicationUpdates(formData, userApplication);
   // newUserApplication.progress.hasReviewedApplication = false;
 
-  // TODO : but even better is to have the firebase update be an update not a set operation!!
-  // this means less traffic towards the server
   return {
     context: USER_APPLICATION,
     command: UPDATE,
@@ -85,8 +83,6 @@ export function makeRequestToUpdateUserApplicationWithHasReviewed(model: UserApp
   const newUserApplication  = getUserApplicationUpdates(formData, userApplication);
   newUserApplication.progress.hasReviewedApplication = true;
 
-  // TODO : but even better is to have the firebase update be an update not a set operation!!
-  // this means less traffic towards the server
   return {
     context: USER_APPLICATION,
     command: UPDATE,
@@ -101,8 +97,6 @@ export function makeRequestToUpdateUserApplicationWithHasApplied(model: UserAppl
   const newUserApplication  = getUserApplicationUpdates(formData, userApplication);
   newUserApplication.progress.hasApplied= true;
 
-  // TODO : but even better is to have the firebase update be an update not a set operation!!
-  // this means less traffic towards the server
   return {
     context: USER_APPLICATION,
     command: UPDATE,
@@ -112,8 +106,3 @@ export function makeRequestToUpdateUserApplicationWithHasApplied(model: UserAppl
 
 ///////
 // Action guards
-export function checkActionResponseIsSuccess(model: FSM_Model, actionResponse: DomainActionResponse) {
-  void model;
-  const { err } = actionResponse;
-  return !err;
-}
