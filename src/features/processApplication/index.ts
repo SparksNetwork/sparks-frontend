@@ -55,7 +55,7 @@ function getEmptyUserApplicationModel(): UserApplicationModel {
 
 const fsmComponent = makeFSM(events, transitions, entryComponents, fsmSettings);
 
-// Note : in the case of a rounting, ProcessApplication will be called with the keys in setting
+// Note : in the case of a routing, ProcessApplication will be called with the keys in setting
 export function ProcessApplication(sources: MainSources): MainSinks {
   const emptyUserApplicationModel = getEmptyUserApplicationModel();
   const fakeOpportunityKey = '-KEMfQuSuMoabBEy9Sdb';
