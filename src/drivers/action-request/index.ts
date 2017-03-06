@@ -45,12 +45,10 @@ function eventEmitterFactory(_: any, context: Context, __: any) {
 export function makeDomainActionDriver(repository: Repository, config: ContextCommandMap) {
   // Create a subject for each context defined in config
   const eventEmitters = mapObjIndexed(eventEmitterFactory, config);
-  console.warn('entered in driver maker');
 
   return function (sink$: Stream<DomainAction>) {
-    console.warn('entered in driver');
     const source$ = sink$.map(function executeAction(action: DomainAction) {
-      console.log('action', action);
+      console.info('DOMAIN ACTION | ', action);
       const { context, command, payload } = action;
       const fnToExec: DomainActionHandler = config[context][command];
       const wrappedFn: DomainActionHandler = tryCatch(fnToExec, errorHandler);

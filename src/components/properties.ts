@@ -1,7 +1,7 @@
 import { always} from 'ramda';
 
-export const EV_GUARD_NONE = null;
-export const AR_GUARD_NONE = null;
+export const EV_GUARD_NONE = function noEventGuard(x:any){void x; return true};
+export const AR_GUARD_NONE = function noActionResponseGuard(x:any){void x; return true};
 export const ACTION_REQUEST_NONE = null;
 export const ACTION_GUARD_NONE = always(true);
 export const ZERO_DRIVER = null;

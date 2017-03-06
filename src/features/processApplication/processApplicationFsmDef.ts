@@ -397,7 +397,7 @@ export const transitions: Transitions = {
     event: CHANGE_ABOUT,
     target_states: [
       {
-        event_guard: T,
+        event_guard: EV_GUARD_NONE,
         re_entry: true,
         action_request: ACTION_REQUEST_NONE,
         transition_evaluation: [
@@ -495,16 +495,16 @@ export const entryComponents = {
   [STATE_QUESTION]: function showViewStateQuestion(model: UserApplicationModel) {
     return flip(renderComponent(STATE_QUESTION))({ model })
   },
-  [STATE_TEAMS]: function (model: UserApplicationModel) {
+  [STATE_TEAMS]: function showViewStateTeams(model: UserApplicationModel) {
     return flip(renderComponent(STATE_TEAMS))({ model })
   },
-  [STATE_TEAM_DETAIL]: function (model: UserApplicationModel) {
+  [STATE_TEAM_DETAIL]: function showViewStateTeamDetail(model: UserApplicationModel) {
     return flip(renderComponent(STATE_TEAM_DETAIL))({ model })
   },
-  [STATE_REVIEW]: function (model: UserApplicationModel) {
+  [STATE_REVIEW]: function showViewStateReview(model: UserApplicationModel) {
     return flip(renderComponent(STATE_REVIEW))({ model })
   },
-  [STATE_APPLIED]: function showInitView(model: UserApplicationModel) {
+  [STATE_APPLIED]: function showViewStateApplied(model: UserApplicationModel) {
     void model;
 
     // This is a transient state - display some loading indicator
@@ -521,5 +521,6 @@ export const entryComponents = {
 export const fsmSettings = {
   initial_model: {},
   init_event_data: {},
-  sinkNames: sinkNames
+  sinkNames: sinkNames,
+  debug: true
 };

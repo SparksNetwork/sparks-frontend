@@ -1,9 +1,8 @@
 import {
   mapObjIndexed, flatten, keys, always, reject, isNil, uniq, allPass, pipe, reduce, all, either,
-  map, values, equals, addIndex, flip, difference, isEmpty, where, both, curry
+  map, values, equals, addIndex, flip, difference, isEmpty, where, both, curry, defaultTo
 } from 'ramda';
 import { ERROR_MESSAGE_PREFIX } from '../components/properties';
-
 import { merge as mergeM } from 'most';
 
 const mapIndexed = addIndex(map);
@@ -85,19 +84,19 @@ const mapIndexed = addIndex(map);
    *   ...
    * }
  */
-function assertSignature(fnName:any, _arguments:any, vRules:any) {
+function assertSignature(fnName: any, _arguments: any, vRules: any) {
   const argNames = flatten(map(keys, vRules))
   const ruleFns = flatten(map(function (vRule) {
     return values(vRule)[0]
   }, vRules));
 
-  const args = mapIndexed(function (vRule:any, index) {
+  const args = mapIndexed(function (vRule: any, index) {
     void vRule;
     return _arguments[index]
   }, vRules);
 
   const validatedArgs = mapIndexed((value, index) => {
-    const ruleFn : any= ruleFns[index]
+    const ruleFn: any = ruleFns[index]
     return ruleFn(value)
   }, args);
 
@@ -134,7 +133,7 @@ function assertSignature(fnName:any, _arguments:any, vRules:any) {
  * @returns {Boolean}
  * @throws
  */
-function assertContract(contractFn:any, contractArgs:any, errorMessage:any) {
+function assertContract(contractFn: any, contractArgs: any, errorMessage: any) {
   const boolOrError = contractFn.apply(null, contractArgs);
   const isPredicateSatisfied = isBoolean(boolOrError) && boolOrError;
 
@@ -156,12 +155,12 @@ function assertContract(contractFn:any, contractArgs:any, errorMessage:any) {
  * should not have properties other than the ones checked for
  * @returns {Boolean | Array<String>}
  */
-function checkSignature(obj:any, signature:any, signatureErrorMessages:any, isStrict:any) {
+function checkSignature(obj: any, signature: any, signatureErrorMessages: any, isStrict: any) {
   let arrMessages = [] as any;
   let strict = !!isStrict;
 
   // Check that object properties in the signature match it
-  mapObjIndexed((predicate:any, property) => {
+  mapObjIndexed((predicate: any, property) => {
     if (!predicate(obj[property])) {
       arrMessages.push(signatureErrorMessages[property])
     }
@@ -169,7 +168,7 @@ function checkSignature(obj:any, signature:any, signatureErrorMessages:any, isSt
 
   // Check that object properties are all in the signature if strict is set
   if (strict) {
-    mapObjIndexed((value:any, property) => {
+    mapObjIndexed((value: any, property) => {
       void value;
       if (!(property in signature)) {
         arrMessages.push(`Object cannot contain a property called ${property}`)
@@ -193,14 +192,14 @@ function checkSignature(obj:any, signature:any, signatureErrorMessages:any, isSt
  * @param {Array<Object.<string, Predicate>>} overloads
  * @returns {{}}
  */
-function unfoldObjOverload(obj:any, overloads:any) {
+function unfoldObjOverload(obj: any, overloads: any) {
   let result = {} as any;
   let index = 0;
 
-  overloads.some((overload:any )=> {
+  overloads.some((overload: any) => {
     // can only be one property
     const property = keys(overload)[0];
-    const predicate : any= values(overload)[0];
+    const predicate: any = values(overload)[0];
     const predicateEval = predicate(obj);
 
     if (predicateEval) {
@@ -220,7 +219,7 @@ function unfoldObjOverload(obj:any, overloads:any) {
  * @param obj
  * @returns {boolean}
  */
-function isFalse(obj:any) {
+function isFalse(obj: any) {
   return isBoolean(obj) ? !obj : false
 }
 
@@ -230,11 +229,11 @@ function isFalse(obj:any) {
  * @param obj
  * @returns {boolean}
  */
-function isTrue(obj:any) {
+function isTrue(obj: any) {
   return isBoolean(obj) ? obj : false
 }
 
-function isMergeSinkFn(obj:any) {
+function isMergeSinkFn(obj: any) {
   return isFunction(obj)
 }
 
@@ -243,7 +242,7 @@ function isMergeSinkFn(obj:any) {
  * @param {Object} obj
  * @returns {boolean}
  */
-function isNullableObject(obj:any) {
+function isNullableObject(obj: any) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
   return obj == null || typeof obj === 'object'
@@ -254,7 +253,7 @@ function isNullableObject(obj:any) {
  * @param obj
  * @returns {SignatureCheck}
  */
-function isNullableComponentDef(obj:any) {
+function isNullableComponentDef(obj: any) {
   // Note that `==` is used instead of `===`
   // This allows to test for `undefined` and `null` at the same time
 
@@ -262,7 +261,7 @@ function isNullableComponentDef(obj:any) {
       makeLocalSources: either(isNil, isFunction),
       makeLocalSettings: either(isNil, isFunction),
       makeOwnSinks: either(isNil, isFunction),
-      mergeSinks: (mergeSinks:any) => {
+      mergeSinks: (mergeSinks: any) => {
         if (obj.computeSinks) {
           return !mergeSinks
         }
@@ -284,31 +283,31 @@ function isNullableComponentDef(obj:any) {
     }, true)
 }
 
-function isUndefined(obj:any) {
+function isUndefined(obj: any) {
   return typeof obj === 'undefined'
 }
 
-function isFunction(obj:any) {
+function isFunction(obj: any) {
   return typeof(obj) === 'function'
 }
 
-function isObject(obj:any) {
+function isObject(obj: any) {
   return typeof(obj) == 'object'
 }
 
-function isBoolean(obj:any) {
+function isBoolean(obj: any) {
   return typeof(obj) == 'boolean'
 }
 
-function isString(obj:any) {
+function isString(obj: any) {
   return typeof(obj) == 'string'
 }
 
-function isArray(obj:any) {
+function isArray(obj: any) {
   return Array.isArray(obj)
 }
 
-function isEmptyArray (obj:any) {
+function isEmptyArray(obj: any) {
   return allPass([isEmpty, isArray])(obj);
 }
 
@@ -318,14 +317,14 @@ function isEmptyArray (obj:any) {
  * @param {function(*):Boolean} predicateFn
  * @returns {function():Boolean}
  */
-function isArrayOf(predicateFn:any) {
+function isArrayOf(predicateFn: any) {
   // TODO : should I throw instead of returning false?? I think I should
   if (typeof predicateFn !== 'function') {
     console.error('isArrayOf: predicateFn is not a function!!');
     return always(false)
   }
 
-  return function _isArrayOf(obj:any) {
+  return function _isArrayOf(obj: any) {
     if (!Array.isArray(obj)) {
       return false
     }
@@ -334,7 +333,7 @@ function isArrayOf(predicateFn:any) {
   }
 }
 
-function isVNode(obj:any) {
+function isVNode(obj: any) {
   return ["children", "data", "elm", "key", "sel", "text"]
     .every(prop => prop in obj)
 }
@@ -346,7 +345,7 @@ function isVNode(obj:any) {
  * @returns {Predicate}
  * @throws when either predicate is not a function
  */
-function isHashMap(predicateKey:any, predicateValue:any) {
+function isHashMap(predicateKey: any, predicateValue: any) {
   assertContract(isFunction, [predicateKey], 'isHashMap : first argument must be a' +
     ' predicate function!');
   assertContract(isFunction, [predicateValue], 'isHashMap : second argument must be a' +
@@ -372,7 +371,7 @@ function isHashMap(predicateKey:any, predicateValue:any) {
  * - isStrictRecordOf({a : isNumber, b : isString})({a:1, b:'2', c:3}) -> false
  * - isStrictRecordOf({a : isNumber, b : isString})({a:1, b:2}) -> false
  */
-function isStrictRecord(recordSpec:any) {
+function isStrictRecord(recordSpec: any) {
   assertContract(isObject, [recordSpec], 'isStrictRecord : record specification argument must be' +
     ' a valid object!');
 
@@ -392,21 +391,21 @@ function isStrictRecord(recordSpec:any) {
  * @param obj
  * @returns {boolean}
  */
-function isComponent(obj:any) {
+function isComponent(obj: any) {
   // Without a type system, we just test that it is a function
   return isFunction(obj)
 }
 
-function isObservable(obj:any) {
+function isObservable(obj: any) {
   // duck typing in the absence of a type system
   return isFunction(obj.subscribe)
 }
 
-function isSource(obj:any) {
+function isSource(obj: any) {
   return isObservable(obj)
 }
 
-function isSources(obj:any) {
+function isSources(obj: any) {
   // We check the minimal contract which is not to be nil
   // In `cycle`, sources can have both regular
   // objects and observables (sign that the design could be improved).
@@ -417,16 +416,16 @@ function isSources(obj:any) {
   return !isNil(obj)
 }
 
-function isOptSinks(obj:any) {
+function isOptSinks(obj: any) {
   // obj can be null
   return !obj || all(either(isNil, isObservable), values(obj))
 }
 
-function isArrayOptSinks(arrSinks:any) {
+function isArrayOptSinks(arrSinks: any) {
   return all(isOptSinks, arrSinks)
 }
 
-function assertSourcesContracts(sources:any, sourcesContract:any) {
+function assertSourcesContracts(sources: any, sourcesContract: any) {
   // Check sources contracts
   assertContract(isSources, [sources],
     'm : `sources` parameter is invalid');
@@ -434,21 +433,21 @@ function assertSourcesContracts(sources:any, sourcesContract:any) {
     ' parameter fails contract ' + sourcesContract.name);
 }
 
-function assertSinksContracts(sinks:any, sinksContract:any) {
+function assertSinksContracts(sinks: any, sinksContract: any) {
   assertContract(isOptSinks, [sinks],
     'mergeSinks must return a hash of observable sink');
   assertContract(sinksContract, [sinks],
     'fails custom contract ' + sinksContract.name);
 }
 
-function assertSettingsContracts(mergedSettings:any, settingsContract:any) {
+function assertSettingsContracts(mergedSettings: any, settingsContract: any) {
   // Check settings contracts
   assertContract(settingsContract, [mergedSettings], 'm: `settings`' +
     ' parameter fails contract ' + settingsContract.name);
 }
 
 // from https://github.com/substack/deep-freeze/blob/master/index.js
-function deepFreeze (o:any) {
+function deepFreeze(o: any) {
   Object.freeze(o);
 
   Object.getOwnPropertyNames(o).forEach(function (prop) {
@@ -463,7 +462,7 @@ function deepFreeze (o:any) {
   return o;
 }
 
-function makeErrorMessage(errorMessage:any){
+function makeErrorMessage(errorMessage: any) {
   return ERROR_MESSAGE_PREFIX + errorMessage;
 }
 
@@ -474,25 +473,25 @@ function makeErrorMessage(errorMessage:any){
  * called
  * @returns {*}
  */
-function trace(sinks:any, settings:any) {
+function trace(sinks: any, settings: any) {
   // TODO BRC
   void settings;
   return sinks
 }
 
-function removeNullsFromArray(arr:any) {
+function removeNullsFromArray(arr: any) {
   return reject(isNil, arr)
 }
 
-function removeEmptyVNodes(arrVNode:any) {
-  return reduce((accNonEmptyVNodes:any, vNode) => {
+function removeEmptyVNodes(arrVNode: any) {
+  return reduce((accNonEmptyVNodes: any, vNode) => {
     return (isNullVNode(vNode)) ?
       accNonEmptyVNodes :
       (accNonEmptyVNodes.push(vNode), accNonEmptyVNodes)
   }, [], arrVNode)
 }
 
-function isNullVNode(vNode:any) {
+function isNullVNode(vNode: any) {
   return equals(vNode.children, []) &&
     equals(vNode.data, {}) &&
     isUndefined(vNode.elm) &&
@@ -511,8 +510,8 @@ function isNullVNode(vNode:any) {
  * @param {Array<*>} obj
  * @returns {Array<*>}
  */
-function projectSinksOn(prop:any, obj:any) {
-  return map((x:any) => x ? x[prop] : null, obj)
+function projectSinksOn(prop: any, obj: any) {
+  return map((x: any) => x ? x[prop] : null, obj)
 }
 
 /**
@@ -524,11 +523,11 @@ function projectSinksOn(prop:any, obj:any) {
  * @param {Array<Sinks>} aSinks
  * @returns {Array<String>}
  */
-function getSinkNamesFromSinksArray(aSinks:any) {
+function getSinkNamesFromSinksArray(aSinks: any) {
   return uniq(flatten(map(getValidKeys, aSinks)))
 }
 
-function getValidKeys(obj:any) {
+function getValidKeys(obj: any) {
   let validKeys = [] as any;
   mapObjIndexed((value, key) => {
     if (value != null) {
@@ -548,16 +547,16 @@ function getValidKeys(obj:any) {
  * @param sink
  * @returns {Observable|*}
  */
-function emitNullIfEmpty(sink:any) {
+function emitNullIfEmpty(sink: any) {
   return isNil(sink) ?
     null :
     mergeM(
       sink,
-      sink.isEmpty().filter((x:any) => x).map((x:any) => void x, null)
+      sink.isEmpty().filter((x: any) => x).map((x: any) => void x, null)
     )
 }
 
-function makeDivVNode(x:any) {
+function makeDivVNode(x: any) {
   return {
     "children": undefined,
     "data": {},
@@ -568,16 +567,137 @@ function makeDivVNode(x:any) {
   }
 }
 
-function _handleError(msg:any, e:any) {
+function _handleError(msg: any, e: any) {
   console.error(`${msg}`, e);
   throw e;
 }
 
 const handleError = curry(_handleError);
 
-function preventDefault(e:any){
+function preventDefault(e: any) {
   e.preventDefault();
 }
+
+//IE workaround for lack of function name property on Functions
+//getFunctionName :: (* -> *) -> String
+const getFunctionName = (r => (fn: Function) => {
+  return fn.name || ((('' + fn).match(r) || [])[1] || 'Anonymous');
+})(/^\s*function\s*([^\(]*)/i);
+
+// cf.
+// http://stackoverflow.com/questions/9479046/is-there-any-non-eval-way-to-create-a-function-with-a-runtime-determined-name
+function NamedFunction(name: string, args: Array<string>, body: string, scope: any, values?: any) {
+  if (typeof args == "string") {
+    values = scope, scope = body, body = args, args = [];
+  }
+  if (!Array.isArray(scope) || !Array.isArray(values)) {
+    if (typeof scope == "object") {
+      var keys = Object.keys(scope);
+      values = keys.map(function (p) {
+        return scope[p];
+      });
+      scope = keys;
+    }
+    else {
+      values = [];
+      scope = [];
+    }
+  }
+  return Function(scope, "function " + name + "(" + args.join(", ") + ") {\n" + body + "\n}\nreturn " + name + ";").apply(null, values);
+}
+
+// decorateWith(decoratingFn, fnToDecorate), where log :: fn -> fn such as both have same name
+// and possibly throw exception if that make sense to decoratingFn
+function decorateWithOne(decoratorSpec: { before: Function, after: Function, name?: string },
+                         fnToDecorate: Function) {
+  const fnToDecorateName = getFunctionName(fnToDecorate);
+
+  return NamedFunction(fnToDecorateName, [], `
+      const args = [].slice.call(arguments);
+      const decoratingFn = makeFunctionDecorator(decoratorSpec);
+      return decoratingFn(args, fnToDecorateName, fnToDecorate);
+`,
+    { makeFunctionDecorator, decoratorSpec, fnToDecorate, fnToDecorateName });
+}
+
+const decorateWith = curry(function decorateWith(decoratingFnsSpecs: Array<any>, fnToDecorate) {
+  return decoratingFnsSpecs.reduce((acc, decoratingFn) => {
+    return decorateWithOne(decoratingFn, acc)
+  }, fnToDecorate)
+});
+
+/**
+ * NOTE : incorrect declaration...
+ * before(fnToDecorate, fnToDecorateName, args) or nil
+ * after(fnToDecorate, fnToDecorateName, result) or nil
+ * but not both nil
+ * @returns {function(fnToDecorate: Function, fnToDecorateName:String, args:Array<*>)}
+ */
+function makeFunctionDecorator({ before, after, name }:{ before: Function, after: Function, name?: string }) {
+  // we can have one of the two not specified, but if we have none, there is no decorator to make
+  if ((typeof before !== 'function') && (typeof after !== 'function')) {
+    throw `makeFunctionDecorator: you need to specify 'before' OR 'after' as decorating functions. 
+    You passed falsy values for both!`
+  }
+
+  const decoratorFnName = defaultTo('anonymousDecorator', name) as string;
+
+  // trick to get the same name for the returned function
+  // cf.
+  // http://stackoverflow.com/questions/9479046/is-there-any-non-eval-way-to-create-a-function-with-a-runtime-determined-name
+  const obj = {
+    [decoratorFnName](args: any, fnToDecorateName: string, fnToDecorate: Function) {
+      before && before(args, fnToDecorateName, fnToDecorate);
+
+      const result = fnToDecorate(...args);
+
+      return after
+        ? after(result, fnToDecorateName, fnToDecorate)
+        : result;
+    }
+  };
+
+  return obj[decoratorFnName];
+}
+
+const assertFunctionContractDecoratorSpecs = (fnContract: any) => ({
+  before: (args: Array<any>, fnToDecorateName: string) => {
+    const checkDomain = fnContract.checkDomain;
+    const contractFnName = getFunctionName(checkDomain);
+    const passed = checkDomain(...args);
+
+    if (!isBoolean(passed) || (isBoolean(passed) && !passed)) {
+      // contract is failed
+      console.error(`assertFunctionContractDecorator: ${fnToDecorateName} fails contract ${contractFnName} \n
+${isString(passed) ? passed : ''}`);
+      throw `assertFunctionContractDecorator: ${fnToDecorateName} fails contract ${contractFnName}`
+    }
+  },
+  after: (result: any, fnToDecorateName: string) => {
+    const checkCodomain = fnContract.checkCodomain;
+    const contractFnName = getFunctionName(checkCodomain);
+    const passed = checkCodomain(result);
+
+    if (!isBoolean(passed) || (isBoolean(passed) && !passed)) {
+      // contract is failed
+      console.error(`assertFunctionContractDecorator: ${fnToDecorateName} fails contract ${contractFnName} \n
+${isString(passed) ? passed : ''}`);
+      throw `assertFunctionContractDecorator: ${fnToDecorateName} fails contract ${contractFnName}`
+    }
+
+    return result;
+  }
+});
+
+const logFnTrace = (title: string, paramSpecs: Array<string>) => ({
+  before: (args: Array<any>, fnToDecorateName: string) =>
+    console.info(`==> ${title.toUpperCase()} | ${fnToDecorateName}(${paramSpecs.join(', ')}): `, args),
+  after: (result: any, fnToDecorateName: string) => {
+    console.info(`<== ${title.toUpperCase()} | ${fnToDecorateName} <- `, result);
+    return result
+  },
+});
+
 
 export {
   makeDivVNode,
@@ -616,5 +736,11 @@ export {
   deepFreeze,
   makeErrorMessage,
   trace,
-  preventDefault
+  preventDefault,
+  getFunctionName,
+  decorateWithOne,
+  decorateWith,
+  makeFunctionDecorator,
+  assertFunctionContractDecoratorSpecs,
+  logFnTrace
 }

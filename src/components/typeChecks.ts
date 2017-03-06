@@ -3,14 +3,19 @@ import {
   prop, flip, all, identity, filter, equals, cond, T
 } from 'ramda';
 import {
-  isHashMap, isStrictRecord, isFunction, isString, isArrayOf, isObject, isEmptyArray, isBoolean
+  isHashMap, isStrictRecord, isFunction, isString, isArrayOf, isObject, isEmptyArray, isBoolean,
+  isObservable
 } from '../utils/utils';
 import { INIT_EVENT_NAME, INIT_STATE } from './properties';
+import { ActionResponse, EventData, FSM_Model } from './types';
 
 void tap;
 
 ////////
 // Types FSM
+export const isSettings = (x: any) => true;
+// dont want to go through the trouble of typing this as it is notoriously shapeshifting
+export const isSources = (x: any) => true;
 const isComponent = isFunction;
 const isNotEmpty = complement(isEmpty);
 const isEventName = both(isString, isNotEmpty);
@@ -21,9 +26,9 @@ const isState = both(isString, isNotEmpty);
 //`Event :: Sources -> Settings -> Source EventData`
 const isEvent = isFunction;
 //`EventData :: * | Null`
-const isEventData = T;
+const isEventData = (x: any) => true;
 //`FSM_Model :: Object`
-const isFsmModel = isObject;
+export const isFsmModel = isObject;
 
 // `EventGuard :: Model -> EventData -> Boolean`
 const isEventGuard = either(isNil, isFunction);
@@ -87,7 +92,8 @@ export const isFsmEntryComponents = both(isHashMap(isState, isStateEntryComponen
 export const isFsmSettings = isStrictRecord({
   initial_model: isFsmModel,
   init_event_data: isEventData,
-  sinkNames: either(isEmptyArray, isArrayOf(isSinkName))
+  sinkNames: either(isEmptyArray, isArrayOf(isSinkName)),
+  debug: either(isNil, isBoolean)
 });
 
 // `Events :: (HashMap EventName Event) | {}`
@@ -205,3 +211,29 @@ export const isDefaultActionResponseHandlerConfig = isStrictRecord({
   success: isStrictRecord({ target_state: isState, model_update: isModelUpdate }),
   error: isStrictRecord({ target_state: isState, model_update: isModelUpdate }),
 });
+
+// Type contracts
+export const isEventFactoryDomain = both(isSources, flip(isSettings));
+export const isEventFactoryCodomain = isObservable;
+export const isActionResponse = (x: any) => true;
+export const isActionGuardDomain = both(isFsmModel, flip(isActionResponse));
+export const isActionGuardCodomain = isBoolean;
+export const isModelUpdateDomain = function isModelUpdateDomain(model: FSM_Model, eventData: EventData,
+                                                                actionResponse: ActionResponse,
+                                                                settings: any) {
+  return isFsmModel(model) &&
+    isEventData(eventData) &&
+    isActionResponse(actionResponse) &&
+    isSettings(settings)
+};
+export const isModelUpdateCodomain = isArrayUpdateOperations;
+export const isEventGuardCodomain = isBoolean;
+export const isEventGuardDomain = both(isFsmModel, flip(isEventData));
+export const isCommand = isString;
+export const isRequest = isStrictRecord({
+  command: isCommand,
+  context: either(isNil, T), // optional
+  payload: either(isNil, T) // optional
+});
+export const isActionRequestDomain = both(isFsmModel, flip(isEventData));
+export const isActionRequestCodomain = isRequest;

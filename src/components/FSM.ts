@@ -1,6 +1,7 @@
 import {
   map as mapR, reduce as reduceR, mapObjIndexed, uniq, flatten, values, find, equals, clone, keys,
-  filter, always, curry, defaultTo, findIndex, tryCatch, either, isNil, pipe
+  filter, always, curry, defaultTo, findIndex, tryCatch, either, isNil, pipe, cond, prop, evolve, T,
+  identity
 } from 'ramda';
 import { checkSignature, assertContract, handleError, isBoolean } from '../utils/utils';
 import {
@@ -11,7 +12,7 @@ import {
   checkStateEntryComponentFnMustReturnComponent, isArrayUpdateOperations, isEntryComponent,
   isEntryComponentFactory
 } from './typeChecks';
-import { empty, mergeArray, merge, just } from 'most';
+import { empty, mergeArray, merge, just, concat } from 'most';
 import hold from '@most/hold';
 // Patch library : https://github.com/Starcounter-Jack/JSON-Patch
 // NOTE1 : dont use observe functionality for generating patches
@@ -27,6 +28,9 @@ import {
   CONTRACT_ACTION_GUARD_CANNOT_FAIL, CONTRACT_ACTION_GUARD_FN_RETURN_VALUE,
   CONTRACT_MODEL_UPDATE_FN_CANNOT_FAIL
 } from './properties';
+import {
+  decorateEventsWithLog, decorateTransitionsWithLog, decorateStateEntryWithLog
+} from '../utils/FSM';
 
 function removeZeroDriver(driverNameArray: any) {
   return filter(function removeZero(driverName) {
@@ -601,7 +605,15 @@ function processEventWhenAwaitingResponseEvent(fsmCompiled: any, sources: any, s
   return newFsmState
 }
 
-export function makeFSM(events: any, transitions: any, entryComponents: any, fsmSettings: any) {
+const wrapIfDebug = cond([
+  [prop('debug'), evolve({
+    events: decorateEventsWithLog,
+    transitions: decorateTransitionsWithLog,
+    entryComponents: decorateStateEntryWithLog
+  })],
+  [T, identity]]);
+
+export function makeFSM(_events: any, _transitions: any, _entryComponents: any, fsmSettings: any) {
   const fsmSignature = {
     events: isFsmEvents,
     transitions: isFsmTransitions,
@@ -616,7 +628,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     fsmSettings: `Invalid settings : some parameters are mandatory - check documentation!`
   };
   assertContract(checkSignature, [
-    { events, transitions, entryComponents, fsmSettings },
+    { events: _events, transitions: _transitions, entryComponents: _entryComponents, fsmSettings },
     fsmSignature,
     fsmSignatureErrorMessages
   ], '');
@@ -631,7 +643,16 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     ' transitions parameter must be associated to a event factory function via the' +
     ' events parameter!');
 
-  const { init_event_data, initial_model, sinkNames } = fsmSettings;
+  const { init_event_data, initial_model, sinkNames, debug } = fsmSettings;
+
+  // If debug, wrap functions to output log messages
+  const { events, transitions, entryComponents } = wrapIfDebug({
+    debug,
+    events: _events,
+    transitions: _transitions,
+    entryComponents: _entryComponents
+  });
+
 
   // 0.1 Pre-process the state machine configuration
   const stateEventsMap = computeStateEventMap(transitions);
@@ -686,7 +707,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
       .map((fsmState: any) => defaultTo(empty(), fsmState.sinks[sinkName]))
       .switch()
       .tap((x: any) =>
-        console.warn(`post switch  ${sinkName}`, x));
+        console.warn(`FSM's ${sinkName} -> ->`, x));
 
     return accOutputSinks
   }
@@ -715,18 +736,23 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     /** @type {String[]} */
     const driverNameArray = removeZeroDriver(uniq(flatten(driverNameArrays)));
     /** @type {Array.<Observable.<Object.<SinkName, ActionResponse>>>} */
-    const actionResponseObsArray = mapR(function getActionResponseObs(driverName: any) {
-      return sources[driverName].map(prefixWith(driverName))
+    const actionResponseObsArray = mapR(function getActionResponseObs(driverName:string) {
+      const prefixedActionResponse$ = sources[driverName].map(prefixWith(driverName));
+      return debug
+        ? prefixedActionResponse$.tap((x:any) => console.warn('response event', x))
+        : prefixedActionResponse$
     }, driverNameArray);
 
     /** @type {Object.<EventName, EventData>} */
     const initialEvent = pipe(prefixWith(INIT_EVENT_NAME), prefixWith(EVENT_PREFIX))(init_event_data);
 
-    const fsmEvents = merge(
-      mergeArray(eventsArray).tap(x => console.warn('user event', x)).map(prefixWith(EVENT_PREFIX)),
-      mergeArray(actionResponseObsArray).tap(x => console.warn('response event', x)).map(prefixWith(DRIVER_PREFIX)),
-    )
-      .startWith(initialEvent);
+    const fsmEvents = concat(
+      just(initialEvent).tap(x => console.warn('initial event', values(values(x)[0])[0])),
+      merge(
+        mergeArray(eventsArray).map(prefixWith(EVENT_PREFIX)),
+        mergeArray(actionResponseObsArray).map(prefixWith(DRIVER_PREFIX)),
+      )
+    );
 
     // 2. Update the state of the state machine in function of the event
     // State machine state is represented by the following properties :
@@ -766,7 +792,7 @@ export function makeFSM(events: any, transitions: any, entryComponents: any, fsm
     /** @type {Observable.<Object.<SinkName, Observable.<*>>>}*/
     let sinks$ = eventEvaluation$
       .filter((fsmState: any) => fsmState.sinks)
-      .tap((x: any) => console.warn('sinks', x.sinks))
+      .tap(x => fsmSettings.debug && console.debug('new sinks to merge | ', x.sinks))
       .thru(hold);
 
     /** @type {Object.<SinkName, Observable.<*>>}*/

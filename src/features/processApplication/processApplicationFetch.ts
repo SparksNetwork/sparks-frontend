@@ -34,7 +34,6 @@ export function getTeamDetailFormData(_?: any) {
 // Remote repository data fetching
 export function fetchUserApplicationData(sources: any, opportunityKey: string, userKey: string) {
   return sources.query$.query(USER_APPLICATION, { opportunityKey, userKey })
-    .tap(console.warn.bind(console, 'USER_APPLICATION fetch event'));
 }
 
 export function fetchUserApplicationModelData(sources: any, settings: any) {
@@ -59,6 +58,5 @@ export function fetchUserApplicationModelData(sources: any, settings: any) {
       }),
     [user$, opportunities$, userApp$, teams$]
   )
-    .tap(console.warn.bind(console, 'combined user, userapp, teams fetch event'))
     .take(1)
 }

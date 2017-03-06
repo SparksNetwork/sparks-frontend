@@ -84,7 +84,6 @@ export function teamContinueEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__submit--teams').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'teamContinueEventFactory : submit button clicked'))
 }
 
 export function skipTeamClickedEventFactory(sources: any, settings: any) {
@@ -93,7 +92,6 @@ export function skipTeamClickedEventFactory(sources: any, settings: any) {
   return sources.dom.select('.c-application__submit--team_detail_skip').events('click')
     .tap(preventDefault)
     .map((x: any) => ({ formData: getTeamDetailFormData() }))
-    .tap(console.warn.bind(console, 'skipTeamClickedEventFactory : button clicked'))
 }
 
 export function joinTeamClickedEventFactory(sources: any, settings: any) {
@@ -110,7 +108,6 @@ export function joinTeamClickedEventFactory(sources: any, settings: any) {
         validationData: validateScreenFields(teamDetailScreenFieldValidationSpecs, formData)
       }
     })
-    .tap(console.warn.bind(console, 'joinTeamClickedEventFactory : button clicked'))
 }
 
 export function backTeamClickedEventFactory(sources: any, settings: any) {
@@ -119,7 +116,6 @@ export function backTeamClickedEventFactory(sources: any, settings: any) {
   return sources.dom.select('.c-application__team_detail-back').events('click')
     .tap(preventDefault)
     .map(getTeamDetailFormData)
-    .tap(console.warn.bind(console, 'backTeamClickedEventFactory : button clicked'))
 }
 
 export function changeAboutEventFactory(sources: any, settings: any) {
@@ -127,7 +123,6 @@ export function changeAboutEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__change--about').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'changeAboutEventFactory : button clicked'))
 }
 
 export function changeQuestionEventFactory(sources: any, settings: any) {
@@ -135,7 +130,6 @@ export function changeQuestionEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__change--question').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'changeQuestionEventFactory : button clicked'))
 }
 
 export function changeTeamsEventFactory(sources: any, settings: any) {
@@ -143,7 +137,6 @@ export function changeTeamsEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__change--teams').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'changeTeamsEventFactory : button clicked'))
 }
 
 export function applicationCompletedEventFactory(sources: any, settings: any) {
@@ -151,7 +144,6 @@ export function applicationCompletedEventFactory(sources: any, settings: any) {
 
   return sources.dom.select('.c-application__review--submit').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'applicationCompletedEventFactory : button clicked'))
 }
 
 ///////

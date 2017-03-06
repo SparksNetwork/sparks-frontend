@@ -72,7 +72,6 @@ export function ProcessApplication(sources: MainSources): MainSinks {
     userKey: fakeUserKey,
     opportunityKey: fakeOpportunityKey
   });
-  console.warn('ProcessApplication', sinks);
 
 // TODO : to finish when specs evolves (for instance, routing specs, where next to apply?)
   return {
