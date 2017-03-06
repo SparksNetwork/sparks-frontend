@@ -572,7 +572,7 @@ function processEventWhenAwaitingResponseEvent(fsmCompiled: any, sources: any, s
               Received action response through driver ${driverName} and ignored it as that
                  response does not match the request sent...`);
         newFsmState = setFsmStateSinksToNull(fsmState);
-        // TODO : document the fact that driver must return the request in the response
+        // DOC : document the fact that driver must return the request in the response
       }
       else {
         const evaluatedTransition: any =

@@ -44,7 +44,7 @@ export function makeDomainQueryDriver(repository: Repository, config: ContextMap
     // not used, this is a read-only driver
     void sink;
 
-    // TODO : dont cache? problem maybe with stream completion
+    // NOTE : If I dont cache, problem maybe with stream completion
     return {
       query: function query(context: Context, params: Payload) {
         const cachedQuery = getCachedQuery(context, params);

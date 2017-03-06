@@ -78,9 +78,6 @@ export const events = {
 // It is important to update the model locally even if the update could not go in the
 // remote repository, so that when the view is shown the already entered
 // values are shown
-// TODO : same would be nice while saving to remote to show some message `pending...` = feature
-// The way to do this is to have ONE global pending internal FSM state which is associated to
-// some action (think about how, if we update the view with a spinner, how?)
 export const transitions: Transitions = {
   T_INIT: {
     origin_state: INIT_STATE,

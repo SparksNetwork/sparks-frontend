@@ -474,7 +474,7 @@ function makeErrorMessage(errorMessage: any) {
  * @returns {*}
  */
 function trace(sinks: any, settings: any) {
-  // TODO BRC
+  // NTH: some actual tracing happening
   void settings;
   return sinks
 }

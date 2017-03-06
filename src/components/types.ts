@@ -72,13 +72,12 @@ export type ActionResponse= any;
 /**
  * @typedef {String} ZeroDriver
  */
-// TODO : check if still up to date
 
 /**
  * @typedef {{command : Command, payload : Payload}} Request
  */
 export type Context = any;
-// TODO : change to any to allow overloading?? That type is not used by the FSM, only by the driver
+
 export interface Request {
   context : Context,
   command : Command;

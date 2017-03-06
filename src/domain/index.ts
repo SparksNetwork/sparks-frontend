@@ -4,7 +4,6 @@ import { getFirebaseStream } from '../utils/firebase';
 import { UserApplication } from '../types/processApplication';
 import { assertContract } from '../utils/utils';
 import { checkUserApplicationContracts } from './contracts';
-// TODO : those contracts should be in the domain???
 
 export const OPPORTUNITY = 'OPPORTUNITY';
 export const USER_APPLICATION = 'USERAPP';
@@ -29,9 +28,6 @@ export const queryConfig: ContextMap = {
     return getFirebaseStream(fbDb, eventName, ref);
   },
   [USER_APPLICATION]: function getUserApplicationData(fbDb: Repository, context: Context, params: Payload) {
-    // TODO : analyse what happens in case of error
-    // TODO : improve code for when there is no oppKey nor userKey -> ref//!
-    // i.e. Applications/Users/key/Opportunities/key
     void context;
     const refMap = { [USER_APPLICATION]: USER_APPLICATION_REF };
     const eventName = defaultTo('value')(params && params.eventName);
@@ -56,8 +52,7 @@ export const domainActionConfig: ContextCommandMap = {
   [OPPORTUNITY]: {
     [ADD]: function addOpportunity(fbDb: Repository, context: Context, params: Payload) {
       void context;
-      // TODO : acthung might be opportunityKey?!
-      // TODO : Can remove : not used now
+
       // Check command contracts
       if (!params || !params.opportunity) {
         throw 'addOpportunity: Cannot add an empty opportunity!'
@@ -74,10 +69,6 @@ export const domainActionConfig: ContextCommandMap = {
     }
   },
   [USER_APPLICATION]: {
-    // TODO : create userApp obj if not exists, else update it, so we need a key here to identify
-    // No, might not need a key. It is at userapps/users/userkey/opps/oppkey
-    // so make sure payload is UserApplication
-    //
     [UPDATE]: function updateUserApplication(fbDb: Repository,
                                              context: Context,
                                              payload: UserApplication) {
