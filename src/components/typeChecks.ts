@@ -215,7 +215,7 @@ export const isDefaultActionResponseHandlerConfig = isStrictRecord({
 // Type contracts
 export const isEventFactoryDomain = both(isSources, flip(isSettings));
 export const isEventFactoryCodomain = isObservable;
-export const isActionResponse = (x: any) => true;
+export const isActionResponse = (x: any) => true; // TODO : Record {request, type, response}
 export const isActionGuardDomain = both(isFsmModel, flip(isActionResponse));
 export const isActionGuardCodomain = isBoolean;
 export const isModelUpdateDomain = function isModelUpdateDomain(model: FSM_Model, eventData: EventData,
