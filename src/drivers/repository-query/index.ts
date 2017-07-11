@@ -22,8 +22,8 @@ function errorHandler(e: Error, repository: Repository, context: Context, params
 /**
  * Driver factory which takes a configuration object and returns a driver.
  * This drivers runs live query on a repository fetching data about bounded contexts.
- * The configuration object maps a context to a function which receives some arguments
- * constituting a query and returns a stream of data matching that query.
+ * The configuration object maps a context to a function which receives a query and
+ * returns a stream of data matching that query.
  * @param repository
  * @param config
  * @returns {(sink:any)=>{query: ((context:Context, params:Params)=>Stream<any>)}}

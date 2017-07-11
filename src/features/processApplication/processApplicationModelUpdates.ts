@@ -123,7 +123,7 @@ export const updateModelWithAboutDataAndStepReview = chainModelUpdates([
 
 export function updateModelWithAboutData(model: FSM_Model, eventData: EventData,
                                          actionResponse: DomainActionResponse) {
-  console.log('updateModelWithAboutDataAndStepReview');
+  console.log('updateModelWithAboutData');
   const formData = eventData.formData;
 
   return flatten([

@@ -20,12 +20,10 @@ import { FSM_Model, EventData } from '../../components/types';
 // account the model, hence also not the initial value for the fields. And the repository
 // does not have the current value of the fields either. So only way is this
 export function aboutContinueEventFactory(sources: any, settings: any) {
-  // should continue only if all fields have been validated
   void settings;
 
   return sources.dom.select('button.c-application__submit--about').events('click')
     .tap(preventDefault)
-    .tap(console.warn.bind(console, 'submit button clicked'))
     .map((x: any) => {
       void x;
       const formData = getAboutFormData();
@@ -35,7 +33,6 @@ export function aboutContinueEventFactory(sources: any, settings: any) {
         validationData: validateScreenFields(aboutScreenFieldValidationSpecs, formData)
       }
     })
-    .tap(console.warn.bind(console, 'validation About fields performed'))
 }
 
 export function questionContinueEventFactory(sources: any, settings: any) {
