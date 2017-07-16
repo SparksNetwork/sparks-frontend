@@ -32,7 +32,7 @@ Non-guests users :
   - application status if any, etc.
 - can apply to a opportunity
   - that is a big one (epic?) to be split in smaller stories
-- can switch to another opportunity
+- can switch (upgrade/downgrade) to another opportunity
 - can cancel application to an opportunity
 - can select a badge
 - can see the details of an opportunity
