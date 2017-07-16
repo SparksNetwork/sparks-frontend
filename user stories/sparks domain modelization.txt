@@ -1,0 +1,178 @@
+Entities
+- Users
+- Volunteers
+- Organizers
+- Events
+- Q&As
+- Opportunities
+- Shifts 
+- Teams
+- User Applications
+- Notifications
+- Payment 
+- Karma rewards
+- Calendar 
+- Documents
+
+Users
+Users have :
+- credentials, i.e. ONE OF 
+  - (email, password)
+  - facebook
+  - google
+- an id
+- any information common to both organizers and volunteers, such as 
+  - personal information, INCLUDING
+    - name, birthday, email, phone number, picture, preferred name etc.
+
+Volunteer is a User
+Volunteers have :
+- an id
+- any information proper to volunteers
+  - personal information, INCLUDING
+    - about me
+- a history of festivals they participated
+  - festival information
+    - name, place, dates, etc.
+  - teams they were in
+  - shift they have taken
+- a history of karma points they earned
+  - festival where the karma was earned
+  - number of points earned
+
+Users can :
+- log in with their credentials
+- register
+- reset password
+- ask sparks networks a question
+  - view a list of Q&A filtered by the question asked in realtime
+- view a suggested list of Q&A
+- view all Q&A for sparks
+- ask a question to a festival ... organization??
+  - view a list of Q&A filtered by the question asked in realtime
+- view a suggested list of Q&A for an event
+- view all Q&A for an event
+- connect their Sparks account to facebook/google
+- view a list of events they can volunteer for
+- view a list of events they ARE volunteering for
+- be notified of ... `you have one question still awaiting answer for the Fluff Fest enquiry`, `you have one pending volunteerign request at Electric Castle Festival`
+- add an event to a calendar
+- get directions to go to an event location
+- view an event page
+- share an event on facebook or twitter
+- view the list of opportunities of an event they can apply to
+- view the list of opportunities of an event they have applied to
+- view the state of its application (pending, confirmed)
+- view the shifts he has accepted to do
+- put those shifts in his calendar
+- apply to an opportunity
+- cancel an application to an opportunity
+- upgrade from an opportunity to another one (up or down)
+- view a list of shift corresponding to an opportunity
+- select a list of shifts corresponding to an opportunity via all, only friends criteria / via team criteria / via day criteria
+- delete a shift corresponding to an opportunity (meaning unsubscribing for that shift)
+- will receive confirmation of a credit card operation and its results
+
+Events has :
+- an organizer
+- time information
+- karma information
+- location information
+  - location
+  - direction information (how to get there)
+- content information :
+  - description, 
+  - title, image, etc.
+- a list of opportunities (1-to-n)
+- an event page
+
+Opportunities has :
+- description information
+  - title, about, etc.
+- duration type
+  - long term vs. ??
+- requirement page
+- application question
+  - organizer's question
+- `you get` information 
+- `you give` information
+
+Shifts has :
+- time information
+  - 10AM-6PM
+  - day1
+- team information
+  - Team 1
+- Friends ??
+
+Teams has :
+- team information
+- application question 
+
+User Application has :
+- event
+- opportunity
+- user
+- application data
+  - About you 
+    - answer to organizer's question
+  - Team selection
+  - Team selection data
+    - question
+    - answer
+- status
+
+Notification has :
+- ??
+
+Payment has :
+- user
+- Opportunity
+- type of credit card (credit card, paypal)
+- card number (well sort of)
+- remember option
+- status
+
+Karma points records has:
+- user
+- karma rewarding event (shared sth with facebook, finished opportunity etc.)
+- number of karma points
+
+Q&A have :
+- event title
+- question
+- answer
+
+Calendar has :
+- a user
+- time information (start, begin)
+- activity occuring during that period (shifts, event, etc.)
+
+Documents has :
+- organization (sparks, events, etc.)
+- type of document
+  - Email verification
+  - Reset link email
+  - Thank you / login
+  - dashboard first login welcome message
+  - question asked - email confirmation
+  - question asked - screen 'sent' confirmation
+  - cancel confirmation screen message
+  - cancel confirmation email
+  - submission confirmation screen message
+  - approval email
+  - select your shift screen message
+  - current shift screen message
+  - payment detail screen message
+  - confirmation screen messages
+  - confirmation payment and opportunity application email
+- content of document
+
+Organizer has :
+- an id
+- an associated user id
+- any extra info proper to the organizer
+
+
+Organizer can : 
+- TO BE COMPLETED
