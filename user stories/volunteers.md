@@ -41,6 +41,7 @@ Non-guests users :
 - can view a selection of filtered (suggested) sparks' Q&A  
 - can view a selection of filtered (suggested) project's Q&A 
 - can pay
+- can give feedback on past opportunity
  
 
 
